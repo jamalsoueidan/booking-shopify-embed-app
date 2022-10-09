@@ -9,6 +9,7 @@
 <wizard-application>
   <wizard-step>
   <h1>Vælge hvilken behandlinger du ønsker og lave hos vores proffesional artists.</h1>
+  <p>Der er nogle behandlinger der ikke kan kombines og skal bookes indviduellet.</p>
   {%- for collection in collections -%}
     {%- if collection.metafields['book-appointment'].category  -%}
       <h2>{{ collection.title }}<h2>
