@@ -1,4 +1,4 @@
-# Book Appointment App Template - Node
+# Book Appointment Shopify Application
 
 ## Tech Stack
 
