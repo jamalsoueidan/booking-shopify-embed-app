@@ -17,7 +17,7 @@ mutation {
 */
 
 import { Shopify } from "@shopify/shopify-api";
-import collectionsList from "../helpers/collections.js";
+import getCollections from "../helpers/collections.js";
 
 /*
   Merchants need to be able to scan the QR Codes.
@@ -35,7 +35,7 @@ export default function applyCollectionsMiddleware(app) {
     let payload = null;
 
     try {
-      payload = await collectionsList(session);
+      payload = await getCollections(session);
     } catch (e) {
       console.log(
         `Failed to process api/collections/list:
