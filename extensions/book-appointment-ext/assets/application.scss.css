@@ -1,0 +1,63 @@
+wizard-step h1 {
+  font-size: 24px;
+  text-align: center;
+}
+
+wizard-calendar {
+  display: flex;
+}
+
+wizard-calendar .date,
+wizard-calendar .time {
+  flex: 1;
+}
+
+wizard-calendar .time {
+  display: flex;
+}
+
+wizard-calendar .time .column {
+  flex: 1;
+}
+
+wizard-product {
+  display: block;
+  padding: 15px;
+  background-color: #eee;
+}
+
+wizard-product.added {
+  border: 2px solid #ff0040;
+  box-sizing: border-box;
+}
+
+wizard-product h2 {
+  margin: 0;
+  padding: 0;
+}
+
+ul.products,
+li.product {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+ul.products {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 25% 25% 25% 25%;
+  grid-gap: 1rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-none {
+  flex: none;
+}
+
+.flex-1 {
+  flex: 1;
+}

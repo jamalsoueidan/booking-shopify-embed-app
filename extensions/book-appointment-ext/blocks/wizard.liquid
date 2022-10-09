@@ -1,0 +1,45 @@
+{{ 'dist/vanilla-calendar.min.css' | asset_url | stylesheet_tag }}
+{{ 'application.scss.css' | asset_url | stylesheet_tag }}
+
+<script src="{{ 'dist/vanilla-calendar.min.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'application.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'product.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'calendar.js' | asset_url }}" defer="defer"></script>
+
+<wizard-application>
+  <wizard-step>
+  <h1>Vælge hvilken behandlinger du ønsker og lave hos vores proffesional artists.</h1>
+  {%- for collection in collections -%}
+    {%- if collection.metafields['book-appointment'].category  -%}
+      <h2>{{ collection.title }}<h2>
+      <ul class="products">
+        {%- for product in collection.products -%}
+          <li class="product">
+            <wizard-product product="{{product | json | escape }}" image="{{ product.featured_image.src | img_url: '160x' }}"></wizard-product>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif-%}
+  {%- endfor -%}
+  </wizard-step>
+  <wizard-step>
+    <wizard-calendar></wizard-calendar>
+  </wizard-step>
+  <wizard-step>
+    <button id="submit">Add to cart</button>
+  </wizard-step>
+</wizard-application>
+
+{% schema %}
+  {
+    "name": "Book Appointment Wizard",
+    "target": "section",
+    "settings": [
+      {
+        "type": "collection",
+        "id": "collection",
+        "label": "testerne"
+      }
+    ]
+  }
+{% endschema %}
