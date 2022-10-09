@@ -1,30 +1,8 @@
-/*
-mutation {
-  metafieldDefinitionCreate(definition: {
-    namespace: "book-appointment",
-    key:"category",
-    name: "booking-app-category",
-    ownerType: COLLECTION
-    type: "boolean"
-  }) {
-    createdDefinition {
-      id,
-      key,
-      name,
-    }
-  }
-}
-*/
+import { Shopify } from "@shopify/shopify-api";
+import { createMetafield, getMetafield } from "../helpers/metafields.js";
 
-import Shopify from "@shopify/shopify-api";
-import productCreator from "../helpers/product-creator";
-
-/*
-  Merchants need to be able to scan the QR Codes.
-  This file provides the publicly available URLs to do that.
-*/
-export default function applyMetafieldPublicEndpoints(app) {
-  app.get("/api/products/create", async (req, res) => {
+export default function applyMetafieldsMiddleware(app) {
+  app.get("/api/metafields", async (req, res) => {
     const session = await Shopify.Utils.loadCurrentSession(
       req,
       res,
@@ -32,14 +10,18 @@ export default function applyMetafieldPublicEndpoints(app) {
     );
     let status = 200;
     let error = null;
+    let payload = null;
 
     try {
-      await productCreator(session);
+      payload = await createMetafield(session);
     } catch (e) {
-      console.log(`Failed to process products/create: ${e.message}`);
+      console.log(
+        `Failed to process api/metafields:
+         ${e}`
+      );
       status = 500;
-      error = e.message;
+      error = JSON.stringify(e, null, 2);
     }
-    res.status(status).send({ success: status === 200, error });
+    res.status(status).send({ success: status === 200, error, payload });
   });
 }

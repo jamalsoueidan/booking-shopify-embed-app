@@ -66,7 +66,7 @@ const GRAPHQL = `
  * @return {Promise<Collection[]>}
  * The collections that are added to the list
  */
-export default async function getCollections(session) {
+export const getCollections = async (session) => {
   const client = new Shopify.Clients.Graphql(session.shop, session.accessToken);
   try {
     /** @type {QueryCollections} */
@@ -90,4 +90,4 @@ export default async function getCollections(session) {
   } catch (error) {
     throw error;
   }
-}
+};

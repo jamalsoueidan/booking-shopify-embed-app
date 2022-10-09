@@ -1,30 +1,23 @@
-/*
-mutation {
-  metafieldDefinitionCreate(definition: {
-    namespace: "book-appointment",
-    key:"category",
-    name: "booking-app-category",
-    ownerType: COLLECTION
-    type: "boolean"
-  }) {
-    createdDefinition {
-      id,
-      key,
-      name,
-    }
-  }
-}
-*/
-
 import { Shopify } from "@shopify/shopify-api";
-import getCollections from "../helpers/collections.js";
+import { getCollections } from "../helpers/collections.js";
 
-/*
-  Merchants need to be able to scan the QR Codes.
-  This file provides the publicly available URLs to do that.
-*/
 export default function applyCollectionsMiddleware(app) {
-  app.get("/api/collections/list", async (req, res) => {
+  app.get("/api/collections/update", async (req, res) => {
+    const session = await Shopify.Utils.loadCurrentSession(
+      req,
+      res,
+      app.get("use-online-tokens")
+    );
+    let status = 200;
+    let error = null;
+    let payload = null;
+
+    res
+      .status(status)
+      .send({ success: status === 200, error, payload: { hej: "a" } });
+  });
+
+  app.get("/api/collections", async (req, res) => {
     const session = await Shopify.Utils.loadCurrentSession(
       req,
       res,

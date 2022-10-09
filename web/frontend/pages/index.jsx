@@ -10,7 +10,13 @@ export default () => {
 
   const handleSelection = async (resources) => {
     setOpen(false);
-    const response = await fetch("/api/collections/list");
+    const response = await fetch("/api/collections/update");
+    console.log(response);
+  };
+
+  const handleCancel = async () => {
+    setOpen(false);
+    const response = await fetch("/api/metafields");
     console.log(response);
   };
 
@@ -21,7 +27,7 @@ export default () => {
         resourceType="Collection"
         open={open}
         onSelection={(resources) => handleSelection(resources)}
-        onCancel={() => setOpen(false)}
+        onCancel={() => handleCancel()}
       />
       <Layout>
         <EmptyState

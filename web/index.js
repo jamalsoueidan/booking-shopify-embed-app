@@ -1,18 +1,17 @@
 // @ts-check
-import { join } from "path";
-import { readFileSync } from "fs";
-import express from "express";
+import { LATEST_API_VERSION, Shopify } from "@shopify/shopify-api";
 import cookieParser from "cookie-parser";
-import { Shopify, LATEST_API_VERSION } from "@shopify/shopify-api";
+import express from "express";
+import { readFileSync } from "fs";
+import { join } from "path";
 
-import applyAuthMiddleware from "./middleware/auth.js";
-import verifyRequest from "./middleware/verify-request.js";
-import { setupGDPRWebHooks } from "./gdpr.js";
-import productCreator from "./helpers/product-creator.js";
-import redirectToAuth from "./helpers/redirect-to-auth.js";
-import { BillingInterval } from "./helpers/ensure-billing.js";
 import { AppInstallations } from "./app_installations.js";
+import { setupGDPRWebHooks } from "./gdpr.js";
+import redirectToAuth from "./helpers/redirect-to-auth.js";
+import applyAuthMiddleware from "./middleware/auth.js";
 import applyCollectionsMiddleware from "./middleware/collections.js";
+import applyMetafieldsMiddleware from "./middleware/metafields.js";
+import verifyRequest from "./middleware/verify-request.js";
 
 const USE_ONLINE_TOKENS = false;
 
@@ -105,6 +104,7 @@ export async function createServer(
   );
 
   applyCollectionsMiddleware(app);
+  applyMetafieldsMiddleware(app);
 
   // All endpoints after this point will have access to a request.body
   // attribute, as a result of the express.json() middleware
