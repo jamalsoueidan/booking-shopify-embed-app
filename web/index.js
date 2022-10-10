@@ -103,12 +103,12 @@ export async function createServer(
     })
   );
 
-  applyCollectionsMiddleware(app);
-  applyMetafieldsMiddleware(app);
-
   // All endpoints after this point will have access to a request.body
   // attribute, as a result of the express.json() middleware
   app.use(express.json());
+
+  applyCollectionsMiddleware(app);
+  applyMetafieldsMiddleware(app);
 
   app.use((req, res, next) => {
     const shop = Shopify.Utils.sanitizeShop(req.query.shop);

@@ -22,3 +22,8 @@ interface Collection {
 interface Collections extends Api {
   payload: Array<Collection>;
 }
+
+interface Resources {
+  id?: string;
+  selection: Product[];
+}

@@ -5,7 +5,16 @@ import { useAuthenticatedFetch } from "../../hooks";
 import AddNewCategory from "./list/AddNewCategory";
 import Collection from "./list/Collection";
 
-export default ({ collections }: { collections: Array<Collection> }) => {
+interface Props {
+  collections: Array<Collection>;
+  updateCollections?: any;
+  removeCollection?: any;
+}
+export default ({
+  collections,
+  updateCollections,
+  removeCollection,
+}: Props) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const fetch = useAuthenticatedFetch();
@@ -19,7 +28,13 @@ export default ({ collections }: { collections: Array<Collection> }) => {
   };
 
   const renderCategories = () => {
-    return collections.map((d) => <Collection collection={d}></Collection>);
+    return collections.map((collection) => (
+      <Collection
+        key={collection.id}
+        collection={collection}
+        removeCollection={removeCollection}
+      ></Collection>
+    ));
   };
 
   return (
@@ -36,7 +51,10 @@ export default ({ collections }: { collections: Array<Collection> }) => {
           Listen af alle kategorier der bliver vist på hjemmesiden.
         </TextStyle>
         <br />
-        <AddNewCategory collections={collections}></AddNewCategory>
+        <AddNewCategory
+          collections={collections}
+          updateCollections={updateCollections}
+        ></AddNewCategory>
       </TextContainer>
       <br />
       {renderCategories()}

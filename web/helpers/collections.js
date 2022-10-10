@@ -1,31 +1,6 @@
 // @ts-check
 import { Shopify } from "@shopify/shopify-api";
 
-const getCollectionsQuery = `
-  query collectionList($first: Int! $namespace: String!) {
-    collections(first: $first) {
-      nodes {
-        id,
-        title,
-        products(first: 10) {
-          nodes {
-            title
-            id
-          }
-        }
-        metafields(first: 1, namespace: $namespace) {
-          nodes {
-            id,
-            value,
-            namespace,
-            key
-          }
-        }
-      }
-    }
-  }
-`;
-
 /**
  * @typedef Metafield
  * @type {object}
@@ -54,13 +29,72 @@ const getCollectionsQuery = `
  */
 
 /**
- * @typedef QueryCollections
+ * @typedef GetCollectionQuery
  * @type {object}
  * @property {object} body
  * @property {object} body.data
  * @property {object} body.data.collections
  * @property {Collection[]} body.data.collections.nodes
  */
+const getCollectionsQuery = `
+  query collectionList($first: Int! $namespace: String!) {
+    collections(first: $first) {
+      nodes {
+        id,
+        title,
+        products(first: 10) {
+          nodes {
+            title
+            id
+          }
+        }
+        metafields(first: 1, namespace: $namespace) {
+          nodes {
+            id,
+            value,
+            namespace,
+            key
+          }
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * @typedef UpdateCollectionQuery
+ * @type {object}
+ * @property {object} body
+ * @property {object} body.data
+ * @property {object} body.data.collectionUpdate
+ * @property {Collection} body.data.collectionUpdate.collection
+ */
+const updateCollectionQuery = `
+  mutation collectionUpdate($input: CollectionInput!, $namespace: String!) {
+    collectionUpdate(input: $input)
+    {
+      collection {
+        id
+        title
+        products(first: 10) {
+          nodes {
+            title
+            id
+          }
+        }
+        metafields(first: 1, namespace: $namespace) {
+          nodes {
+            id
+            namespace
+            key
+            value
+          }
+        }
+      }
+    }
+  }
+
+`;
 
 /**
  * @return {Promise<Collection[]>}
@@ -69,7 +103,7 @@ const getCollectionsQuery = `
 export const getCollections = async (session) => {
   const client = new Shopify.Clients.Graphql(session.shop, session.accessToken);
   try {
-    /** @type {QueryCollections} */
+    /** @type {GetCollectionQuery} */
     const payload = await client.query({
       data: {
         query: getCollectionsQuery,
@@ -93,30 +127,36 @@ export const getCollections = async (session) => {
 };
 
 /**
- * @return {Promise<Collection[]>}
- * The collections that are added to the list
+ * @return {Promise<Collection>}
+ * The collections that are updated
+ * @param {object} session
+ * @param {object} input
+ * @param {string} input.id - Collection id
  */
-export const updateCollections = async (session) => {
+export const updateCollections = async (session, input) => {
   const client = new Shopify.Clients.Graphql(session.shop, session.accessToken);
   try {
-    /** @type {QueryCollections} */
+    /** @type {UpdateCollectionQuery} */
     const payload = await client.query({
       data: {
-        query: getCollectionsQuery,
+        query: updateCollectionQuery,
         variables: {
-          first: 25,
+          input: {
+            metafields: [
+              {
+                namespace: "book-appointment",
+                key: "category",
+                type: "boolean",
+                value: "true",
+              },
+            ],
+            ...input,
+          },
           namespace: "book-appointment",
         },
       },
     });
-
-    /** @type {Collection[]} */
-    const collections = payload.body.data.collections.nodes;
-    return collections.filter((c) => {
-      return !!c.metafields.nodes.find(
-        (m) => m.namespace === "book-appointment"
-      );
-    });
+    return payload.body.data.collectionUpdate.collection;
   } catch (error) {
     throw error;
   }

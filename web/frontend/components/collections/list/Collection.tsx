@@ -1,15 +1,26 @@
 import { Card, TextStyle } from "@shopify/polaris";
 import Products from "./Products";
 
-export default ({ collection }: { collection: Collection }) => {
+export default ({
+  collection,
+  removeCollection,
+}: {
+  collection: Collection;
+  removeCollection: any;
+}) => {
   return (
     <>
       <Card
         key={collection.id}
         title={collection.title}
         actions={[
-          { content: "Delete", destructive: true },
-          { content: "Edit" },
+          {
+            content: "Remove",
+            destructive: true,
+            onClick: () => {
+              removeCollection(collection);
+            },
+          },
         ]}
       >
         <Card.Section>
