@@ -1,5 +1,5 @@
 import { Shopify } from "@shopify/shopify-api";
-import { getCollections } from "../helpers/collections.js";
+import { getCollections, updateCollections } from "../helpers/collections.js";
 
 export default function applyCollectionsMiddleware(app) {
   app.get("/api/collections/update", async (req, res) => {
@@ -12,9 +12,17 @@ export default function applyCollectionsMiddleware(app) {
     let error = null;
     let payload = null;
 
-    res
-      .status(status)
-      .send({ success: status === 200, error, payload: { hej: "a" } });
+    try {
+      payload = await updateCollections(session);
+    } catch (e) {
+      console.log(
+        `Failed to process api/collections/update:
+         ${JSON.stringify(e, null, 2)}`
+      );
+      status = 500;
+      error = JSON.stringify(e, null, 2);
+    }
+    res.status(status).send({ success: status === 200, error, payload });
   });
 
   app.get("/api/collections", async (req, res) => {

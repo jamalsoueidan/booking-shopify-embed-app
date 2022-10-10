@@ -13,7 +13,6 @@ export default () => {
 
   return (
     <Page narrowWidth>
-      <TitleBar title="App name" primaryAction={null} />
       <ResourcePicker
         resourceType="Collection"
         open={open}

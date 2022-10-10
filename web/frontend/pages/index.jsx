@@ -1,46 +1,38 @@
-import { ResourcePicker, TitleBar } from "@shopify/app-bridge-react";
-import { EmptyState, Layout, Page } from "@shopify/polaris";
-import { useState } from "react";
-import { useAuthenticatedFetch } from "../hooks";
-import { Testerne } from "../components/Testerne";
+import { TitleBar } from "@shopify/app-bridge-react";
+import { Card, Page, Tabs } from "@shopify/polaris";
+import { useCallback, useState } from "react";
+import Calendar from "../components/tabs/Calendar";
+import Collections from "../components/tabs/Collections";
 
 export default () => {
-  const [open, setOpen] = useState(false);
-  const fetch = useAuthenticatedFetch();
+  const [selected, setSelected] = useState(1);
 
-  const handleSelection = async (resources) => {
-    setOpen(false);
-    const response = await fetch("/api/collections/update");
-    console.log(response);
-  };
+  const handleTabChange = useCallback(
+    (selectedTabIndex) => setSelected(selectedTabIndex),
+    []
+  );
 
-  const handleCancel = async () => {
-    setOpen(false);
-    const response = await fetch("/api/metafields");
-    console.log(response);
-  };
+  const tabs = [
+    {
+      id: "calendar",
+      content: "Calendar",
+      panelID: "calendar",
+      component: <Calendar></Calendar>,
+    },
+    {
+      id: "treatments",
+      content: "Treatments",
+      panelID: "treatments",
+      component: <Collections></Collections>,
+    },
+  ];
 
   return (
-    <Page narrowWidth>
-      <TitleBar title="App name" primaryAction={null} />
-      <ResourcePicker
-        resourceType="Collection"
-        open={open}
-        onSelection={(resources) => handleSelection(resources)}
-        onCancel={() => handleCancel()}
-      />
-      <Layout>
-        <EmptyState
-          heading="Ingen kategorier valgt"
-          action={{
-            content: "Vælge kategorier",
-            onAction: () => setOpen(true),
-          }}
-        >
-          <p>Vælge kategorier i første omgang</p>
-          <Testerne></Testerne>
-        </EmptyState>
-      </Layout>
-    </Page>
+    <>
+      <div style={{ backgroundColor: "#fff" }}>
+        <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange}></Tabs>
+      </div>
+      <Page>{tabs[selected].component}</Page>
+    </>
   );
 };

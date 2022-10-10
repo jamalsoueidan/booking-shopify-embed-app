@@ -1,7 +1,7 @@
 // @ts-check
 import { Shopify } from "@shopify/shopify-api";
 
-const GRAPHQL = `
+const getCollectionsQuery = `
   query collectionList($first: Int! $namespace: String!) {
     collections(first: $first) {
       nodes {
@@ -72,7 +72,37 @@ export const getCollections = async (session) => {
     /** @type {QueryCollections} */
     const payload = await client.query({
       data: {
-        query: GRAPHQL,
+        query: getCollectionsQuery,
+        variables: {
+          first: 25,
+          namespace: "book-appointment",
+        },
+      },
+    });
+
+    /** @type {Collection[]} */
+    const collections = payload.body.data.collections.nodes;
+    return collections.filter((c) => {
+      return !!c.metafields.nodes.find(
+        (m) => m.namespace === "book-appointment"
+      );
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
+/**
+ * @return {Promise<Collection[]>}
+ * The collections that are added to the list
+ */
+export const updateCollections = async (session) => {
+  const client = new Shopify.Clients.Graphql(session.shop, session.accessToken);
+  try {
+    /** @type {QueryCollections} */
+    const payload = await client.query({
+      data: {
+        query: getCollectionsQuery,
         variables: {
           first: 25,
           namespace: "book-appointment",
