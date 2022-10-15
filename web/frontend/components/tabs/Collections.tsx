@@ -10,7 +10,7 @@ export default () => {
 
   const fetchData = useCallback(async () => {
     setLoading(true);
-    const response = await fetch("/api/collections");
+    const response = await fetch("/api/admin/collections");
     const collections: Collections | null = await response.json();
     setCollections(collections.payload || []);
     setLoading(false);
@@ -30,7 +30,7 @@ export default () => {
 
   const removeCollection = useCallback(
     async (collection) => {
-      const response = await fetch(`/api/collections/remove`, {
+      const response = await fetch(`/api/admin/collections/remove`, {
         method: "DELETE",
         body: JSON.stringify({ id: collection.id }),
         headers: { "Content-Type": "application/json" },

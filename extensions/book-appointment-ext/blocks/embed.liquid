@@ -1,0 +1,51 @@
+<template id="product-availability">
+  <style>
+    .margin-bottom {
+      margin: 1.5rem 0 2.5rem 0;
+    }
+
+    .product-form {
+      margin-top: -.5rem !important;
+    }
+
+    .select {
+      min-height: calc(4.5rem + var(--buttons-border-width) * 2);
+      font-size: 1.4rem;
+      font-weight: 500;
+      opacity: .85;
+    }
+  </style>
+  <div class="product-form__input margin-bottom">
+    <label class="form__label" for="Staff">
+      Choose artist:
+    </label>
+    <select id="Staff" name="properties[staff]" class="select" required>
+      <option value="" disabled selected>Vælg kunstner</option>
+    </select>
+  </div>
+
+  <div class="product-form__input margin-bottom">
+    <label class="form__label" for="date">
+      Choose date:
+    </label>
+    <input type="date" name="properties[Date]" id="date" required>
+  </div>
+
+  <div class="product-form__input margin-bottom">
+    <label class="form__label" for="Hour">
+      Choose time:
+    </label>
+    <select id="Hour" name="properties[Hour]" class="select" required>
+      <option value="" disabled selected>Vælg tid</option>
+    </select>
+  </div>
+</template>
+{% schema %}
+  {
+    "name": "App Embed",
+    "target": "body",
+    "javascript": "form.js",
+    "templates": ["product"],
+    "settings": []
+  }
+{% endschema %}

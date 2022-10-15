@@ -1,8 +1,8 @@
 import { Shopify } from "@shopify/shopify-api";
-import { createMetafield, getMetafield } from "../helpers/metafields.js";
+import { createMetafield, getMetafield } from "../../helpers/metafields.js";
 
 export default function applyMetafieldsMiddleware(app) {
-  app.get("/api/metafields", async (req, res) => {
+  app.get("/api/admin/metafields", async (req, res) => {
     const session = await Shopify.Utils.loadCurrentSession(
       req,
       res,

@@ -1,9 +1,12 @@
 import { Shopify } from "@shopify/shopify-api";
-import { getCollections, updateCollections } from "../helpers/collections.js";
-import { deleteMetafield } from "../helpers/metafields.js";
+import {
+  getCollections,
+  updateCollections,
+} from "../../helpers/collections.js";
+import { deleteMetafield } from "../../helpers/metafields.js";
 
 export default function applyCollectionsMiddleware(app) {
-  app.post("/api/collections/update", async (req, res) => {
+  app.post("/api/admin/collections/update", async (req, res) => {
     const session = await Shopify.Utils.loadCurrentSession(
       req,
       res,
@@ -31,7 +34,7 @@ export default function applyCollectionsMiddleware(app) {
     res.status(status).send({ success: status === 200, error, payload });
   });
 
-  app.delete("/api/collections/remove", async (req, res) => {
+  app.delete("/api/admin/collections/remove", async (req, res) => {
     const session = await Shopify.Utils.loadCurrentSession(
       req,
       res,
@@ -57,7 +60,7 @@ export default function applyCollectionsMiddleware(app) {
     res.status(status).send({ success: status === 200, error });
   });
 
-  app.get("/api/collections", async (req, res) => {
+  app.get("/api/admin/collections", async (req, res) => {
     const session = await Shopify.Utils.loadCurrentSession(
       req,
       res,

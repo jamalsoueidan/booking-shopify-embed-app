@@ -9,9 +9,10 @@ import { AppInstallations } from "./app_installations.js";
 import { setupGDPRWebHooks } from "./gdpr.js";
 import redirectToAuth from "./helpers/redirect-to-auth.js";
 import applyAuthMiddleware from "./middleware/auth.js";
-import applyCollectionsMiddleware from "./middleware/collections.js";
-import applyMetafieldsMiddleware from "./middleware/metafields.js";
+import applyCollectionsMiddleware from "./middleware/admin/collections.js";
+import applyMetafieldsMiddleware from "./middleware/admin/metafields.js";
 import verifyRequest from "./middleware/verify-request.js";
+import applyWidgetMiddleware from "./middleware/web/widget.js";
 
 const USE_ONLINE_TOKENS = false;
 
@@ -94,6 +95,8 @@ export async function createServer(
       }
     }
   });
+
+  applyWidgetMiddleware(app);
 
   // All endpoints after this point will require an active session
   app.use(

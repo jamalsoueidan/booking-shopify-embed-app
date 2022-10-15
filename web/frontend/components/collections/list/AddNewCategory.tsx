@@ -14,7 +14,7 @@ export default ({
   const fetch = useAuthenticatedFetch();
 
   const fetchData = useCallback(async (selection: string[]) => {
-    const response = await fetch("/api/collections/update", {
+    const response = await fetch("/api/admin/collections/update", {
       method: "POST",
       body: JSON.stringify({ selection }),
       headers: { "Content-Type": "application/json" },
