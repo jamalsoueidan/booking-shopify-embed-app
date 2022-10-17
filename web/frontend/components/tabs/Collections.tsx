@@ -56,7 +56,11 @@ export default () => {
   }
 
   if (collections?.length === 0) {
-    return <Collections.Empty></Collections.Empty>;
+    return (
+      <Collections.Empty
+        updateCollections={updateCollections}
+      ></Collections.Empty>
+    );
   }
 
   return (

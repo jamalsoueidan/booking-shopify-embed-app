@@ -1,19 +1,25 @@
-import { ResourcePicker, TitleBar } from "@shopify/app-bridge-react";
+import { ResourcePicker } from "@shopify/app-bridge-react";
 import { EmptyState, Layout, Page } from "@shopify/polaris";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { notFoundImage } from "../../assets";
 import { useAuthenticatedFetch } from "../../hooks";
 
-export default () => {
-  const [loading, setLoading] = useState(false);
+export default ({ updateCollections }) => {
   const [open, setOpen] = useState(false);
   const fetch = useAuthenticatedFetch();
 
-  const handleSelection = async (resources) => {
-    setOpen(false);
-  };
+  const fetchData = useCallback(async (selection: string[]) => {
+    const response = await fetch("/api/admin/collections/update", {
+      method: "POST",
+      body: JSON.stringify({ selection }),
+      headers: { "Content-Type": "application/json" },
+    });
+    const { payload } = await response.json();
+    updateCollections(payload);
+  }, []);
 
-  const handleCancel = async () => {
+  const handleSelection = async (resources: Resources) => {
+    await fetchData(resources.selection.map((s) => s.id));
     setOpen(false);
   };
 
@@ -23,7 +29,7 @@ export default () => {
         resourceType="Collection"
         open={open}
         onSelection={(resources) => handleSelection(resources)}
-        onCancel={() => handleCancel()}
+        onCancel={() => setOpen(false)}
       />
       <Layout>
         <EmptyState
