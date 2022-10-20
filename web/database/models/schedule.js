@@ -28,8 +28,7 @@ export const find = async (document) => {
     ...(document.staff && { staff: document.staff }),
     ...(document.start &&
       document.end && {
-        $where:
-          'this.start.toJSON().slice(0, 10) == "2022-10-20" && this.end.toJSON().slice(0, 10) == "2022-10-20"',
+        $where: `this.start.toJSON().slice(0, 10) == "${document.start}" && this.end.toJSON().slice(0, 10) == "${document.end}"`,
       }),
   };
 
@@ -38,4 +37,14 @@ export const find = async (document) => {
   } catch (e) {
     throw e;
   }
+};
+
+export const findByIdAndUpdate = async (scheduleId, document) => {
+  return await ScheduleModel.findByIdAndUpdate(scheduleId, document, {
+    returnOriginal: false,
+  });
+};
+
+export const remove = async (scheduleId) => {
+  return await ScheduleModel.deleteOne({ _id: scheduleId });
 };

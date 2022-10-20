@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { ScheduleModel } from "./schedule.js";
 const { Schema } = mongoose;
 
 const StaffSchema = new Schema({
@@ -26,4 +25,14 @@ export const create = async (document) => {
 
 export const find = async () => {
   return await StaffModel.find();
+};
+
+export const findById = async (staffId) => {
+  return await StaffModel.findById(staffId);
+};
+
+export const findByIdAndUpdate = async (staffId, document) => {
+  return await StaffModel.findByIdAndUpdate(staffId, document, {
+    returnOriginal: false,
+  });
 };

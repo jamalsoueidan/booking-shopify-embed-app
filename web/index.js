@@ -11,6 +11,7 @@ import redirectToAuth from "./helpers/redirect-to-auth.js";
 import applyAdminCollectionsMiddleware from "./middleware/admin/collections.js";
 import applyAdminMetafieldsMiddleware from "./middleware/admin/metafields.js";
 import applyAdminStaffMiddleware from "./middleware/admin/staff.js";
+import applyAdminStaffScheduleMiddleware from "./middleware/admin/staff/schedule.js";
 import applyAdminWebhooksMiddleware from "./middleware/admin/webhooks.js";
 import applyAuthMiddleware from "./middleware/auth.js";
 import applyPublicWidgetMiddleware from "./middleware/public/widget.js";
@@ -131,6 +132,7 @@ export async function createServer(
 
   applyPublicWidgetMiddleware(app);
   applyAdminStaffMiddleware(app);
+  applyAdminStaffScheduleMiddleware(app);
 
   // All endpoints after this point will require an active session
   app.use(
