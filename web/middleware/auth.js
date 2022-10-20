@@ -9,7 +9,7 @@ export default function applyAuthMiddleware(
   { billing = { required: false } } = { billing: { required: false } }
 ) {
   app.get("/api/auth", async (req, res) => {
-    return redirectToAuth(req, res, app)
+    return redirectToAuth(req, res, app);
   });
 
   app.get("/api/auth/callback", async (req, res) => {
@@ -25,6 +25,27 @@ export default function applyAuthMiddleware(
         accessToken: session.accessToken,
       });
 
+      await Shopify.Webhooks.Registry.register({
+        path: "/api/webhooks",
+        topic: "ORDERS_PAID",
+        accessToken: session.accessToken,
+        shop: session.shop,
+      });
+
+      await Shopify.Webhooks.Registry.register({
+        path: "/api/webhooks",
+        topic: "ORDERS_UPDATED",
+        accessToken: session.accessToken,
+        shop: session.shop,
+      });
+
+      await Shopify.Webhooks.Registry.register({
+        path: "/api/webhooks",
+        topic: "ORDERS_CANCALLED",
+        accessToken: session.accessToken,
+        shop: session.shop,
+      });
+
       Object.entries(responses).map(([topic, response]) => {
         // The response from registerAll will include errors for the GDPR topics.  These can be safely ignored.
         // To register the GDPR topics, please set the appropriate webhook endpoint in the
@@ -36,9 +57,11 @@ export default function applyAuthMiddleware(
             );
           } else {
             console.log(
-              `Failed to register ${topic} webhook: ${
-                JSON.stringify(response.result.data, undefined, 2)
-              }`
+              `Failed to register ${topic} webhook: ${JSON.stringify(
+                response.result.data,
+                undefined,
+                2
+              )}`
             );
           }
         }

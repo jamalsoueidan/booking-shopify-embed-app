@@ -4,8 +4,9 @@ import {
   updateCollections,
 } from "../../helpers/collections.js";
 import { deleteMetafield } from "../../helpers/metafields.js";
+import { StorefrontAccessToken } from "@shopify/shopify-api/dist/rest-resources/2022-10/index.js";
 
-export default function applyCollectionsMiddleware(app) {
+export default function applyAdminCollectionsMiddleware(app) {
   app.post("/api/admin/collections/update", async (req, res) => {
     const session = await Shopify.Utils.loadCurrentSession(
       req,

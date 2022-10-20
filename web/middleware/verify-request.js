@@ -1,10 +1,30 @@
 import { Shopify } from "@shopify/shopify-api";
+import { Webhook } from "@shopify/shopify-api/dist/rest-resources/2022-10/index.js";
 import ensureBilling, {
   ShopifyBillingError,
 } from "../helpers/ensure-billing.js";
 import redirectToAuth from "../helpers/redirect-to-auth.js";
-
 import returnTopLevelRedirection from "../helpers/return-top-level-redirection.js";
+
+let updated = false;
+const updateWebhooks = async (session, hostName) => {
+  if (!updated) {
+    const hooks = await Webhook.all({ session });
+    hooks.forEach((value) => {
+      try {
+        const webhook = new Webhook({ session });
+        webhook.id = value.id;
+        webhook.address = "https://" + hostName + "/api/webhooks";
+        webhook.save({
+          update: true,
+        });
+      } catch (e) {
+        console.log("web hooks update", e);
+      }
+    });
+  }
+  updated = true;
+};
 
 const TEST_GRAPHQL_QUERY = `
 {
@@ -31,6 +51,9 @@ export default function verifyRequest(
     }
 
     if (session?.isActive()) {
+      // jamal@soueidan.com
+      // custom update all hooks everytime we load the application
+      updateWebhooks(session, Shopify.Context.HOST_NAME);
       try {
         if (billing.required) {
           // The request to check billing status serves to validate that the access token is still valid.

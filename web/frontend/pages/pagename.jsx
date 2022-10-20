@@ -8,7 +8,6 @@ export default () => {
   const handleSelection = async (resources) => {
     setOpen(false);
     const response = await fetch("/api/collections/list");
-    console.log(response);
   };
 
   return (

@@ -3,16 +3,19 @@ import { LATEST_API_VERSION, Shopify } from "@shopify/shopify-api";
 import cookieParser from "cookie-parser";
 import express from "express";
 import { readFileSync } from "fs";
+import { mongo } from "mongoose";
 import { join } from "path";
-
 import { AppInstallations } from "./app_installations.js";
+import * as database from "./database/database.js";
 import { setupGDPRWebHooks } from "./gdpr.js";
 import redirectToAuth from "./helpers/redirect-to-auth.js";
+import applyAdminCollectionsMiddleware from "./middleware/admin/collections.js";
+import applyAdminMetafieldsMiddleware from "./middleware/admin/metafields.js";
+import applyAdminWebhooksMiddleware from "./middleware/admin/webhooks.js";
 import applyAuthMiddleware from "./middleware/auth.js";
-import applyCollectionsMiddleware from "./middleware/admin/collections.js";
-import applyMetafieldsMiddleware from "./middleware/admin/metafields.js";
+import applyPublicWidgetMiddleware from "./middleware/public/widget.js";
 import verifyRequest from "./middleware/verify-request.js";
-import applyWidgetMiddleware from "./middleware/web/widget.js";
+import * as order from "./webhooks/order.js";
 
 const USE_ONLINE_TOKENS = false;
 
@@ -23,6 +26,8 @@ const DEV_INDEX_PATH = `${process.cwd()}/frontend/`;
 const PROD_INDEX_PATH = `${process.cwd()}/frontend/dist/`;
 
 const DB_PATH = `${process.cwd()}/database.sqlite`;
+
+database.connect();
 
 Shopify.Context.initialize({
   API_KEY: process.env.SHOPIFY_API_KEY,
@@ -43,6 +48,30 @@ Shopify.Webhooks.Registry.addHandler("APP_UNINSTALLED", {
   path: "/api/webhooks",
   webhookHandler: async (_topic, shop, _body) => {
     await AppInstallations.delete(shop);
+  },
+});
+
+Shopify.Webhooks.Registry.addHandler("ORDERS_PAID", {
+  path: "/api/webhooks",
+  webhookHandler: async (_topic, shop, _body) => {
+    order.createOrUpdate(_body);
+    console.log("orders/updated");
+  },
+});
+
+Shopify.Webhooks.Registry.addHandler("ORDERS_UPDATED", {
+  path: "/api/webhooks",
+  webhookHandler: async (_topic, shop, _body) => {
+    order.createOrUpdate(_body);
+    console.log("order/update");
+  },
+});
+
+Shopify.Webhooks.Registry.addHandler("ORDERS_CANCELLED", {
+  path: "/api/webhooks",
+  webhookHandler: async (_topic, shop, _body) => {
+    //delete
+    console.log("order/cancelled", _body);
   },
 });
 
@@ -96,7 +125,7 @@ export async function createServer(
     }
   });
 
-  applyWidgetMiddleware(app);
+  applyPublicWidgetMiddleware(app);
 
   // All endpoints after this point will require an active session
   app.use(
@@ -110,8 +139,9 @@ export async function createServer(
   // attribute, as a result of the express.json() middleware
   app.use(express.json());
 
-  applyCollectionsMiddleware(app);
-  applyMetafieldsMiddleware(app);
+  applyAdminWebhooksMiddleware(app);
+  applyAdminCollectionsMiddleware(app);
+  applyAdminMetafieldsMiddleware(app);
 
   app.use((req, res, next) => {
     const shop = Shopify.Utils.sanitizeShop(req.query.shop);

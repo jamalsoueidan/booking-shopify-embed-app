@@ -1,8 +1,9 @@
 import { Shopify } from "@shopify/shopify-api";
 import { createMetafield, getMetafield } from "../../helpers/metafields.js";
+import { Webhook } from "@shopify/shopify-api/dist/rest-resources/2022-04/index.js";
 
-export default function applyAdminMetafieldsMiddleware(app) {
-  app.get("/api/admin/metafields", async (req, res) => {
+export default function applyAdminWebhooksMiddleware(app) {
+  app.get("/api/admin/webhooks", async (req, res) => {
     const session = await Shopify.Utils.loadCurrentSession(
       req,
       res,
@@ -13,7 +14,16 @@ export default function applyAdminMetafieldsMiddleware(app) {
     let payload = null;
 
     try {
-      payload = await createMetafield(session);
+      const webhook = new Webhook({ session });
+      webhook.address =
+        "https://ae511afdd320.eu.ngrok.io/api/web/widget/createProduct";
+      webhook.topic = "orders/create";
+      webhook.format = "json";
+      const reponse = await webhook.save({
+        update: true,
+      });
+
+      console.log(response);
     } catch (e) {
       console.log(
         `Failed to process api/metafields:

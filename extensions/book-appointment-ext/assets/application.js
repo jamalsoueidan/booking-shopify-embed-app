@@ -21,7 +21,6 @@
           });
 
           this.addEventListener("calendar", (event) => {
-            console.log("calendar");
             this.date = event.detail.payload;
           });
 
