@@ -1,4 +1,4 @@
-import * as database from "../database/database.js";
+import * as Booking from "../database/models/booking.js";
 
 /**
  * @typedef Property
@@ -19,15 +19,12 @@ import * as database from "../database/database.js";
  * @typedef Body
  * @type {object}
  * @property {LineItem[]} line_items
+ * @property {string} shop
  */
 
-export const createOrUpdate = (_body) => {
-  /** @type {Body} */
-  const body = JSON.parse(_body);
-  /**
-   * Set the magic number.
-   * @param {LineItems} lineItem - The magic number.
-   */
+/** @param {Body} body  */
+export const createOrUpdate = (body) => {
+  /** @param {LineItems} lineItem  */
   const filter = (lineItem) => {
     return lineItem.properties.find((property) => {
       return (
@@ -53,11 +50,12 @@ export const createOrUpdate = (_body) => {
         lineItem.properties.find((p) => p.name === "Staff")?.value
       ),
       date: completeDate.toISOString(),
+      shop: body.shop,
     };
   });
 
   models.forEach((m) => {
-    database.findOneAndUpdate(m);
+    Booking.findOneAndUpdate(m);
   });
 
   console.log(models);

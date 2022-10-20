@@ -3,7 +3,6 @@ import { LATEST_API_VERSION, Shopify } from "@shopify/shopify-api";
 import cookieParser from "cookie-parser";
 import express from "express";
 import { readFileSync } from "fs";
-import { mongo } from "mongoose";
 import { join } from "path";
 import { AppInstallations } from "./app_installations.js";
 import * as database from "./database/database.js";
@@ -11,6 +10,7 @@ import { setupGDPRWebHooks } from "./gdpr.js";
 import redirectToAuth from "./helpers/redirect-to-auth.js";
 import applyAdminCollectionsMiddleware from "./middleware/admin/collections.js";
 import applyAdminMetafieldsMiddleware from "./middleware/admin/metafields.js";
+import applyAdminStaffMiddleware from "./middleware/admin/staff.js";
 import applyAdminWebhooksMiddleware from "./middleware/admin/webhooks.js";
 import applyAuthMiddleware from "./middleware/auth.js";
 import applyPublicWidgetMiddleware from "./middleware/public/widget.js";
@@ -54,15 +54,15 @@ Shopify.Webhooks.Registry.addHandler("APP_UNINSTALLED", {
 Shopify.Webhooks.Registry.addHandler("ORDERS_PAID", {
   path: "/api/webhooks",
   webhookHandler: async (_topic, shop, _body) => {
-    order.createOrUpdate(_body);
-    console.log("orders/updated");
+    order.createOrUpdate({ ...JSON.parse(_body), shop });
+    console.log("orders/paid");
   },
 });
 
 Shopify.Webhooks.Registry.addHandler("ORDERS_UPDATED", {
   path: "/api/webhooks",
   webhookHandler: async (_topic, shop, _body) => {
-    order.createOrUpdate(_body);
+    order.createOrUpdate({ ...JSON.parse(_body), shop });
     console.log("order/update");
   },
 });
@@ -125,7 +125,12 @@ export async function createServer(
     }
   });
 
+  // All endpoints after this point will have access to a request.body
+  // attribute, as a result of the express.json() middleware
+  app.use(express.json());
+
   applyPublicWidgetMiddleware(app);
+  applyAdminStaffMiddleware(app);
 
   // All endpoints after this point will require an active session
   app.use(
@@ -134,10 +139,6 @@ export async function createServer(
       billing: billingSettings,
     })
   );
-
-  // All endpoints after this point will have access to a request.body
-  // attribute, as a result of the express.json() middleware
-  app.use(express.json());
 
   applyAdminWebhooksMiddleware(app);
   applyAdminCollectionsMiddleware(app);

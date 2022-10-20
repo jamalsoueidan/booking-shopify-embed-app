@@ -3,9 +3,10 @@ import { Card, Page, Tabs } from "@shopify/polaris";
 import { useCallback, useState } from "react";
 import Calendar from "../components/tabs/Calendar";
 import Collections from "../components/tabs/Collections";
+import Staff from "../components/tabs/Staff";
 
 export default () => {
-  const [selected, setSelected] = useState(1);
+  const [selected, setSelected] = useState(0);
 
   const handleTabChange = useCallback(
     (selectedTabIndex) => setSelected(selectedTabIndex),
@@ -20,10 +21,16 @@ export default () => {
       component: <Calendar></Calendar>,
     },
     {
-      id: "treatments",
-      content: "Treatments",
-      panelID: "treatments",
+      id: "collections",
+      content: "Collections",
+      panelID: "collections",
       component: <Collections></Collections>,
+    },
+    {
+      id: "staff",
+      content: "Staff",
+      panelID: "staff",
+      component: <Staff></Staff>,
     },
   ];
 
