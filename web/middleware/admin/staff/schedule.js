@@ -13,10 +13,11 @@ export default function applyAdminStaffScheduleMiddleware(app) {
     let error = null;
     let payload = null;
 
+    const shop = req.query.shop || session.shop;
     const { staff } = req.params;
 
     try {
-      if (await Staff.findById(staff)) {
+      if (await Staff.findOne(staff, { shop })) {
         payload = await Schedule.find({ staff, ...req.query });
       } else {
         throw "user doesn't exist";
@@ -42,10 +43,11 @@ export default function applyAdminStaffScheduleMiddleware(app) {
     let error = null;
     let payload = null;
 
+    const shop = req.query.shop || session.shop;
     const { staff } = req.params;
 
     try {
-      if (await Staff.findById(staff)) {
+      if (await Staff.findOne(staff, { shop })) {
         payload = await Schedule.create({ staff, ...req.body });
       } else {
         throw "user doesn't exist";
@@ -71,13 +73,15 @@ export default function applyAdminStaffScheduleMiddleware(app) {
     let error = null;
     let payload = null;
 
+    const shop = req.query.shop || session.shop;
+
     const { staff, schedule } = req.params;
 
     try {
-      if (await Staff.findById(staff)) {
+      if (await Staff.findOne(staff, { shop })) {
         payload = await Schedule.findByIdAndUpdate(schedule, req.body);
       } else {
-        throw "user doesn't exist";
+        throw "User doesn't exist";
       }
     } catch (e) {
       console.log(
@@ -102,10 +106,12 @@ export default function applyAdminStaffScheduleMiddleware(app) {
       let error = null;
       let payload = null;
 
+      const shop = req.query.shop || session.shop;
+
       const { staff, schedule } = req.params;
 
       try {
-        if (await Staff.findById(staff)) {
+        if (await Staff.findOne(staff, { shop })) {
           payload = await Schedule.remove(schedule);
         } else {
           throw "user doesn't exist";

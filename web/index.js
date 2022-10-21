@@ -131,8 +131,6 @@ export async function createServer(
   app.use(express.json());
 
   applyPublicWidgetMiddleware(app);
-  applyAdminStaffMiddleware(app);
-  applyAdminStaffScheduleMiddleware(app);
 
   // All endpoints after this point will require an active session
   app.use(
@@ -145,6 +143,8 @@ export async function createServer(
   applyAdminWebhooksMiddleware(app);
   applyAdminCollectionsMiddleware(app);
   applyAdminMetafieldsMiddleware(app);
+  applyAdminStaffMiddleware(app);
+  applyAdminStaffScheduleMiddleware(app);
 
   app.use((req, res, next) => {
     const shop = Shopify.Utils.sanitizeShop(req.query.shop);

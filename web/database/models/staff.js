@@ -23,12 +23,12 @@ export const create = async (document) => {
   }
 };
 
-export const find = async () => {
-  return await StaffModel.find();
+export const find = async (shop) => {
+  return await StaffModel.find({ shop });
 };
 
-export const findById = async (staffId) => {
-  return await StaffModel.findById(staffId);
+export const findOne = async (_id, document) => {
+  return await StaffModel.findOne({ _id, ...document });
 };
 
 export const findByIdAndUpdate = async (staffId, document) => {

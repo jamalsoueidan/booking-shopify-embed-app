@@ -12,8 +12,10 @@ export default function applyAdminStaffMiddleware(app) {
     let error = null;
     let payload = null;
 
+    const shop = req.query.shop || session.shop;
+
     try {
-      payload = await Staff.find();
+      payload = await Staff.find(shop);
     } catch (e) {
       console.log(
         `Failed to process api/admin/staff:
@@ -35,7 +37,7 @@ export default function applyAdminStaffMiddleware(app) {
     let error = null;
     let payload = null;
 
-    const { shop } = req.query;
+    const shop = req.query.shop || session.shop;
 
     try {
       payload = await Staff.create({ shop, ...req.body });
@@ -60,7 +62,7 @@ export default function applyAdminStaffMiddleware(app) {
     let error = null;
     let payload = null;
 
-    const { shop } = req.query;
+    const shop = req.query.shop || session.shop;
     const { staff } = req.params;
 
     try {

@@ -27,3 +27,16 @@ interface Resources {
   id?: string;
   selection: Product[];
 }
+
+interface Staff {
+  _id: string;
+  shop: string;
+  fullname: string;
+  email: string;
+  phone: string;
+  active: boolean;
+}
+
+interface Staffer extends Api {
+  payload: Array<Staff>;
+}
