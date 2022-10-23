@@ -37,6 +37,23 @@ interface Staff {
   active: boolean;
 }
 
-interface Staffer extends Api {
+interface StafferApi extends Api {
   payload: Array<Staff>;
+}
+
+interface StaffApi extends Api {
+  payload: Staff;
+}
+
+interface Schedule {
+  _id: string;
+  staff: string;
+  start: Date | string;
+  end: Date | string;
+  tag: string;
+  groupId: string;
+  available: boolean;
+}
+interface SchedulesApi extends Api {
+  payload: Schedule[];
 }

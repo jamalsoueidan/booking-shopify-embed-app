@@ -12,11 +12,11 @@ const StaffSchema = new Schema({
   active: { type: Boolean, default: true },
 });
 
-const StaffModel = mongoose.model("staff", StaffSchema, "Staff");
+export const Model = mongoose.model("staff", StaffSchema, "Staff");
 
 export const create = async (document) => {
   try {
-    const newStaff = new StaffModel(document);
+    const newStaff = new Model(document);
     return await newStaff.save();
   } catch (e) {
     throw e;
@@ -24,15 +24,15 @@ export const create = async (document) => {
 };
 
 export const find = async (shop) => {
-  return await StaffModel.find({ shop });
+  return await Model.find({ shop });
 };
 
 export const findOne = async (_id, document) => {
-  return await StaffModel.findOne({ _id, ...document });
+  return await Model.findOne({ _id, ...document });
 };
 
 export const findByIdAndUpdate = async (staffId, document) => {
-  return await StaffModel.findByIdAndUpdate(staffId, document, {
+  return await Model.findByIdAndUpdate(staffId, document, {
     returnOriginal: false,
   });
 };

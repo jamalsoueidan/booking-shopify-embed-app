@@ -1,33 +1,76 @@
+import { useNavigate } from "@shopify/app-bridge-react";
 import {
+  Caption,
   Card,
+  DropZone,
   Form,
   FormLayout,
   Layout,
   Page,
+  Stack,
   TextField,
+  TextStyle,
+  Thumbnail,
 } from "@shopify/polaris";
 import { useCallback, useState } from "react";
 import { useAuthenticatedFetch } from "../../hooks";
 
 export default () => {
+  const navigate = useNavigate();
+  const [file, setFile] = useState<File>();
+  const [openFileDialog, setOpenFileDialog] = useState(false);
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const fetch = useAuthenticatedFetch();
+
+  const handleDropZoneDrop = useCallback((_: File[], acceptedFiles: File[]) => {
+    if (acceptedFiles.length > 0) {
+      setFile(acceptedFiles[0]);
+    }
+  }, []);
+  const toggleOpenFileDialog = useCallback(
+    () => setOpenFileDialog((openFileDialog) => !openFileDialog),
+    []
+  );
 
   const handleFullnameChange = useCallback((value) => setFullname(value), []);
   const handleEmailChange = useCallback((value) => setEmail(value), []);
   const handlePhoneChange = useCallback((value) => setPhone(value), []);
 
   const handleSubmit = useCallback(async () => {
-    const response = await fetch("/api/admin/collections/update", {
+    /*var reader = new window.FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = async () => {
+      await fetch("/api/admin/staff", {
+        method: "POST",
+        body: JSON.stringify({ fullname, email, phone, file: reader.result }),
+        headers: { "Content-Type": "application/json" },
+      });
+      navigate("/Staff");
+    };*/
+    await fetch("/api/admin/staff", {
       method: "POST",
       body: JSON.stringify({ fullname, email, phone }),
       headers: { "Content-Type": "application/json" },
     });
-    const { payload } = await response.json();
-    //updateCollections(payload);
-  }, []);
+    navigate("/Staff");
+  }, [fullname, phone, email, file]);
+
+  const uploadedFiles = file && (
+    <Stack vertical>
+      <Stack alignment="center">
+        <Thumbnail
+          size="small"
+          alt={file.name}
+          source={window.URL.createObjectURL(file)}
+        />
+        <div>
+          {file.name} <Caption>{file.size} bytes</Caption>
+        </div>
+      </Stack>
+    </Stack>
+  );
 
   return (
     <Page
@@ -36,7 +79,7 @@ export default () => {
       primaryAction={{ content: "Save", onAction: () => handleSubmit() }}
     >
       <Layout>
-        <Layout.Section>
+        <Layout.Section oneThird>
           <Card sectioned>
             <Form onSubmit={handleSubmit}>
               <FormLayout>
@@ -79,6 +122,22 @@ export default () => {
               </FormLayout>
             </Form>
           </Card>
+        </Layout.Section>
+        <Layout.Section oneThird>
+          <DropZone
+            label="Upload profile image"
+            openFileDialog={openFileDialog}
+            onDrop={handleDropZoneDrop}
+            onFileDialogClose={toggleOpenFileDialog}
+            type="image"
+            accept={["image/jpeg", "image/png"]}
+            allowMultiple={false}
+          >
+            {uploadedFiles || <DropZone.FileUpload />}
+          </DropZone>
+          <TextStyle variation="subdued">
+            Image size must be less than 300kb and ideally in square format.
+          </TextStyle>
         </Layout.Section>
       </Layout>
     </Page>

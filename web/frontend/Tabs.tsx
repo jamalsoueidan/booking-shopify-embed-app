@@ -1,10 +1,10 @@
 import { useNavigate } from "@shopify/app-bridge-react";
 import { Tabs } from "@shopify/polaris";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 export default ({ children }) => {
   const navigate = useNavigate();
 
-  const [selected, setSelected] = useState(2);
+  const [selected, setSelected] = useState<number>(null);
 
   const tabs = [
     {
@@ -27,6 +27,10 @@ export default ({ children }) => {
   const handleTabChange = useCallback((selectedTabIndex) => {
     setSelected(selectedTabIndex);
     navigate(`/${tabs[selectedTabIndex].content}`);
+  }, []);
+
+  useEffect(() => {
+    handleTabChange(2);
   }, []);
 
   return (

@@ -128,9 +128,11 @@ export async function createServer(
 
   // All endpoints after this point will have access to a request.body
   // attribute, as a result of the express.json() middleware
-  app.use(express.json());
+  app.use(express.json({ limit: "1mb", extended: true }));
 
   applyPublicWidgetMiddleware(app);
+  applyAdminStaffMiddleware(app);
+  applyAdminStaffScheduleMiddleware(app);
 
   // All endpoints after this point will require an active session
   app.use(
