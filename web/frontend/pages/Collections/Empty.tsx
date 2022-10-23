@@ -4,7 +4,7 @@ import { useCallback, useState } from "react";
 import { notFoundImage } from "../../assets";
 import { useAuthenticatedFetch } from "../../hooks";
 
-export default ({ updateCollections }) => {
+export default () => {
   const [open, setOpen] = useState(false);
   const fetch = useAuthenticatedFetch();
 
@@ -15,7 +15,6 @@ export default ({ updateCollections }) => {
       headers: { "Content-Type": "application/json" },
     });
     const { payload } = await response.json();
-    updateCollections(payload);
   }, []);
 
   const handleSelection = async (resources: Resources) => {

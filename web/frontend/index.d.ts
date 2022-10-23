@@ -19,7 +19,7 @@ interface Collection {
   products: Products;
 }
 
-interface Collections extends Api {
+interface CollectionsApi extends Api {
   payload: Array<Collection>;
 }
 

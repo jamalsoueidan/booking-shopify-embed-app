@@ -95,7 +95,7 @@ export default () => {
           onAction: () => handleSubmit(!active),
         },
       ]}
-      primaryAction={{ content: "Save", onAction: () => handleSubmit() }}
+      primaryAction={{ content: "Save", onAction: () => handleSubmit(true) }}
     >
       <Layout>
         <Layout.Section oneThird>

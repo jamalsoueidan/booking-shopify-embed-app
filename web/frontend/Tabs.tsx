@@ -30,7 +30,7 @@ export default ({ children }) => {
   }, []);
 
   useEffect(() => {
-    handleTabChange(2);
+    handleTabChange(1);
   }, []);
 
   return (

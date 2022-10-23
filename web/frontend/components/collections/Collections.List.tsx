@@ -1,13 +1,9 @@
 import { Card, TextStyle } from "@shopify/polaris";
 import Products from "./Products";
 
-export default ({
-  collection,
-  removeCollection,
-}: {
-  collection: Collection;
-  removeCollection: any;
-}) => {
+export default ({ collection }: { collection: Collection }) => {
+  const removeCollection = (collection) => {};
+
   return (
     <>
       <Card

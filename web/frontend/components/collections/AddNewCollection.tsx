@@ -1,16 +1,14 @@
 import { ResourcePicker } from "@shopify/app-bridge-react";
 import { Button } from "@shopify/polaris";
 import { useCallback, useState } from "react";
-import { useAuthenticatedFetch } from "../../../hooks";
+import { useAuthenticatedFetch } from "../../hooks";
 
-export default ({
-  collections,
-  updateCollections,
-}: {
-  collections: Array<Collection>;
-  updateCollections?: any;
-}) => {
-  const [open, setOpen] = useState(false);
+interface Props {
+  open: boolean;
+  setOpen: any;
+}
+
+export default ({ open, setOpen }: Props) => {
   const fetch = useAuthenticatedFetch();
 
   const fetchData = useCallback(async (selection: string[]) => {
@@ -20,7 +18,7 @@ export default ({
       headers: { "Content-Type": "application/json" },
     });
     const { payload } = await response.json();
-    updateCollections(payload);
+    console.log(payload);
   }, []);
 
   const handleSelection = async (resources: Resources) => {
@@ -29,17 +27,12 @@ export default ({
   };
 
   return (
-    <>
-      <ResourcePicker
-        resourceType="Collection"
-        open={open}
-        onSelection={(resources) => handleSelection(resources)}
-        onCancel={() => setOpen(false)}
-        selectMultiple={false}
-      />
-      <Button primary onClick={() => setOpen(true)}>
-        Tilføj flere kategorier
-      </Button>
-    </>
+    <ResourcePicker
+      resourceType="Collection"
+      open={open}
+      onSelection={(resources) => handleSelection(resources)}
+      onCancel={() => setOpen(false)}
+      selectMultiple={false}
+    />
   );
 };

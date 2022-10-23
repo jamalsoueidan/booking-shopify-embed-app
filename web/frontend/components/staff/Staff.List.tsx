@@ -8,7 +8,7 @@ import {
   TextStyle,
 } from "@shopify/polaris";
 import useSWR from "swr";
-import Metadata from "../../components/staff/Metadata";
+import Metadata from "./Metadata";
 import { useAuthenticatedFetch } from "../../hooks";
 
 export default () => {

@@ -23,10 +23,6 @@ export default () => {
     (apiURL: string) => fetch(apiURL).then((res) => res.json())
   );
 
-  if (!staff) {
-    return <></>;
-  }
-
   const { data: calendar, mutate: calendarMutate } = useSWR<SchedulesApi>(
     `/api/admin/staff/${params.id}/schedules`,
     (apiURL: string) => fetch(apiURL).then((res) => res.json())
@@ -72,6 +68,10 @@ export default () => {
       title: `${startHour}-${endHour}`,
     };
   });
+
+  if (!staff) {
+    return <></>;
+  }
 
   const { _id, fullname, active } = staff?.payload;
 
