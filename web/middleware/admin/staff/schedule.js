@@ -91,7 +91,7 @@ export default function applyAdminStaffScheduleMiddleware(app) {
     try {
       if (await Staff.findOne(staff, { shop })) {
         payload = await Schedule.findByIdAndUpdate(schedule, {
-          groupId: "",
+          groupId: null,
           ...req.body,
         });
       } else {
@@ -107,6 +107,40 @@ export default function applyAdminStaffScheduleMiddleware(app) {
     }
     res.status(status).send({ success: status === 200, error, payload });
   });
+
+  app.delete(
+    "/api/admin/staff/:staff/schedules/:schedule",
+    async (req, res) => {
+      const session = await Shopify.Utils.loadCurrentSession(
+        req,
+        res,
+        app.get("use-online-tokens")
+      );
+      let status = 200;
+      let error = null;
+      let payload = null;
+
+      const shop = req.query.shop || session.shop;
+
+      const { staff, schedule } = req.params;
+
+      try {
+        if (await Staff.findOne(staff, { shop })) {
+          payload = await Schedule.remove(schedule);
+        } else {
+          throw "user doesn't exist";
+        }
+      } catch (e) {
+        console.log(
+          `Failed to process api/metafields:
+         ${e}`
+        );
+        status = 500;
+        error = JSON.stringify(e, null, 2);
+      }
+      res.status(status).send({ success: status === 200, error, payload });
+    }
+  );
 
   app.put(
     "/api/admin/staff/:staff/schedules/:schedule/group/:groupId",
@@ -165,7 +199,7 @@ export default function applyAdminStaffScheduleMiddleware(app) {
   );
 
   app.delete(
-    "/api/admin/staff/:staff/schedules/:schedule",
+    "/api/admin/staff/:staff/schedules/:schedule/group/:groupId",
     async (req, res) => {
       const session = await Shopify.Utils.loadCurrentSession(
         req,
@@ -178,17 +212,23 @@ export default function applyAdminStaffScheduleMiddleware(app) {
 
       const shop = req.query.shop || session.shop;
 
-      const { staff, schedule } = req.params;
+      const { staff, schedule, groupId } = req.params;
 
       try {
-        if (await Staff.findOne(staff, { shop })) {
-          payload = await Schedule.remove(schedule);
+        const documents = await Schedule.Model.countDocuments({
+          _id: schedule,
+          staff,
+          groupId,
+        });
+
+        if (documents > 0) {
+          payload = await Schedule.Model.deleteMany({ groupId });
         } else {
-          throw "user doesn't exist";
+          throw "Groupid doesn't exist";
         }
       } catch (e) {
         console.log(
-          `Failed to process api/metafields:
+          `Failed to process /api/admin/staff/:staff/schedules/:schedule:
          ${e}`
         );
         status = 500;

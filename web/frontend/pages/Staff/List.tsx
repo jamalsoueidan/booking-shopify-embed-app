@@ -8,6 +8,7 @@ import {
   TextStyle,
 } from "@shopify/polaris";
 import useSWR from "swr";
+import Metadata from "../../components/staff/Metadata";
 import { useAuthenticatedFetch } from "../../hooks";
 
 export default () => {
@@ -22,7 +23,7 @@ export default () => {
   }
 
   const renderItems = (item: Staff) => {
-    const { _id, fullname, email, phone } = item;
+    const { _id, fullname, email, phone, active } = item;
     const url = "/Staff/" + _id;
     const media = <Avatar customer size="medium" name={fullname} />;
 
@@ -34,7 +35,9 @@ export default () => {
         accessibilityLabel={`View details for ${fullname}`}
       >
         <h3>
-          <TextStyle variation="strong">{fullname}</TextStyle>
+          <TextStyle variation="strong">
+            {fullname} <Metadata active={active} />
+          </TextStyle>
         </h3>
         <div>
           {email}

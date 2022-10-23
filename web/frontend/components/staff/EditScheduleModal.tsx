@@ -30,7 +30,6 @@ export default ({ info, setInfo, refresh }: Props) => {
   const toggleActive = () => setInfo(null);
 
   const extendedProps = info.event._def.extendedProps;
-  console.log(extendedProps);
   const [startTime, setStartTime] = useState<string>(
     format(new Date(extendedProps.start), "HH:mm")
   );
@@ -40,19 +39,37 @@ export default ({ info, setInfo, refresh }: Props) => {
   const [tag, setTag] = useState(extendedProps.tag || options[0].value);
   const [available, setAvailable] = useState(extendedProps.available || false);
 
-  const [loadingCurrent, setLoadingCurrent] = useState<boolean>(false);
-  const [loadingAll, setLoadingAll] = useState<boolean>(false);
+  const [loadingUpdate, setLoadingUpdate] = useState<boolean>(false);
+  const [loadingDelete, setLoadingDelete] = useState<boolean>(false);
+
+  const [loadingUpdateAll, setLoadingUpdateAll] = useState<boolean>(false);
+  const [loadingDeleteAll, setLoadingDeleteAll] = useState<boolean>(false);
 
   const fetch = useAuthenticatedFetch();
   const updateSchedule = useCallback(
     async (body) => {
       return await fetch(
         `/api/admin/staff/${params.id}/schedules/${extendedProps._id}${
-          body.groupId ? "/group/" + body.groupId : null
+          body.groupId ? "/group/" + body.groupId : ""
         }`,
         {
           method: "PUT",
           body: JSON.stringify(body),
+          headers: { "Content-Type": "application/json" },
+        }
+      ).then((res) => res.json());
+    },
+    [params, info, tag]
+  );
+
+  const deleteSchedule = useCallback(
+    async (body) => {
+      return await fetch(
+        `/api/admin/staff/${params.id}/schedules/${extendedProps._id}${
+          body.groupId ? "/group/" + body.groupId : ""
+        }`,
+        {
+          method: "DELETE",
           headers: { "Content-Type": "application/json" },
         }
       ).then((res) => res.json());
@@ -78,16 +95,29 @@ export default ({ info, setInfo, refresh }: Props) => {
     };
 
     if (type == "all") {
-      setLoadingAll(true);
+      setLoadingUpdateAll(true);
     } else {
-      setLoadingCurrent(true);
+      setLoadingUpdate(true);
     }
     await updateSchedule(body);
     refresh();
     setInfo(null);
   };
 
-  const deleteDate = async () => {};
+  const deleteDate = async (type: "all" | null) => {
+    const body = {
+      ...(type === "all" ? { groupId: extendedProps.groupId } : null),
+    };
+
+    if (type == "all") {
+      setLoadingDeleteAll(true);
+    } else {
+      setLoadingDelete(true);
+    }
+    await deleteSchedule(body);
+    refresh();
+    setInfo(null);
+  };
 
   const formatDate = format(new Date(extendedProps.start), "MM/dd/yyyy");
 
@@ -144,13 +174,17 @@ export default ({ info, setInfo, refresh }: Props) => {
             <Button
               primary
               onClick={() => updateDate(null)}
-              loading={loadingCurrent}
+              loading={loadingUpdate}
             >
               Redigere pågældende
             </Button>
           </Layout.Section>
           <Layout.Section>
-            <Button destructive onClick={deleteDate} loading={loadingCurrent}>
+            <Button
+              destructive
+              onClick={() => deleteDate(null)}
+              loading={loadingDelete}
+            >
               Slet pågældende
             </Button>
           </Layout.Section>
@@ -159,7 +193,7 @@ export default ({ info, setInfo, refresh }: Props) => {
               <Button
                 primary
                 onClick={() => updateDate("all")}
-                loading={loadingAll}
+                loading={loadingUpdateAll}
               >
                 Redigere alle
               </Button>
@@ -167,7 +201,11 @@ export default ({ info, setInfo, refresh }: Props) => {
           )}
           {extendedProps.groupId && (
             <Layout.Section>
-              <Button destructive onClick={deleteDate}>
+              <Button
+                destructive
+                onClick={() => deleteDate("all")}
+                loading={loadingDeleteAll}
+              >
                 Slet alle
               </Button>
             </Layout.Section>

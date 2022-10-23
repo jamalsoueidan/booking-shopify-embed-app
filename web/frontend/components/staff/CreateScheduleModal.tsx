@@ -147,7 +147,7 @@ export default ({ info, setInfo, refresh }) => {
           </Layout.Section>
           <Layout.Section>
             <Button primary onClick={createAllDate} loading={loadingAll}>
-              Gælder for alle Onsdag
+              Gælder for alle {format(new Date(info.dateStr), "iiii")}
             </Button>
           </Layout.Section>
         </Layout>
