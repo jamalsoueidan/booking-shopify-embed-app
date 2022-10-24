@@ -1,6 +1,7 @@
 import { ResourcePicker } from "@shopify/app-bridge-react";
 import { Button } from "@shopify/polaris";
 import { useCallback, useState } from "react";
+import { useSWRConfig } from "swr";
 import { useAuthenticatedFetch } from "../../hooks";
 
 interface Props {
@@ -10,19 +11,20 @@ interface Props {
 
 export default ({ open, setOpen }: Props) => {
   const fetch = useAuthenticatedFetch();
+  const { mutate } = useSWRConfig();
 
-  const fetchData = useCallback(async (selection: string[]) => {
-    const response = await fetch("/api/admin/collections/update", {
+  const fetchData = useCallback(async (selections: string[]) => {
+    await fetch("/api/admin/collections", {
       method: "POST",
-      body: JSON.stringify({ selection }),
+      body: JSON.stringify({ selections }),
       headers: { "Content-Type": "application/json" },
     });
-    const { payload } = await response.json();
-    console.log(payload);
+    mutate("/api/admin/collections");
   }, []);
 
   const handleSelection = async (resources: Resources) => {
-    await fetchData(resources.selection.map((s) => s.id));
+    const ids = resources.selection.map((s) => s.id);
+    await fetchData(ids);
     setOpen(false);
   };
 

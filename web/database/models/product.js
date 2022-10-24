@@ -1,22 +1,26 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
-const StaffSchema = new Schema({
+const ProductSchema = new Schema({
   shop: {
     type: String,
     required: true,
     index: true,
   },
-  fullname: { type: String, required: true },
-  email: {
+  collectionId: {
     type: String,
-    unique: true,
+    required: true,
+    index: true,
   },
-  phone: { type: String, required: true },
-  active: { type: Boolean, default: true },
+  productId: {
+    type: String,
+    required: true,
+    index: true,
+  },
+  title: String,
 });
 
-export const Model = mongoose.model("staff", StaffSchema, "Staff");
+export const Model = mongoose.model("product", ProductSchema, "Product");
 
 export const create = async (document) => {
   try {
@@ -25,6 +29,10 @@ export const create = async (document) => {
   } catch (e) {
     throw e;
   }
+};
+
+export const findOrCreate = async (document) => {
+  return await Model.findOrCreate(document);
 };
 
 export const find = async (shop) => {

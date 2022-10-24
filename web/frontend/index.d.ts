@@ -4,28 +4,29 @@ interface Api {
 }
 
 interface Product {
-  id: string;
+  _id: string;
+  productId: string;
+  collectionId: string;
   title: string;
-}
-
-interface Products {
-  nodes: Array<Product>;
 }
 
 interface Collection {
-  id: string;
+  _id: string;
+  collectionId: string;
   title: string;
-  metafields: object;
-  products: Products;
+  products: Array<Product>;
 }
 
 interface CollectionsApi extends Api {
   payload: Array<Collection>;
 }
 
+interface Resource {
+  id: string;
+}
 interface Resources {
   id?: string;
-  selection: Product[];
+  selection: Resource[];
 }
 
 interface Staff {

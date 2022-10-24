@@ -33,28 +33,17 @@ import { Shopify } from "@shopify/shopify-api";
  * @type {object}
  * @property {object} body
  * @property {object} body.data
- * @property {object} body.data.collections
- * @property {Collection[]} body.data.collections.nodes
+ * @property {Collection} body.data.collection
  */
-const getCollectionsQuery = `
-  query collectionList($first: Int! $namespace: String!) {
-    collections(first: $first) {
-      nodes {
-        id,
-        title,
-        products(first: 10) {
-          nodes {
-            title
-            id
-          }
-        }
-        metafields(first: 1, namespace: $namespace) {
-          nodes {
-            id,
-            value,
-            namespace,
-            key
-          }
+const getCollectionQuery = `
+  query collectionFind($id: ID!) {
+    collection(id: $id) {
+      id
+      title
+      products(first: 50) {
+        nodes {
+          id
+          title
         }
       }
     }
@@ -76,7 +65,7 @@ const updateCollectionQuery = `
       collection {
         id
         title
-        products(first: 10) {
+        products(first: 20) {
           nodes {
             title
             id
@@ -93,34 +82,29 @@ const updateCollectionQuery = `
       }
     }
   }
-
 `;
 
 /**
- * @return {Promise<Collection[]>}
+ * @return {Promise<Collection>}
  * The collections that are added to the list
+ * @param {object} session
+ * @param {string} id
  */
-export const getCollections = async (session) => {
+export const getCollection = async (session, id) => {
   const client = new Shopify.Clients.Graphql(session.shop, session.accessToken);
   try {
     /** @type {GetCollectionQuery} */
     const payload = await client.query({
       data: {
-        query: getCollectionsQuery,
+        query: getCollectionQuery,
         variables: {
-          first: 25,
-          namespace: "book-appointment",
+          id,
         },
       },
     });
 
     /** @type {Collection[]} */
-    const collections = payload.body.data.collections.nodes;
-    return collections.filter((c) => {
-      return !!c.metafields.nodes.find(
-        (m) => m.namespace === "book-appointment"
-      );
-    });
+    return payload.body.data.collection;
   } catch (error) {
     throw error;
   }

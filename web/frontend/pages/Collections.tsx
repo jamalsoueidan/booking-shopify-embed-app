@@ -3,7 +3,7 @@ import { Layout, Page, Spinner } from "@shopify/polaris";
 import { useState } from "react";
 import useSWR from "swr";
 import AddNewCollection from "../components/collections/AddNewCollection";
-import CollectionsList from "../components/collections/Collections.List";
+import CollectionsList from "../components/collections/Collections-List";
 import { useAuthenticatedFetch } from "../hooks";
 
 export default () => {
@@ -11,12 +11,12 @@ export default () => {
 
   const navigate = useNavigate();
   const fetch = useAuthenticatedFetch();
-  const { data, isValidating } = useSWR<CollectionsApi>(
+  const { data } = useSWR<CollectionsApi>(
     "/api/admin/collections",
     (apiURL: string) => fetch(apiURL).then((res) => res.json())
   );
 
-  if (isValidating) {
+  if (!data) {
     return (
       <Page>
         <Layout>
@@ -33,7 +33,7 @@ export default () => {
 
   const collection = data.payload.map((collection) => (
     <CollectionsList
-      key={collection.id}
+      key={collection._id}
       collection={collection}
     ></CollectionsList>
   ));

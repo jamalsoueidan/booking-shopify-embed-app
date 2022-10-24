@@ -25,7 +25,7 @@ export default function applyAdminStaffScheduleMiddleware(app) {
       }
     } catch (e) {
       console.log(
-        `Failed to process api/metafields:
+        `Failed to process api/admin/staff/:staff/schedules:
          ${e}`
       );
       status = 500;
@@ -65,7 +65,7 @@ export default function applyAdminStaffScheduleMiddleware(app) {
       }
     } catch (e) {
       console.log(
-        `Failed to process api/metafields:
+        `Failed to process api/admin/staff/:staff/schedules:
          ${e}`
       );
       status = 500;
@@ -132,7 +132,7 @@ export default function applyAdminStaffScheduleMiddleware(app) {
         }
       } catch (e) {
         console.log(
-          `Failed to process api/metafields:
+          `Failed to process api/admin/staff/:staff/schedules/:schedule:
          ${e}`
         );
         status = 500;

@@ -10,6 +10,7 @@ import { setupGDPRWebHooks } from "./gdpr.js";
 import redirectToAuth from "./helpers/redirect-to-auth.js";
 import applyAdminCollectionsMiddleware from "./middleware/admin/collections.js";
 import applyAdminMetafieldsMiddleware from "./middleware/admin/metafields.js";
+import applyAdminProductMiddleware from "./middleware/admin/product.js";
 import applyAdminStaffMiddleware from "./middleware/admin/staff.js";
 import applyAdminStaffScheduleMiddleware from "./middleware/admin/staff/schedule.js";
 import applyAdminWebhooksMiddleware from "./middleware/admin/webhooks.js";
@@ -131,9 +132,11 @@ export async function createServer(
   app.use(express.json({ limit: "1mb", extended: true }));
 
   applyPublicWidgetMiddleware(app);
+  applyAdminCollectionsMiddleware(app);
+  applyAdminProductMiddleware(app);
+  applyAdminMetafieldsMiddleware(app);
   applyAdminStaffMiddleware(app);
   applyAdminStaffScheduleMiddleware(app);
-
   // All endpoints after this point will require an active session
   app.use(
     "/api/*",
@@ -144,6 +147,7 @@ export async function createServer(
 
   applyAdminWebhooksMiddleware(app);
   applyAdminCollectionsMiddleware(app);
+  applyAdminProductMiddleware(app);
   applyAdminMetafieldsMiddleware(app);
   applyAdminStaffMiddleware(app);
   applyAdminStaffScheduleMiddleware(app);

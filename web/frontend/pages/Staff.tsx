@@ -1,7 +1,7 @@
 import { useNavigate } from "@shopify/app-bridge-react";
 import { Layout, Page, Spinner } from "@shopify/polaris";
 import useSWR from "swr";
-import StaffList from "../components/staff/Staff.List";
+import StaffList from "../components/staff/Staff-List";
 import { useAuthenticatedFetch } from "../hooks";
 
 export default () => {

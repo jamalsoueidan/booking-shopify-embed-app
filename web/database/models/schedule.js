@@ -4,8 +4,16 @@ const { Schema } = mongoose;
 const ScheduleSchema = new Schema({
   staff: { type: Schema.Types.ObjectId, ref: "Staff" },
   groupId: String,
-  start: Date,
-  end: Date,
+  start: {
+    type: Date,
+    required: true,
+    index: true,
+  },
+  end: {
+    type: Date,
+    required: true,
+    index: true,
+  },
   available: {
     type: Boolean,
     default: true,
