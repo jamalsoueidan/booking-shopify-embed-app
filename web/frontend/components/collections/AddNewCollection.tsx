@@ -1,6 +1,5 @@
 import { ResourcePicker } from "@shopify/app-bridge-react";
-import { Button } from "@shopify/polaris";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { useSWRConfig } from "swr";
 import { useAuthenticatedFetch } from "../../hooks";
 
@@ -34,7 +33,6 @@ export default ({ open, setOpen }: Props) => {
       open={open}
       onSelection={(resources) => handleSelection(resources)}
       onCancel={() => setOpen(false)}
-      selectMultiple={false}
     />
   );
 };

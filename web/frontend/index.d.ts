@@ -3,11 +3,17 @@ interface Api {
   success: boolean;
 }
 
+interface StaffTag extends Staff {
+  tags: string;
+  staff: string;
+}
+
 interface Product {
   _id: string;
   productId: string;
   collectionId: string;
   title: string;
+  staff: Array<ProductStaff>;
 }
 
 interface Collection {
@@ -19,6 +25,10 @@ interface Collection {
 
 interface CollectionsApi extends Api {
   payload: Array<Collection>;
+}
+
+interface ProductApi extends Api {
+  payload: Product;
 }
 
 interface Resource {
@@ -40,6 +50,16 @@ interface Staff {
 
 interface StafferApi extends Api {
   payload: Array<Staff>;
+}
+
+interface ProductStaff {
+  _id: string;
+  fullname: string;
+  tags: string[];
+}
+
+interface ProductStaffApi extends Api {
+  payload: Array<ProductStaff>;
 }
 
 interface StaffApi extends Api {

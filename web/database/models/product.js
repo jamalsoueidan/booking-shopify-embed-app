@@ -18,26 +18,19 @@ const ProductSchema = new Schema({
     index: true,
   },
   title: String,
+  staff: [
+    {
+      staff: {
+        type: Schema.Types.ObjectId,
+        ref: "Staff",
+        required: true,
+      },
+      tag: String,
+    },
+  ],
 });
 
 export const Model = mongoose.model("product", ProductSchema, "Product");
-
-export const create = async (document) => {
-  try {
-    const newStaff = new Model(document);
-    return await newStaff.save();
-  } catch (e) {
-    throw e;
-  }
-};
-
-export const findOrCreate = async (document) => {
-  return await Model.findOrCreate(document);
-};
-
-export const find = async (shop) => {
-  return await Model.find({ shop });
-};
 
 export const findOne = async (_id, document) => {
   return await Model.findOne({ _id, ...document });

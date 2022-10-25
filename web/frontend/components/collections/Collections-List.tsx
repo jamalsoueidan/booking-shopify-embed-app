@@ -64,7 +64,7 @@ export default ({ collection }: { collection: Collection }) => {
             return (
               <ResourceItem
                 id={_id}
-                url={"/Collections/" + _id}
+                url={"/Collections/Product/" + _id}
                 accessibilityLabel={`View details for ${title}`}
                 media={<Icon source={ProductsMajor} color="base" />}
               >

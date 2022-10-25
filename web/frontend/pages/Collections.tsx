@@ -27,7 +27,7 @@ export default () => {
   }
 
   if (data?.payload.length === 0) {
-    navigate("/Staff/Empty");
+    navigate("/Collections/Empty");
     return <></>;
   }
 

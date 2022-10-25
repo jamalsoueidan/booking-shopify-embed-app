@@ -18,7 +18,11 @@ const ScheduleSchema = new Schema({
     type: Boolean,
     default: true,
   },
-  tag: String,
+  tag: {
+    type: String,
+    required: true,
+    index: true,
+  },
 });
 
 export const Model = mongoose.model("schedule", ScheduleSchema, "Schedule");

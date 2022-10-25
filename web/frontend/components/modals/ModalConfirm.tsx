@@ -9,7 +9,7 @@ export default ({ active, setActive }) => {
       small
       open={active}
       onClose={toggleActive}
-      title="You want to delete ?"
+      title="Remove product"
       primaryAction={{
         content: "Delete",
         onAction: () => setActive(true),
@@ -22,7 +22,10 @@ export default ({ active, setActive }) => {
       ]}
     >
       <Modal.Section>
-        <p>This action cannot be undone!</p>
+        <p>
+          All settings will be deleted, This action can't be undone. This will
+          not remove the product from your store.
+        </p>
       </Modal.Section>
     </Modal>
   );
