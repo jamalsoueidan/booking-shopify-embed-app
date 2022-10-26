@@ -1,6 +1,12 @@
 import { Avatar } from "@shopify/polaris";
 
-export default ({ fullname }) => {
+export default ({
+  fullname,
+  children,
+}: {
+  fullname: string;
+  children?: any;
+}) => {
   return (
     <>
       <Avatar customer size="large" name={fullname} />
@@ -16,6 +22,7 @@ export default ({ fullname }) => {
       >
         {fullname}
       </p>
+      {children}
     </>
   );
 };

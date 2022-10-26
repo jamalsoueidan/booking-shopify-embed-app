@@ -20,6 +20,10 @@ export default ({
     return <>Loading...</>;
   }
 
+  if (staff.payload.length === 0) {
+    return <>Du har allerede tilføjet alle brugere</>;
+  }
+
   const staffer = staff?.payload?.map((s) => {
     return (
       <StaffPopover

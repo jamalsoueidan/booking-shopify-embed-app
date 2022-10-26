@@ -29,7 +29,8 @@ export default ({
       body: JSON.stringify({ staff, tag }),
       headers: { "Content-Type": "application/json" },
     });
-    mutate(`/api/admin/products/${productId}`);
+    mutate(`/api/admin/products/${productId}/staff`);
+    mutate(`/api/admin/products/${productId}/staff-to-add`);
   }, []);
 
   const handleAction = (tag) => async () => {

@@ -157,13 +157,36 @@ export default function applyAdminProductMiddleware(app) {
         },
         {
           $addFields: {
-            _id: "$staffs._id",
-            fullname: "$staffs.fullname",
+            "staffs.tags": "$tags",
           },
         },
         {
+          $replaceRoot: {
+            newRoot: "$staffs",
+          },
+        },
+        {
+          $lookup: {
+            from: "Product",
+            localField: "_id",
+            foreignField: "staff.staff",
+            let: {
+              staffId: "$_id",
+            },
+            pipeline: [
+              {
+                $match: {
+                  _id: new mongoose.Types.ObjectId(productId),
+                },
+              },
+            ],
+            as: "products",
+          },
+        },
+        { $match: { products: { $size: 0 } } },
+        {
           $project: {
-            staffs: 0,
+            products: 0,
           },
         },
       ]);
