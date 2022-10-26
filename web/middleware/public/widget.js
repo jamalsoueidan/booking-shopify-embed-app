@@ -109,7 +109,7 @@ export default function applyPublicWidgetMiddleware(app) {
         },
         {
           $match: {
-            "staff._id": new mongoose.Types.ObjectId(staffId),
+            "staff.staff": new mongoose.Types.ObjectId(staffId),
           },
         },
       ]);
@@ -133,7 +133,6 @@ export default function applyPublicWidgetMiddleware(app) {
       const scheduleHourly = schedules.reduce((previous, current) => {
         const start = new Date(current.start);
         const end = new Date(current.end);
-        const hourly = [];
 
         previous.push(start);
         let count = 1;
@@ -141,7 +140,6 @@ export default function applyPublicWidgetMiddleware(app) {
           previous.push(addHours(start, count));
           count += 1;
         }
-        previous.push(hourly);
         return previous;
       }, []);
 

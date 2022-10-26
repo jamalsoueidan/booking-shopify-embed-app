@@ -10,15 +10,20 @@
         dateInput = null;
         staffSelect = null;
         hourSelect = null;
+        template = null;
 
         constructor() {
           super();
-          let template = document.getElementById("product-availability");
-          this.dataset = template.dataset;
+          this.template = document.getElementById("product-availability");
+          this.dataset = this.template.dataset;
 
-          console.log(this.dataset);
-          this.appendChild(template.content.cloneNode(true));
+          fetch(
+            `${url}/api/widget/staff?shop=${this.dataset.shop}&productId=${this.dataset.productId}`
+          ).then(this.onStaffFetch.bind(this));
+        }
 
+        addTemplate() {
+          this.appendChild(this.template.content.cloneNode(true));
           this.dateInput = this.querySelector("#date");
           this.dateInput.addEventListener("change", this.onChange.bind(this));
 
@@ -26,17 +31,17 @@
           this.staffSelect.addEventListener("change", this.onChange.bind(this));
 
           this.hourSelect = document.querySelector("#Hour");
-
-          fetch(
-            `${url}/api/widget/staff?shop=${this.dataset.shop}&productId=${this.dataset.productId}`
-          ).then(this.onStaffFetch.bind(this));
         }
 
         async onStaffFetch(response) {
           const { payload } = await response.json();
+          if (payload.length > 0) {
+            this.addTemplate();
+          }
+
           payload.forEach((element) => {
             var opt = document.createElement("option");
-            opt.value = element._id;
+            opt.value = element.staff;
             opt.innerHTML = element.fullname;
             this.staffSelect.appendChild(opt);
           });
