@@ -1,6 +1,6 @@
 (function () {
   const tagName = "product-availability";
-  const url = "http://localhost:52678";
+  const url = "http://localhost:49337";
 
   if (!customElements.get(tagName)) {
     customElements.define(
@@ -15,6 +15,8 @@
           super();
           let template = document.getElementById("product-availability");
           this.dataset = template.dataset;
+
+          console.log(this.dataset);
           this.appendChild(template.content.cloneNode(true));
 
           this.dateInput = this.querySelector("#date");
@@ -26,14 +28,24 @@
           this.hourSelect = document.querySelector("#Hour");
 
           fetch(
-            `${url}/api/widget/staff?shop=yguuy&productId=${this.dataset.productId}`
+            `${url}/api/widget/staff?shop=${this.dataset.shop}&productId=${this.dataset.productId}`
           ).then(this.onStaffFetch.bind(this));
+        }
+
+        async onStaffFetch(response) {
+          const { payload } = await response.json();
+          payload.forEach((element) => {
+            var opt = document.createElement("option");
+            opt.value = element._id;
+            opt.innerHTML = element.fullname;
+            this.staffSelect.appendChild(opt);
+          });
         }
 
         onChange() {
           if (this.dateInput.value !== "" && this.staffSelect.value !== "") {
             fetch(
-              `${url}/api/widget/availability?shop=yguuy&date=${this.dateInput.value}&userId=${this.staffSelect.value}`
+              `${url}/api/widget/availability?shop=${this.dataset.shop}&date=${this.dateInput.value}&staffId=${this.staffSelect.value}&productId=${this.dataset.productId}`
             )
               .then(this.onAvailabilityFetch.bind(this))
               .finally(() => {
@@ -47,7 +59,7 @@
           const { payload } = await response.json();
           payload.forEach((element) => {
             var opt = document.createElement("option");
-            const date = new Date(element.start_time);
+            const date = new Date(element);
             const value =
               date.getHours() +
               ":" +
@@ -56,16 +68,6 @@
             opt.value = date.toISOString();
             opt.innerHTML = value;
             this.hourSelect.appendChild(opt);
-          });
-        }
-
-        async onStaffFetch(response) {
-          const { payload } = await response.json();
-          payload.forEach((element) => {
-            var opt = document.createElement("option");
-            opt.value = element.id;
-            opt.innerHTML = element.fullname;
-            this.staffSelect.appendChild(opt);
           });
         }
       }

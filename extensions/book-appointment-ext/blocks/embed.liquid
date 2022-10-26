@@ -1,4 +1,8 @@
-<template id="product-availability" data-product-id="{{ product.id }}">
+<template
+  id="product-availability"
+  data-product-id="{{ product.id }}"
+  data-shop="testeriphone.myshopify.com"
+>
   <style>
     .margin-bottom {
       margin: 1.5rem 0 2.5rem 0;
@@ -17,7 +21,9 @@
       padding: 0.5rem;
     }
   </style>
-
+  a
+  {{ product.metafields['book-appointment'].category.value }}
+  b
   <div class="product-form__input margin-bottom">
     <label class="form__label" for="Staff"> Choose artist: </label>
     <select id="Staff" name="properties[Staff]" class="select" required>
