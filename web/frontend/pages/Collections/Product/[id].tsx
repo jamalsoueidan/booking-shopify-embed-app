@@ -20,10 +20,7 @@ export default () => {
       breadcrumbs={[{ content: "Collections", url: "/Collections" }]}
     >
       {product?.payload && (
-        <StaffCard
-          productId={product?.payload?._id}
-          staff={product?.payload?.staff}
-        ></StaffCard>
+        <StaffCard productId={product?.payload?._id}></StaffCard>
       )}
     </Page>
   );

@@ -23,14 +23,6 @@ interface Collection {
   products: Array<Product>;
 }
 
-interface CollectionsApi extends Api {
-  payload: Array<Collection>;
-}
-
-interface ProductApi extends Api {
-  payload: Product;
-}
-
 interface Resource {
   id: string;
 }
@@ -48,22 +40,18 @@ interface Staff {
   active: boolean;
 }
 
-interface StafferApi extends Api {
-  payload: Array<Staff>;
-}
-
 interface ProductStaff {
   _id: string;
+  staff: string;
+  tags: string;
   fullname: string;
+}
+
+interface ProductStaffToAdd {
+  _id: string;
+  staff: string;
   tags: string[];
-}
-
-interface ProductStaffApi extends Api {
-  payload: Array<ProductStaff>;
-}
-
-interface StaffApi extends Api {
-  payload: Staff;
+  fullname: string;
 }
 
 interface Schedule {
@@ -77,4 +65,28 @@ interface Schedule {
 }
 interface SchedulesApi extends Api {
   payload: Schedule[];
+}
+
+interface CollectionsApi extends Api {
+  payload: Array<Collection>;
+}
+
+interface ProductApi extends Api {
+  payload: Product;
+}
+
+interface StafferApi extends Api {
+  payload: Array<Staff>;
+}
+
+interface ProductStaffApi extends Api {
+  payload: Array<ProductStaff>;
+}
+
+interface ProductStaffToAddApi extends Api {
+  payload: Array<ProductStaffToAdd>;
+}
+
+interface StaffApi extends Api {
+  payload: Staff;
 }

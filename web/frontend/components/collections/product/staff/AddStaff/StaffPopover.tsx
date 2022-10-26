@@ -9,7 +9,7 @@ export default ({
   productId,
   toggleShowStaff,
 }: {
-  staff: ProductStaff;
+  staff: ProductStaffToAdd;
   productId: string;
   toggleShowStaff: any;
 }) => {
@@ -47,7 +47,7 @@ export default ({
     </div>
   );
 
-  const tags = staff.tags.map((t) => ({
+  const tags = staff.tags?.map((t) => ({
     content: t,
     onAction: handleAction(t),
   }));

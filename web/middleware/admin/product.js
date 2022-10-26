@@ -46,7 +46,7 @@ export default function applyAdminProductMiddleware(app) {
     const { productId } = req.params;
 
     try {
-      const products = await Product.Model.aggregate([
+      payload = await Product.Model.aggregate([
         {
           $match: { _id: new mongoose.Types.ObjectId(productId), shop },
         },
@@ -74,18 +74,6 @@ export default function applyAdminProductMiddleware(app) {
           },
         },
         {
-          $group: {
-            _id: {
-              _id: "$_id",
-              productId: "$productId",
-              collectionId: "$collectionId",
-              shop: "$shop",
-              title: "$title",
-            },
-            staff: { $push: "$staff" },
-          },
-        },
-        {
           $addFields: {
             "_id.staff": "$staff.staff",
           },
@@ -95,11 +83,12 @@ export default function applyAdminProductMiddleware(app) {
             newRoot: "$_id",
           },
         },
+        {
+          $replaceRoot: {
+            newRoot: "$staff",
+          },
+        },
       ]);
-
-      if (products.length > 0) {
-        payload = products[0];
-      }
     } catch (e) {
       console.log(e);
       console.log(
