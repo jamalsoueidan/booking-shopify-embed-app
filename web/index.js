@@ -8,6 +8,7 @@ import { AppInstallations } from "./app_installations.js";
 import * as database from "./database/database.js";
 import { setupGDPRWebHooks } from "./gdpr.js";
 import redirectToAuth from "./helpers/redirect-to-auth.js";
+import applyAdminBookingsMiddleware from "./middleware/admin/bookings.js";
 import applyAdminCollectionsMiddleware from "./middleware/admin/collections.js";
 import applyAdminMetafieldsMiddleware from "./middleware/admin/metafields.js";
 import applyAdminProductMiddleware from "./middleware/admin/product.js";
@@ -137,6 +138,8 @@ export async function createServer(
   applyAdminMetafieldsMiddleware(app);
   applyAdminStaffMiddleware(app);
   applyAdminStaffScheduleMiddleware(app);
+  applyAdminBookingsMiddleware(app);
+
   // All endpoints after this point will require an active session
   app.use(
     "/api/*",
@@ -151,6 +154,7 @@ export async function createServer(
   applyAdminMetafieldsMiddleware(app);
   applyAdminStaffMiddleware(app);
   applyAdminStaffScheduleMiddleware(app);
+  applyAdminBookingsMiddleware(app);
 
   app.use((req, res, next) => {
     const shop = Shopify.Utils.sanitizeShop(req.query.shop);

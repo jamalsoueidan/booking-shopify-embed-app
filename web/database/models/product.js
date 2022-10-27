@@ -28,6 +28,8 @@ const ProductSchema = new Schema({
       tag: String,
     },
   ],
+  duration: Number,
+  buffertime: Number,
 });
 
 export const Model = mongoose.model("product", ProductSchema, "Product");

@@ -1,6 +1,7 @@
 import { useNavigate } from "@shopify/app-bridge-react";
 import { Tabs } from "@shopify/polaris";
 import { useCallback, useEffect, useState } from "react";
+
 export default ({ children }) => {
   const navigate = useNavigate();
 
@@ -8,9 +9,9 @@ export default ({ children }) => {
 
   const tabs = [
     {
-      id: "appointments",
-      content: "Appointments",
-      panelID: "Appointments",
+      id: "bookings",
+      content: "Bookings",
+      panelID: "bookings",
     },
     {
       id: "collections",

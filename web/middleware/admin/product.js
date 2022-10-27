@@ -31,6 +31,39 @@ export default function applyAdminProductMiddleware(app) {
     res.status(status).send({ success: status === 200, error, payload });
   });
 
+  app.put("/api/admin/products/:productId", async (req, res) => {
+    const session = await Shopify.Utils.loadCurrentSession(
+      req,
+      res,
+      app.get("use-online-tokens")
+    );
+
+    let status = 200;
+    let error = null;
+    let payload = null;
+
+    const shop = req.query.shop || session.shop;
+    const { productId } = req.params;
+    console.log(req.body);
+
+    try {
+      if (Object.keys(req.body).length > 0) {
+        payload = await Product.findByIdAndUpdate(productId, {
+          shop,
+          ...req.body,
+        });
+      }
+    } catch (e) {
+      console.log(
+        `Failed to process api/products/:productId:
+         ${JSON.stringify(e, null, 2)}`
+      );
+      status = 500;
+      error = JSON.stringify(e, null, 2);
+    }
+    res.status(status).send({ success: status === 200, error, payload });
+  });
+
   app.get("/api/admin/products/:productId/staff", async (req, res) => {
     const session = await Shopify.Utils.loadCurrentSession(
       req,
