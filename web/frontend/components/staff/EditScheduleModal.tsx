@@ -1,4 +1,3 @@
-import { EventInput } from "@fullcalendar/react";
 import {
   Button,
   Checkbox,
@@ -7,7 +6,7 @@ import {
   Select,
   TextField,
 } from "@shopify/polaris";
-import { addDays, format } from "date-fns";
+import { format } from "date-fns";
 import { useCallback, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAuthenticatedFetch } from "../../hooks";

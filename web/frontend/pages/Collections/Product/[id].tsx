@@ -1,6 +1,7 @@
 import { Page } from "@shopify/polaris";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
+import ProductOptionsCard from "../../../components/collections/product/ProductOptionsCard";
 import StaffCard from "../../../components/collections/product/staff/StaffCard";
 import { useAuthenticatedFetch } from "../../../hooks";
 
@@ -20,7 +21,13 @@ export default () => {
       breadcrumbs={[{ content: "Collections", url: "/Collections" }]}
     >
       {product?.payload && (
-        <StaffCard productId={product?.payload?._id}></StaffCard>
+        <>
+          <StaffCard productId={product?.payload?._id}></StaffCard>
+          <ProductOptionsCard
+            product={product?.payload}
+            productId={product?.payload._id}
+          ></ProductOptionsCard>
+        </>
       )}
     </Page>
   );

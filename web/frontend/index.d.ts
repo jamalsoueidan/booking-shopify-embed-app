@@ -14,6 +14,8 @@ interface Product {
   collectionId: string;
   title: string;
   staff: Array<ProductStaff>;
+  buffertime: number;
+  duration: number;
 }
 
 interface Collection {
@@ -63,6 +65,15 @@ interface Schedule {
   groupId: string;
   available: boolean;
 }
+
+interface Booking {
+  _id: string;
+  shop: string;
+  staff: string;
+  start: Date;
+  end: Date;
+  productId: string;
+}
 interface SchedulesApi extends Api {
   payload: Schedule[];
 }
@@ -89,4 +100,8 @@ interface ProductStaffToAddApi extends Api {
 
 interface StaffApi extends Api {
   payload: Staff;
+}
+
+interface BookingsApi {
+  payload: Array<Booking>;
 }
