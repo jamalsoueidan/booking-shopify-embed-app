@@ -69,10 +69,13 @@ interface Schedule {
 interface Booking {
   _id: string;
   shop: string;
-  staff: string;
+  staff: Staff;
   start: Date;
   end: Date;
   productId: string;
+  product: Product;
+  //for full-calendar
+  title: string;
 }
 interface SchedulesApi extends Api {
   payload: Schedule[];

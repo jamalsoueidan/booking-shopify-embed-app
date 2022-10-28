@@ -14,8 +14,44 @@ export default function applyAdminBookingsMiddleware(app) {
 
     const shop = req.query.shop || session.shop;
 
+    const { start, end } = req.query;
+
     try {
-      payload = await Booking.find(shop);
+      payload = await Booking.Model.aggregate([
+        {
+          $match: {
+            shop,
+            start: {
+              $gte: new Date(`${start}T00:00:00.0Z`),
+            },
+            end: {
+              $lt: new Date(`${end}T23:59:59.0Z`),
+            },
+          },
+        },
+        {
+          $lookup: {
+            from: "Staff",
+            localField: "staff",
+            foreignField: "_id",
+            as: "staff",
+          },
+        },
+        {
+          $unwind: "$staff",
+        },
+        {
+          $lookup: {
+            from: "Product",
+            localField: "productId",
+            foreignField: "productId",
+            as: "product",
+          },
+        },
+        {
+          $unwind: "$product",
+        },
+      ]);
     } catch (e) {
       console.log(
         `Failed to process api/admin/staff:

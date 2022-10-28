@@ -31,7 +31,7 @@ export default ({ children }) => {
   }, []);
 
   useEffect(() => {
-    handleTabChange(1);
+    handleTabChange(0);
   }, []);
 
   return (

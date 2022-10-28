@@ -1,4 +1,6 @@
 import {
+  Badge,
+  Caption,
   Card,
   Icon,
   ResourceItem,
@@ -7,9 +9,9 @@ import {
 } from "@shopify/polaris";
 import { ProductsMajor } from "@shopify/polaris-icons";
 import { useState } from "react";
-import useSWR, { mutate, useSWRConfig } from "swr";
-import ModalConfirm from "../modals/ModalConfirm.js";
+import useSWR, { useSWRConfig } from "swr";
 import { useAuthenticatedFetch } from "../../hooks";
+import ModalConfirm from "../modals/ModalConfirm.js";
 
 export default ({ collection }: { collection: Collection }) => {
   const [modalConfirm, setModalConfirm] = useState<any>();
@@ -61,16 +63,21 @@ export default ({ collection }: { collection: Collection }) => {
           renderItem={(item) => {
             const { _id, title } = item;
 
+            const critical = item.staff.length === 0 || !item.duration;
+            const status = critical ? "critical" : "success";
+
             return (
               <ResourceItem
                 id={_id}
                 url={"/Collections/Product/" + _id}
                 accessibilityLabel={`View details for ${title}`}
-                media={<Icon source={ProductsMajor} color="base" />}
+                media={<Icon source={ProductsMajor} color={status} />}
+                verticalAlignment="center"
               >
                 <h3>
                   <TextStyle variation="strong">{title}</TextStyle>
                 </h3>
+                <Caption>{item.staff.length} staff added.</Caption>
               </ResourceItem>
             );
           }}
