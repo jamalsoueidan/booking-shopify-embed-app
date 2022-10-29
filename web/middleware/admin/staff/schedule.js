@@ -178,44 +178,41 @@ export default function applyAdminStaffScheduleMiddleware(app) {
             const startDateTime = parseISO(req.body.start);
             const endDateTime = parseISO(req.body.end);
 
-            let start = d.start.setHours(getHours(startDateTime));
-            let end = d.end.setHours(getHours(endDateTime));
+            let start = new Date(d.start.setHours(getHours(startDateTime)));
+            let end = new Date(d.end.setHours(getHours(endDateTime)));
 
             // startDateTime is before 30 oct
             if (
               isBefore(startDateTime, new Date(d.start.getFullYear(), 9, 30)) &&
               isAfter(start, new Date(d.start.getFullYear(), 9, 30)) // 9 is for october
             ) {
+              start = subHours(start, 1);
+              end = subHours(end, 1);
+            }
+            // startDateTime is after 30 oct, and current is before subs
+            else if (
+              isAfter(startDateTime, new Date(d.start.getFullYear(), 9, 30)) && // 9 is for october
+              isBefore(start, new Date(d.start.getFullYear(), 9, 30))
+            ) {
               start = addHours(start, 1);
               end = addHours(end, 1);
             }
-
-            // startDateTime is after 30 oct, and current is before subs
-            if (
-              isAfter(startDateTime, new Date(d.start.getFullYear(), 9, 30)) && // 9 is for october
-              isBefore(start, new Date(d.start.getFullYear(), 9, 30))
+            // startDateTime is before 27 march, and current is after
+            else if (
+              isBefore(startDateTime, new Date(d.start.getFullYear(), 2, 27)) &&
+              isAfter(start, new Date(d.start.getFullYear(), 2, 27)) // 2 is for march
             ) {
               start = subHours(start, 1);
               end = subHours(end, 1);
             }
-
-            // startDateTime is before 27 march, and current is after
-            if (
-              isBefore(startDateTime, new Date(d.start.getFullYear(), 2, 27)) &&
-              isAfter(start, new Date(d.start.getFullYear(), 2, 27)) // 2 is for march
-            ) {
-              start = addHours(start, 1);
-              end = addHours(end, 1);
-            }
-
             // startDateTime is after 27 march, and current is before
-            if (
+            else if (
               isAfter(startDateTime, new Date(d.start.getFullYear(), 2, 27)) &&
               isBefore(start, new Date(d.start.getFullYear(), 2, 27))
               // 2 is for march
             ) {
-              start = subHours(start, 1);
-              end = subHours(end, 1);
+              start = addHours(start, 1);
+              end = addHours(end, 1);
             }
 
             return {
