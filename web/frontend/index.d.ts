@@ -108,3 +108,11 @@ interface StaffApi extends Api {
 interface BookingsApi {
   payload: Array<Booking>;
 }
+
+interface Setting {
+  language: string;
+  timeZone: string;
+}
+interface SettingApi {
+  payload: Setting;
+}

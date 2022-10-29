@@ -7,9 +7,11 @@ import {
   TextField,
 } from "@shopify/polaris";
 import { format } from "date-fns";
+import { utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
 import { useCallback, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAuthenticatedFetch } from "../../hooks";
+import { useSetting } from "../../services/setting";
 
 interface Props {
   info: any;
@@ -27,13 +29,15 @@ const options = [
 export default ({ info, setInfo, refresh }: Props) => {
   const params = useParams();
   const toggleActive = () => setInfo(null);
+  const { timeZone } = useSetting();
+  const toTimeZone = (fromUTC) => utcToZonedTime(fromUTC, timeZone);
 
   const extendedProps = info.event._def.extendedProps;
   const [startTime, setStartTime] = useState<string>(
-    format(new Date(extendedProps.start), "HH:mm")
+    format(toTimeZone(extendedProps.start), "HH:mm")
   );
   const [endTime, setEndTime] = useState<string>(
-    format(new Date(extendedProps.end), "HH:mm")
+    format(toTimeZone(extendedProps.end), "HH:mm")
   );
   const [tag, setTag] = useState(extendedProps.tag || options[0].value);
   const [available, setAvailable] = useState(extendedProps.available || false);
@@ -82,8 +86,14 @@ export default ({ info, setInfo, refresh }: Props) => {
   const handleEnd = (value) => setEndTime(value);
 
   const updateDate = async (type: "all" | null) => {
-    const start = new Date(`${extendedProps.start.substr(0, 10)} ${startTime}`);
-    const end = new Date(`${extendedProps.end.substr(0, 10)} ${endTime}`);
+    const start = zonedTimeToUtc(
+      `${extendedProps.start.substr(0, 10)} ${startTime}`,
+      timeZone
+    );
+    const end = zonedTimeToUtc(
+      `${extendedProps.end.substr(0, 10)} ${endTime}`,
+      timeZone
+    );
 
     const body: Omit<Schedule, "_id" | "staff"> = {
       start: start.toISOString(),

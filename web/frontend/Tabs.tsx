@@ -23,6 +23,11 @@ export default ({ children }) => {
       content: "Staff",
       panelID: "staff",
     },
+    {
+      id: "setting",
+      content: "Settings",
+      panelID: "settings",
+    },
   ];
 
   const handleTabChange = useCallback((selectedTabIndex) => {
@@ -31,7 +36,7 @@ export default ({ children }) => {
   }, []);
 
   useEffect(() => {
-    handleTabChange(0);
+    handleTabChange(2);
   }, []);
 
   return (

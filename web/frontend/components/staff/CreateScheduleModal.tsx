@@ -6,10 +6,19 @@ import {
   Select,
   TextField,
 } from "@shopify/polaris";
-import { addDays, format } from "date-fns";
-import { useCallback, useState } from "react";
+import {
+  addDays,
+  addHours,
+  format,
+  isAfter,
+  isBefore,
+  subHours,
+} from "date-fns";
+import { zonedTimeToUtc } from "date-fns-tz";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useAuthenticatedFetch } from "../../hooks";
+import { useSetting } from "../../services/setting";
+import { addNewSchedule } from "../../services/staff";
 
 const options = [
   { label: "Green", value: "#4b6043" },
@@ -30,17 +39,8 @@ export default ({ info, setInfo, refresh }) => {
   const [loadingCurrent, setLoadingCurrent] = useState<boolean>(false);
   const [loadingAll, setLoadingAll] = useState<boolean>(false);
 
-  const fetch = useAuthenticatedFetch();
-  const createSchedule = useCallback(
-    async (body) => {
-      return await fetch(`/api/admin/staff/${params.id}/schedules`, {
-        method: "POST",
-        body: JSON.stringify(body),
-        headers: { "Content-Type": "application/json" },
-      }).then((res) => res.json());
-    },
-    [params, info, tag]
-  );
+  const createSchedule = addNewSchedule();
+  const { timeZone } = useSetting();
 
   const handleStart = (value) => setStartTime(value);
   const handleTag = (value) => setTag(value);
@@ -48,8 +48,8 @@ export default ({ info, setInfo, refresh }) => {
   const handleEnd = (value) => setEndTime(value);
 
   const createCurrentDate = async () => {
-    const start = new Date(`${info.dateStr} ${startTime}`);
-    const end = new Date(`${info.dateStr} ${endTime}`);
+    const start = zonedTimeToUtc(`${info.dateStr} ${startTime}`, timeZone);
+    const end = zonedTimeToUtc(`${info.dateStr} ${endTime}`, timeZone);
 
     const body = {
       start: start.toISOString(),
@@ -59,28 +59,52 @@ export default ({ info, setInfo, refresh }) => {
     };
 
     setLoadingCurrent(true);
-    await createSchedule(body);
+    await createSchedule(params.id, body);
     refresh();
     setInfo(null);
   };
 
   const createAllDate = async () => {
-    const start = new Date(`${info.dateStr} ${startTime}`);
-    const end = new Date(`${info.dateStr} ${endTime}`);
+    let startDateTime = zonedTimeToUtc(
+      `${info.dateStr} ${startTime}`,
+      timeZone
+    );
+    let endDateTime = zonedTimeToUtc(`${info.dateStr} ${endTime}`, timeZone);
 
     const body = Array(5)
       .fill(0)
-      .map((i, index) => {
+      .map((_, index) => {
+        let start = addDays(startDateTime, 7 * index);
+        let end = addDays(endDateTime, 7 * index);
+
+        // summer time ends
+        if (
+          isBefore(startDateTime, new Date(start.getFullYear(), 9, 30)) &&
+          isAfter(start, new Date(start.getFullYear(), 9, 30)) // 9 is for october
+        ) {
+          start = addHours(start, 1);
+          end = addHours(end, 1);
+        }
+
+        // summer time starts
+        if (
+          isBefore(startDateTime, new Date(start.getFullYear(), 2, 27)) &&
+          isAfter(start, new Date(start.getFullYear(), 2, 27)) // 2 is for march
+        ) {
+          start = subHours(start, 1);
+          end = subHours(end, 1);
+        }
+
         return {
-          start: addDays(start, 7 * index).toISOString(),
-          end: addDays(end, 7 * index).toISOString(),
+          start: start.toISOString(),
+          end: end.toISOString(),
           available: true,
           tag,
         };
       });
 
     setLoadingAll(true);
-    await createSchedule(body);
+    await createSchedule(params.id, body);
     refresh();
     setInfo(null);
   };

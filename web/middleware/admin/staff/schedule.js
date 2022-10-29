@@ -1,5 +1,13 @@
 import { Shopify } from "@shopify/shopify-api";
-import { getHours, parseISO, setHours } from "date-fns";
+import {
+  addHours,
+  getHours,
+  isAfter,
+  isBefore,
+  parseISO,
+  setHours,
+  subHours,
+} from "date-fns";
 import * as Schedule from "../../../database/models/schedule.js";
 import * as Staff from "../../../database/models/staff.js";
 
@@ -167,15 +175,56 @@ export default function applyAdminStaffScheduleMiddleware(app) {
 
         if (documents.length > 0) {
           const bulk = documents.map((d) => {
-            const startHour = parseISO(req.body.start);
-            const endHour = parseISO(req.body.end);
+            const startDateTime = parseISO(req.body.start);
+            const endDateTime = parseISO(req.body.end);
+
+            let start = d.start.setHours(getHours(startDateTime));
+            let end = d.end.setHours(getHours(endDateTime));
+
+            // startDateTime is before 30 oct
+            if (
+              isBefore(startDateTime, new Date(d.start.getFullYear(), 9, 30)) &&
+              isAfter(start, new Date(d.start.getFullYear(), 9, 30)) // 9 is for october
+            ) {
+              start = addHours(start, 1);
+              end = addHours(end, 1);
+            }
+
+            // startDateTime is after 30 oct, and current is before subs
+            if (
+              isAfter(startDateTime, new Date(d.start.getFullYear(), 9, 30)) && // 9 is for october
+              isBefore(start, new Date(d.start.getFullYear(), 9, 30))
+            ) {
+              start = subHours(start, 1);
+              end = subHours(end, 1);
+            }
+
+            // startDateTime is before 27 march, and current is after
+            if (
+              isBefore(startDateTime, new Date(d.start.getFullYear(), 2, 27)) &&
+              isAfter(start, new Date(d.start.getFullYear(), 2, 27)) // 2 is for march
+            ) {
+              start = addHours(start, 1);
+              end = addHours(end, 1);
+            }
+
+            // startDateTime is after 27 march, and current is before
+            if (
+              isAfter(startDateTime, new Date(d.start.getFullYear(), 2, 27)) &&
+              isBefore(start, new Date(d.start.getFullYear(), 2, 27))
+              // 2 is for march
+            ) {
+              start = subHours(start, 1);
+              end = subHours(end, 1);
+            }
+
             return {
               updateOne: {
                 filter: { _id: d._id },
                 update: {
                   $set: {
-                    start: d.start.setHours(getHours(startHour)),
-                    end: d.end.setHours(getHours(endHour)),
+                    start,
+                    end,
                   },
                 },
               },

@@ -12,6 +12,8 @@ import CreateScheduleModal from "../../components/staff/CreateScheduleModal";
 import EditScheduleModal from "../../components/staff/EditScheduleModal";
 import { useAuthenticatedFetch } from "../../hooks";
 import Metadata from "../../components/staff/Metadata";
+import { utcToZonedTime } from "date-fns-tz";
+import { useSetting } from "../../services/setting";
 
 export default () => {
   const params = useParams();
@@ -55,12 +57,18 @@ export default () => {
     ></EditScheduleModal>
   );
 
+  const { timeZone } = useSetting();
+
   const events = calendar?.payload?.map((c: any) => {
-    const startHour = format(new Date(c.start), "HH:mm");
-    const endHour = format(new Date(c.end), "HH:mm");
+    const toTimeZone = (fromUTC) => utcToZonedTime(fromUTC, timeZone);
+    const start = toTimeZone(new Date(c.start));
+    const end = toTimeZone(new Date(c.end));
+    const startHour = format(start, "HH:mm");
+    const endHour = format(end, "HH:mm");
 
     return {
-      ...c,
+      start,
+      end,
       extendedProps: c,
       backgroundColor: c.tag,
       editable: true,
@@ -99,7 +107,6 @@ export default () => {
           events={events}
           firstDay={1}
           locale="da"
-          timeZone="UTC"
           dateClick={createSchedule}
           eventClick={editSchedule}
           selectable={true}

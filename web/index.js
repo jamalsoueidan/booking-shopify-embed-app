@@ -12,6 +12,7 @@ import applyAdminBookingsMiddleware from "./middleware/admin/bookings.js";
 import applyAdminCollectionsMiddleware from "./middleware/admin/collections.js";
 import applyAdminMetafieldsMiddleware from "./middleware/admin/metafields.js";
 import applyAdminProductMiddleware from "./middleware/admin/product.js";
+import applyAdminSettingMiddleware from "./middleware/admin/setting.js";
 import applyAdminStaffMiddleware from "./middleware/admin/staff.js";
 import applyAdminStaffScheduleMiddleware from "./middleware/admin/staff/schedule.js";
 import applyAdminWebhooksMiddleware from "./middleware/admin/webhooks.js";
@@ -133,12 +134,6 @@ export async function createServer(
   app.use(express.json({ limit: "1mb", extended: true }));
 
   applyPublicWidgetMiddleware(app);
-  applyAdminCollectionsMiddleware(app);
-  applyAdminProductMiddleware(app);
-  applyAdminMetafieldsMiddleware(app);
-  applyAdminStaffMiddleware(app);
-  applyAdminStaffScheduleMiddleware(app);
-  applyAdminBookingsMiddleware(app);
 
   // All endpoints after this point will require an active session
   app.use(
@@ -155,6 +150,7 @@ export async function createServer(
   applyAdminStaffMiddleware(app);
   applyAdminStaffScheduleMiddleware(app);
   applyAdminBookingsMiddleware(app);
+  applyAdminSettingMiddleware(app);
 
   app.use((req, res, next) => {
     const shop = Shopify.Utils.sanitizeShop(req.query.shop);
