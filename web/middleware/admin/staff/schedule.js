@@ -186,16 +186,16 @@ export default function applyAdminStaffScheduleMiddleware(app) {
               isBefore(startDateTime, new Date(d.start.getFullYear(), 9, 30)) &&
               isAfter(start, new Date(d.start.getFullYear(), 9, 30)) // 9 is for october
             ) {
-              start = subHours(start, 1);
-              end = subHours(end, 1);
+              start = addHours(start, 1);
+              end = addHours(end, 1);
             }
             // startDateTime is after 30 oct, and current is before subs
             else if (
               isAfter(startDateTime, new Date(d.start.getFullYear(), 9, 30)) && // 9 is for october
               isBefore(start, new Date(d.start.getFullYear(), 9, 30))
             ) {
-              start = addHours(start, 1);
-              end = addHours(end, 1);
+              start = subHours(start, 1);
+              end = subHours(end, 1);
             }
             // startDateTime is before 27 march, and current is after
             else if (
