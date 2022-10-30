@@ -166,12 +166,12 @@ export default ({ info, setInfo, refresh }) => {
               onClick={createCurrentDate}
               loading={loadingCurrent}
             >
-              Gælder for KUN for den pågældende dato
+              Opret for pågældende dag
             </Button>
           </Layout.Section>
           <Layout.Section>
             <Button primary onClick={createAllDate} loading={loadingAll}>
-              Gælder for alle {format(new Date(info.dateStr), "iiii")}
+              Opret for alle {format(new Date(info.dateStr), "iiii")}
             </Button>
           </Layout.Section>
         </Layout>

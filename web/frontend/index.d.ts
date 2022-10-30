@@ -16,6 +16,7 @@ interface Product {
   staff: Array<ProductStaff>;
   buffertime: number;
   duration: number;
+  active: boolean;
 }
 
 interface Collection {

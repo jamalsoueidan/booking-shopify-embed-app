@@ -1,6 +1,7 @@
 import { Page } from "@shopify/polaris";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
+import ProductActivate from "../../../components/collections/product/ProductActivate";
 import ProductOptionsCard from "../../../components/collections/product/ProductOptionsCard";
 import StaffCard from "../../../components/collections/product/staff/StaffCard";
 import { useAuthenticatedFetch } from "../../../hooks";
@@ -22,11 +23,15 @@ export default () => {
     >
       {product?.payload && (
         <>
-          <StaffCard productId={product?.payload?._id}></StaffCard>
+          <ProductActivate product={product?.payload}></ProductActivate>
+          <br />
+          <StaffCard product={product?.payload}></StaffCard>
+          <br />
           <ProductOptionsCard
             product={product?.payload}
             productId={product?.payload._id}
           ></ProductOptionsCard>
+          <br />
         </>
       )}
     </Page>

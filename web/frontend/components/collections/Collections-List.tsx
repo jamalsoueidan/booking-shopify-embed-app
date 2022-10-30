@@ -61,10 +61,9 @@ export default ({ collection }: { collection: Collection }) => {
           resourceName={{ singular: "product", plural: "products" }}
           items={collection.products}
           renderItem={(item) => {
-            const { _id, title } = item;
+            const { _id, title, active } = item;
 
-            const critical = item.staff.length === 0 || !item.duration;
-            const status = critical ? "critical" : "success";
+            const status = active ? "success" : "critical";
 
             return (
               <ResourceItem

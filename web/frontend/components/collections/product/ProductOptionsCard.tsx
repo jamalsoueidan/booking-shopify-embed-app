@@ -5,13 +5,14 @@ import {
   Form,
   FormLayout,
   Icon,
+  Layout,
   Select,
   Stack,
   TextStyle,
 } from "@shopify/polaris";
 import { ClockMajor } from "@shopify/polaris-icons";
 import { useCallback, useState } from "react";
-import { useAuthenticatedFetch } from "../../../hooks";
+import { updateProduct } from "../../../services/product";
 
 export default ({
   productId,
@@ -39,17 +40,13 @@ export default ({
     { label: "30 min", value: "30" },
   ];
 
-  const fetch = useAuthenticatedFetch();
-  const handleSubmit = useCallback(async () => {
-    return await fetch(`/api/admin/products/${productId}`, {
-      method: "PUT",
-      body: JSON.stringify({
-        buffertime: parseInt(buffertime),
-        duration: parseInt(duration),
-      }),
-      headers: { "Content-Type": "application/json" },
-    }).then((res) => res.json());
-  }, [duration, buffertime]);
+  const handleSubmit = updateProduct(productId);
+  const onSave = async () => {
+    await handleSubmit({
+      buffertime: parseInt(buffertime),
+      duration: parseInt(duration),
+    });
+  };
 
   const selectLabel = (
     <Stack spacing="tight">
@@ -61,48 +58,58 @@ export default ({
   );
 
   return (
-    <Card
-      title="Produkt indstillinger"
-      secondaryFooterActions={[{ content: "Annullere" }]}
-      primaryFooterAction={{ content: "Gem", onAction: handleSubmit }}
-    >
-      <Card.Section>
-        <Form onSubmit={handleSubmit}>
-          <FormLayout>
-            <TextStyle>Meeting duration</TextStyle>
-            <ButtonGroup segmented>
-              <Button
-                pressed={duration === "30"}
-                onClick={() => setDuration("30")}
-              >
-                30 min
-              </Button>
-              <Button
-                pressed={duration === "45"}
-                onClick={() => setDuration("45")}
-              >
-                45 min
-              </Button>
-              <Button
-                pressed={duration === "60"}
-                onClick={() => setDuration("60")}
-              >
-                60 min
-              </Button>
-            </ButtonGroup>
-            <TextStyle variation="subdued">
-              How long should your meeting last?(minutes)
-            </TextStyle>
-            <Select
-              label={selectLabel}
-              options={options}
-              onChange={handleSelectChange}
-              value={buffertime}
-              helpText="Free time between meetings"
-            />
-          </FormLayout>
-        </Form>
-      </Card.Section>
-    </Card>
+    <Layout>
+      <Layout.AnnotatedSection
+        id="settings"
+        title="Indstillinger"
+        description="Ændre indstillinger for den behandling?"
+      >
+        <Card
+          secondaryFooterActions={[{ content: "Annullere" }]}
+          primaryFooterAction={{
+            content: "Gem",
+            onAction: onSave,
+          }}
+        >
+          <Card.Section>
+            <Form onSubmit={handleSubmit}>
+              <FormLayout>
+                <TextStyle>Meeting duration</TextStyle>
+                <ButtonGroup segmented>
+                  <Button
+                    pressed={duration === "30"}
+                    onClick={() => setDuration("30")}
+                  >
+                    30 min
+                  </Button>
+                  <Button
+                    pressed={duration === "45"}
+                    onClick={() => setDuration("45")}
+                  >
+                    45 min
+                  </Button>
+                  <Button
+                    pressed={duration === "60"}
+                    onClick={() => setDuration("60")}
+                  >
+                    60 min
+                  </Button>
+                </ButtonGroup>
+                <TextStyle variation="subdued">
+                  How long should your meeting last?(minutes)
+                </TextStyle>
+                <Select
+                  label={selectLabel}
+                  options={options}
+                  onChange={handleSelectChange}
+                  value={buffertime}
+                  helpText="Free time between meetings"
+                />
+              </FormLayout>
+            </Form>
+          </Card.Section>
+        </Card>
+      </Layout.AnnotatedSection>
+    </Layout>
   );
 };

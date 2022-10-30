@@ -44,7 +44,6 @@ export default function applyAdminProductMiddleware(app) {
 
     const shop = req.query.shop || session.shop;
     const { productId } = req.params;
-    console.log(req.body);
 
     try {
       if (Object.keys(req.body).length > 0) {

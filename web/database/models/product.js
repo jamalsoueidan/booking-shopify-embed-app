@@ -28,8 +28,18 @@ const ProductSchema = new Schema({
       tag: String,
     },
   ],
-  duration: Number,
-  buffertime: Number,
+  duration: {
+    type: Number,
+    default: 60,
+  },
+  buffertime: {
+    type: Number,
+    default: 0,
+  },
+  active: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 export const Model = mongoose.model("product", ProductSchema, "Product");
