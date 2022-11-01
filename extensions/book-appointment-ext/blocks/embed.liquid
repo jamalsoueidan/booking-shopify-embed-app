@@ -1,3 +1,4 @@
+<script src="{{ 'index.umd.min.js' | asset_url }}" defer="defer"></script>
 <template
   id="product-availability"
   data-product-id="{{ product.id }}"
@@ -24,13 +25,14 @@
   <div class="product-form__input margin-bottom">
     <label class="form__label" for="Staff"> Choose artist: </label>
     <select id="Staff" name="properties[Staff]" class="select" required>
-      <option value="Enhver tilgængelig" selected>Enhver tilgængelig</option>
+      <option value="" selected>Vælge medarbejder</option>
+      <option value="0">Enhver tilgængelig</option>
     </select>
   </div>
 
   <div class="product-form__input margin-bottom">
     <label class="form__label" for="date"> Choose date: </label>
-    <input type="date" name="properties[Date]" id="date" class="input" required>
+    <input id="datepicker" name="properties[Date]" class="input" required disabled>
   </div>
 
   <div class="product-form__input margin-bottom">
@@ -40,6 +42,7 @@
     </select>
   </div>
 </template>
+
 {% schema %}
 {
   "name": "App Embed",

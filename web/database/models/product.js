@@ -44,12 +44,105 @@ const ProductSchema = new Schema({
 
 export const Model = mongoose.model("product", ProductSchema, "Product");
 
-export const findOne = async (_id, document) => {
-  return await Model.findOne({ _id, ...document });
+export const findOne = async (document) => {
+  return await Model.findOne(document);
 };
 
 export const findByIdAndUpdate = async (staffId, document) => {
   return await Model.findByIdAndUpdate(staffId, document, {
     returnOriginal: false,
   });
+};
+
+export const getProductWithSelectedStaffId = async ({
+  shop,
+  productId,
+  staffId,
+}) => {
+  const products = await Model.aggregate([
+    {
+      $match: {
+        shop,
+        productId: "gid://shopify/Product/" + productId,
+        active: true,
+      },
+    },
+    {
+      $unwind: "$staff",
+    },
+    {
+      $match: {
+        "staff.staff": new mongoose.Types.ObjectId(staffId),
+      },
+    },
+  ]);
+
+  if (products.length > 0) {
+    return products[0];
+  } else {
+    return null;
+  }
+};
+
+/*
+
+*/
+export const getAllStaff = async ({ shop, productId }) => {
+  return await Model.aggregate([
+    {
+      $match: {
+        productId: "gid://shopify/Product/" + productId,
+        shop,
+        active: true,
+      },
+    },
+    {
+      $unwind: { path: "$staff" },
+    },
+    {
+      $lookup: {
+        from: "Staff",
+        localField: "staff.staff",
+        foreignField: "_id",
+        as: "staff.staff",
+      },
+    },
+    {
+      $unwind: {
+        path: "$staff.staff",
+      },
+    },
+    {
+      $addFields: {
+        "staff.staff.tag": "$staff.tag",
+        "staff.staff.staff": "$staff.staff._id",
+        "staff.staff._id": "$staff._id",
+      },
+    },
+    {
+      $addFields: {
+        "_id.staff": "$staff.staff",
+      },
+    },
+    {
+      $replaceRoot: {
+        newRoot: "$_id",
+      },
+    },
+    {
+      $replaceRoot: {
+        newRoot: "$staff",
+      },
+    },
+    { $match: { active: true } },
+    {
+      $project: {
+        shop: 0,
+        email: 0,
+        active: 0,
+        phone: 0,
+        __v: 0,
+      },
+    },
+  ]);
 };

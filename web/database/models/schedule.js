@@ -76,3 +76,94 @@ export const updateMany = async (filter, schedules) => {
     $set: { ...schedules },
   });
 };
+
+export const getByStaffAndTag = async ({ tag, staff, start, end }) => {
+  return await Model.aggregate([
+    {
+      $match: {
+        tag: tag,
+        staff: staff,
+        available: true,
+        start: {
+          $gte: new Date(`${start}T00:00:00.0Z`),
+        },
+        end: {
+          $lt: new Date(`${end}T23:59:59.0Z`),
+        },
+      },
+    },
+    {
+      $lookup: {
+        from: "Staff",
+        localField: "staff",
+        foreignField: "_id",
+        as: "staff",
+      },
+    },
+    {
+      $unwind: {
+        path: "$staff",
+      },
+    },
+    {
+      $match: {
+        "staff.active": true,
+      },
+    },
+    {
+      $project: {
+        "staff.email": 0,
+        "staff.active": 0,
+        "staff.shop": 0,
+        "staff.phone": 0,
+        "staff.__v": 0,
+      },
+    },
+  ]);
+};
+
+export const getByTag = async ({ tag, start, end }) => {
+  return await Model.aggregate([
+    {
+      $match: {
+        tag: {
+          $in: tag,
+        },
+        available: true,
+        start: {
+          $gte: new Date(`${start}T00:00:00.0Z`),
+        },
+        end: {
+          $lt: new Date(`${end}T23:59:59.0Z`),
+        },
+      },
+    },
+    {
+      $lookup: {
+        from: "Staff",
+        localField: "staff",
+        foreignField: "_id",
+        as: "staff",
+      },
+    },
+    {
+      $unwind: {
+        path: "$staff",
+      },
+    },
+    {
+      $match: {
+        "staff.active": true,
+      },
+    },
+    {
+      $project: {
+        "staff.email": 0,
+        "staff.active": 0,
+        "staff.shop": 0,
+        "staff.phone": 0,
+        "staff.__v": 0,
+      },
+    },
+  ]);
+};
