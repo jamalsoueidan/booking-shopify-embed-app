@@ -1,5 +1,15 @@
 # Book Appointment Shopify Application
 
+![alt text](https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/booking.png?raw=true)
+
+![alt text](https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-list.png?raw=true)
+
+![alt text](https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-edit.png?raw=true)
+
+![alt text](https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/extension1.png?raw=true)
+
+![alt text](https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/extension2.png?raw=true)
+
 ## Tech Stack
 
 This template combines a number of third party open-source tools:
@@ -7,7 +17,8 @@ This template combines a number of third party open-source tools:
 - [Express](https://expressjs.com/) builds the backend.
 - [Vite](https://vitejs.dev/) builds the [React](https://reactjs.org/) frontend.
 - [React Router](https://reactrouter.com/) is used for routing. We wrap this with file-based routing.
-- [React Query](https://react-query.tanstack.com/) queries the Admin API.
+- [Date-fns](https://date-fns.org/) Date manipulation.
+- [useSWR](https://swr.vercel.app/) React Hooks for Data Fetching
 
 The following Shopify tools complement these third-party tools to ease app development:
 
@@ -16,6 +27,7 @@ The following Shopify tools complement these third-party tools to ease app devel
 - [Polaris React](https://polaris.shopify.com/) is a powerful design system and component library that helps developers build high quality, consistent experiences for Shopify merchants.
 - [Custom hooks](https://github.com/Shopify/shopify-frontend-template-react/tree/main/hooks) make authenticated requests to the Admin API.
 - [File-based routing](https://github.com/Shopify/shopify-frontend-template-react/blob/main/Routes.jsx) makes creating new pages easier.
+- [Fullcalendar-react](https://github.com/fullcalendar/fullcalendar-react) Fullcalendar for appointments
 
 ## Getting started
 
