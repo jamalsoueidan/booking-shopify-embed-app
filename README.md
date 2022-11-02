@@ -12,6 +12,10 @@
 
 ## Tech Stack
 
+This extensions combines a number of third party open-source tools:
+
+- [easepick](https://easepick.com/) Date picker - tiny size, no dependencies
+
 This template combines a number of third party open-source tools:
 
 - [Express](https://expressjs.com/) builds the backend.
