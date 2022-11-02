@@ -188,8 +188,6 @@ export default function applyPublicWidgetMiddleware(app) {
         end,
       });
 
-      console.log(bookings);
-
       /** @type {CustomSchedules[]} */
       let scheduleDates = schedules.reduce(scheduleReduce(product), []);
 
@@ -200,7 +198,6 @@ export default function applyPublicWidgetMiddleware(app) {
 
       payload = scheduleDates;
     } catch (e) {
-      console.log(e);
       console.log(
         `Failed to process api/web/widget/range:
          ${e}`
@@ -248,7 +245,6 @@ export default function applyPublicWidgetMiddleware(app) {
 
       payload = scheduleDates;
     } catch (e) {
-      console.log(e);
       console.log(
         `Failed to process api/web/widget/any:
          ${e}`

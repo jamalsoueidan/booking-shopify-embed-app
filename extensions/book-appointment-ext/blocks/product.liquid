@@ -1,4 +1,6 @@
 <script src="{{ 'index.umd.min.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'notification.js' | asset_url }}" defer="defer"></script>
+
 <template
   id="product-availability"
   data-product-id="{{ product.id }}"
@@ -45,7 +47,7 @@
 
 {% schema %}
 {
-  "name": "App Embed",
+  "name": "product",
   "target": "body",
   "javascript": "form.js",
   "templates": ["product"],

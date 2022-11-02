@@ -1,6 +1,6 @@
 window.addEventListener("load", function () {
   const tagName = "product-availability";
-  const url = "https://e806e17e36d7.in.ngrok.io";
+  const url = "https://e0361cf8b0e3.in.ngrok.io";
 
   if (!customElements.get(tagName)) {
     customElements.define(
@@ -41,16 +41,19 @@ window.addEventListener("load", function () {
 
           payload.forEach((element) => {
             var opt = document.createElement("option");
-            opt.value = element.staff;
+            opt.value = JSON.stringify({
+              staff: element.staff,
+              fullname: element.fullname,
+            });
             opt.innerHTML = element.fullname;
             this.staffSelect.appendChild(opt);
           });
         }
 
         onStaffSelect() {
-          const value = this.staffSelect.value;
+          const value = JSON.parse(this.staffSelect.value);
           if (value === "") return;
-          const staffId = value !== "0" ? value : null;
+          const staffId = value !== "0" ? value.staff : null;
           const path = new URL(
             `${url}/api/widget/availability/${staffId ? "range" : "any"}`
           );
@@ -81,10 +84,20 @@ window.addEventListener("load", function () {
         async onAvailabilityFetch(response) {
           const { payload } = await response.json();
 
-          const DateTime = easepick.DateTime;
-          const today = new DateTime().subtract(1);
+          //date string format YYYY-MM-DD
+          const findSchedule = (date) =>
+            payload.find(
+              (schedule) => schedule.date === date && schedule.hours.length > 0
+            );
+
+          const self = this;
 
           this.querySelector("#datepicker").disabled = false;
+          if (this.dateInput) {
+            console.log("destroy");
+            this.dateInput.destroy();
+          }
+
           this.dateInput = new easepick.create({
             element: this.querySelector("#datepicker"),
             css: [
@@ -95,12 +108,7 @@ window.addEventListener("load", function () {
             plugins: ["LockPlugin"],
             LockPlugin: {
               filter(date, picked) {
-                return !payload.find((schedule) => {
-                  return (
-                    schedule.date === date.format("YYYY-MM-DD") &&
-                    schedule.hours.length > 0
-                  );
-                });
+                return !findSchedule(date.format("YYYY-MM-DD"));
               },
             },
             setup(picker) {
@@ -124,25 +132,26 @@ window.addEventListener("load", function () {
 
               picker.on("select", (e) => {
                 const { date } = e.detail;
-                console.log(date);
+                const schedule = findSchedule(date.format("YYYY-MM-DD"));
+
+                self.hourSelect.innerHTML = "";
+                if (schedule) {
+                  schedule.hours.forEach((element) => {
+                    var opt = document.createElement("option");
+                    const date = new Date(element.start);
+                    const value =
+                      date.getHours() +
+                      ":" +
+                      (date.getMinutes() < 10 ? "0" : "") +
+                      date.getMinutes();
+                    opt.value = date.toISOString();
+                    opt.innerHTML = value;
+                    self.hourSelect.appendChild(opt);
+                  });
+                }
               });
             },
           });
-
-          /*this.hourSelect.length = 0;
-          const { payload } = await response.json();
-          payload.forEach((element) => {
-            var opt = document.createElement("option");
-            const date = new Date(element.start);
-            const value =
-              date.getHours() +
-              ":" +
-              (date.getMinutes() < 10 ? "0" : "") +
-              date.getMinutes();
-            opt.value = date.toISOString();
-            opt.innerHTML = value;
-            this.hourSelect.appendChild(opt);
-          });*/
         }
       }
     );
