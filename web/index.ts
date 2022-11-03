@@ -7,12 +7,11 @@ import { join } from "path";
 import { AppInstallations } from "./app_installations.js";
 import * as database from "./database/database.js";
 import { setupGDPRWebHooks } from "./gdpr.js";
-import redirectToAuth from "./helpers/redirect-to-auth.js";
 import applyAdminBookingsMiddleware from "./middleware/admin/bookings.js";
 import applyAdminCollectionsMiddleware from "./middleware/admin/collections.js";
 import applyAdminMetafieldsMiddleware from "./middleware/admin/metafields.js";
 import applyAdminProductMiddleware from "./middleware/admin/product.js";
-import applyAdminSettingMiddleware from "./middleware/admin/setting.js";
+import applyAdminSettingMiddleware from "./middleware/admin/setting";
 import applyAdminStaffMiddleware from "./middleware/admin/staff.js";
 import applyAdminStaffScheduleMiddleware from "./middleware/admin/staff/schedule.js";
 import applyAdminWebhooksMiddleware from "./middleware/admin/webhooks.js";
@@ -28,8 +27,6 @@ const PORT = parseInt(process.env.BACKEND_PORT || process.env.PORT, 10) || 8000;
 // TODO: There should be provided by env vars
 const DEV_INDEX_PATH = `${process.cwd()}/frontend/`;
 const PROD_INDEX_PATH = `${process.cwd()}/frontend/dist/`;
-
-const DB_PATH = `${process.cwd()}/database.sqlite`;
 
 database.connect();
 
@@ -113,7 +110,7 @@ export async function createServer(
   app.use(cookieParser(Shopify.Context.API_SECRET_KEY));
 
   applyAuthMiddleware(app, {
-    billing: billingSettings,
+    billing: billingSettings as any,
   });
 
   // Do not call app.use(express.json()) before processing webhooks with
@@ -134,7 +131,7 @@ export async function createServer(
 
   // All endpoints after this point will have access to a request.body
   // attribute, as a result of the express.json() middleware
-  app.use(express.json({ limit: "1mb", extended: true }));
+  app.use(express.json({ limit: "1mb", extended: true } as any));
 
   applyPublicWidgetMiddleware(app);
 
@@ -142,7 +139,7 @@ export async function createServer(
   app.use(
     "/api/*",
     verifyRequest(app, {
-      billing: billingSettings,
+      billing: billingSettings as any,
     })
   );
 
@@ -156,7 +153,7 @@ export async function createServer(
   applyAdminSettingMiddleware(app);
 
   app.use((req, res, next) => {
-    const shop = Shopify.Utils.sanitizeShop(req.query.shop);
+    const shop = Shopify.Utils.sanitizeShop(req.query.shop as any);
     if (Shopify.Context.IS_EMBEDDED_APP && shop) {
       res.setHeader(
         "Content-Security-Policy",

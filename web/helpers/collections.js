@@ -88,6 +88,8 @@ const updateCollectionQuery = `
  * @return {Promise<Collection>}
  * The collections that are added to the list
  * @param {object} session
+ * @param {string} session.shop
+ * @param {string} session.accessToken
  * @param {string} id
  */
 export const getCollection = async (session, id) => {
@@ -114,6 +116,8 @@ export const getCollection = async (session, id) => {
  * @return {Promise<Collection>}
  * The collections that are updated
  * @param {object} session
+ * @param {string} session.shop
+ * @param {string} session.accessToken
  * @param {object} input
  * @param {string} input.id - Collection id
  */

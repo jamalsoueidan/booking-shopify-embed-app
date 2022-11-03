@@ -84,7 +84,6 @@ export default function applyPublicWidgetMiddleware(app) {
 
     try {
       const staff = await Product.getAllStaff({ shop, productId });
-
       if (staff.length === 0) {
         error = "no staff or product exist";
       } else {

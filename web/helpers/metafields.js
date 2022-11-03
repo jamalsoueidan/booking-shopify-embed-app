@@ -62,6 +62,9 @@ const deleteMetafieldQuery = `
 
 /**
  * @return {Promise<Metafield|undefined>}
+ * @param {object} session
+ * @param {string} session.shop
+ * @param {string} session.accessToken
  * The metafields that are added to the list
  */
 export const getMetafield = async (session) => {
@@ -90,6 +93,9 @@ export const getMetafield = async (session) => {
 
 /**
  * @return {Promise<Metafield|null>}
+ * @param {object} session
+ * @param {string} session.shop
+ * @param {string} session.accessToken
  * The metafields that are added to the list
  */
 export const createMetafield = async (session) => {
@@ -119,13 +125,14 @@ export const createMetafield = async (session) => {
 
 /**
  * @param {object} session
+ * @param {string} session.shop
+ * @param {string} session.accessToken
  * @param {object} variables
  * @param {string} variables.id
  */
 export const deleteMetafield = async (session, variables) => {
   const client = new Shopify.Clients.Graphql(session.shop, session.accessToken);
   try {
-    /** @type {QueryCreateMetafields} */
     const payload = await client.query({
       data: {
         query: deleteMetafieldQuery,
