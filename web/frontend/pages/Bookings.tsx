@@ -1,10 +1,10 @@
-import FullCalendar from "@fullcalendar/react"; // must go before plugins
-import { Card, Page } from "@shopify/polaris";
-import { format, utcToZonedTime } from "date-fns-tz";
-import { createRef, useCallback, useEffect, useState } from "react";
-import Fullcalendar from "../components/bookings/fullcalendar";
-import { useBookings } from "../services/bookings";
-import { useSetting } from "../services/setting";
+import FullCalendar from '@fullcalendar/react'; // must go before plugins
+import { Card, Page } from '@shopify/polaris';
+import { format, utcToZonedTime } from 'date-fns-tz';
+import { createRef, useCallback, useEffect, useState } from 'react';
+import Fullcalendar from '../components/bookings/fullcalendar';
+import { useBookings } from '../services/bookings';
+import { useSetting } from '../services/setting';
 
 export default () => {
   const [start, setStart] = useState(null);
@@ -14,10 +14,10 @@ export default () => {
 
   const bookings = useBookings({ start, end });
 
-  const eventDidMount = useCallback((props) => {
+  const eventDidMount = useCallback((props: { start: Date; end: Date }) => {
     if (props.start !== start || props.end !== end) {
-      setStart(format(new Date(props.start), "yyyy-MM-dd"));
-      setEnd(format(new Date(props.end), "yyyy-MM-dd"));
+      setStart(format(props.start, 'yyyy-MM-dd'));
+      setEnd(format(props.end, 'yyyy-MM-dd'));
     }
   }, []);
 
@@ -39,7 +39,7 @@ export default () => {
         event.remove();
       });
 
-      const toTimeZone = (fromUTC) => utcToZonedTime(fromUTC, timeZone);
+      const toTimeZone = (fromUTC: Date) => utcToZonedTime(fromUTC, timeZone);
       bookings.forEach((d) => {
         api.addEvent({
           ...d,
@@ -50,12 +50,12 @@ export default () => {
     }
   }, [timeZone, bookings, calendarRef]);
 
-  const eventContent = (arg) => {
+  const eventContent = (arg: any) => {
     const booking: Booking = arg.event.extendedProps;
     return (
       <>
         <div>
-          <i>{format(arg.event.start, "HH:mm")}</i>
+          <i>{format(arg.event.start, 'HH:mm')}</i>
         </div>
         <div>{booking.staff.fullname}</div>
         <div>

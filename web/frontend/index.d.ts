@@ -1,3 +1,8 @@
+declare module '*';
+interface Response {
+  json: () => {};
+}
+
 interface Api {
   error: string;
   success: boolean;

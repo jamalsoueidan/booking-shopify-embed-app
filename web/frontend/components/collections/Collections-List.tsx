@@ -6,12 +6,12 @@ import {
   ResourceItem,
   ResourceList,
   TextStyle,
-} from "@shopify/polaris";
-import { ProductsMajor } from "@shopify/polaris-icons";
-import { useState } from "react";
-import useSWR, { useSWRConfig } from "swr";
-import { useAuthenticatedFetch } from "../../hooks";
-import ModalConfirm from "../modals/ModalConfirm.js";
+} from '@shopify/polaris';
+import { ProductsMajor } from '@shopify/polaris-icons';
+import { useState } from 'react';
+import useSWR, { useSWRConfig } from 'swr';
+import { useAuthenticatedFetch } from '../../hooks';
+import ModalConfirm from '../modals/ModalConfirm.js';
 
 export default ({ collection }: { collection: Collection }) => {
   const [modalConfirm, setModalConfirm] = useState<any>();
@@ -20,19 +20,19 @@ export default ({ collection }: { collection: Collection }) => {
   const { mutate } = useSWRConfig();
 
   const { data } = useSWR<CollectionsApi>(
-    "/api/admin/collections",
-    (apiURL: string) => fetch(apiURL).then((res) => res.json())
+    '/api/admin/collections',
+    (apiURL: string) => fetch(apiURL).then((res: Response) => res.json())
   );
 
-  const removeCollection = (collection) => {
-    const setActive = async (value) => {
+  const removeCollection = (collection: any) => {
+    const setActive = async (value: boolean) => {
       if (value) {
         await fetch(`/api/admin/collections/${collection._id}`, {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
         });
       }
-      mutate("/api/admin/collections");
+      mutate('/api/admin/collections');
       setModalConfirm(null);
     };
 
@@ -49,30 +49,27 @@ export default ({ collection }: { collection: Collection }) => {
         title={collection.title}
         actions={[
           {
-            content: "Remove",
-            destructive: true,
-            onClick: () => {
+            content: 'Remove',
+            onAction: () => {
               removeCollection(collection);
             },
           },
-        ]}
-      >
+        ]}>
         <ResourceList
-          resourceName={{ singular: "product", plural: "products" }}
+          resourceName={{ singular: 'product', plural: 'products' }}
           items={collection.products}
           renderItem={(item) => {
             const { _id, title, active } = item;
 
-            const status = active ? "success" : "critical";
+            const status = active ? 'success' : 'critical';
 
             return (
               <ResourceItem
                 id={_id}
-                url={"/Collections/Product/" + _id}
+                url={'/Collections/Product/' + _id}
                 accessibilityLabel={`View details for ${title}`}
                 media={<Icon source={ProductsMajor} color={status} />}
-                verticalAlignment="center"
-              >
+                verticalAlignment="center">
                 <h3>
                   <TextStyle variation="strong">{title}</TextStyle>
                 </h3>

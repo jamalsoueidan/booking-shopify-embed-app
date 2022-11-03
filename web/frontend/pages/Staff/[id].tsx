@@ -1,19 +1,19 @@
-import "@fullcalendar/react/dist/vdom";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction";
-import FullCalendar from "@fullcalendar/react";
-import { useNavigate } from "@shopify/app-bridge-react";
-import { Card, Page } from "@shopify/polaris";
-import { format } from "date-fns";
-import { useCallback, useState } from "react";
-import { useParams } from "react-router-dom";
-import useSWR from "swr";
-import CreateScheduleModal from "../../components/staff/CreateScheduleModal";
-import EditScheduleModal from "../../components/staff/EditScheduleModal";
-import { useAuthenticatedFetch } from "../../hooks";
-import Metadata from "../../components/staff/Metadata";
-import { utcToZonedTime } from "date-fns-tz";
-import { useSetting } from "../../services/setting";
+import '@fullcalendar/react/dist/vdom';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import FullCalendar from '@fullcalendar/react';
+import { useNavigate } from '@shopify/app-bridge-react';
+import { Card, Page } from '@shopify/polaris';
+import { format } from 'date-fns';
+import { useCallback, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import useSWR from 'swr';
+import CreateScheduleModal from '../../components/staff/CreateScheduleModal';
+import EditScheduleModal from '../../components/staff/EditScheduleModal';
+import { useAuthenticatedFetch } from '../../hooks';
+import Metadata from '../../components/staff/Metadata';
+import { utcToZonedTime } from 'date-fns-tz';
+import { useSetting } from '../../services/setting';
 
 export default () => {
   const params = useParams();
@@ -22,22 +22,22 @@ export default () => {
 
   const { data: staff } = useSWR<StaffApi>(
     `/api/admin/staff/${params.id}`,
-    (apiURL: string) => fetch(apiURL).then((res) => res.json())
+    (apiURL: string) => fetch(apiURL).then((res: Response) => res.json())
   );
 
   const { data: calendar, mutate: calendarMutate } = useSWR<SchedulesApi>(
     `/api/admin/staff/${params.id}/schedules`,
-    (apiURL: string) => fetch(apiURL).then((res) => res.json())
+    (apiURL: string) => fetch(apiURL).then((res: Response) => res.json())
   );
 
   const [createInfo, setCreateInfo] = useState(null);
   const [editInfo, setEditInfo] = useState(null);
 
-  const createSchedule = useCallback((info) => {
+  const createSchedule = useCallback((info: any) => {
     setCreateInfo(info);
   }, []);
 
-  const editSchedule = useCallback((info) => {
+  const editSchedule = useCallback((info: any) => {
     setEditInfo(info);
   }, []);
 
@@ -45,26 +45,24 @@ export default () => {
     <CreateScheduleModal
       info={createInfo}
       setInfo={setCreateInfo}
-      refresh={calendarMutate}
-    ></CreateScheduleModal>
+      refresh={calendarMutate}></CreateScheduleModal>
   );
 
   const editScheduleModal = editInfo && (
     <EditScheduleModal
       info={editInfo}
       setInfo={setEditInfo}
-      refresh={calendarMutate}
-    ></EditScheduleModal>
+      refresh={calendarMutate}></EditScheduleModal>
   );
 
   const { timeZone } = useSetting();
 
   const events = calendar?.payload?.map((c: any) => {
-    const toTimeZone = (fromUTC) => utcToZonedTime(fromUTC, timeZone);
+    const toTimeZone = (fromUTC: Date) => utcToZonedTime(fromUTC, timeZone);
     const start = toTimeZone(new Date(c.start));
     const end = toTimeZone(new Date(c.end));
-    const startHour = format(start, "HH:mm");
-    const endHour = format(end, "HH:mm");
+    const startHour = format(start, 'HH:mm');
+    const endHour = format(end, 'HH:mm');
 
     return {
       start,
@@ -72,7 +70,7 @@ export default () => {
       extendedProps: c,
       backgroundColor: c.tag,
       editable: true,
-      display: "block",
+      display: 'block',
       title: `${startHour}-${endHour}`,
     };
   });
@@ -87,12 +85,11 @@ export default () => {
     <Page
       title={fullname}
       titleMetadata={<Metadata active={active} />}
-      breadcrumbs={[{ content: "Staff", url: "/Staff" }]}
+      breadcrumbs={[{ content: 'Staff', url: '/Staff' }]}
       primaryAction={{
-        content: "Redigere " + fullname,
-        onAction: () => navigate("/Staff/Edit/" + _id),
-      }}
-    >
+        content: 'Redigere ' + fullname,
+        onAction: () => navigate('/Staff/Edit/' + _id),
+      }}>
       {createScheduleModal}
       {editScheduleModal}
       <Card sectioned title="Time planning">
@@ -100,9 +97,9 @@ export default () => {
           plugins={[interactionPlugin, dayGridPlugin]}
           initialView="dayGridMonth"
           headerToolbar={{
-            left: "prev,next today",
-            center: "title",
-            right: "dayGridMonth",
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth',
           }}
           events={events}
           firstDay={1}

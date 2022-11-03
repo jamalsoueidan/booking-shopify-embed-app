@@ -5,13 +5,13 @@ import {
   Modal,
   Select,
   TextField,
-} from "@shopify/polaris";
-import { format } from "date-fns";
-import { utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
-import { useCallback, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useAuthenticatedFetch } from "../../hooks";
-import { useSetting } from "../../services/setting";
+} from '@shopify/polaris';
+import { format } from 'date-fns';
+import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
+import { useCallback, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useAuthenticatedFetch } from '../../hooks';
+import { useSetting } from '../../services/setting';
 
 interface Props {
   info: any;
@@ -20,24 +20,24 @@ interface Props {
 }
 
 const options = [
-  { label: "Green", value: "#4b6043" },
-  { label: "Blue", value: "#235284" },
-  { label: "Orange", value: "#d24e01" },
-  { label: "Purple", value: "#4c00b0" },
+  { label: 'Green', value: '#4b6043' },
+  { label: 'Blue', value: '#235284' },
+  { label: 'Orange', value: '#d24e01' },
+  { label: 'Purple', value: '#4c00b0' },
 ];
 
 export default ({ info, setInfo, refresh }: Props) => {
   const params = useParams();
   const toggleActive = () => setInfo(null);
   const { timeZone } = useSetting();
-  const toTimeZone = (fromUTC) => utcToZonedTime(fromUTC, timeZone);
+  const toTimeZone = (fromUTC: Date) => utcToZonedTime(fromUTC, timeZone);
 
   const extendedProps = info.event._def.extendedProps;
   const [startTime, setStartTime] = useState<string>(
-    format(toTimeZone(extendedProps.start), "HH:mm")
+    format(toTimeZone(extendedProps.start), 'HH:mm')
   );
   const [endTime, setEndTime] = useState<string>(
-    format(toTimeZone(extendedProps.end), "HH:mm")
+    format(toTimeZone(extendedProps.end), 'HH:mm')
   );
   const [tag, setTag] = useState(extendedProps.tag || options[0].value);
   const [available, setAvailable] = useState(extendedProps.available || false);
@@ -50,42 +50,42 @@ export default ({ info, setInfo, refresh }: Props) => {
 
   const fetch = useAuthenticatedFetch();
   const updateSchedule = useCallback(
-    async (body) => {
+    async (body: { groupId: string }) => {
       return await fetch(
         `/api/admin/staff/${params.id}/schedules/${extendedProps._id}${
-          body.groupId ? "/group/" + body.groupId : ""
+          body.groupId ? '/group/' + body.groupId : ''
         }`,
         {
-          method: "PUT",
+          method: 'PUT',
           body: JSON.stringify(body),
-          headers: { "Content-Type": "application/json" },
+          headers: { 'Content-Type': 'application/json' },
         }
-      ).then((res) => res.json());
+      ).then((res: Response) => res.json());
     },
     [params, info, tag]
   );
 
   const deleteSchedule = useCallback(
-    async (body) => {
+    async (body: { groupId: string }) => {
       return await fetch(
         `/api/admin/staff/${params.id}/schedules/${extendedProps._id}${
-          body.groupId ? "/group/" + body.groupId : ""
+          body.groupId ? '/group/' + body.groupId : ''
         }`,
         {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
         }
-      ).then((res) => res.json());
+      ).then((res: Response) => res.json());
     },
     [params, info, tag]
   );
 
-  const handleStart = (value) => setStartTime(value);
-  const handleTag = (value) => setTag(value);
-  const handleAvailable = (newChecked) => setAvailable(newChecked);
-  const handleEnd = (value) => setEndTime(value);
+  const handleStart = (value: string) => setStartTime(value);
+  const handleTag = (value: string) => setTag(value);
+  const handleAvailable = (newChecked: boolean) => setAvailable(newChecked);
+  const handleEnd = (value: string) => setEndTime(value);
 
-  const updateDate = async (type: "all" | null) => {
+  const updateDate = async (type: 'all' | null) => {
     const start = zonedTimeToUtc(
       `${extendedProps.start.substr(0, 10)} ${startTime}`,
       timeZone
@@ -95,15 +95,15 @@ export default ({ info, setInfo, refresh }: Props) => {
       timeZone
     );
 
-    const body: Omit<Schedule, "_id" | "staff"> = {
+    const body: Omit<Schedule, '_id' | 'staff'> = {
       start: start.toISOString(),
       end: end.toISOString(),
       available: true,
       tag,
-      ...(type === "all" ? { groupId: extendedProps.groupId } : null),
+      ...(type === 'all' ? { groupId: extendedProps.groupId } : null),
     };
 
-    if (type == "all") {
+    if (type == 'all') {
       setLoadingUpdateAll(true);
     } else {
       setLoadingUpdate(true);
@@ -113,12 +113,12 @@ export default ({ info, setInfo, refresh }: Props) => {
     setInfo(null);
   };
 
-  const deleteDate = async (type: "all" | null) => {
+  const deleteDate = async (type: 'all' | null) => {
     const body = {
-      ...(type === "all" ? { groupId: extendedProps.groupId } : null),
+      ...(type === 'all' ? { groupId: extendedProps.groupId } : null),
     };
 
-    if (type == "all") {
+    if (type == 'all') {
       setLoadingDeleteAll(true);
     } else {
       setLoadingDelete(true);
@@ -128,7 +128,7 @@ export default ({ info, setInfo, refresh }: Props) => {
     setInfo(null);
   };
 
-  const formatDate = format(new Date(extendedProps.start), "MM/dd/yyyy");
+  const formatDate = format(new Date(extendedProps.start), 'MM/dd/yyyy');
 
   return (
     <Modal
@@ -138,11 +138,10 @@ export default ({ info, setInfo, refresh }: Props) => {
       title="Edit availability"
       secondaryActions={[
         {
-          content: "Luk",
+          content: 'Luk',
           onAction: toggleActive,
         },
-      ]}
-    >
+      ]}>
       <Modal.Section>{formatDate}</Modal.Section>
       <Modal.Section>
         <Layout>
@@ -183,8 +182,7 @@ export default ({ info, setInfo, refresh }: Props) => {
             <Button
               primary
               onClick={() => updateDate(null)}
-              loading={loadingUpdate}
-            >
+              loading={loadingUpdate}>
               Redigere pågældende
             </Button>
           </Layout.Section>
@@ -192,8 +190,7 @@ export default ({ info, setInfo, refresh }: Props) => {
             <Button
               destructive
               onClick={() => deleteDate(null)}
-              loading={loadingDelete}
-            >
+              loading={loadingDelete}>
               Slet pågældende
             </Button>
           </Layout.Section>
@@ -201,9 +198,8 @@ export default ({ info, setInfo, refresh }: Props) => {
             <Layout.Section>
               <Button
                 primary
-                onClick={() => updateDate("all")}
-                loading={loadingUpdateAll}
-              >
+                onClick={() => updateDate('all')}
+                loading={loadingUpdateAll}>
                 Redigere alle
               </Button>
             </Layout.Section>
@@ -212,9 +208,8 @@ export default ({ info, setInfo, refresh }: Props) => {
             <Layout.Section>
               <Button
                 destructive
-                onClick={() => deleteDate("all")}
-                loading={loadingDeleteAll}
-              >
+                onClick={() => deleteDate('all')}
+                loading={loadingDeleteAll}>
                 Slet alle
               </Button>
             </Layout.Section>

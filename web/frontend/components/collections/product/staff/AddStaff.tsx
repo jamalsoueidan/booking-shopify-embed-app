@@ -1,7 +1,7 @@
-import { Stack } from "@shopify/polaris";
-import useSWR from "swr";
-import { useAuthenticatedFetch } from "../../../../hooks";
-import StaffPopover from "./AddStaff/StaffPopover";
+import { Stack } from '@shopify/polaris';
+import useSWR from 'swr';
+import { useAuthenticatedFetch } from '../../../../hooks';
+import StaffPopover from './AddStaff/StaffPopover';
 
 export default ({
   productId,
@@ -13,7 +13,7 @@ export default ({
   const fetch = useAuthenticatedFetch();
   const { data: staff } = useSWR<ProductStaffToAddApi>(
     `/api/admin/products/${productId}/staff-to-add`,
-    (apiURL: string) => fetch(apiURL).then((res) => res.json())
+    (apiURL: string) => fetch(apiURL).then((res: Response) => res.json())
   );
 
   if (!staff) {
@@ -30,8 +30,7 @@ export default ({
         key={s._id}
         staff={s}
         productId={productId}
-        toggleShowStaff={setShowStaff}
-      ></StaffPopover>
+        toggleShowStaff={setShowStaff}></StaffPopover>
     );
   });
 

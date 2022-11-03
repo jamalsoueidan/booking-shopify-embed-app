@@ -1,7 +1,11 @@
-import { Modal } from "@shopify/polaris";
-import { useCallback } from "react";
+import { Modal } from '@shopify/polaris';
+import { useCallback } from 'react';
 
-export default ({ active, setActive }) => {
+interface ModalConfirmProps {
+  active: boolean;
+  setActive: (value: boolean) => {};
+}
+export default ({ active, setActive }: ModalConfirmProps) => {
   const toggleActive = useCallback(() => setActive(null), []);
 
   return (
@@ -11,16 +15,15 @@ export default ({ active, setActive }) => {
       onClose={toggleActive}
       title="Remove product"
       primaryAction={{
-        content: "Delete",
+        content: 'Delete',
         onAction: () => setActive(true),
       }}
       secondaryActions={[
         {
-          content: "Cancel",
+          content: 'Cancel',
           onAction: toggleActive,
         },
-      ]}
-    >
+      ]}>
       <Modal.Section>
         <p>
           All settings will be deleted, This action can't be undone. This will

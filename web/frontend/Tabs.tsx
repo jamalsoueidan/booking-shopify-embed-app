@@ -1,36 +1,36 @@
-import { useNavigate } from "@shopify/app-bridge-react";
-import { Tabs } from "@shopify/polaris";
-import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from '@shopify/app-bridge-react';
+import { Tabs } from '@shopify/polaris';
+import { useCallback, useEffect, useState } from 'react';
 
-export default ({ children }) => {
+export default ({ children }: { children: JSX.Element }) => {
   const navigate = useNavigate();
 
   const [selected, setSelected] = useState<number>(null);
 
   const tabs = [
     {
-      id: "bookings",
-      content: "Bookings",
-      panelID: "bookings",
+      id: 'bookings',
+      content: 'Bookings',
+      panelID: 'bookings',
     },
     {
-      id: "collections",
-      content: "Collections",
-      panelID: "collections",
+      id: 'collections',
+      content: 'Collections',
+      panelID: 'collections',
     },
     {
-      id: "staff",
-      content: "Staff",
-      panelID: "staff",
+      id: 'staff',
+      content: 'Staff',
+      panelID: 'staff',
     },
     {
-      id: "setting",
-      content: "Settings",
-      panelID: "settings",
+      id: 'setting',
+      content: 'Settings',
+      panelID: 'settings',
     },
   ];
 
-  const handleTabChange = useCallback((selectedTabIndex) => {
+  const handleTabChange = useCallback((selectedTabIndex: number) => {
     setSelected(selectedTabIndex);
     navigate(`/${tabs[selectedTabIndex].content}`);
   }, []);
@@ -41,7 +41,7 @@ export default ({ children }) => {
 
   return (
     <>
-      <div style={{ backgroundColor: "#fff" }}>
+      <div style={{ backgroundColor: '#fff' }}>
         <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange}></Tabs>
       </div>
       {children}

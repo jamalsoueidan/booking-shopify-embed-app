@@ -1,8 +1,8 @@
-import { Button, Stack } from "@shopify/polaris";
-import useSWR, { useSWRConfig } from "swr";
-import StaffAvatar from "./StaffAvatar";
-import { useAuthenticatedFetch } from "../../../../hooks";
-import { useCallback } from "react";
+import { Button, Stack } from '@shopify/polaris';
+import useSWR, { useSWRConfig } from 'swr';
+import StaffAvatar from './StaffAvatar';
+import { useAuthenticatedFetch } from '../../../../hooks';
+import { useCallback } from 'react';
 
 interface Props {
   productId: string;
@@ -21,13 +21,13 @@ export default ({
 
   const { data: staffier } = useSWR<ProductStaffApi>(
     `/api/admin/products/${productId}/staff`,
-    (apiURL: string) => fetch(apiURL).then((res) => res.json())
+    (apiURL: string) => fetch(apiURL).then((res: Response) => res.json())
   );
 
-  const removeStaffProduct = useCallback(async (staff) => {
+  const removeStaffProduct = useCallback(async (staff: string) => {
     await fetch(`/api/admin/products/${productId}/staff/${staff}`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
     });
 
     await mutate(`/api/admin/products/${productId}/staff`);
@@ -44,9 +44,8 @@ export default ({
       <StaffAvatar fullname={staff.fullname}>
         {canDelete && (
           <div
-            style={{ textAlign: "center" }}
-            onClick={() => removeStaffProduct(staff._id)}
-          >
+            style={{ textAlign: 'center' }}
+            onClick={() => removeStaffProduct(staff._id)}>
             <Button size="slim" destructive>
               Fjern
             </Button>
@@ -60,7 +59,7 @@ export default ({
     <Stack spacing="loose">
       {staffierMarkup}
       {!canDelete && (
-        <span style={{ cursor: "pointer" }} onClick={toggleAddStaff}>
+        <span style={{ cursor: 'pointer' }} onClick={toggleAddStaff}>
           <StaffAvatar fullname="Add" />
         </span>
       )}

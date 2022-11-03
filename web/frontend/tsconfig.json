@@ -1,5 +1,39 @@
 {
   "compilerOptions": {
+    "module": "esnext",
+    "allowJs": false,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "esModuleInterop": true,
+    "target": "esnext",
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "outDir": "dist",
+    "baseUrl": ".",
+    "noEmit": true,
+    "paths": {
+      "*": ["node_modules/*"]
+    },
+    "resolveJsonModule": true,
+    "isolatedModules": true,
     "jsx": "react-jsx"
   },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "hooks/index.js",
+    "hooks/useAppQuery.js",
+    "components/providers/AppBridgeProvider.jsx",
+    "components/providers/index.js",
+    "components/providers/PolarisProvider.jsx",
+    "components/providers/QueryProvider.jsx",
+    "hooks/useAuthenticatedFetch.js",
+    "App.jsx",
+    "Routes.jsx",
+    "index.jsx",
+    "components/index.js"
+  ],
+  "exclude": ["node_modules/**"]
 }

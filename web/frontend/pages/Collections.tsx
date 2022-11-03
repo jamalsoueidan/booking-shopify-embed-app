@@ -1,10 +1,10 @@
-import { useNavigate } from "@shopify/app-bridge-react";
-import { Layout, Page, Spinner } from "@shopify/polaris";
-import { useState } from "react";
-import useSWR from "swr";
-import AddNewCollection from "../components/collections/AddNewCollection";
-import CollectionsList from "../components/collections/Collections-List";
-import { useAuthenticatedFetch } from "../hooks";
+import { useNavigate } from '@shopify/app-bridge-react';
+import { Layout, Page, Spinner } from '@shopify/polaris';
+import { useState } from 'react';
+import useSWR from 'swr';
+import AddNewCollection from '../components/collections/AddNewCollection';
+import CollectionsList from '../components/collections/Collections-List';
+import { useAuthenticatedFetch } from '../hooks';
 
 export default () => {
   const [open, setOpen] = useState(false);
@@ -12,8 +12,8 @@ export default () => {
   const navigate = useNavigate();
   const fetch = useAuthenticatedFetch();
   const { data } = useSWR<CollectionsApi>(
-    "/api/admin/collections",
-    (apiURL: string) => fetch(apiURL).then((res) => res.json())
+    '/api/admin/collections',
+    (apiURL: string) => fetch(apiURL).then((res: Response) => res.json())
   );
 
   if (!data) {
@@ -27,15 +27,14 @@ export default () => {
   }
 
   if (data?.payload.length === 0) {
-    navigate("/Collections/Empty");
+    navigate('/Collections/Empty');
     return <></>;
   }
 
   const collection = data.payload.map((collection) => (
     <CollectionsList
       key={collection._id}
-      collection={collection}
-    ></CollectionsList>
+      collection={collection}></CollectionsList>
   ));
 
   return (
@@ -43,10 +42,9 @@ export default () => {
       narrowWidth
       title="Collections"
       primaryAction={{
-        content: "Add collection",
+        content: 'Add collection',
         onAction: () => setOpen(true),
-      }}
-    >
+      }}>
       <AddNewCollection open={open} setOpen={setOpen}></AddNewCollection>
       {collection}
     </Page>

@@ -1,7 +1,18 @@
-import { Banner, Layout, SettingToggle, TextStyle } from "@shopify/polaris";
-import { useCallback, useState } from "react";
-import { updateProduct } from "../../../services/product";
+import {
+  Banner,
+  BannerStatus,
+  Layout,
+  SettingToggle,
+  TextStyle,
+} from '@shopify/polaris';
+import { useCallback } from 'react';
+import { updateProduct } from '../../../services/product';
 
+interface ExtendBanner {
+  status: BannerStatus;
+  title: string;
+  errors: Array<{ message: string }>;
+}
 export default ({ product }: { product: Product }) => {
   const handleSubmit = updateProduct(product._id);
 
@@ -11,21 +22,21 @@ export default ({ product }: { product: Product }) => {
     });
   }, [product]);
 
-  const contentStatus = product.active ? "Deaktivere" : "Aktivere";
-  const textStatus = product.active ? "books" : "ikke books";
+  const contentStatus = product.active ? 'Deaktivere' : 'Aktivere';
+  const textStatus = product.active ? 'books' : 'ikke books';
 
-  const banner =
+  const banner: ExtendBanner =
     product.staff.length === 0
       ? {
-          status: "warning",
-          title: "Tilføj staff til produktet",
-          errors: [{ message: "Tilføj staff til produktet" }],
+          status: 'warning',
+          title: 'Tilføj staff til produktet',
+          errors: [{ message: 'Tilføj staff til produktet' }],
         }
-      : {};
+      : null;
 
   return (
     <Layout>
-      {banner.title && (
+      {banner && (
         <Layout.Section>
           <Banner title={banner.title} status={banner.status}>
             <p>
@@ -47,9 +58,8 @@ export default ({ product }: { product: Product }) => {
             onAction: handleToggle,
             disabled: product.staff.length === 0,
           }}
-          enabled={product.active}
-        >
-          Dette product kan{" "}
+          enabled={product.active}>
+          Dette product kan{' '}
           <TextStyle variation="strong">{textStatus}</TextStyle> online.
         </SettingToggle>
       </Layout.Section>

@@ -1,4 +1,4 @@
-import { useNavigate } from "@shopify/app-bridge-react";
+import { useNavigate } from '@shopify/app-bridge-react';
 import {
   Badge,
   Caption,
@@ -12,12 +12,12 @@ import {
   TextField,
   TextStyle,
   Thumbnail,
-} from "@shopify/polaris";
-import { useCallback, useState } from "react";
-import { useParams } from "react-router-dom";
-import useSWR, { useSWRConfig } from "swr";
-import Metadata from "../../../components/staff/Metadata";
-import { useAuthenticatedFetch } from "../../../hooks";
+} from '@shopify/polaris';
+import { useCallback, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import useSWR, { useSWRConfig } from 'swr';
+import Metadata from '../../../components/staff/Metadata';
+import { useAuthenticatedFetch } from '../../../hooks';
 
 export default () => {
   const params = useParams();
@@ -26,7 +26,7 @@ export default () => {
   const { mutate } = useSWRConfig();
   const { data: staff } = useSWR<StaffApi>(
     `/api/admin/staff/${params.id}`,
-    (apiURL: string) => fetch(apiURL).then((res) => res.json())
+    (apiURL: string) => fetch(apiURL).then((res: Response) => res.json())
   );
 
   if (!staff) {
@@ -50,19 +50,22 @@ export default () => {
     []
   );
 
-  const handleFullnameChange = useCallback((value) => setFullname(value), []);
-  const handleEmailChange = useCallback((value) => setEmail(value), []);
-  const handlePhoneChange = useCallback((value) => setPhone(value), []);
+  const handleFullnameChange = useCallback(
+    (value: string) => setFullname(value),
+    []
+  );
+  const handleEmailChange = useCallback((value: string) => setEmail(value), []);
+  const handlePhoneChange = useCallback((value: string) => setPhone(value), []);
 
   const handleSubmit = useCallback(
     async (active = false) => {
-      await fetch("/api/admin/staff/" + params.id, {
-        method: "PUT",
+      await fetch('/api/admin/staff/' + params.id, {
+        method: 'PUT',
         body: JSON.stringify({ fullname, email, phone, active }),
-        headers: { "Content-Type": "application/json" },
+        headers: { 'Content-Type': 'application/json' },
       });
       await mutate(`/api/admin/staff/${params.id}`);
-      navigate("/Staff/" + staff.payload._id);
+      navigate('/Staff/' + staff.payload._id);
     },
     [fullname, phone, email, file]
   );
@@ -86,21 +89,20 @@ export default () => {
   return (
     <Page
       narrowWidth
-      breadcrumbs={[{ content: "Staff", url: "/Staff/" + _id }]}
+      breadcrumbs={[{ content: 'Staff', url: '/Staff/' + _id }]}
       title={staff.payload.fullname}
       titleMetadata={<Metadata active={active} />}
       secondaryActions={[
         {
-          content: active ? "Deactive" : "Active",
+          content: active ? 'Deactive' : 'Active',
           onAction: () => handleSubmit(!active),
         },
       ]}
-      primaryAction={{ content: "Save", onAction: () => handleSubmit(true) }}
-    >
+      primaryAction={{ content: 'Save', onAction: () => handleSubmit(true) }}>
       <Layout>
         <Layout.Section oneThird>
           <Card sectioned>
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={() => handleSubmit(true)}>
               <FormLayout>
                 <TextField
                   value={fullname}
@@ -149,9 +151,8 @@ export default () => {
             onDrop={handleDropZoneDrop}
             onFileDialogClose={toggleOpenFileDialog}
             type="image"
-            accept={["image/jpeg", "image/png"]}
-            allowMultiple={false}
-          >
+            accept={'image/jpeg'}
+            allowMultiple={false}>
             {uploadedFiles || <DropZone.FileUpload />}
           </DropZone>
           <TextStyle variation="subdued">

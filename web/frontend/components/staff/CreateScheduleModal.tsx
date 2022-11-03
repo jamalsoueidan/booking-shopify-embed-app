@@ -5,7 +5,7 @@ import {
   Modal,
   Select,
   TextField,
-} from "@shopify/polaris";
+} from '@shopify/polaris';
 import {
   addDays,
   addHours,
@@ -13,26 +13,26 @@ import {
   isAfter,
   isBefore,
   subHours,
-} from "date-fns";
-import { zonedTimeToUtc } from "date-fns-tz";
-import { useState } from "react";
-import { useParams } from "react-router-dom";
-import { useSetting } from "../../services/setting";
-import { addNewSchedule } from "../../services/staff";
+} from 'date-fns';
+import { zonedTimeToUtc } from 'date-fns-tz';
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useSetting } from '../../services/setting';
+import { addNewSchedule } from '../../services/staff';
 
 const options = [
-  { label: "Green", value: "#4b6043" },
-  { label: "Blue", value: "#235284" },
-  { label: "Orange", value: "#d24e01" },
-  { label: "Purple", value: "#4c00b0" },
+  { label: 'Green', value: '#4b6043' },
+  { label: 'Blue', value: '#235284' },
+  { label: 'Orange', value: '#d24e01' },
+  { label: 'Purple', value: '#4c00b0' },
 ];
 
-export default ({ info, setInfo, refresh }) => {
+export default ({ info, setInfo, refresh }: any) => {
   const params = useParams();
   const toggleActive = () => setInfo(null);
 
-  const [startTime, setStartTime] = useState<string>("09:00");
-  const [endTime, setEndTime] = useState<string>("16:00");
+  const [startTime, setStartTime] = useState<string>('09:00');
+  const [endTime, setEndTime] = useState<string>('16:00');
   const [tag, setTag] = useState(options[0].value);
   const [available, setAvailable] = useState(true);
 
@@ -42,10 +42,10 @@ export default ({ info, setInfo, refresh }) => {
   const createSchedule = addNewSchedule();
   const { timeZone } = useSetting();
 
-  const handleStart = (value) => setStartTime(value);
-  const handleTag = (value) => setTag(value);
-  const handleAvailable = (newChecked) => setAvailable(newChecked);
-  const handleEnd = (value) => setEndTime(value);
+  const handleStart = (value: string) => setStartTime(value);
+  const handleTag = (value: string) => setTag(value);
+  const handleAvailable = (newChecked: boolean) => setAvailable(newChecked);
+  const handleEnd = (value: string) => setEndTime(value);
 
   const createCurrentDate = async () => {
     const start = zonedTimeToUtc(`${info.dateStr} ${startTime}`, timeZone);
@@ -119,11 +119,10 @@ export default ({ info, setInfo, refresh }) => {
       title="Create new availability"
       secondaryActions={[
         {
-          content: "Luk",
+          content: 'Luk',
           onAction: toggleActive,
         },
-      ]}
-    >
+      ]}>
       <Modal.Section>{formatDate}</Modal.Section>
       <Modal.Section>
         <Layout>
@@ -164,14 +163,13 @@ export default ({ info, setInfo, refresh }) => {
             <Button
               primary
               onClick={createCurrentDate}
-              loading={loadingCurrent}
-            >
+              loading={loadingCurrent}>
               Opret for pågældende dag
             </Button>
           </Layout.Section>
           <Layout.Section>
             <Button primary onClick={createAllDate} loading={loadingAll}>
-              Opret for alle {format(new Date(info.dateStr), "iiii")}
+              Opret for alle {format(new Date(info.dateStr), 'iiii')}
             </Button>
           </Layout.Section>
         </Layout>

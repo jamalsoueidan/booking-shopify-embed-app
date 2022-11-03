@@ -1,9 +1,9 @@
-import { ResourcePicker, useNavigate } from "@shopify/app-bridge-react";
-import { EmptyState, Layout, Page } from "@shopify/polaris";
-import { useCallback, useState } from "react";
-import useSWR, { mutate, useSWRConfig } from "swr";
-import { notFoundImage } from "../../assets";
-import { useAuthenticatedFetch } from "../../hooks";
+import { ResourcePicker, useNavigate } from '@shopify/app-bridge-react';
+import { EmptyState, Layout, Page } from '@shopify/polaris';
+import { useCallback, useState } from 'react';
+import useSWR, { mutate, useSWRConfig } from 'swr';
+import { notFoundImage } from '../../assets';
+import { useAuthenticatedFetch } from '../../hooks';
 
 export default () => {
   const [open, setOpen] = useState(false);
@@ -12,13 +12,13 @@ export default () => {
   const { mutate } = useSWRConfig();
 
   const fetchData = useCallback(async (selections: string[]) => {
-    await fetch("/api/admin/collections", {
-      method: "POST",
+    await fetch('/api/admin/collections', {
+      method: 'POST',
       body: JSON.stringify({ selections }),
-      headers: { "Content-Type": "application/json" },
+      headers: { 'Content-Type': 'application/json' },
     });
 
-    mutate("/api/admin/collections");
+    mutate('/api/admin/collections');
   }, []);
 
   const handleSelection = async (resources: Resources) => {
@@ -28,12 +28,12 @@ export default () => {
   };
 
   const { data } = useSWR<CollectionsApi>(
-    "/api/admin/collections",
-    (apiURL: string) => fetch(apiURL).then((res) => res.json())
+    '/api/admin/collections',
+    (apiURL: string) => fetch(apiURL).then((res: Response) => res.json())
   );
 
   if (data?.payload?.length > 0) {
-    navigate("/Collections");
+    navigate('/Collections');
     return <></>;
   }
 
@@ -50,10 +50,9 @@ export default () => {
           image={notFoundImage}
           heading="Start collecting appointments on your store."
           action={{
-            content: "Choose collections",
+            content: 'Choose collections',
             onAction: () => setOpen(true),
-          }}
-        >
+          }}>
           <p>
             Choose collection(s) from your store, and we'll transform it to
             category and its products into treatments! 🚀

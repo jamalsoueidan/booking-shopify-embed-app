@@ -43,8 +43,8 @@ Shopify.Context.initialize({
   IS_EMBEDDED_APP: true,
   // This should be replaced with your preferred storage strategy
   SESSION_STORAGE: new Shopify.Session.MongoDBSessionStorage(
-    "mongodb://127.0.0.1:27017",
-    DB_PATH
+    new URL("mongodb://127.0.0.1:27017"),
+    "book-appointment-app"
   ),
   ...(process.env.SHOP_CUSTOM_DOMAIN && {
     CUSTOM_SHOP_DOMAINS: [process.env.SHOP_CUSTOM_DOMAIN],
