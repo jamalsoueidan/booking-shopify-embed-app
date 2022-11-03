@@ -1,4 +1,4 @@
-import { useNavigate } from "@shopify/app-bridge-react";
+import { useNavigate } from '@shopify/app-bridge-react';
 import {
   Caption,
   Card,
@@ -11,17 +11,17 @@ import {
   TextField,
   TextStyle,
   Thumbnail,
-} from "@shopify/polaris";
-import { useCallback, useState } from "react";
-import { useAuthenticatedFetch } from "../../hooks";
+} from '@shopify/polaris';
+import { useCallback, useState } from 'react';
+import { useAuthenticatedFetch } from '../../hooks';
 
 export default () => {
   const navigate = useNavigate();
   const [file, setFile] = useState<File>();
   const [openFileDialog, setOpenFileDialog] = useState(false);
-  const [fullname, setFullname] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const [fullname, setFullname] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const fetch = useAuthenticatedFetch();
 
   const handleDropZoneDrop = useCallback((_: File[], acceptedFiles: File[]) => {
@@ -34,9 +34,12 @@ export default () => {
     []
   );
 
-  const handleFullnameChange = useCallback((value) => setFullname(value), []);
-  const handleEmailChange = useCallback((value) => setEmail(value), []);
-  const handlePhoneChange = useCallback((value) => setPhone(value), []);
+  const handleFullnameChange = useCallback(
+    (value: string) => setFullname(value),
+    []
+  );
+  const handleEmailChange = useCallback((value: string) => setEmail(value), []);
+  const handlePhoneChange = useCallback((value: string) => setPhone(value), []);
 
   const handleSubmit = useCallback(async () => {
     /*var reader = new window.FileReader();
@@ -49,12 +52,12 @@ export default () => {
       });
       navigate("/Staff");
     };*/
-    await fetch("/api/admin/staff", {
-      method: "POST",
+    await fetch('/api/admin/staff', {
+      method: 'POST',
       body: JSON.stringify({ fullname, email, phone }),
-      headers: { "Content-Type": "application/json" },
+      headers: { 'Content-Type': 'application/json' },
     });
-    navigate("/Staff");
+    navigate('/Staff');
   }, [fullname, phone, email, file]);
 
   const uploadedFiles = file && (
@@ -75,9 +78,8 @@ export default () => {
   return (
     <Page
       narrowWidth
-      breadcrumbs={[{ content: "Staff", url: "/Staff" }]}
-      primaryAction={{ content: "Save", onAction: () => handleSubmit() }}
-    >
+      breadcrumbs={[{ content: 'Staff', url: '/Staff' }]}
+      primaryAction={{ content: 'Save', onAction: () => handleSubmit() }}>
       <Layout>
         <Layout.Section oneThird>
           <Card sectioned>
@@ -130,9 +132,8 @@ export default () => {
             onDrop={handleDropZoneDrop}
             onFileDialogClose={toggleOpenFileDialog}
             type="image"
-            accept={["image/jpeg", "image/png"]}
-            allowMultiple={false}
-          >
+            accept={'image/jpeg'}
+            allowMultiple={false}>
             {uploadedFiles || <DropZone.FileUpload />}
           </DropZone>
           <TextStyle variation="subdued">

@@ -1,3 +1,4 @@
+declare module '*';
 interface Api {
   error: string;
   success: boolean;

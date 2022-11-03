@@ -1,8 +1,8 @@
-import { ActionList, Popover } from "@shopify/polaris";
-import { useCallback, useState } from "react";
-import { useSWRConfig } from "swr";
-import { useAuthenticatedFetch } from "../../../../../hooks";
-import StaffAvatar from "../StaffAvatar";
+import { ActionList, Popover } from '@shopify/polaris';
+import { useCallback, useState } from 'react';
+import { useSWRConfig } from 'swr';
+import { useAuthenticatedFetch } from '../../../../../hooks';
+import StaffAvatar from '../StaffAvatar';
 
 export default ({
   staff,
@@ -23,17 +23,17 @@ export default ({
   const fetch = useAuthenticatedFetch();
   const { mutate } = useSWRConfig();
 
-  const addNewStaffProduct = useCallback(async (staff, tag) => {
+  const addNewStaffProduct = useCallback(async (staff: string, tag: string) => {
     await fetch(`/api/admin/products/${productId}/staff`, {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify({ staff, tag }),
-      headers: { "Content-Type": "application/json" },
+      headers: { 'Content-Type': 'application/json' },
     });
     mutate(`/api/admin/products/${productId}/staff`);
     mutate(`/api/admin/products/${productId}/staff-to-add`);
   }, []);
 
-  const handleAction = (tag) => async () => {
+  const handleAction = (tag: string) => async () => {
     togglePopoverActive();
     await addNewStaffProduct(staff._id, tag);
     toggleShowStaff();
@@ -41,9 +41,8 @@ export default ({
 
   const avatar = (
     <div
-      style={{ display: "flex", flexDirection: "column", cursor: "pointer" }}
-      onClick={togglePopoverActive}
-    >
+      style={{ display: 'flex', flexDirection: 'column', cursor: 'pointer' }}
+      onClick={togglePopoverActive}>
       <StaffAvatar fullname={staff.fullname} />
     </div>
   );
@@ -58,8 +57,7 @@ export default ({
       active={popoverActive}
       activator={avatar}
       autofocusTarget="first-node"
-      onClose={togglePopoverActive}
-    >
+      onClose={togglePopoverActive}>
       <ActionList actionRole="menuitem" items={tags} />
     </Popover>
   );

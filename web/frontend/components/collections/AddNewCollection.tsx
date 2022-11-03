@@ -1,7 +1,7 @@
-import { ResourcePicker } from "@shopify/app-bridge-react";
-import { useCallback } from "react";
-import { useSWRConfig } from "swr";
-import { useAuthenticatedFetch } from "../../hooks";
+import { ResourcePicker } from '@shopify/app-bridge-react';
+import { useCallback } from 'react';
+import { useSWRConfig } from 'swr';
+import { useAuthenticatedFetch } from '../../hooks';
 
 interface Props {
   open: boolean;
@@ -13,12 +13,12 @@ export default ({ open, setOpen }: Props) => {
   const { mutate } = useSWRConfig();
 
   const fetchData = useCallback(async (selections: string[]) => {
-    await fetch("/api/admin/collections", {
-      method: "POST",
+    await fetch('/api/admin/collections', {
+      method: 'POST',
       body: JSON.stringify({ selections }),
-      headers: { "Content-Type": "application/json" },
+      headers: { 'Content-Type': 'application/json' },
     });
-    mutate("/api/admin/collections");
+    mutate('/api/admin/collections');
   }, []);
 
   const handleSelection = async (resources: Resources) => {

@@ -9,10 +9,10 @@ import {
   Select,
   Stack,
   TextStyle,
-} from "@shopify/polaris";
-import { ClockMajor } from "@shopify/polaris-icons";
-import { useCallback, useState } from "react";
-import { updateProduct } from "../../../services/product";
+} from '@shopify/polaris';
+import { ClockMajor } from '@shopify/polaris-icons';
+import { useCallback, useState } from 'react';
+import { updateProduct } from '../../../services/product';
 
 export default ({
   productId,
@@ -22,22 +22,25 @@ export default ({
   product: Product;
 }) => {
   const [duration, setDuration] = useState<string>(
-    String(product.duration) || "0"
+    String(product.duration) || '0'
   );
   const [buffertime, setBuffertime] = useState<string>(
-    String(product.buffertime) || "0"
+    String(product.buffertime) || '0'
   );
 
-  const handleSelectChange = useCallback((value) => setBuffertime(value), []);
+  const handleSelectChange = useCallback(
+    (value: string) => setBuffertime(value),
+    []
+  );
 
   const options = [
-    { label: "0 min", value: "0" },
-    { label: "5 min", value: "5" },
-    { label: "10 min", value: "10" },
-    { label: "15 min", value: "15" },
-    { label: "20 min", value: "20" },
-    { label: "25 min", value: "25" },
-    { label: "30 min", value: "30" },
+    { label: '0 min', value: '0' },
+    { label: '5 min', value: '5' },
+    { label: '10 min', value: '10' },
+    { label: '15 min', value: '15' },
+    { label: '20 min', value: '20' },
+    { label: '25 min', value: '25' },
+    { label: '30 min', value: '30' },
   ];
 
   const handleSubmit = updateProduct(productId);
@@ -62,36 +65,31 @@ export default ({
       <Layout.AnnotatedSection
         id="settings"
         title="Indstillinger"
-        description="Ændre indstillinger for den behandling?"
-      >
+        description="Ændre indstillinger for den behandling?">
         <Card
-          secondaryFooterActions={[{ content: "Annullere" }]}
+          secondaryFooterActions={[{ content: 'Annullere' }]}
           primaryFooterAction={{
-            content: "Gem",
+            content: 'Gem',
             onAction: onSave,
-          }}
-        >
+          }}>
           <Card.Section>
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={onSave}>
               <FormLayout>
                 <TextStyle>Meeting duration</TextStyle>
                 <ButtonGroup segmented>
                   <Button
-                    pressed={duration === "30"}
-                    onClick={() => setDuration("30")}
-                  >
+                    pressed={duration === '30'}
+                    onClick={() => setDuration('30')}>
                     30 min
                   </Button>
                   <Button
-                    pressed={duration === "45"}
-                    onClick={() => setDuration("45")}
-                  >
+                    pressed={duration === '45'}
+                    onClick={() => setDuration('45')}>
                     45 min
                   </Button>
                   <Button
-                    pressed={duration === "60"}
-                    onClick={() => setDuration("60")}
-                  >
+                    pressed={duration === '60'}
+                    onClick={() => setDuration('60')}>
                     60 min
                   </Button>
                 </ButtonGroup>

@@ -1,6 +1,6 @@
-import { Badge } from "@shopify/polaris";
+import { Badge } from '@shopify/polaris';
 
-export default ({ active }) => {
+export default ({ active }: { active: boolean }) => {
   return active ? (
     <Badge status="success">Active</Badge>
   ) : (
