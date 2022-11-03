@@ -1,9 +1,7 @@
 import { Shopify } from "@shopify/shopify-api";
-import { getCollection, updateCollections } from "../../helpers/collections.js";
-import { deleteMetafield } from "../../helpers/metafields.js";
-import { StorefrontAccessToken } from "@shopify/shopify-api/dist/rest-resources/2022-10/index.js";
-import * as Collection from "../../database/models/collection.js";
-import * as Product from "../../database/models/product.js";
+import * as Collection from "../../database/models/collection";
+import * as Product from "../../database/models/product";
+import { getCollection } from "../../helpers/collections";
 
 export default function applyAdminCollectionsMiddleware(app) {
   app.post("/api/admin/collections", async (req, res) => {
@@ -14,7 +12,7 @@ export default function applyAdminCollectionsMiddleware(app) {
     );
     let status = 200;
     let error = null;
-    let payload = [];
+    let payload = {};
 
     const shop = session?.shop || req.query.shop;
 

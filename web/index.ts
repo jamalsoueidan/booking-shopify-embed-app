@@ -7,16 +7,17 @@ import { join } from "path";
 import { AppInstallations } from "./app_installations.js";
 import * as database from "./database/database.js";
 import { setupGDPRWebHooks } from "./gdpr.js";
-import applyAdminBookingsMiddleware from "./middleware/admin/bookings.js";
-import applyAdminCollectionsMiddleware from "./middleware/admin/collections.js";
-import applyAdminMetafieldsMiddleware from "./middleware/admin/metafields.js";
-import applyAdminProductMiddleware from "./middleware/admin/product.js";
+import redirectToAuth from "./helpers/redirect-to-auth.js";
+import applyAdminBookingsMiddleware from "./middleware/admin/bookings";
+import applyAdminCollectionsMiddleware from "./middleware/admin/collections";
+import applyAdminMetafieldsMiddleware from "./middleware/admin/metafields";
+import applyAdminProductMiddleware from "./middleware/admin/product";
 import applyAdminSettingMiddleware from "./middleware/admin/setting";
-import applyAdminStaffMiddleware from "./middleware/admin/staff.js";
-import applyAdminStaffScheduleMiddleware from "./middleware/admin/staff/schedule.js";
-import applyAdminWebhooksMiddleware from "./middleware/admin/webhooks.js";
+import applyAdminStaffMiddleware from "./middleware/admin/staff";
+import applyAdminStaffScheduleMiddleware from "./middleware/admin/staff/schedule";
+import applyAdminWebhooksMiddleware from "./middleware/admin/webhooks";
 import applyAuthMiddleware from "./middleware/auth.js";
-import applyPublicWidgetMiddleware from "./middleware/public/widget.js";
+import applyPublicWidgetMiddleware from "./middleware/public/widget";
 import verifyRequest from "./middleware/verify-request.js";
 import * as order from "./webhooks/order.js";
 
@@ -110,7 +111,7 @@ export async function createServer(
   app.use(cookieParser(Shopify.Context.API_SECRET_KEY));
 
   applyAuthMiddleware(app, {
-    billing: billingSettings as any,
+    billing: billingSettings,
   });
 
   // Do not call app.use(express.json()) before processing webhooks with
@@ -139,7 +140,7 @@ export async function createServer(
   app.use(
     "/api/*",
     verifyRequest(app, {
-      billing: billingSettings as any,
+      billing: billingSettings,
     })
   );
 
@@ -183,7 +184,7 @@ export async function createServer(
       res.status(500);
       return res.send("No shop provided");
     }
-    /*
+
     const shop = Shopify.Utils.sanitizeShop(req.query.shop);
     const appInstalled = await AppInstallations.includes(shop);
     if (!appInstalled && !req.originalUrl.match(/^\/exitiframe/i)) {
@@ -194,7 +195,7 @@ export async function createServer(
       const embeddedUrl = Shopify.Utils.getEmbeddedAppUrl(req);
 
       return res.redirect(embeddedUrl + req.path);
-    }*/
+    }
 
     const htmlFile = join(
       isProd ? PROD_INDEX_PATH : DEV_INDEX_PATH,

@@ -1,7 +1,7 @@
 import { Shopify } from "@shopify/shopify-api";
 import mongoose from "mongoose";
-import * as Product from "../../database/models/product.js";
-import * as Schedule from "../../database/models/schedule.js";
+import * as Product from "../../database/models/product";
+import * as Schedule from "../../database/models/schedule";
 
 export default function applyAdminProductMiddleware(app) {
   app.get("/api/admin/products/:productId", async (req, res) => {
@@ -19,7 +19,7 @@ export default function applyAdminProductMiddleware(app) {
     const { productId } = req.params;
 
     try {
-      payload = await Product.findOne(productId, { shop });
+      payload = await Product.findOne({ shop, productId });
     } catch (e) {
       console.log(
         `Failed to process api/products/:productId:
@@ -250,7 +250,8 @@ export default function applyAdminProductMiddleware(app) {
     const { staff, tag } = req.body;
 
     try {
-      const product = await Product.findOne(productId, {
+      const product = await Product.findOne({
+        productId,
         shop,
         staff: { $elemMatch: { staff, tag } },
       });

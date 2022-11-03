@@ -1,5 +1,5 @@
 import { Shopify } from "@shopify/shopify-api";
-import * as Staff from "../../database/models/staff.js";
+import * as Staff from "../../database/models/staff";
 
 export default function applyAdminStaffMiddleware(app) {
   app.get("/api/admin/staff", async (req, res) => {

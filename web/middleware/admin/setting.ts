@@ -1,6 +1,6 @@
 import { Shopify } from "@shopify/shopify-api";
 import { IncomingMessage, ServerResponse } from "http";
-import Setting from "../../database/models/setting.js";
+import Setting from "../../database/models/setting";
 import express from "express";
 
 interface StandardResponse {

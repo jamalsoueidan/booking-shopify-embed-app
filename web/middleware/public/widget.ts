@@ -1,10 +1,7 @@
-import { Shopify } from "@shopify/shopify-api";
 import { addMinutes, differenceInMinutes, format, isBefore } from "date-fns";
-import mongoose from "mongoose";
-import * as Booking from "../../database/models/booking.js";
-import * as Product from "../../database/models/product.js";
-import * as Schedule from "../../database/models/schedule.js";
-import * as Staff from "../../database/models/staff.js";
+import * as Booking from "../../database/models/booking";
+import * as Product from "../../database/models/product";
+import * as Schedule from "../../database/models/schedule";
 
 /**
  * @typedef ScheduleHour
@@ -120,7 +117,6 @@ export default function applyPublicWidgetMiddleware(app) {
       const schedules = await Schedule.getByStaffAndTag({
         tag: product.staff.tag,
         staff: product.staff.staff,
-        available: true,
         start: date,
         end: date,
       });
@@ -130,7 +126,7 @@ export default function applyPublicWidgetMiddleware(app) {
         productId,
         start: date,
         end: date,
-        staff: product.staff.staff,
+        staffId: product.staff.staff,
       });
 
       /** @type {CustomSchedules[]} */
@@ -174,7 +170,6 @@ export default function applyPublicWidgetMiddleware(app) {
       const schedules = await Schedule.getByStaffAndTag({
         tag: product.staff.tag,
         staff: product.staff.staff,
-        available: true,
         start,
         end,
       });

@@ -8,8 +8,8 @@ import {
   setHours,
   subHours,
 } from "date-fns";
-import * as Schedule from "../../../database/models/schedule.js";
-import * as Staff from "../../../database/models/staff.js";
+import * as Schedule from "../../../database/models/schedule";
+import * as Staff from "../../../database/models/staff";
 
 export default function applyAdminStaffScheduleMiddleware(app) {
   app.get("/api/admin/staff/:staff/schedules", async (req, res) => {

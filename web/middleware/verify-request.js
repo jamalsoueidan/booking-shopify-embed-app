@@ -35,7 +35,7 @@ const TEST_GRAPHQL_QUERY = `
 
 export default function verifyRequest(
   app,
-  { billing = { required: false } } = { billing: { required: false } }
+  { billing } = { billing: { required: false } }
 ) {
   return async (req, res, next) => {
     const session = await Shopify.Utils.loadCurrentSession(

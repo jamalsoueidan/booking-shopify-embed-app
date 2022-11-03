@@ -55,7 +55,7 @@ export const createOrUpdate = (body) => {
   });
 
   models.forEach((m) => {
-    Booking.findOneAndUpdate(m);
+    //Booking.findOneAndUpdate(m);
   });
 
   console.log(models);

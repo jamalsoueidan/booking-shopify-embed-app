@@ -1,5 +1,5 @@
 import { Shopify } from "@shopify/shopify-api";
-import * as Booking from "../../database/models/booking.js";
+import * as Booking from "../../database/models/booking";
 
 export default function applyAdminBookingsMiddleware(app) {
   app.get("/api/admin/bookings", async (req, res) => {

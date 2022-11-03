@@ -1,5 +1,5 @@
 import { Shopify } from "@shopify/shopify-api";
-import { createMetafield, getMetafield } from "../../helpers/metafields.js";
+import { createMetafield, getMetafield } from "../../helpers/metafields";
 
 export default function applyAdminMetafieldsMiddleware(app) {
   app.get("/api/admin/metafields", async (req, res) => {

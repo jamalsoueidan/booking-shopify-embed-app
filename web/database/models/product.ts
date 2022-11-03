@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
+
 const { Schema } = mongoose;
 
 const ProductSchema = new Schema({
@@ -54,11 +55,17 @@ export const findByIdAndUpdate = async (staffId, document) => {
   });
 };
 
+interface GetProductWithSelectedStaffId {
+  shop: string;
+  productId: string;
+  staffId: string;
+}
+
 export const getProductWithSelectedStaffId = async ({
   shop,
   productId,
   staffId,
-}) => {
+}: GetProductWithSelectedStaffId) => {
   const products = await Model.aggregate([
     {
       $match: {
@@ -84,10 +91,11 @@ export const getProductWithSelectedStaffId = async ({
   }
 };
 
-/*
-
-*/
-export const getAllStaff = async ({ shop, productId }) => {
+interface GetAllStaff {
+  shop: string;
+  productId: string;
+}
+export const getAllStaff = async ({ shop, productId }: GetAllStaff) => {
   return await Model.aggregate([
     {
       $match: {

@@ -70,8 +70,7 @@ const deleteMetafieldQuery = `
 export const getMetafield = async (session) => {
   const client = new Shopify.Clients.Graphql(session.shop, session.accessToken);
   try {
-    /** @type {GetMetafieldQuery} */
-    const payload = await client.query({
+    const payload: any = await client.query({
       data: {
         query: getMetafieldsQuery,
         variables: {
@@ -93,16 +92,11 @@ export const getMetafield = async (session) => {
 
 /**
  * @return {Promise<Metafield|null>}
- * @param {object} session
- * @param {string} session.shop
- * @param {string} session.accessToken
- * The metafields that are added to the list
  */
 export const createMetafield = async (session) => {
   const client = new Shopify.Clients.Graphql(session.shop, session.accessToken);
   try {
-    /** @type {CreateMetafieldQuery} */
-    const payload = await client.query({
+    const payload: any = await client.query({
       data: {
         query: createMetafieldQuery,
         variables: {
