@@ -1,6 +1,12 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
+export interface SettingModel extends Document {
+  shop: string;
+  timeZone: string;
+  language: "en" | "da";
+}
+
 const SettingSchema = new Schema({
   shop: {
     type: String,
@@ -17,6 +23,6 @@ const SettingSchema = new Schema({
   },
 });
 
-const Model = mongoose.model("setting", SettingSchema, "Setting");
+const Model = mongoose.model<SettingModel>("setting", SettingSchema, "Setting");
 
 export default Model;

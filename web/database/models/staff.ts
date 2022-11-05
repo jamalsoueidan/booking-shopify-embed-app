@@ -1,6 +1,14 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
+export interface StaffModel extends Document {
+  shop: string;
+  fullname: string;
+  email: string;
+  phone: string;
+  active: boolean;
+}
+
 const StaffSchema = new Schema({
   shop: {
     type: String,
@@ -16,7 +24,7 @@ const StaffSchema = new Schema({
   active: { type: Boolean, default: true },
 });
 
-export const Model = mongoose.model("staff", StaffSchema, "Staff");
+export const Model = mongoose.model<StaffModel>("staff", StaffSchema, "Staff");
 
 export const create = async (document) => {
   try {

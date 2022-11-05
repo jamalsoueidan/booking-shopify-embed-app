@@ -1,6 +1,12 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
+export interface CollectionModel extends Document {
+  shop: string;
+  title: string;
+  collectionId: string;
+}
+
 const CollectionSchema = new Schema({
   shop: {
     type: String,

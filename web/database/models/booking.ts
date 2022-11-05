@@ -1,5 +1,14 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 const { Schema } = mongoose;
+
+export interface BookingModel extends Document {
+  productId: string;
+  orderId: string;
+  staff: Types.ObjectId;
+  start: Date;
+  end: Date;
+  shop: string;
+}
 
 const BookingSchema = new Schema({
   productId: String,
@@ -14,7 +23,11 @@ const BookingSchema = new Schema({
   shop: String,
 });
 
-export const Model = mongoose.model("booking", BookingSchema, "Booking");
+export const Model = mongoose.model<BookingModel>(
+  "booking",
+  BookingSchema,
+  "Booking"
+);
 
 export const find = async (shop) => {
   return await Model.find({ shop });

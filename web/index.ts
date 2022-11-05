@@ -17,7 +17,7 @@ import applyAdminStaffMiddleware from "./middleware/admin/staff";
 import applyAdminStaffScheduleMiddleware from "./middleware/admin/staff/schedule";
 import applyAdminWebhooksMiddleware from "./middleware/admin/webhooks";
 import applyAuthMiddleware from "./middleware/auth.js";
-import applyPublicWidgetMiddleware from "./middleware/public/widget";
+import widgetRoute from "./libs/widget/widget.routes";
 import verifyRequest from "./middleware/verify-request.js";
 import * as order from "./webhooks/order.js";
 
@@ -134,7 +134,7 @@ export async function createServer(
   // attribute, as a result of the express.json() middleware
   app.use(express.json({ limit: "1mb", extended: true } as any));
 
-  applyPublicWidgetMiddleware(app);
+  app.use("/api/widget", widgetRoute);
 
   // All endpoints after this point will require an active session
   app.use(
