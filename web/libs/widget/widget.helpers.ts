@@ -1,5 +1,10 @@
 import { addMinutes, differenceInMinutes, format, isBefore } from "date-fns";
-import { BookingModel } from "../../database/models/booking";
+import { GetBookingsByProductReturn } from "../../database/models/booking";
+import {
+  GetByStaffAndTagReturn,
+  GetByTagReturn,
+} from "../../database/models/schedule";
+import { GetBookingsByProductAndStaffReturn } from "./../../database/models/booking";
 import { ProductModel } from "./../../database/models/product";
 
 export interface ScheduleHourStaff {
@@ -23,7 +28,11 @@ interface ScheduleReduceProduct
 
 const scheduleReduce =
   (product: ScheduleReduceProduct) =>
-  (previous: Array<ScheduleDate>, current: any): Array<ScheduleDate> => {
+  (
+    previous: Array<ScheduleDate>,
+    current: GetByStaffAndTagReturn | GetByTagReturn
+  ): Array<ScheduleDate> => {
+    console.log(current);
     const end = new Date(current.end);
     const duration = product.duration || 60;
     const buffertime = product.buffertime || 0;
@@ -46,7 +55,7 @@ const scheduleReduce =
   };
 
 const scheduleCalculateBooking = (
-  book: BookingModel
+  book: GetBookingsByProductReturn | GetBookingsByProductAndStaffReturn
 ): ((schedule: ScheduleDate) => ScheduleDate) => {
   const { start, end, staff } = book;
   return (schedule: ScheduleDate): ScheduleDate => {

@@ -1,10 +1,11 @@
+import { endOfDay, startOfDay } from "date-fns";
 import mongoose, { FilterQuery, Types, UpdateQuery } from "mongoose";
 
 const { Schema } = mongoose;
 
 // https://tomanagle.medium.com/strongly-typed-models-with-mongoose-and-typescript-7bc2f7197722
-export interface ScheduleModel extends Document {
-  staff: string;
+export interface ScheduleModel {
+  staff: Types.ObjectId;
   groupId: string;
   start: Date;
   end: Date;
@@ -36,7 +37,11 @@ const ScheduleSchema = new Schema({
   },
 });
 
-export const Model = mongoose.model("schedule", ScheduleSchema, "Schedule");
+export const Model = mongoose.model<ScheduleModel>(
+  "schedule",
+  ScheduleSchema,
+  "Schedule"
+);
 
 export const create = async (document) => {
   try {
@@ -91,12 +96,26 @@ export const updateMany = async (
   });
 };
 
+interface GetByStaffAndTagProps {
+  tag: string;
+  staff: Types.ObjectId;
+  start: string;
+  end: string;
+}
+
+export interface GetByStaffAndTagReturn extends Omit<ScheduleModel, "staff"> {
+  staff: {
+    _id: string;
+    fullname: string;
+  };
+}
+
 export const getByStaffAndTag = async ({
   tag,
   staff,
   start,
   end,
-}: FilterQuery<ScheduleModel>) => {
+}: GetByStaffAndTagProps): Promise<Array<GetByStaffAndTagReturn>> => {
   return await Model.aggregate([
     {
       $match: {
@@ -141,11 +160,19 @@ export const getByStaffAndTag = async ({
   ]);
 };
 
+interface GetByTagProps {
+  tag: string[];
+  start: Date;
+  end: Date;
+}
+
+export interface GetByTagReturn extends GetByStaffAndTagReturn {}
+
 export const getByTag = async ({
   tag,
   start,
   end,
-}: FilterQuery<ScheduleModel>) => {
+}: GetByTagProps): Promise<Array<GetByTagReturn>> => {
   return await Model.aggregate([
     {
       $match: {
@@ -154,10 +181,10 @@ export const getByTag = async ({
         },
         available: true,
         start: {
-          $gte: new Date(`${start}T00:00:00.0Z`),
+          $gte: startOfDay(start),
         },
         end: {
-          $lt: new Date(`${end}T23:59:59.0Z`),
+          $lt: endOfDay(end),
         },
       },
     },

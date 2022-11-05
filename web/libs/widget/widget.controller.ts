@@ -1,3 +1,5 @@
+import { endOfDay } from "date-fns";
+import mongoose from "mongoose";
 import { Props } from "../../@types";
 import * as Booking from "../../database/models/booking";
 import * as Product from "../../database/models/product";
@@ -27,7 +29,7 @@ const availabilityDay = async ({ query }: Props<AvailabilityDayQuery>) => {
   const product = await Product.getProductWithSelectedStaffId({
     shop,
     productId,
-    staffId,
+    staff: new mongoose.Types.ObjectId(staffId),
   });
 
   if (!product) {
@@ -44,9 +46,9 @@ const availabilityDay = async ({ query }: Props<AvailabilityDayQuery>) => {
   const bookings = await Booking.getBookingsByProductAndStaff({
     shop,
     productId,
-    start: date,
-    end: date,
-    staffId: product.staff.staff,
+    start: new Date(date),
+    end: new Date(date),
+    staff: product.staff.staff,
   });
 
   let scheduleDates = schedules.reduce<Array<ScheduleDate>>(
@@ -79,7 +81,7 @@ const availabilityRangeByStaff = async ({
   const product = await Product.getProductWithSelectedStaffId({
     shop,
     productId,
-    staffId,
+    staff: new mongoose.Types.ObjectId(staffId),
   });
 
   if (!product) {
@@ -96,9 +98,9 @@ const availabilityRangeByStaff = async ({
   const bookings = await Booking.getBookingsByProductAndStaff({
     shop,
     productId,
-    staffId,
-    start,
-    end,
+    staff: product.staff.staff,
+    start: new Date(start),
+    end: new Date(end),
   });
 
   let scheduleDates = schedules.reduce(helpers.scheduleReduce(product), []);
@@ -132,15 +134,15 @@ const availabilityRangeByAll = async ({
 
   const schedules = await Schedule.getByTag({
     tag: product.staff.map((s) => s.tag),
-    start,
-    end,
+    start: new Date(start),
+    end: new Date(end),
   });
 
   const bookings = await Booking.getBookingsByProduct({
     shop,
     productId,
-    start,
-    end,
+    start: new Date(start),
+    end: new Date(end),
   });
 
   let scheduleDates = schedules.reduce(helpers.scheduleReduce(product), []);

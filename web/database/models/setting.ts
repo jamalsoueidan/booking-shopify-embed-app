@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
-export interface SettingModel extends Document {
+export interface SettingModel {
   shop: string;
   timeZone: string;
   language: "en" | "da";

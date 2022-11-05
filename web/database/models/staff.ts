@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
-export interface StaffModel extends Document {
+export interface StaffModel {
   shop: string;
   fullname: string;
   email: string;

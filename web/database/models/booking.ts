@@ -1,7 +1,8 @@
+import { endOfDay, startOfDay } from "date-fns";
 import mongoose, { Types } from "mongoose";
 const { Schema } = mongoose;
 
-export interface BookingModel extends Document {
+export interface BookingModel {
   productId: string;
   orderId: string;
   staff: Types.ObjectId;
@@ -33,7 +34,20 @@ export const find = async (shop) => {
   return await Model.find({ shop });
 };
 
-export const getBookingsByProduct = async ({ shop, productId, start, end }) => {
+export interface GetBookingsByProductReturn
+  extends Pick<BookingModel, "start" | "end"> {
+  staff: string;
+}
+
+export interface GetBookingsByProductProps
+  extends Omit<BookingModel, "orderId" | "staff"> {}
+
+export const getBookingsByProduct = async ({
+  shop,
+  productId,
+  start,
+  end,
+}: GetBookingsByProductProps): Promise<Array<GetBookingsByProductReturn>> => {
   return await Model.aggregate([
     {
       $match: {
@@ -42,12 +56,12 @@ export const getBookingsByProduct = async ({ shop, productId, start, end }) => {
         $or: [
           {
             start: {
-              $gte: new Date(`${start}T00:00:00.0Z`),
+              $gte: startOfDay(start),
             },
           },
           {
             end: {
-              $gte: new Date(`${start}T00:00:00.0Z`),
+              $gte: endOfDay(start),
             },
           },
         ],
@@ -58,12 +72,12 @@ export const getBookingsByProduct = async ({ shop, productId, start, end }) => {
         $or: [
           {
             start: {
-              $lt: new Date(`${end}T00:00:00.0Z`),
+              $lt: startOfDay(end),
             },
           },
           {
             end: {
-              $lt: new Date(`${end}T00:00:00.0Z`),
+              $lt: endOfDay(end),
             },
           },
         ],
@@ -79,29 +93,35 @@ export const getBookingsByProduct = async ({ shop, productId, start, end }) => {
   ]);
 };
 
+export interface GetBookingsByProductAndStaffReturn
+  extends GetBookingsByProductReturn {}
+export interface GetBookingsByProductAndStaffProps
+  extends Omit<BookingModel, "orderId"> {}
+
 export const getBookingsByProductAndStaff = async ({
   shop,
   productId,
   start,
   end,
-  staffId,
-}) => {
-  console.log(new Date(`${start}T00:00:00.0Z`), new Date(`${end}T23:59:59.0Z`));
+  staff,
+}: GetBookingsByProductAndStaffProps): Promise<
+  Array<GetBookingsByProductAndStaffReturn>
+> => {
   return await Model.aggregate([
     {
       $match: {
         shop,
         productId: "gid://shopify/Product/" + productId,
-        staff: new mongoose.Types.ObjectId(staffId),
+        staff: staff,
         $or: [
           {
             start: {
-              $gte: new Date(`${start}T00:00:00.0Z`),
+              $gte: startOfDay(start),
             },
           },
           {
             end: {
-              $gte: new Date(`${start}T00:00:00.0Z`),
+              $gte: endOfDay(start),
             },
           },
         ],
@@ -112,12 +132,12 @@ export const getBookingsByProductAndStaff = async ({
         $or: [
           {
             start: {
-              $lt: new Date(`${end}T00:00:00.0Z`),
+              $lt: endOfDay(end),
             },
           },
           {
             end: {
-              $lt: new Date(`${end}T00:00:00.0Z`),
+              $lt: endOfDay(end),
             },
           },
         ],

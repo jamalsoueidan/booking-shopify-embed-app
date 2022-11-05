@@ -1,7 +1,7 @@
-import mongoose, { Schema, Types, Document, FilterQuery } from "mongoose";
+import mongoose, { FilterQuery, Schema, Types } from "mongoose";
 
 // https://tomanagle.medium.com/strongly-typed-models-with-mongoose-and-typescript-7bc2f7197722
-export interface ProductModel extends Document {
+export interface ProductModel {
   shop: string;
   collectionId: string;
   productId: string;
@@ -64,7 +64,7 @@ export const Model = mongoose.model<ProductModel>(
   "Product"
 );
 
-export const findOne = async (document) => {
+export const findOne = async (document: Partial<ProductModel>) => {
   return await Model.findOne(document);
 };
 
@@ -74,19 +74,24 @@ export const findByIdAndUpdate = async (staffId, document) => {
   });
 };
 
-export interface ReturnGetProductWithSelectedStaffId
+export interface GetProductWithSelectedStaffReturn
   extends Omit<ProductModel, "staff"> {
   staff: {
     tag: string;
-    staff: string;
+    staff: Types.ObjectId;
   };
+}
+
+export interface GetProductWithSelectedStaffProps
+  extends Pick<ProductModel, "shop" | "productId"> {
+  staff: Types.ObjectId;
 }
 
 export const getProductWithSelectedStaffId = async ({
   shop,
   productId,
   staff,
-}: FilterQuery<ProductModel>): Promise<ReturnGetProductWithSelectedStaffId> => {
+}: GetProductWithSelectedStaffProps): Promise<GetProductWithSelectedStaffReturn> => {
   const products = await Model.aggregate([
     {
       $match: {
