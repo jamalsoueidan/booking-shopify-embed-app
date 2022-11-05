@@ -16,10 +16,10 @@ const get = async ({ query }: Props<GetQuery>) => {
 };
 
 interface CreateQuery extends Pick<Staff.StaffModel, "shop"> {}
+interface CreateBody extends Partial<Staff.StaffModel> {}
 
-const create = async ({ query, body }: Props<CreateQuery>) => {
+const create = async ({ query, body }: Props<CreateQuery, CreateBody>) => {
   const shop = query.shop;
-
   return await Staff.create({ shop, ...body });
 };
 
@@ -30,12 +30,13 @@ interface GetByIdParams {
 
 const getById = async ({
   query,
-  body,
   params,
-}: Props<GetByIdQuery, any, GetByIdParams>) => {
-  const shop = query;
-  const { staff } = params;
-
+}: {
+  query: GetByIdQuery;
+  params: GetByIdParams;
+}) => {
+  const shop = query.shop;
+  const staff = params.staff;
   return await Staff.findOne(staff, { shop });
 };
 
@@ -44,12 +45,13 @@ interface UpdateParams {
 }
 
 const update = async ({
-  query,
   body,
   params,
-}: Props<any, Staff.StaffModel, UpdateParams>) => {
-  const { staff } = params;
-
+}: {
+  body: Partial<Staff.StaffModel>;
+  params: UpdateParams;
+}) => {
+  const staff = params.staff;
   return await Staff.findByIdAndUpdate(staff, body);
 };
 

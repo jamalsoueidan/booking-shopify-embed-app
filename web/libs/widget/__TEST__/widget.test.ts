@@ -15,7 +15,7 @@ describe("Widget controller", () => {
       shop: "test",
     };
     try {
-      const user = await widgetController.staff({ query, body: null });
+      const user = await widgetController.staff({ query });
     } catch (error) {}
   });
 

@@ -1,10 +1,14 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
+export enum SettingLanguage {
+  en = "en",
+  da = "da",
+}
 export interface SettingModel {
   shop: string;
   timeZone: string;
-  language: "en" | "da";
+  language: SettingLanguage;
 }
 
 const SettingSchema = new Schema({

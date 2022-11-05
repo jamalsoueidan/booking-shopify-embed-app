@@ -7,7 +7,7 @@ import helpers, { ScheduleDate } from "./widget.helpers";
 
 interface StaffQuery extends Pick<Product.ProductModel, "productId" | "shop"> {}
 
-const staff = async ({ query }: Props<StaffQuery>) => {
+const staff = async ({ query }: { query: StaffQuery }) => {
   const { productId, shop } = query;
   const staff = await Product.getAllStaff({ shop, productId });
   if (staff.length === 0) {
@@ -22,7 +22,7 @@ interface AvailabilityDayQuery
   staffId: string;
 }
 
-const availabilityDay = async ({ query }: Props<AvailabilityDayQuery>) => {
+const availabilityDay = async ({ query }: { query: AvailabilityDayQuery }) => {
   const { staffId, date, productId, shop } = query;
 
   const product = await Product.getProductWithSelectedStaffId({
@@ -74,7 +74,9 @@ interface AvailabilityRangeByStaffQuery
 
 const availabilityRangeByStaff = async ({
   query,
-}: Props<AvailabilityRangeByStaffQuery>) => {
+}: {
+  query: AvailabilityRangeByStaffQuery;
+}) => {
   const { staffId, start, end, shop, productId } = query;
 
   const product = await Product.getProductWithSelectedStaffId({
@@ -122,7 +124,9 @@ interface AvailabilityRangeByAllQuery
 
 const availabilityRangeByAll = async ({
   query,
-}: Props<AvailabilityRangeByAllQuery>) => {
+}: {
+  query: AvailabilityRangeByAllQuery;
+}) => {
   const { start, end, shop, productId } = query;
 
   const product = await Product.findOne({
