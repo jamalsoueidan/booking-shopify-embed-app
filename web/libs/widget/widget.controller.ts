@@ -1,4 +1,3 @@
-import { endOfDay } from "date-fns";
 import mongoose from "mongoose";
 import { Props } from "../../@types";
 import * as Booking from "../../database/models/booking";

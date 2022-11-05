@@ -1,4 +1,4 @@
 export interface Props<Q = any, B = any> {
-  query: Q;
-  body: B;
+  query?: Q;
+  body?: B;
 }
