@@ -8,16 +8,16 @@ import { AppInstallations } from "./app_installations.js";
 import * as database from "./database/database.js";
 import { setupGDPRWebHooks } from "./gdpr.js";
 import redirectToAuth from "./helpers/redirect-to-auth.js";
+import adminStaffRoutes from "./libs/admin-staff/admin-staff.routes";
+import adminSettingRoutes from "./libs/admin-setting/admin-setting.routes";
+import widgetRoutes from "./libs/widget/widget.routes";
 import applyAdminBookingsMiddleware from "./middleware/admin/bookings";
 import applyAdminCollectionsMiddleware from "./middleware/admin/collections";
 import applyAdminMetafieldsMiddleware from "./middleware/admin/metafields";
 import applyAdminProductMiddleware from "./middleware/admin/product";
-import applyAdminSettingMiddleware from "./middleware/admin/setting";
-import applyAdminStaffMiddleware from "./middleware/admin/staff";
 import applyAdminStaffScheduleMiddleware from "./middleware/admin/staff/schedule";
 import applyAdminWebhooksMiddleware from "./middleware/admin/webhooks";
 import applyAuthMiddleware from "./middleware/auth.js";
-import widgetRoute from "./libs/widget/widget.routes";
 import verifyRequest from "./middleware/verify-request.js";
 import * as order from "./webhooks/order.js";
 
@@ -134,7 +134,7 @@ export async function createServer(
   // attribute, as a result of the express.json() middleware
   app.use(express.json({ limit: "1mb", extended: true } as any));
 
-  app.use("/api/widget", widgetRoute);
+  app.use("/api/widget", widgetRoutes);
 
   // All endpoints after this point will require an active session
   app.use(
@@ -148,10 +148,11 @@ export async function createServer(
   applyAdminCollectionsMiddleware(app);
   applyAdminProductMiddleware(app);
   applyAdminMetafieldsMiddleware(app);
-  applyAdminStaffMiddleware(app);
   applyAdminStaffScheduleMiddleware(app);
   applyAdminBookingsMiddleware(app);
-  applyAdminSettingMiddleware(app);
+
+  app.use("/api/admin", adminStaffRoutes);
+  app.use("/api/admin", adminSettingRoutes);
 
   app.use((req, res, next) => {
     const shop = Shopify.Utils.sanitizeShop(req.query.shop as any);
