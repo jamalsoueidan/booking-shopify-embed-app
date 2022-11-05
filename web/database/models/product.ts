@@ -1,6 +1,21 @@
-import mongoose, { Types } from "mongoose";
+import mongoose, { Schema, Types, Document, FilterQuery } from "mongoose";
 
-const { Schema } = mongoose;
+// https://tomanagle.medium.com/strongly-typed-models-with-mongoose-and-typescript-7bc2f7197722
+export interface ProductModel extends Document {
+  shop: string;
+  collectionId: string;
+  productId: string;
+  title: string;
+  staff: [
+    {
+      staff: Types.ObjectId;
+      tag: string;
+    }
+  ];
+  duration: number;
+  buffertime: number;
+  active: boolean;
+}
 
 const ProductSchema = new Schema({
   shop: {
@@ -43,7 +58,11 @@ const ProductSchema = new Schema({
   },
 });
 
-export const Model = mongoose.model("product", ProductSchema, "Product");
+export const Model = mongoose.model<ProductModel>(
+  "product",
+  ProductSchema,
+  "Product"
+);
 
 export const findOne = async (document) => {
   return await Model.findOne(document);
@@ -55,17 +74,19 @@ export const findByIdAndUpdate = async (staffId, document) => {
   });
 };
 
-interface GetProductWithSelectedStaffId {
-  shop: string;
-  productId: string;
-  staffId: string;
+export interface ReturnGetProductWithSelectedStaffId
+  extends Omit<ProductModel, "staff"> {
+  staff: {
+    tag: string;
+    staff: string;
+  };
 }
 
 export const getProductWithSelectedStaffId = async ({
   shop,
   productId,
-  staffId,
-}: GetProductWithSelectedStaffId) => {
+  staff,
+}: FilterQuery<ProductModel>): Promise<ReturnGetProductWithSelectedStaffId> => {
   const products = await Model.aggregate([
     {
       $match: {
@@ -79,7 +100,7 @@ export const getProductWithSelectedStaffId = async ({
     },
     {
       $match: {
-        "staff.staff": new mongoose.Types.ObjectId(staffId),
+        "staff.staff": new mongoose.Types.ObjectId(staff),
       },
     },
   ]);
@@ -91,11 +112,10 @@ export const getProductWithSelectedStaffId = async ({
   }
 };
 
-interface GetAllStaff {
-  shop: string;
-  productId: string;
-}
-export const getAllStaff = async ({ shop, productId }: GetAllStaff) => {
+export const getAllStaff = async ({
+  shop,
+  productId,
+}: FilterQuery<ProductModel>) => {
   return await Model.aggregate([
     {
       $match: {

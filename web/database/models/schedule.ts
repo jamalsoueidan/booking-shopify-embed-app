@@ -1,5 +1,16 @@
-import mongoose from "mongoose";
+import mongoose, { FilterQuery, Types, UpdateQuery } from "mongoose";
+
 const { Schema } = mongoose;
+
+// https://tomanagle.medium.com/strongly-typed-models-with-mongoose-and-typescript-7bc2f7197722
+export interface ScheduleModel extends Document {
+  staff: Types.ObjectId;
+  groupId: string;
+  start: Date;
+  end: Date;
+  available: boolean;
+  tag: string;
+}
 
 const ScheduleSchema = new Schema({
   staff: { type: Schema.Types.ObjectId, ref: "Staff" },
@@ -25,7 +36,11 @@ const ScheduleSchema = new Schema({
   },
 });
 
-export const Model = mongoose.model("schedule", ScheduleSchema, "Schedule");
+export const Model = mongoose.model<ScheduleModel>(
+  "schedule",
+  ScheduleSchema,
+  "Schedule"
+);
 
 export const create = async (document) => {
   try {
@@ -67,17 +82,25 @@ export const remove = async (scheduleId) => {
   return await Model.deleteOne({ _id: scheduleId });
 };
 
-export const insertMany = async (schedules) => {
+export const insertMany = async (schedules: UpdateQuery<ScheduleModel>) => {
   return await Model.insertMany(schedules);
 };
 
-export const updateMany = async (filter, schedules) => {
+export const updateMany = async (
+  filter: FilterQuery<ScheduleModel>,
+  schedules: UpdateQuery<ScheduleModel>
+) => {
   return await Model.updateMany(filter, {
     $set: { ...schedules },
   });
 };
 
-export const getByStaffAndTag = async ({ tag, staff, start, end }) => {
+export const getByStaffAndTag = async ({
+  tag,
+  staff,
+  start,
+  end,
+}: FilterQuery<ScheduleModel>) => {
   return await Model.aggregate([
     {
       $match: {
@@ -122,7 +145,11 @@ export const getByStaffAndTag = async ({ tag, staff, start, end }) => {
   ]);
 };
 
-export const getByTag = async ({ tag, start, end }) => {
+export const getByTag = async ({
+  tag,
+  start,
+  end,
+}: FilterQuery<ScheduleModel>) => {
   return await Model.aggregate([
     {
       $match: {

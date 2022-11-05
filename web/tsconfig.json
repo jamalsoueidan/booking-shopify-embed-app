@@ -3,10 +3,12 @@
     "module": "commonjs",
     "esModuleInterop": true,
     "target": "es6",
-    "outDir": "./dist",
+    "outDir": "dist",
     "allowJs": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "moduleResolution": "node"
   },
   "exclude": ["node_modules", "frontend", "dist"]
 }

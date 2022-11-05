@@ -47,6 +47,7 @@ export default function applyAdminProductMiddleware(app) {
 
     try {
       if (Object.keys(req.body).length > 0) {
+        // security check req.body
         payload = await Product.findByIdAndUpdate(productId, {
           shop,
           ...req.body,

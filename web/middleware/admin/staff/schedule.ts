@@ -5,7 +5,6 @@ import {
   isAfter,
   isBefore,
   parseISO,
-  setHours,
   subHours,
 } from "date-fns";
 import * as Schedule from "../../../database/models/schedule";

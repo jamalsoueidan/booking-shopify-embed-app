@@ -23,8 +23,7 @@ export default function applyAdminCollectionsMiddleware(app) {
     };
 
     try {
-      /** @type {(Array<string>)} */
-      const selections = req.body.selections;
+      const selections: Array<string> = req.body.selections;
       const collections = await Promise.all(
         selections.map((id) => getCollection(currentSession, id))
       );
@@ -41,17 +40,20 @@ export default function applyAdminCollectionsMiddleware(app) {
         };
       });
 
-      const products = collections.reduce((products, currentCollection) => {
-        currentCollection.products.nodes.forEach((n) => {
-          products.push({
-            shop,
-            collectionId: currentCollection.id,
-            productId: n.id,
-            title: n.title,
+      const products = collections.reduce<Array<Partial<Product.IModel>>>(
+        (products, currentCollection) => {
+          currentCollection.products.nodes.forEach((n) => {
+            products.push({
+              shop,
+              collectionId: currentCollection.id,
+              productId: n.id,
+              title: n.title,
+            });
           });
-        });
-        return products;
-      }, []);
+          return products;
+        },
+        []
+      );
 
       const productsBulkWrite = products.map((product) => {
         return {

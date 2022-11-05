@@ -1,6 +1,12 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
+export interface CollectionModel extends Document {
+  shop: string;
+  title: string;
+  collectionId: string;
+}
+
 const CollectionSchema = new Schema({
   shop: {
     type: String,
@@ -15,7 +21,7 @@ const CollectionSchema = new Schema({
   },
 });
 
-export const Model = mongoose.model(
+export const Model = mongoose.model<CollectionModel>(
   "collection",
   CollectionSchema,
   "Collection"

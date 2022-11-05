@@ -8,16 +8,15 @@ import { AppInstallations } from "./app_installations.js";
 import * as database from "./database/database.js";
 import { setupGDPRWebHooks } from "./gdpr.js";
 import redirectToAuth from "./helpers/redirect-to-auth.js";
+import widgetRoute from "./libs/widget/widget.route";
 import applyAdminBookingsMiddleware from "./middleware/admin/bookings";
 import applyAdminCollectionsMiddleware from "./middleware/admin/collections";
-import applyAdminMetafieldsMiddleware from "./middleware/admin/metafields";
 import applyAdminProductMiddleware from "./middleware/admin/product";
 import applyAdminSettingMiddleware from "./middleware/admin/setting";
 import applyAdminStaffMiddleware from "./middleware/admin/staff";
 import applyAdminStaffScheduleMiddleware from "./middleware/admin/staff/schedule";
 import applyAdminWebhooksMiddleware from "./middleware/admin/webhooks";
 import applyAuthMiddleware from "./middleware/auth.js";
-import applyPublicWidgetMiddleware from "./middleware/public/widget";
 import verifyRequest from "./middleware/verify-request.js";
 import * as order from "./webhooks/order.js";
 
@@ -134,7 +133,8 @@ export async function createServer(
   // attribute, as a result of the express.json() middleware
   app.use(express.json({ limit: "1mb", extended: true } as any));
 
-  applyPublicWidgetMiddleware(app);
+  //applyPublicWidgetMiddleware(app);
+  app.use("/api/widget", widgetRoute);
 
   // All endpoints after this point will require an active session
   app.use(
@@ -147,7 +147,6 @@ export async function createServer(
   applyAdminWebhooksMiddleware(app);
   applyAdminCollectionsMiddleware(app);
   applyAdminProductMiddleware(app);
-  applyAdminMetafieldsMiddleware(app);
   applyAdminStaffMiddleware(app);
   applyAdminStaffScheduleMiddleware(app);
   applyAdminBookingsMiddleware(app);
