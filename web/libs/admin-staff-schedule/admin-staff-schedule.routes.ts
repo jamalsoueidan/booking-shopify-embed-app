@@ -25,13 +25,19 @@ export default function adminStaffScheduleRoutes(app) {
     handleRoute(req, res, ControllerMethods.remove);
   });
 
-  router.put("/staff/:staff/schedules/group/:groupId", async (req, res) => {
-    handleRoute(req, res, ControllerMethods.updateGroup);
-  });
+  router.put(
+    "/staff/:staff/schedules/:schedule/group/:groupId",
+    async (req, res) => {
+      handleRoute(req, res, ControllerMethods.updateGroup);
+    }
+  );
 
-  router.delete("/staff/:staff/schedules/group/:groupId", async (req, res) => {
-    handleRoute(req, res, ControllerMethods.removeGroup);
-  });
+  router.delete(
+    "/staff/:staff/schedules/:schedule/group/:groupId",
+    async (req, res) => {
+      handleRoute(req, res, ControllerMethods.removeGroup);
+    }
+  );
 
   return router;
 }
