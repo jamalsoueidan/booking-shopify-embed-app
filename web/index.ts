@@ -8,15 +8,13 @@ import { AppInstallations } from "./app_installations.js";
 import * as database from "./database/database.js";
 import { setupGDPRWebHooks } from "./gdpr.js";
 import redirectToAuth from "./helpers/redirect-to-auth.js";
+import adminBookingRoutes from "./libs/admin-booking/admin-booking.routes.js";
+import adminCollectionRoutes from "./libs/admin-collection/admin-collection.routes.js";
 import adminProductRoutes from "./libs/admin-product/admin-product.routes";
 import adminSettingRoutes from "./libs/admin-setting/admin-setting.routes";
+import adminStaffScheduleRoutes from "./libs/admin-staff-schedule/admin-staff-schedule.routes.js";
 import adminStaffRoutes from "./libs/admin-staff/admin-staff.routes";
 import widgetRoutes from "./libs/widget/widget.routes";
-import applyAdminBookingsMiddleware from "./middleware/admin/bookings";
-import applyAdminCollectionsMiddleware from "./middleware/admin/collections";
-import applyAdminMetafieldsMiddleware from "./middleware/admin/metafields";
-import applyAdminStaffScheduleMiddleware from "./middleware/admin/staff/schedule";
-import applyAdminWebhooksMiddleware from "./middleware/admin/webhooks";
 import applyAuthMiddleware from "./middleware/auth.js";
 import verifyRequest from "./middleware/verify-request.js";
 import * as order from "./webhooks/order.js";
@@ -144,15 +142,11 @@ export async function createServer(
     })
   );
 
-  applyAdminWebhooksMiddleware(app);
-  applyAdminCollectionsMiddleware(app);
-  //applyAdminProductMiddleware(app);
-  applyAdminMetafieldsMiddleware(app);
-  applyAdminStaffScheduleMiddleware(app);
-  applyAdminBookingsMiddleware(app);
-
+  app.use("/api/admin", adminBookingRoutes(app));
+  app.use("/api/admin", adminCollectionRoutes(app));
   app.use("/api/admin", adminProductRoutes(app));
   app.use("/api/admin", adminStaffRoutes(app));
+  app.use("/api/admin", adminStaffScheduleRoutes(app));
   app.use("/api/admin", adminSettingRoutes(app));
 
   app.use((req, res, next) => {

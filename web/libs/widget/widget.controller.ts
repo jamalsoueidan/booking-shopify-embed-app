@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { Props } from "../../@types";
 import * as Booking from "../../database/models/booking";
 import * as Product from "../../database/models/product";
 import * as Schedule from "../../database/models/schedule";

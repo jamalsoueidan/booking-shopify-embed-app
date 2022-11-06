@@ -1,4 +1,3 @@
-import { Props } from "../../@types";
 import Setting, { SettingModel } from "../../database/models/setting";
 
 export enum ControllerMethods {

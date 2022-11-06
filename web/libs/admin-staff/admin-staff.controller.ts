@@ -1,4 +1,3 @@
-import { Props } from "../../@types";
 import * as Staff from "../../database/models/staff";
 
 export enum ControllerMethods {
@@ -10,7 +9,7 @@ export enum ControllerMethods {
 
 interface GetQuery extends Pick<Staff.StaffModel, "shop"> {}
 
-const get = async ({ query }: Props<GetQuery>) => {
+const get = async ({ query }: { query: GetQuery }) => {
   const shop = query.shop;
   return await Staff.find(shop);
 };
@@ -18,7 +17,13 @@ const get = async ({ query }: Props<GetQuery>) => {
 interface CreateQuery extends Pick<Staff.StaffModel, "shop"> {}
 interface CreateBody extends Partial<Staff.StaffModel> {}
 
-const create = async ({ query, body }: Props<CreateQuery, CreateBody>) => {
+const create = async ({
+  query,
+  body,
+}: {
+  query: CreateQuery;
+  body: CreateBody;
+}) => {
   const shop = query.shop;
   return await Staff.create({ shop, ...body });
 };
