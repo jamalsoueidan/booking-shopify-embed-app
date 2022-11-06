@@ -1,5 +1,15 @@
 # Book Appointment Shopify Application
 
+## Getting started
+
+The structur of this project is follows:
+
+- web/ include the express application and the frontend
+- web/frontend the shopify react appllication
+- web/libs all the api routes is in the libs folder.
+- web/database mongoose related stuff (mongodb)
+- extensions the widget that is rendered in the shopify liquid store
+
 ![alt text](https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/booking.png?raw=true)
 
 ![alt text](https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-list.png?raw=true)
@@ -35,16 +45,6 @@ The following Shopify tools complement these third-party tools to ease app devel
 - [Custom hooks](https://github.com/Shopify/shopify-frontend-template-react/tree/main/hooks) make authenticated requests to the Admin API.
 - [File-based routing](https://github.com/Shopify/shopify-frontend-template-react/blob/main/Routes.jsx) makes creating new pages easier.
 - [Fullcalendar-react](https://github.com/fullcalendar/fullcalendar-react) Fullcalendar for appointments
-
-## Getting started
-
-The structur of this project is follows:
-
-- web/ include the express application and the frontend
-- web/frontend the shopify react appllication
-- web/libs all the api routes is in the libs folder.
-- web/database mongoose related stuff (mongodb)
-- extensions the widget that is rendered in the shopify liquid store
 
 ### Requirements
 
