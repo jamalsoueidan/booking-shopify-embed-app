@@ -7,7 +7,7 @@
     "dev": "concurrently \"npx tsc --watch --preserveWatchOutput\" \"cross-env NODE_ENV=development nodemon dist/index.js\"",
     "serve": "cross-env NODE_ENV=production node index.js",
     "dev:nodemon": "./node_modules/nodemon/bin/nodemon.js",
-    "test": "jest"
+    "test": "jest --watch"
   },
   "engines": {
     "node": ">=14.13.1"

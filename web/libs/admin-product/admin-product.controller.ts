@@ -217,7 +217,7 @@ const addStaff = async ({
       {
         new: true,
       }
-    );
+    ).lean();
   }
   return product;
 };

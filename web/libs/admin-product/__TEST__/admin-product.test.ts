@@ -137,25 +137,59 @@ describe("admin-product controller", () => {
 
     expect(staffToAdd.length).toEqual(3);
 
-    const pickStaff = staffToAdd[0];
+    let pickStaff = staffToAdd[0];
+
+    let body = {
+      tag: pickStaff.tags[0],
+      staff: pickStaff._id.toString(),
+    };
+
+    let updatedProduct: ProductModel;
+    updatedProduct = await productController.addStaff({ query, body }); //same staff
+
+    expect(updatedProduct.staff.length).toEqual(1);
+
+    expect(JSON.parse(JSON.stringify(updatedProduct.staff))).toContainEqual(
+      expect.objectContaining({
+        ...body,
+      })
+    );
+
+    updatedProduct = await productController.addStaff({ query, body }); //same staff
+    expect(updatedProduct.staff.length).toEqual(1);
+  });
+
+  it("Should be able to add other staff", async () => {
+    const query = {
+      shop: global.shop,
+      id: product._id.toString(),
+    };
+
+    const staffToAdd = await productController.getStaffToAdd({
+      query,
+    });
+
+    expect(staffToAdd.length).toEqual(2);
+
+    let pickStaff = staffToAdd[0];
 
     const body = {
       tag: pickStaff.tags[0],
       staff: pickStaff._id.toString(),
     };
 
-    let updatedProduct;
-    updatedProduct = await productController.addStaff({ query, body }); //same staff
-    updatedProduct = await productController.addStaff({ query, body }); //same staff
-    expect(updatedProduct.staff.length).toEqual(1);
-    updatedProduct = await productController.addStaff({
+    const updatedProduct = await productController.addStaff({
       query,
-      body: {
-        tag: pickStaff.tags[1],
-        staff: pickStaff._id.toString(),
-      },
+      body,
     });
+
     expect(updatedProduct.staff.length).toEqual(2);
+
+    expect(JSON.parse(JSON.stringify(updatedProduct.staff))).toContainEqual(
+      expect.objectContaining({
+        ...body,
+      })
+    );
   });
 
   it("Should be able to remove staff", async () => {
@@ -177,11 +211,16 @@ describe("admin-product controller", () => {
       },
     });
 
-    staff = await productController.getStaff({
+    let staffRemoved = await productController.getStaff({
       query,
     });
 
-    // check if the correct staff is removed from DB
-    expect(staff.length).toEqual(1);
+    expect(JSON.parse(JSON.stringify(staffRemoved))).not.toContainEqual(
+      expect.objectContaining({
+        ...staff[0],
+      })
+    );
+
+    expect(staffRemoved.length).toEqual(1);
   });
 });
