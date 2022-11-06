@@ -14,9 +14,9 @@ const handleRoute = async (req, res, methodName: ControllerMethods) => {
         query: {
           shop: req.query.shop || session.shop,
           ...req.query,
+          ...req.params,
         },
         body: req.body,
-        params: req.params,
       }),
     });
   } catch (error) {

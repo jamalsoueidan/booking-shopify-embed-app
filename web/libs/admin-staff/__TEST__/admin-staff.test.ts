@@ -42,15 +42,16 @@ describe("Admin-staff controller", () => {
     const staff = await staffController.get({ query });
     const user = staff[0];
 
-    const params = {
-      staff: staff[0]._id.toString(),
-    };
-
     const body = {
       fullname: "jamal soueidan",
     };
 
-    const updateStaff = await staffController.update({ params, body });
+    const updateStaff = await staffController.update({
+      query: {
+        staff: staff[0]._id.toString(),
+      },
+      body,
+    });
     expect(updateStaff.fullname).toEqual(body.fullname);
   });
 
@@ -61,11 +62,12 @@ describe("Admin-staff controller", () => {
 
     const staff = await staffController.get({ query });
 
-    const params = {
-      staff: staff[0]._id.toString(),
-    };
-
-    const oneStaff = await staffController.getById({ query, params });
+    const oneStaff = await staffController.getById({
+      query: {
+        ...query,
+        staff: staff[0]._id.toString(),
+      },
+    });
     expect(oneStaff._id).toEqual(staff[0]._id);
   });
 });

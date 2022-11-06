@@ -23,20 +23,12 @@ const create = async ({ query, body }: Props<CreateQuery, CreateBody>) => {
   return await Staff.create({ shop, ...body });
 };
 
-interface GetByIdQuery extends Pick<Staff.StaffModel, "shop"> {}
-interface GetByIdParams {
+interface GetByIdQuery extends Pick<Staff.StaffModel, "shop"> {
   staff: string;
 }
 
-const getById = async ({
-  query,
-  params,
-}: {
-  query: GetByIdQuery;
-  params: GetByIdParams;
-}) => {
-  const shop = query.shop;
-  const staff = params.staff;
+const getById = async ({ query }: { query: GetByIdQuery }) => {
+  const { shop, staff } = query;
   return await Staff.findOne(staff, { shop });
 };
 
@@ -46,12 +38,12 @@ interface UpdateParams {
 
 const update = async ({
   body,
-  params,
+  query,
 }: {
   body: Partial<Staff.StaffModel>;
-  params: UpdateParams;
+  query: UpdateParams;
 }) => {
-  const staff = params.staff;
+  const staff = query.staff;
   return await Staff.findByIdAndUpdate(staff, body);
 };
 

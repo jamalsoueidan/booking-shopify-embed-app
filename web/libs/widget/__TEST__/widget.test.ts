@@ -9,7 +9,7 @@ describe("Widget controller", () => {
   afterAll(async () => {
     mongoose.connection.close();
   });
-  it("Should create a user", async () => {
+  it("Should get staff for specific product", async () => {
     const query = {
       productId: "asd",
       shop: "test",

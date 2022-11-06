@@ -8,7 +8,8 @@ export interface ProductModel {
   title: string;
   staff: [
     {
-      staff: Types.ObjectId;
+      _id: Types.ObjectId;
+      staff: string;
       tag: string;
     }
   ];
@@ -64,12 +65,12 @@ export const Model = mongoose.model<ProductModel>(
   "Product"
 );
 
-export const findOne = async (document: Partial<ProductModel>) => {
+export const findOne = async (document) => {
   return await Model.findOne(document);
 };
 
-export const findByIdAndUpdate = async (staffId, document) => {
-  return await Model.findByIdAndUpdate(staffId, document, {
+export const findByIdAndUpdate = async (_id, document) => {
+  return await Model.findByIdAndUpdate(_id, document, {
     returnOriginal: false,
   });
 };
