@@ -32,7 +32,6 @@ const scheduleReduce =
     previous: Array<ScheduleDate>,
     current: GetByStaffAndTagReturn | GetByTagReturn
   ): Array<ScheduleDate> => {
-    console.log(current);
     const end = new Date(current.end);
     const duration = product.duration || 60;
     const buffertime = product.buffertime || 0;
@@ -42,7 +41,8 @@ const scheduleReduce =
     const date = format(start, "yyyy-MM-dd");
 
     let hours = previous.find((p) => p.date === date)?.hours || [];
-    while (isBefore(start, end)) {
+    while (isBefore(addMinutes(start, 1), end)) {
+      //we add just a minute in case they are equal
       hours.push({
         start: start,
         end: addMinutes(start, duration),

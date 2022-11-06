@@ -45,6 +45,6 @@ export const findOne = async (_id, document) => {
 
 export const findByIdAndUpdate = async (staffId, document) => {
   return await Model.findByIdAndUpdate(staffId, document, {
-    returnOriginal: false,
+    new: true,
   });
 };

@@ -118,10 +118,17 @@ export const getProductWithSelectedStaffId = async ({
   }
 };
 
+interface GetAllStaffReturn {
+  _id: Types.ObjectId;
+  fullname: string;
+  tag: string;
+  staff: Types.ObjectId;
+}
+
 export const getAllStaff = async ({
   shop,
   productId,
-}: FilterQuery<ProductModel>) => {
+}: FilterQuery<ProductModel>): Promise<Array<GetAllStaffReturn>> => {
   return await Model.aggregate([
     {
       $match: {
@@ -179,4 +186,39 @@ export const getAllStaff = async ({
       },
     },
   ]);
+};
+
+interface AddStaff {
+  id: string;
+  shop: string;
+  staff: string;
+  tag: string;
+}
+
+export const addStaff = async ({ id, shop, staff, tag }: AddStaff) => {
+  // check staff already exist
+  const product = await Model.findOne({
+    _id: new mongoose.Types.ObjectId(id),
+    shop,
+    staff: { $elemMatch: { staff, tag } },
+  });
+
+  if (!product) {
+    return await Model.findByIdAndUpdate(
+      {
+        shop,
+        _id: new mongoose.Types.ObjectId(id),
+      },
+      {
+        $push: {
+          staff: { staff, tag },
+        },
+        active: true,
+      },
+      {
+        new: true,
+      }
+    );
+  }
+  return product;
 };

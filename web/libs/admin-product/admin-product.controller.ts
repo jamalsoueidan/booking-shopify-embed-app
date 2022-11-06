@@ -196,30 +196,7 @@ const addStaff = async ({
   const { shop, id } = query;
   const { staff, tag } = body;
 
-  // check staff already exist
-  const product = await Product.findOne({
-    _id: new mongoose.Types.ObjectId(id),
-    shop,
-    staff: { $elemMatch: { staff, tag } },
-  });
-
-  if (!product) {
-    return await Product.Model.findByIdAndUpdate(
-      {
-        shop,
-        _id: new mongoose.Types.ObjectId(id),
-      },
-      {
-        $push: {
-          staff: { staff, tag },
-        },
-      },
-      {
-        new: true,
-      }
-    ).lean();
-  }
-  return product;
+  return await Product.addStaff({ id, shop, staff, tag });
 };
 
 interface RemoveStaffQuery extends Query {

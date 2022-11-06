@@ -4,15 +4,27 @@ import * as Product from "../../database/models/product";
 import * as Schedule from "../../database/models/schedule";
 import helpers, { ScheduleDate } from "./widget.helpers";
 
+export interface Staff {
+  _id: string;
+  fullname: string;
+}
+
+export interface Hour {
+  start: Date;
+  end: Date;
+  staff: Staff;
+}
+
+export interface AvailabilityReturn {
+  date: string;
+  hours: Hour[];
+}
+
 interface StaffQuery extends Pick<Product.ProductModel, "productId" | "shop"> {}
 
 const staff = async ({ query }: { query: StaffQuery }) => {
   const { productId, shop } = query;
-  const staff = await Product.getAllStaff({ shop, productId });
-  if (staff.length === 0) {
-    throw "no staff or product exist";
-  }
-  return staff;
+  return await Product.getAllStaff({ shop, productId });
 };
 
 interface AvailabilityDayQuery
@@ -21,12 +33,16 @@ interface AvailabilityDayQuery
   staffId: string;
 }
 
-const availabilityDay = async ({ query }: { query: AvailabilityDayQuery }) => {
+const availabilityDay = async ({
+  query,
+}: {
+  query: AvailabilityDayQuery;
+}): Promise<Array<AvailabilityReturn>> => {
   const { staffId, date, productId, shop } = query;
 
   const product = await Product.getProductWithSelectedStaffId({
     shop,
-    productId,
+    productId, //without shopify url
     staff: new mongoose.Types.ObjectId(staffId),
   });
 
@@ -75,7 +91,7 @@ const availabilityRangeByStaff = async ({
   query,
 }: {
   query: AvailabilityRangeByStaffQuery;
-}) => {
+}): Promise<Array<AvailabilityReturn>> => {
   const { staffId, start, end, shop, productId } = query;
 
   const product = await Product.getProductWithSelectedStaffId({
@@ -125,7 +141,7 @@ const availabilityRangeByAll = async ({
   query,
 }: {
   query: AvailabilityRangeByAllQuery;
-}) => {
+}): Promise<Array<AvailabilityReturn>> => {
   const { start, end, shop, productId } = query;
 
   const product = await Product.findOne({

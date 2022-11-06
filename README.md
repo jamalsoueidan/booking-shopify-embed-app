@@ -10,11 +10,15 @@ The structur of this project is follows:
 - web/database mongoose related stuff (mongodb)
 - extensions the widget that is rendered in the shopify liquid store
 
+## Application screens
+
 ![alt text](https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/booking.png?raw=true)
 
 ![alt text](https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-list.png?raw=true)
 
 ![alt text](https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-edit.png?raw=true)
+
+## Widget screen
 
 ![alt text](https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/extension1.png?raw=true)
 
@@ -28,23 +32,23 @@ This extensions combines a number of third party open-source tools:
 
 This template combines a number of third party open-source tools:
 
+- [Jest](https://jestjs.io/) Jest is a delightful JavaScript Testing Framework with a focus on simplicity.
+- [MongoDB](https://www.mongodb.com/) MongoDB is a source-available cross-platform document-oriented database program.)
 - [Express](https://expressjs.com/) builds the backend.
 - [Vite](https://vitejs.dev/) builds the [React](https://reactjs.org/) frontend.
 - [React Router](https://reactrouter.com/) is used for routing. We wrap this with file-based routing.
 - [Date-fns](https://date-fns.org/) Date manipulation.
 - [useSWR](https://swr.vercel.app/) React Hooks for Data Fetching
 - [TypeScript](https://www.typescriptlang.org) TypeScript is JavaScript with syntax for types.
+- [Fullcalendar-react](https://github.com/fullcalendar/fullcalendar-react) Fullcalendar for appointments
 
 The following Shopify tools complement these third-party tools to ease app development:
 
-- [Jest](https://jestjs.io/) Jest is a delightful JavaScript Testing Framework with a focus on simplicity.
-- [MongoDB](https://www.mongodb.com/) MongoDB is a source-available cross-platform document-oriented database program.)
 - [Shopify API library](https://github.com/Shopify/shopify-node-api) adds OAuth to the Express backend. This lets users install the app and grant scope permissions.
 - [App Bridge React](https://shopify.dev/apps/tools/app-bridge/getting-started/using-react) adds authentication to API requests in the frontend and renders components outside of the App’s iFrame.
 - [Polaris React](https://polaris.shopify.com/) is a powerful design system and component library that helps developers build high quality, consistent experiences for Shopify merchants.
 - [Custom hooks](https://github.com/Shopify/shopify-frontend-template-react/tree/main/hooks) make authenticated requests to the Admin API.
 - [File-based routing](https://github.com/Shopify/shopify-frontend-template-react/blob/main/Routes.jsx) makes creating new pages easier.
-- [Fullcalendar-react](https://github.com/fullcalendar/fullcalendar-react) Fullcalendar for appointments
 
 ### Requirements
 
