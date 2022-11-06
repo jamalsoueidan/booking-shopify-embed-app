@@ -152,6 +152,7 @@ const availabilityRangeByAll = async ({
 
   const schedules = await Schedule.getByTag({
     tag: product.staff.map((s) => s.tag),
+    staffier: product.staff.map((s) => s.staff),
     start: new Date(start),
     end: new Date(end),
   });

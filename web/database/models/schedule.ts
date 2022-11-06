@@ -1,6 +1,6 @@
-import { endOfDay, startOfDay } from "date-fns";
+import { endOfDay, setMilliseconds, setSeconds, startOfDay } from "date-fns";
 import mongoose, { FilterQuery, Types, UpdateQuery } from "mongoose";
-
+import * as Staff from "./staff";
 const { Schema } = mongoose;
 
 // https://tomanagle.medium.com/strongly-typed-models-with-mongoose-and-typescript-7bc2f7197722
@@ -43,12 +43,41 @@ export const Model = mongoose.model<ScheduleModel>(
   "Schedule"
 );
 
-export const create = async (document) => {
-  try {
-    const newStaff = new Model(document);
-    return await newStaff.save();
-  } catch (e) {
-    throw e;
+interface SchedulesProp {
+  groupId?: string;
+  staff?: string;
+  start: Date;
+  end: Date;
+  tag: string;
+}
+interface CreateProps {
+  staff: string;
+  shop: string;
+  schedules: SchedulesProp[] | SchedulesProp;
+}
+
+export const create = async ({ staff, shop, schedules }: CreateProps) => {
+  if (await Staff.findOne(new mongoose.Types.ObjectId(staff), { shop })) {
+    if (Array.isArray(schedules)) {
+      const groupId = new Date().getTime();
+      return await Model.insertMany(
+        schedules.map((b: SchedulesProp) => {
+          b.groupId = groupId.toString();
+          b.staff = staff;
+          b.start = setSeconds(setMilliseconds(b.start, 0), 0);
+          b.end = setSeconds(setMilliseconds(b.end, 0), 0);
+          return b;
+        })
+      );
+    } else {
+      return await Model.create({
+        ...schedules,
+        staff,
+        shop,
+        start: setSeconds(setMilliseconds(schedules.start, 0), 0),
+        end: setSeconds(setMilliseconds(schedules.end, 0), 0),
+      });
+    }
   }
 };
 
@@ -162,6 +191,7 @@ export const getByStaffAndTag = async ({
 
 interface GetByTagProps {
   tag: string[];
+  staffier: string[];
   start: Date;
   end: Date;
 }
@@ -170,6 +200,7 @@ export interface GetByTagReturn extends GetByStaffAndTagReturn {}
 
 export const getByTag = async ({
   tag,
+  staffier,
   start,
   end,
 }: GetByTagProps): Promise<Array<GetByTagReturn>> => {
@@ -178,6 +209,9 @@ export const getByTag = async ({
       $match: {
         tag: {
           $in: tag,
+        },
+        staff: {
+          $in: staffier,
         },
         available: true,
         start: {

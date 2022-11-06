@@ -1,16 +1,25 @@
 import {
-  createStaff,
-  createSchedule,
-  createNewStaffAndAddToProductWithSchedule,
-} from "./../../test-helpers/index";
-import { addHours, format, setHours, setMinutes, setSeconds } from "date-fns";
+  addDays,
+  addHours,
+  format,
+  setMilliseconds,
+  setMinutes,
+  setSeconds,
+  subDays,
+  subHours,
+} from "date-fns";
 import mongoose, { Document } from "mongoose";
 import { ProductModel } from "../../../database/models/product";
+import {
+  createNewStaffAndAddToProductWithSchedule,
+  createSchedule,
+  createStaff,
+} from "./../../test-helpers/index";
 
+import { faker } from "@faker-js/faker";
 import * as Staff from "../../../database/models/staff";
 import { addStaffToProduct, createProduct } from "../../test-helpers";
 import widgetController from "../widget.controller";
-import { faker } from "@faker-js/faker";
 
 const productId = faker.random.numeric(10);
 const shopifyProductId = `gid://shopify/Product/${productId}`;
@@ -72,13 +81,16 @@ describe("admin-product controller", () => {
     expect(allStaff.length).toEqual(1);
   });
 
-  it("Should return hours for the staff on specific day", async () => {
+  it("Should return staff hours on a specified day", async () => {
     const newStaff = await createStaff();
+
+    const start = setMinutes(new Date(), 0);
+    const end = addHours(setMinutes(new Date(), 0), 3);
     const newSchedule = await createSchedule({
-      tag,
       staff: newStaff._id.toString(),
-      start: setMinutes(setMinutes(setSeconds(new Date(), 0), 0), 0),
-      end: addHours(setMinutes(setSeconds(new Date(), 0), 0), 3),
+      tag,
+      start,
+      end,
     });
 
     const newProductID = faker.random.numeric(10);
@@ -104,6 +116,167 @@ describe("admin-product controller", () => {
 
     const availabilityDay = await widgetController.availabilityDay({ query });
     expect(availabilityDay.length).toEqual(1);
-    expect(availabilityDay[0].hours.length).toEqual(3);
+    const day = availabilityDay[0];
+    expect(day.hours.length).toEqual(3);
+    const first = day.hours[0];
+    expect(first.start).toEqual(setSeconds(setMilliseconds(start, 0), 0));
+    const last = day.hours[day.hours.length - 1];
+    expect(last.end).toEqual(setSeconds(setMilliseconds(end, 0), 0));
+  });
+
+  it("Should return staff hours to a specified day range", async () => {
+    const newStaff = await createStaff();
+
+    const firstStartSchedule = setMinutes(new Date(), 0);
+    const firstEndSchedule = addHours(setMinutes(new Date(), 0), 3);
+    await createSchedule({
+      staff: newStaff._id.toString(),
+      tag,
+      start: firstStartSchedule,
+      end: firstEndSchedule,
+    });
+
+    const secondStartSchedule = subDays(subHours(firstStartSchedule, 3), 1);
+    const secondEndSchedule = subDays(firstEndSchedule, 1);
+    await createSchedule({
+      staff: newStaff._id.toString(),
+      tag,
+      start: secondStartSchedule,
+      end: secondEndSchedule,
+    });
+
+    const newProductID = faker.random.numeric(10);
+    const newProduct = await createProduct({
+      shopifyProductId: `gid://shopify/Product/${newProductID}`,
+      duration: 60,
+      buffertime: 0,
+    });
+
+    await addStaffToProduct({
+      staff: newStaff,
+      product: newProduct,
+      tag,
+    });
+
+    const query = {
+      shop: global.shop,
+      productId: newProductID,
+      start: format(subDays(new Date(), 1), "yyyy-MM-dd"),
+      end: format(addDays(new Date(), 1), "yyyy-MM-dd"),
+      staffId: newStaff._id.toString(),
+    };
+
+    const availabilityRangeByStaff =
+      await widgetController.availabilityRangeByStaff({
+        query,
+      });
+
+    expect(availabilityRangeByStaff.length).toEqual(2);
+
+    const first = availabilityRangeByStaff[0];
+
+    let firstHour = first.hours[0];
+    expect(firstHour.start).toEqual(
+      setSeconds(setMilliseconds(secondStartSchedule, 0), 0)
+    );
+    let lastHour = first.hours[first.hours.length - 1];
+    expect(lastHour.end).toEqual(
+      setSeconds(setMilliseconds(secondEndSchedule, 0), 0)
+    );
+
+    const last = availabilityRangeByStaff[1];
+    expect(last.hours.length).toEqual(3);
+
+    firstHour = last.hours[0];
+    expect(firstHour.start).toEqual(
+      setSeconds(setMilliseconds(firstStartSchedule, 0), 0)
+    );
+    lastHour = last.hours[last.hours.length - 1];
+    expect(lastHour.end).toEqual(
+      setSeconds(setMilliseconds(firstEndSchedule, 0), 0)
+    );
+  });
+
+  it("Should return hours for all staff on product", async () => {
+    const newProductID = faker.random.numeric(10);
+    const newProduct = await createProduct({
+      shopifyProductId: `gid://shopify/Product/${newProductID}`,
+      duration: 60,
+      buffertime: 0,
+    });
+
+    const newStaff = await createStaff();
+
+    const firstStartSchedule = setMinutes(new Date(), 0);
+    const firstEndSchedule = addHours(setMinutes(new Date(), 0), 2);
+    await createSchedule({
+      staff: newStaff._id.toString(),
+      tag,
+      start: firstStartSchedule,
+      end: firstEndSchedule,
+    });
+
+    const secondStartSchedule = subDays(firstStartSchedule, 1);
+    const secondEndSchedule = subDays(firstEndSchedule, 1);
+    await createSchedule({
+      staff: newStaff._id.toString(),
+      tag,
+      start: secondStartSchedule,
+      end: secondEndSchedule,
+    });
+
+    await addStaffToProduct({
+      staff: newStaff,
+      product: newProduct,
+      tag,
+    });
+
+    const newStaff1 = await createStaff();
+
+    const firstStartSchedule1 = setMinutes(new Date(), 0);
+    const firstEndSchedule1 = addHours(setMinutes(new Date(), 0), 2);
+    await createSchedule({
+      staff: newStaff1._id.toString(),
+      tag,
+      start: firstStartSchedule1,
+      end: firstEndSchedule1,
+    });
+
+    await addStaffToProduct({
+      staff: newStaff1,
+      product: newProduct,
+      tag,
+    });
+
+    const query = {
+      shop: global.shop,
+      productId: newProductID,
+      start: format(subDays(new Date(), 1), "yyyy-MM-dd"),
+      end: format(addDays(new Date(), 1), "yyyy-MM-dd"),
+    };
+
+    const availabilityRangeByAll =
+      await widgetController.availabilityRangeByAll({
+        query,
+      });
+
+    expect(availabilityRangeByAll.length).toEqual(2);
+
+    const first = availabilityRangeByAll[0];
+    expect(first.hours.length).toEqual(2);
+
+    let fullnames = first.hours.map((h) => h.staff.fullname);
+    expect(fullnames).toEqual([newStaff.fullname, newStaff.fullname]);
+
+    const last = availabilityRangeByAll[1];
+    expect(last.hours.length).toEqual(4);
+
+    fullnames = last.hours.map((h) => h.staff.fullname);
+    expect(fullnames).toEqual([
+      newStaff.fullname,
+      newStaff.fullname,
+      newStaff1.fullname,
+      newStaff1.fullname,
+    ]);
   });
 });

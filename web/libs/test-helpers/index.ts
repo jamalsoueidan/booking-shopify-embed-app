@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { addHours } from "date-fns";
 import * as Product from "../../database/models/product";
-import { Model as Schedule } from "../../database/models/schedule";
+import * as Schedule from "../../database/models/schedule";
 import { Model as Staff } from "../../database/models/staff";
 
 export const createStaff = async () => {
@@ -28,17 +28,26 @@ export const createProduct = async ({
   });
 };
 
+interface CreateSchedule {
+  staff: string;
+  tag: string;
+  start?: Date;
+  end?: Date;
+}
 export const createSchedule = async ({
   staff,
   tag,
   start = new Date(),
   end = addHours(new Date(), 5),
-}) => {
+}: CreateSchedule) => {
   return await Schedule.create({
-    tag,
     staff,
-    start,
-    end,
+    shop: global.shop,
+    schedules: {
+      tag,
+      start,
+      end,
+    },
   });
 };
 
@@ -52,12 +61,12 @@ export const createNewStaffAndAddToProductWithSchedule = async ({
     id: product._id.toString(),
     shop: global.shop,
     staff: staff._id.toString(),
-    tag: tag,
+    tag,
   });
 
   const schedule = await createSchedule({
-    tag,
     staff: staff._id.toString(),
+    tag,
   });
 
   return { staff, updateProduct, schedule };

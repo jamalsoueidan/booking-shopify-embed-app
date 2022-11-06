@@ -40,7 +40,8 @@ const scheduleReduce =
     let start = new Date(current.start);
     const date = format(start, "yyyy-MM-dd");
 
-    let hours = previous.find((p) => p.date === date)?.hours || [];
+    let previousHours = previous.find((p) => p.date === date);
+    let hours = previousHours?.hours || [];
     while (isBefore(addMinutes(start, 1), end)) {
       //we add just a minute in case they are equal
       hours.push({
@@ -50,7 +51,10 @@ const scheduleReduce =
       });
       start = addMinutes(start, duration + buffertime);
     }
-    previous.push({ date, hours });
+
+    if (!previousHours) {
+      previous.push({ date, hours });
+    }
     return previous;
   };
 

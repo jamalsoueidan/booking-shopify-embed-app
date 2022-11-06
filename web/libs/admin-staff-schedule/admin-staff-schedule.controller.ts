@@ -28,19 +28,7 @@ const get = async ({ query }) => {
 const create = async ({ query, body }) => {
   const { shop, staff } = query;
 
-  if (await Staff.findOne(staff, { shop })) {
-    if (Array.isArray(body)) {
-      const groupId = new Date().getTime();
-      const schedules = body.map((b) => {
-        b.groupId = groupId;
-        b.staff = staff;
-        return b;
-      });
-      return await Schedule.insertMany(schedules);
-    } else {
-      return await Schedule.create({ staff, ...body });
-    }
-  }
+  return Schedule.create({ shop, staff, schedules: body });
 };
 
 const update = async ({ query, body }) => {
@@ -148,4 +136,4 @@ const removeGroup = async ({ query, body }) => {
   }
 };
 
-export default { get, remove, update, updateGroup, removeGroup };
+export default { get, remove, create, update, updateGroup, removeGroup };
