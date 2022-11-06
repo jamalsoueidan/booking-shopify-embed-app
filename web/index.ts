@@ -8,13 +8,13 @@ import { AppInstallations } from "./app_installations.js";
 import * as database from "./database/database.js";
 import { setupGDPRWebHooks } from "./gdpr.js";
 import redirectToAuth from "./helpers/redirect-to-auth.js";
-import adminStaffRoutes from "./libs/admin-staff/admin-staff.routes";
+import adminProductRoutes from "./libs/admin-product/admin-product.routes";
 import adminSettingRoutes from "./libs/admin-setting/admin-setting.routes";
+import adminStaffRoutes from "./libs/admin-staff/admin-staff.routes";
 import widgetRoutes from "./libs/widget/widget.routes";
 import applyAdminBookingsMiddleware from "./middleware/admin/bookings";
 import applyAdminCollectionsMiddleware from "./middleware/admin/collections";
 import applyAdminMetafieldsMiddleware from "./middleware/admin/metafields";
-import applyAdminProductMiddleware from "./middleware/admin/product";
 import applyAdminStaffScheduleMiddleware from "./middleware/admin/staff/schedule";
 import applyAdminWebhooksMiddleware from "./middleware/admin/webhooks";
 import applyAuthMiddleware from "./middleware/auth.js";
@@ -146,13 +146,14 @@ export async function createServer(
 
   applyAdminWebhooksMiddleware(app);
   applyAdminCollectionsMiddleware(app);
-  applyAdminProductMiddleware(app);
+  //applyAdminProductMiddleware(app);
   applyAdminMetafieldsMiddleware(app);
   applyAdminStaffScheduleMiddleware(app);
   applyAdminBookingsMiddleware(app);
 
-  app.use("/api/admin", adminStaffRoutes);
-  app.use("/api/admin", adminSettingRoutes);
+  app.use("/api/admin", adminProductRoutes(app));
+  app.use("/api/admin", adminStaffRoutes(app));
+  app.use("/api/admin", adminSettingRoutes(app));
 
   app.use((req, res, next) => {
     const shop = Shopify.Utils.sanitizeShop(req.query.shop as any);

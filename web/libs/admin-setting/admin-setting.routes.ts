@@ -1,35 +1,19 @@
-import Shopify from "@shopify/shopify-api";
 import { Router } from "express";
+import { expressHandleRoute } from "./../express-helpers/handle-route";
 import controller, { ControllerMethods } from "./admin-setting.controller";
 
-const router = Router();
+export default function adminSettingRoutes(app) {
+  const handleRoute = expressHandleRoute(app, controller);
 
-const handleRoute = async (req, res, methodName: ControllerMethods) => {
-  const session = await Shopify.Utils.loadCurrentSession(req, res, true);
+  const router = Router();
 
-  try {
-    res.status(202).send({
-      success: true,
-      payload: await controller[methodName]({
-        query: {
-          shop: req.query.shop || session.shop,
-          ...req.query,
-          ...req.params,
-        },
-        body: req.body,
-      }),
-    });
-  } catch (error) {
-    res.status(500).json({ error });
-  }
-};
+  router.get("/setting", async (req, res) => {
+    handleRoute(req, res, ControllerMethods.get);
+  });
 
-router.get("/setting", async (req, res) => {
-  handleRoute(req, res, ControllerMethods.get);
-});
+  router.put("/setting", async (req, res) => {
+    handleRoute(req, res, ControllerMethods.create);
+  });
 
-router.put("/setting", async (req, res) => {
-  handleRoute(req, res, ControllerMethods.create);
-});
-
-export default router;
+  return router;
+}

@@ -1,51 +1,35 @@
-import { Shopify } from "@shopify/shopify-api";
 import { Router } from "express";
+import { expressHandleRoute } from "../express-helpers/handle-route";
 import controller, { ControllerMethods } from "./admin-product.controller";
 
-const router = Router();
+export default function adminProductRoutes(app) {
+  const router = Router();
 
-const handleRoute = async (req, res, methodName: ControllerMethods) => {
-  const session = await Shopify.Utils.loadCurrentSession(req, res, true);
+  const handleRoute = expressHandleRoute(app, controller);
 
-  try {
-    res.status(202).send({
-      success: true,
-      payload: await controller[methodName]({
-        query: {
-          shop: req.query.shop || session.shop,
-          ...req.query,
-          ...req.params,
-        },
-        body: req.body,
-      }),
-    });
-  } catch (error) {
-    res.status(500).json({ error });
-  }
-};
+  router.get("/products/:id", async (req, res) => {
+    handleRoute(req, res, ControllerMethods.getById);
+  });
 
-router.get("/products/:productId", async (req, res) => {
-  handleRoute(req, res, ControllerMethods.getById);
-});
+  router.put("/products/:id", async (req, res) => {
+    handleRoute(req, res, ControllerMethods.update);
+  });
 
-router.put("/products/:productId", async (req, res) => {
-  handleRoute(req, res, ControllerMethods.update);
-});
+  router.get("/products/:id/staff", async (req, res) => {
+    handleRoute(req, res, ControllerMethods.getStaff);
+  });
 
-router.get("/products/:productId/staff", async (req, res) => {
-  handleRoute(req, res, ControllerMethods.getStaff);
-});
+  router.get("/products/:id/staff-to-add", async (req, res) => {
+    handleRoute(req, res, ControllerMethods.getStaffToAdd);
+  });
 
-router.get("/products/:productId/staff-to-add", async (req, res) => {
-  handleRoute(req, res, ControllerMethods.getStaffToAdd);
-});
+  router.post("/products/:id/staff", async (req, res) => {
+    handleRoute(req, res, ControllerMethods.addStaff);
+  });
 
-router.post("/products/:productId/staff", async (req, res) => {
-  handleRoute(req, res, ControllerMethods.addStaff);
-});
+  router.delete("/products/:id/staff/:staffId", async (req, res) => {
+    handleRoute(req, res, ControllerMethods.removeStaff);
+  });
 
-router.delete("/products/:productId/staff/:staffId", async (req, res) => {
-  handleRoute(req, res, ControllerMethods.removeStaff);
-});
-
-export default router;
+  return router;
+}

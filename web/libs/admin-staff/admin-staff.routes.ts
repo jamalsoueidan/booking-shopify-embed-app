@@ -1,43 +1,27 @@
-import Shopify from "@shopify/shopify-api";
 import { Router } from "express";
 import controller, { ControllerMethods } from "./admin-staff.controller";
+import { expressHandleRoute } from "../express-helpers/handle-route";
 
-const router = Router();
+export default function adminSettingRoutes(app) {
+  const router = Router();
 
-const handleRoute = async (req, res, methodName: ControllerMethods) => {
-  const session = await Shopify.Utils.loadCurrentSession(req, res, true);
+  const handleRoute = expressHandleRoute(app, controller);
 
-  try {
-    res.status(202).send({
-      success: true,
-      payload: await controller[methodName]({
-        query: {
-          shop: req.query.shop || session.shop,
-          ...req.query,
-          ...req.params,
-        },
-        body: req.body,
-      }),
-    });
-  } catch (error) {
-    res.status(500).json({ error });
-  }
-};
+  router.get("/staff", async (req, res) => {
+    handleRoute(req, res, ControllerMethods.get);
+  });
 
-router.get("/staff", async (req, res) => {
-  handleRoute(req, res, ControllerMethods.get);
-});
+  router.post("/staff", async (req, res) => {
+    handleRoute(req, res, ControllerMethods.create);
+  });
 
-router.post("/staff", async (req, res) => {
-  handleRoute(req, res, ControllerMethods.create);
-});
+  router.get("/staff/:staff", async (req, res) => {
+    handleRoute(req, res, ControllerMethods.getById);
+  });
 
-router.get("/staff/:staff", async (req, res) => {
-  handleRoute(req, res, ControllerMethods.getById);
-});
+  router.put("/staff/:staff", async (req, res) => {
+    handleRoute(req, res, ControllerMethods.update);
+  });
 
-router.put("/staff/:staff", async (req, res) => {
-  handleRoute(req, res, ControllerMethods.update);
-});
-
-export default router;
+  return router;
+}
