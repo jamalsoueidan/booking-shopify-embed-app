@@ -1,12 +1,11 @@
 import ProductModel, { IProductModel } from "@models/product.model";
 import mongoose, { Document } from "mongoose";
 
+import { createProduct, createSchedule, createStaff } from "@libs/jest-helpers";
 import { IStaffModel } from "@models/staff.model";
-import ScheduleService from "@services/schedule.service";
 import StaffService from "@services/staff.service";
 import { addHours, subHours } from "date-fns";
 import productController from "../admin-product.controller";
-import { createSchedule } from "@libs/test-helpers";
 
 const productId = "123456789";
 const shopifyProductId = `gid://shopify/Product/${productId}`;
@@ -26,20 +25,10 @@ describe("admin-product controller", () => {
     await mongoose.connect(global.__MONGO_URI__);
 
     // prepare a product
-    product = await ProductModel.create({
-      shop: global.shop,
-      collectionId: "anything",
-      productId: shopifyProductId,
-      title: "Makeup",
-    });
+    product = await createProduct({ shopifyProductId });
 
     // prepare a product
-    staff1 = await StaffService.create({
-      shop: global.shop,
-      fullname: "anders",
-      email: "jamasdu@aeidan.com",
-      phone: "+4531317411",
-    });
+    staff1 = await createStaff();
 
     await createSchedule({
       tag,
@@ -48,12 +37,7 @@ describe("admin-product controller", () => {
       staff: staff1._id,
     });
 
-    staff2 = await StaffService.create({
-      shop: global.shop,
-      fullname: "morten",
-      email: "jamasd@uaeidan.com",
-      phone: "+4531317412",
-    });
+    staff2 = await createStaff();
 
     await createSchedule({
       tag,
@@ -62,12 +46,7 @@ describe("admin-product controller", () => {
       staff: staff2._id,
     });
 
-    staff3 = await StaffService.create({
-      shop: global.shop,
-      fullname: "claus",
-      email: "jama@sduaeidan.com",
-      phone: "+4531317413",
-    });
+    staff3 = await createStaff();
 
     await createSchedule({
       tag,

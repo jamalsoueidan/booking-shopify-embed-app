@@ -1,6 +1,6 @@
 window.addEventListener("load", function () {
   const tagName = "product-availability";
-  const url = "https://b7c43feb7525.in.ngrok.io";
+  const url = "https://676981bef40b.eu.ngrok.io";
 
   if (!customElements.get(tagName)) {
     customElements.define(
@@ -54,9 +54,7 @@ window.addEventListener("load", function () {
           const value = JSON.parse(this.staffSelect.value);
           if (value === "") return;
           const staffId = value !== "0" ? value.staff : null;
-          const path = new URL(
-            `${url}/api/widget/availability/${staffId ? "range" : "any"}`
-          );
+          const path = new URL(`${url}/api/widget/availability-range`);
           const params = new URLSearchParams(url.search);
           params.append("shop", this.dataset.shop);
           params.append("productId", this.dataset.productId);

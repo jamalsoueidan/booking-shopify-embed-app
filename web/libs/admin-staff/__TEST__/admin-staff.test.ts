@@ -1,9 +1,11 @@
+import StaffModel from "@models/staff.model";
 import mongoose from "mongoose";
 import staffController from "../admin-staff.controller";
 
 describe("Admin-staff controller", () => {
   beforeAll(async () => {
     await mongoose.connect(global.__MONGO_URI__);
+    await StaffModel.deleteMany({});
   });
 
   afterAll(async () => {
@@ -16,7 +18,7 @@ describe("Admin-staff controller", () => {
 
     const body = {
       fullname: "jamasdeidan",
-      email: "jamasduaeidan.com",
+      email: "test@test.com",
       phone: "+4531317428",
     };
 

@@ -7,6 +7,7 @@ export interface IBookingModel {
   start: Date;
   end: Date;
   shop: string;
+  anyStaff?: boolean;
 }
 
 const BookingSchema = new mongoose.Schema({
@@ -20,6 +21,10 @@ const BookingSchema = new mongoose.Schema({
   start: Date,
   end: Date,
   shop: String,
+  anyStaff: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 export default mongoose.model<IBookingModel>(

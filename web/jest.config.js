@@ -11,6 +11,7 @@ module.exports = {
   roots: ["<rootDir>"],
   moduleFileExtensions: ["ts", "js", "json", "node"],
   preset: "ts-jest",
+  testMatch: ["**/?(*.)+(spec|test).[t]s?(x)"],
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
     prefix: "<rootDir>",
   }),
