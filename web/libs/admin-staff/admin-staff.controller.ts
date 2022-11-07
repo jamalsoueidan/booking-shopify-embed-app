@@ -1,4 +1,5 @@
-import * as Staff from "../../database/models/staff";
+import { IStaffModel } from "@models/staff.model";
+import StaffService from "@services/staff.service";
 
 export enum ControllerMethods {
   get = "get",
@@ -7,15 +8,15 @@ export enum ControllerMethods {
   update = "update",
 }
 
-interface GetQuery extends Pick<Staff.StaffModel, "shop"> {}
+interface GetQuery extends Pick<IStaffModel, "shop"> {}
 
 const get = async ({ query }: { query: GetQuery }) => {
   const shop = query.shop;
-  return await Staff.find(shop);
+  return await StaffService.find(shop);
 };
 
-interface CreateQuery extends Pick<Staff.StaffModel, "shop"> {}
-interface CreateBody extends Partial<Staff.StaffModel> {}
+interface CreateQuery extends Pick<IStaffModel, "shop"> {}
+interface CreateBody extends Partial<IStaffModel> {}
 
 const create = async ({
   query,
@@ -25,16 +26,16 @@ const create = async ({
   body: CreateBody;
 }) => {
   const shop = query.shop;
-  return await Staff.create({ shop, ...body });
+  return await StaffService.create({ shop, ...body });
 };
 
-interface GetByIdQuery extends Pick<Staff.StaffModel, "shop"> {
+interface GetByIdQuery extends Pick<IStaffModel, "shop"> {
   staff: string;
 }
 
 const getById = async ({ query }: { query: GetByIdQuery }) => {
   const { shop, staff } = query;
-  return await Staff.findOne(staff, { shop });
+  return await StaffService.findOne(staff, { shop });
 };
 
 interface UpdateParams {
@@ -45,11 +46,11 @@ const update = async ({
   body,
   query,
 }: {
-  body: Partial<Staff.StaffModel>;
+  body: Partial<IStaffModel>;
   query: UpdateParams;
 }) => {
   const staff = query.staff;
-  return await Staff.findByIdAndUpdate(staff, body);
+  return await StaffService.findByIdAndUpdate(staff, body);
 };
 
 export default { get, getById, update, create };

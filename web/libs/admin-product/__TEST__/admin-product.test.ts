@@ -1,24 +1,23 @@
+import ProductModel, { IProductModel } from "@models/product.model";
 import mongoose, { Document } from "mongoose";
-import {
-  Model as Product,
-  ProductModel,
-} from "../../../database/models/product";
 
-import { Model as Staff, StaffModel } from "../../../database/models/staff";
-
+import { IStaffModel } from "@models/staff.model";
+import ScheduleService from "@services/schedule.service";
+import StaffService from "@services/staff.service";
 import { addHours, subHours } from "date-fns";
-import { Model as Schedule } from "../../../database/models/schedule";
 import productController from "../admin-product.controller";
+import { createSchedule } from "@libs/test-helpers";
 
 const productId = "123456789";
 const shopifyProductId = `gid://shopify/Product/${productId}`;
 
-interface IProductModel extends ProductModel, Document {}
-interface IStaffModel extends StaffModel, Document {}
-let product: IProductModel;
-let staff1: IStaffModel;
-let staff2: IStaffModel;
-let staff3: IStaffModel;
+interface ICustomProductModel extends IProductModel, Document {}
+interface ICustomStaffModel extends IStaffModel, Document {}
+
+let product: ICustomProductModel;
+let staff1: ICustomStaffModel;
+let staff2: ICustomStaffModel;
+let staff3: ICustomStaffModel;
 
 const tag = "testerne";
 
@@ -27,7 +26,7 @@ describe("admin-product controller", () => {
     await mongoose.connect(global.__MONGO_URI__);
 
     // prepare a product
-    product = await Product.create({
+    product = await ProductModel.create({
       shop: global.shop,
       collectionId: "anything",
       productId: shopifyProductId,
@@ -35,42 +34,42 @@ describe("admin-product controller", () => {
     });
 
     // prepare a product
-    staff1 = await Staff.create({
+    staff1 = await StaffService.create({
       shop: global.shop,
       fullname: "anders",
       email: "jamasdu@aeidan.com",
       phone: "+4531317411",
     });
 
-    await Schedule.create({
+    await createSchedule({
       tag,
       start: new Date(),
       end: addHours(new Date(), 5),
       staff: staff1._id,
     });
 
-    staff2 = await Staff.create({
+    staff2 = await StaffService.create({
       shop: global.shop,
       fullname: "morten",
       email: "jamasd@uaeidan.com",
       phone: "+4531317412",
     });
 
-    await Schedule.create({
+    await createSchedule({
       tag,
       start: subHours(new Date(), 3),
       end: addHours(new Date(), 2),
       staff: staff2._id,
     });
 
-    staff3 = await Staff.create({
+    staff3 = await StaffService.create({
       shop: global.shop,
       fullname: "claus",
       email: "jama@sduaeidan.com",
       phone: "+4531317413",
     });
 
-    await Schedule.create({
+    await createSchedule({
       tag,
       start: subHours(new Date(), 5),
       end: addHours(new Date(), 5),
@@ -144,7 +143,7 @@ describe("admin-product controller", () => {
       staff: pickStaff._id.toString(),
     };
 
-    let updatedProduct: ProductModel;
+    let updatedProduct: IProductModel;
     updatedProduct = await productController.addStaff({ query, body }); //same staff
 
     expect(updatedProduct.staff.length).toEqual(1);

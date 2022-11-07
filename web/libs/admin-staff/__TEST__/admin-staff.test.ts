@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { SettingLanguage } from "../../../database/models/setting";
 import staffController from "../admin-staff.controller";
 
 describe("Admin-staff controller", () => {

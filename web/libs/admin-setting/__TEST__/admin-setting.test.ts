@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { SettingLanguage } from "../../../database/models/setting";
+import { ISettingLanguage } from "../../../database/models/setting.models";
 import settingController from "../admin-setting.controller";
 
 describe("admin-setting controller", () => {
@@ -16,11 +16,11 @@ describe("admin-setting controller", () => {
     };
 
     const body = {
-      language: SettingLanguage.en,
+      language: ISettingLanguage.en,
     };
 
     const createSetting = await settingController.create({ query, body });
-    expect(createSetting.language).toEqual(SettingLanguage.en);
+    expect(createSetting.language).toEqual(ISettingLanguage.en);
   });
 
   it("Should find setting", async () => {
@@ -29,6 +29,6 @@ describe("admin-setting controller", () => {
     };
 
     const findSetting = await settingController.get({ query });
-    expect(findSetting.language).toEqual(SettingLanguage.en);
+    expect(findSetting.language).toEqual(ISettingLanguage.en);
   });
 });

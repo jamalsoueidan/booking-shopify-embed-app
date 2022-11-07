@@ -1,82 +1,18 @@
-import mongoose, { FilterQuery, Schema, Types } from "mongoose";
+import Product, { IProductModel } from "@models/product.model";
+import mongoose, { FilterQuery, Types } from "mongoose";
 
-// https://tomanagle.medium.com/strongly-typed-models-with-mongoose-and-typescript-7bc2f7197722
-export interface ProductModel {
-  shop: string;
-  collectionId: string;
-  productId: string;
-  title: string;
-  staff: [
-    {
-      _id: Types.ObjectId;
-      staff: string;
-      tag: string;
-    }
-  ];
-  duration: number;
-  buffertime: number;
-  active: boolean;
-}
-
-const ProductSchema = new Schema({
-  shop: {
-    type: String,
-    required: true,
-    index: true,
-  },
-  collectionId: {
-    type: String,
-    required: true,
-    index: true,
-  },
-  productId: {
-    type: String,
-    required: true,
-    index: true,
-  },
-  title: String,
-  staff: [
-    {
-      staff: {
-        type: Schema.Types.ObjectId,
-        ref: "Staff",
-        required: true,
-      },
-      tag: String,
-    },
-  ],
-  duration: {
-    type: Number,
-    default: 60,
-  },
-  buffertime: {
-    type: Number,
-    default: 0,
-  },
-  active: {
-    type: Boolean,
-    default: false,
-  },
-});
-
-export const Model = mongoose.model<ProductModel>(
-  "product",
-  ProductSchema,
-  "Product"
-);
-
-export const findOne = async (document) => {
-  return await Model.findOne(document);
+const findOne = async (document) => {
+  return await Product.findOne(document);
 };
 
-export const findByIdAndUpdate = async (_id, document) => {
-  return await Model.findByIdAndUpdate(_id, document, {
+const findByIdAndUpdate = async (_id, document) => {
+  return await Product.findByIdAndUpdate(_id, document, {
     returnOriginal: false,
   });
 };
 
 export interface GetProductWithSelectedStaffReturn
-  extends Omit<ProductModel, "staff"> {
+  extends Omit<IProductModel, "staff"> {
   staff: {
     tag: string;
     staff: Types.ObjectId;
@@ -84,16 +20,16 @@ export interface GetProductWithSelectedStaffReturn
 }
 
 export interface GetProductWithSelectedStaffProps
-  extends Pick<ProductModel, "shop" | "productId"> {
+  extends Pick<IProductModel, "shop" | "productId"> {
   staff: Types.ObjectId;
 }
 
-export const getProductWithSelectedStaffId = async ({
+const getProductWithSelectedStaffId = async ({
   shop,
   productId,
   staff,
 }: GetProductWithSelectedStaffProps): Promise<GetProductWithSelectedStaffReturn> => {
-  const products = await Model.aggregate([
+  const products = await Product.aggregate([
     {
       $match: {
         shop,
@@ -125,11 +61,11 @@ interface GetAllStaffReturn {
   staff: Types.ObjectId;
 }
 
-export const getAllStaff = async ({
+const getAllStaff = async ({
   shop,
   productId,
-}: FilterQuery<ProductModel>): Promise<Array<GetAllStaffReturn>> => {
-  return await Model.aggregate([
+}: FilterQuery<IProductModel>): Promise<Array<GetAllStaffReturn>> => {
+  return await Product.aggregate([
     {
       $match: {
         productId: "gid://shopify/Product/" + productId,
@@ -195,16 +131,16 @@ interface AddStaff {
   tag: string;
 }
 
-export const addStaff = async ({ id, shop, staff, tag }: AddStaff) => {
+const addStaff = async ({ id, shop, staff, tag }: AddStaff) => {
   // check staff already exist
-  const product = await Model.findOne({
+  const product = await Product.findOne({
     _id: new mongoose.Types.ObjectId(id),
     shop,
     staff: { $elemMatch: { staff, tag } },
   });
 
   if (!product) {
-    return await Model.findByIdAndUpdate(
+    return await Product.findByIdAndUpdate(
       {
         shop,
         _id: new mongoose.Types.ObjectId(id),
@@ -221,4 +157,12 @@ export const addStaff = async ({ id, shop, staff, tag }: AddStaff) => {
     );
   }
   return product;
+};
+
+export default {
+  findOne,
+  findByIdAndUpdate,
+  getProductWithSelectedStaffId,
+  getAllStaff,
+  addStaff,
 };

@@ -1,66 +1,29 @@
+import ScheduleModel, { IScheduleModel } from "@models/schedule.model";
+import StaffService from "@services/staff.service";
 import { endOfDay, setMilliseconds, setSeconds, startOfDay } from "date-fns";
 import mongoose, { FilterQuery, Types, UpdateQuery } from "mongoose";
-import * as Staff from "./staff";
-const { Schema } = mongoose;
 
-// https://tomanagle.medium.com/strongly-typed-models-with-mongoose-and-typescript-7bc2f7197722
-export interface ScheduleModel {
-  staff: Types.ObjectId;
-  groupId: string;
-  start: Date;
-  end: Date;
-  available: boolean;
-  tag: string;
-}
-
-const ScheduleSchema = new Schema({
-  staff: { type: Schema.Types.ObjectId, ref: "Staff" },
-  groupId: String,
-  start: {
-    type: Date,
-    required: true,
-    index: true,
-  },
-  end: {
-    type: Date,
-    required: true,
-    index: true,
-  },
-  available: {
-    type: Boolean,
-    default: true,
-  },
-  tag: {
-    type: String,
-    required: true,
-    index: true,
-  },
-});
-
-export const Model = mongoose.model<ScheduleModel>(
-  "schedule",
-  ScheduleSchema,
-  "Schedule"
-);
-
-interface SchedulesProp {
+export interface SchedulesProp {
   groupId?: string;
   staff?: string;
   start: Date;
   end: Date;
   tag: string;
 }
-interface CreateProps {
+
+export interface CreateProps {
   staff: string;
   shop: string;
   schedules: SchedulesProp[] | SchedulesProp;
 }
 
-export const create = async ({ staff, shop, schedules }: CreateProps) => {
-  if (await Staff.findOne(new mongoose.Types.ObjectId(staff), { shop })) {
+const create = async ({ staff, shop, schedules }: CreateProps) => {
+  if (
+    await StaffService.findOne(new mongoose.Types.ObjectId(staff), { shop })
+  ) {
     if (Array.isArray(schedules)) {
       const groupId = new Date().getTime();
-      return await Model.insertMany(
+      return await ScheduleModel.insertMany(
         schedules.map((b: SchedulesProp) => {
           b.groupId = groupId.toString();
           b.staff = staff;
@@ -70,7 +33,7 @@ export const create = async ({ staff, shop, schedules }: CreateProps) => {
         })
       );
     } else {
-      return await Model.create({
+      return await ScheduleModel.create({
         ...schedules,
         staff,
         shop,
@@ -81,7 +44,7 @@ export const create = async ({ staff, shop, schedules }: CreateProps) => {
   }
 };
 
-export const find = async (document) => {
+const find = async (document) => {
   const conditions = {
     ...(document.staff && { staff: document.staff }),
     ...(document.groupId && { groupId: document.groupId }),
@@ -92,35 +55,35 @@ export const find = async (document) => {
   };
 
   try {
-    return await Model.find(conditions);
+    return await ScheduleModel.find(conditions);
   } catch (e) {
     throw e;
   }
 };
 
-export const findOne = async (filter) => {
-  return await Model.findOne(filter);
+const findOne = async (filter) => {
+  return await ScheduleModel.findOne(filter);
 };
 
-export const findByIdAndUpdate = async (scheduleId, document) => {
-  return await Model.findByIdAndUpdate(scheduleId, document, {
+const findByIdAndUpdate = async (scheduleId, document) => {
+  return await ScheduleModel.findByIdAndUpdate(scheduleId, document, {
     returnOriginal: false,
   });
 };
 
-export const remove = async (scheduleId) => {
-  return await Model.deleteOne({ _id: scheduleId });
+const remove = async (scheduleId) => {
+  return await ScheduleModel.deleteOne({ _id: scheduleId });
 };
 
-export const insertMany = async (schedules: UpdateQuery<ScheduleModel>) => {
-  return await Model.insertMany(schedules);
+const insertMany = async (schedules: UpdateQuery<IScheduleModel>) => {
+  return await ScheduleModel.insertMany(schedules);
 };
 
-export const updateMany = async (
-  filter: FilterQuery<ScheduleModel>,
-  schedules: UpdateQuery<ScheduleModel>
+const updateMany = async (
+  filter: FilterQuery<IScheduleModel>,
+  schedules: UpdateQuery<IScheduleModel>
 ) => {
-  return await Model.updateMany(filter, {
+  return await ScheduleModel.updateMany(filter, {
     $set: { ...schedules },
   });
 };
@@ -132,20 +95,20 @@ interface GetByStaffAndTagProps {
   end: string;
 }
 
-export interface GetByStaffAndTagReturn extends Omit<ScheduleModel, "staff"> {
+export interface GetByStaffAndTagReturn extends Omit<IScheduleModel, "staff"> {
   staff: {
     _id: string;
     fullname: string;
   };
 }
 
-export const getByStaffAndTag = async ({
+const getByStaffAndTag = async ({
   tag,
   staff,
   start,
   end,
 }: GetByStaffAndTagProps): Promise<Array<GetByStaffAndTagReturn>> => {
-  return await Model.aggregate([
+  return await ScheduleModel.aggregate([
     {
       $match: {
         tag: tag,
@@ -198,13 +161,13 @@ interface GetByTagProps {
 
 export interface GetByTagReturn extends GetByStaffAndTagReturn {}
 
-export const getByTag = async ({
+const getByTag = async ({
   tag,
   staffier,
   start,
   end,
 }: GetByTagProps): Promise<Array<GetByTagReturn>> => {
-  return await Model.aggregate([
+  return await ScheduleModel.aggregate([
     {
       $match: {
         tag: {
@@ -250,4 +213,16 @@ export const getByTag = async ({
       },
     },
   ]);
+};
+
+export default {
+  create,
+  find,
+  findOne,
+  remove,
+  findByIdAndUpdate,
+  insertMany,
+  updateMany,
+  getByStaffAndTag,
+  getByTag,
 };

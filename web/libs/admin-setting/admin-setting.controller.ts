@@ -1,19 +1,19 @@
-import Setting, { SettingModel } from "../../database/models/setting";
+import SettingModel, { ISettingModel } from "@models/setting.models";
 
 export enum ControllerMethods {
   get = "get",
   create = "create",
 }
 
-interface GetQuery extends Pick<SettingModel, "shop"> {}
+interface GetQuery extends Pick<ISettingModel, "shop"> {}
 
 const get = async ({ query }: { query: GetQuery }) => {
   const shop = query.shop;
-  return await Setting.findOne({ shop });
+  return await SettingModel.findOne({ shop });
 };
 
-interface CreateQuery extends Pick<SettingModel, "shop"> {}
-interface CreateBody extends Partial<SettingModel> {}
+interface CreateQuery extends Pick<ISettingModel, "shop"> {}
+interface CreateBody extends Partial<ISettingModel> {}
 
 const create = async ({
   query,
@@ -24,7 +24,7 @@ const create = async ({
 }) => {
   const shop = query.shop;
 
-  return await Setting.findOneAndUpdate({ shop }, body, {
+  return await SettingModel.findOneAndUpdate({ shop }, body, {
     upsert: true,
     new: true,
   });

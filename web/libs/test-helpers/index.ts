@@ -1,11 +1,12 @@
 import { faker } from "@faker-js/faker";
+import ProductModel from "@models/product.model";
+import ProductService from "@services/product.service";
+import ScheduleService from "@services/schedule.service";
+import StaffService from "@services/staff.service";
 import { addHours } from "date-fns";
-import * as Product from "../../database/models/product";
-import * as Schedule from "../../database/models/schedule";
-import { Model as Staff } from "../../database/models/staff";
 
 export const createStaff = async () => {
-  return await Staff.create({
+  return await StaffService.create({
     shop: global.shop,
     fullname: faker.name.fullName(),
     email: faker.internet.email(),
@@ -18,7 +19,7 @@ export const createProduct = async ({
   duration = 45,
   buffertime = 15,
 }) => {
-  return await Product.Model.create({
+  return await ProductModel.create({
     shop: global.shop,
     collectionId: faker.name.jobTitle(),
     productId: shopifyProductId,
@@ -40,7 +41,7 @@ export const createSchedule = async ({
   start = new Date(),
   end = addHours(new Date(), 5),
 }: CreateSchedule) => {
-  return await Schedule.create({
+  return await ScheduleService.create({
     staff,
     shop: global.shop,
     schedules: {
@@ -57,7 +58,7 @@ export const createNewStaffAndAddToProductWithSchedule = async ({
 }) => {
   const staff = await createStaff();
 
-  const updateProduct = await Product.addStaff({
+  const updateProduct = await ProductService.addStaff({
     id: product._id.toString(),
     shop: global.shop,
     staff: staff._id.toString(),
@@ -73,7 +74,7 @@ export const createNewStaffAndAddToProductWithSchedule = async ({
 };
 
 export const addStaffToProduct = async ({ staff, product, tag }) => {
-  const updateProduct = await Product.addStaff({
+  const updateProduct = await ProductService.addStaff({
     id: product._id.toString(),
     shop: global.shop,
     staff: staff._id.toString(),

@@ -1,3 +1,6 @@
+import ScheduleModel from "@models/schedule.model";
+import ScheduleService from "@services/schedule.service";
+import StaffService from "@services/staff.service";
 import {
   addHours,
   getHours,
@@ -6,8 +9,6 @@ import {
   parseISO,
   subHours,
 } from "date-fns";
-import * as Schedule from "../../database/models/schedule";
-import * as Staff from "../../database/models/staff";
 
 export enum ControllerMethods {
   get = "get",
@@ -20,22 +21,22 @@ export enum ControllerMethods {
 
 const get = async ({ query }) => {
   const { shop, staff } = query;
-  if (await Staff.findOne(staff, { shop })) {
-    return await Schedule.find({ staff });
+  if (await StaffService.findOne(staff, { shop })) {
+    return await ScheduleService.find({ staff });
   }
 };
 
 const create = async ({ query, body }) => {
   const { shop, staff } = query;
 
-  return Schedule.create({ shop, staff, schedules: body });
+  return ScheduleService.create({ shop, staff, schedules: body });
 };
 
 const update = async ({ query, body }) => {
   const { shop, staff, schedule } = query;
 
-  if (await Staff.findOne(staff, { shop })) {
-    return await Schedule.findByIdAndUpdate(schedule, {
+  if (await StaffService.findOne(staff, { shop })) {
+    return await ScheduleService.findByIdAndUpdate(schedule, {
       groupId: null,
       ...body,
     });
@@ -45,15 +46,15 @@ const update = async ({ query, body }) => {
 const remove = async ({ query }) => {
   const { shop, staff, schedule } = query;
 
-  if (await Staff.findOne(staff, { shop })) {
-    return await Schedule.remove(schedule);
+  if (await StaffService.findOne(staff, { shop })) {
+    return await ScheduleService.remove(schedule);
   }
 };
 
 const updateGroup = async ({ query, body }) => {
   const { staff, schedule, groupId, shop } = query;
 
-  const documents = await Schedule.find({
+  const documents = await ScheduleService.find({
     _id: schedule,
     staff,
     groupId,
@@ -114,7 +115,7 @@ const updateGroup = async ({ query, body }) => {
       };
     });
 
-    return await Schedule.Model.bulkWrite(bulk);
+    return await ScheduleModel.bulkWrite(bulk);
   } else {
     throw "Groupid doesn't exist";
   }
@@ -123,14 +124,14 @@ const updateGroup = async ({ query, body }) => {
 const removeGroup = async ({ query, body }) => {
   const { shop, staff, schedule, groupId } = query;
 
-  const documents = await Schedule.Model.countDocuments({
+  const documents = await ScheduleModel.countDocuments({
     _id: schedule,
     staff,
     groupId,
   });
 
   if (documents > 0) {
-    return await Schedule.Model.deleteMany({ groupId });
+    return await ScheduleModel.deleteMany({ groupId });
   } else {
     throw "Groupid doesn't exist";
   }

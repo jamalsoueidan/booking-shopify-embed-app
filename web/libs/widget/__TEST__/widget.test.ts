@@ -1,4 +1,14 @@
 import {
+  addStaffToProduct,
+  createNewStaffAndAddToProductWithSchedule,
+  createProduct,
+  createSchedule,
+  createStaff,
+} from "@libs/test-helpers";
+import { IProductModel } from "@models/product.model";
+import { IStaffModel } from "@models/staff.model";
+import StaffService from "@services/staff.service";
+import {
   addDays,
   addHours,
   format,
@@ -9,25 +19,17 @@ import {
   subHours,
 } from "date-fns";
 import mongoose, { Document } from "mongoose";
-import { ProductModel } from "../../../database/models/product";
-import {
-  createNewStaffAndAddToProductWithSchedule,
-  createSchedule,
-  createStaff,
-} from "./../../test-helpers/index";
 
 import { faker } from "@faker-js/faker";
-import * as Staff from "../../../database/models/staff";
-import { addStaffToProduct, createProduct } from "../../test-helpers";
 import widgetController from "../widget.controller";
 
 const productId = faker.random.numeric(10);
 const shopifyProductId = `gid://shopify/Product/${productId}`;
 
-interface IProductModel extends ProductModel, Document {}
-interface IStaffModel extends Staff.StaffModel, Document {}
-let product: IProductModel;
-let staff: IStaffModel;
+interface CustomProductModel extends IProductModel, Document {}
+interface ICustomStaffModel extends IStaffModel, Document {}
+let product: CustomProductModel;
+let staff: ICustomStaffModel;
 let schedule: any;
 
 const tag = "customTag";
@@ -70,7 +72,7 @@ describe("admin-product controller", () => {
   });
 
   it("Should not include inactive staff.", async () => {
-    staff = await Staff.findByIdAndUpdate(staff._id, { active: false });
+    staff = await StaffService.findByIdAndUpdate(staff._id, { active: false });
 
     const query = {
       shop: global.shop,

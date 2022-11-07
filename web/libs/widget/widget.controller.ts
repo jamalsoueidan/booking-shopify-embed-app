@@ -1,7 +1,8 @@
+import { IProductModel } from "@models/product.model";
+import BookingService from "@services/booking.service";
+import ProductService from "@services/product.service";
+import ScheduleService from "@services/schedule.service";
 import mongoose from "mongoose";
-import * as Booking from "../../database/models/booking";
-import * as Product from "../../database/models/product";
-import * as Schedule from "../../database/models/schedule";
 import helpers, { ScheduleDate } from "./widget.helpers";
 
 export interface Staff {
@@ -20,15 +21,15 @@ export interface AvailabilityReturn {
   hours: Hour[];
 }
 
-interface StaffQuery extends Pick<Product.ProductModel, "productId" | "shop"> {}
+interface StaffQuery extends Pick<IProductModel, "productId" | "shop"> {}
 
 const staff = async ({ query }: { query: StaffQuery }) => {
   const { productId, shop } = query;
-  return await Product.getAllStaff({ shop, productId });
+  return await ProductService.getAllStaff({ shop, productId });
 };
 
 interface AvailabilityDayQuery
-  extends Pick<Product.ProductModel, "productId" | "shop"> {
+  extends Pick<IProductModel, "productId" | "shop"> {
   date: string;
   staffId: string;
 }
@@ -40,7 +41,7 @@ const availabilityDay = async ({
 }): Promise<Array<AvailabilityReturn>> => {
   const { staffId, date, productId, shop } = query;
 
-  const product = await Product.getProductWithSelectedStaffId({
+  const product = await ProductService.getProductWithSelectedStaffId({
     shop,
     productId, //without shopify url
     staff: new mongoose.Types.ObjectId(staffId),
@@ -50,14 +51,14 @@ const availabilityDay = async ({
     throw "no staff or product";
   }
 
-  const schedules = await Schedule.getByStaffAndTag({
+  const schedules = await ScheduleService.getByStaffAndTag({
     tag: product.staff.tag,
     staff: product.staff.staff,
     start: date,
     end: date,
   });
 
-  const bookings = await Booking.getBookingsByProductAndStaff({
+  const bookings = await BookingService.getBookingsByProductAndStaff({
     shop,
     productId,
     start: new Date(date),
@@ -81,7 +82,7 @@ const availabilityDay = async ({
 };
 
 interface AvailabilityRangeByStaffQuery
-  extends Pick<Product.ProductModel, "productId" | "shop"> {
+  extends Pick<IProductModel, "productId" | "shop"> {
   staffId: string;
   start: string;
   end: string;
@@ -94,7 +95,7 @@ const availabilityRangeByStaff = async ({
 }): Promise<Array<AvailabilityReturn>> => {
   const { staffId, start, end, shop, productId } = query;
 
-  const product = await Product.getProductWithSelectedStaffId({
+  const product = await ProductService.getProductWithSelectedStaffId({
     shop,
     productId,
     staff: new mongoose.Types.ObjectId(staffId),
@@ -104,14 +105,14 @@ const availabilityRangeByStaff = async ({
     throw "no staff or product";
   }
 
-  const schedules = await Schedule.getByStaffAndTag({
+  const schedules = await ScheduleService.getByStaffAndTag({
     tag: product.staff.tag,
     staff: product.staff.staff,
     start,
     end,
   });
 
-  const bookings = await Booking.getBookingsByProductAndStaff({
+  const bookings = await BookingService.getBookingsByProductAndStaff({
     shop,
     productId,
     staff: product.staff.staff,
@@ -132,7 +133,7 @@ const availabilityRangeByStaff = async ({
 };
 
 interface AvailabilityRangeByAllQuery
-  extends Pick<Product.ProductModel, "productId" | "shop"> {
+  extends Pick<IProductModel, "productId" | "shop"> {
   start: string;
   end: string;
 }
@@ -144,20 +145,20 @@ const availabilityRangeByAll = async ({
 }): Promise<Array<AvailabilityReturn>> => {
   const { start, end, shop, productId } = query;
 
-  const product = await Product.findOne({
+  const product = await ProductService.findOne({
     shop,
     productId: "gid://shopify/Product/" + productId,
     active: true,
   });
 
-  const schedules = await Schedule.getByTag({
+  const schedules = await ScheduleService.getByTag({
     tag: product.staff.map((s) => s.tag),
     staffier: product.staff.map((s) => s.staff),
     start: new Date(start),
     end: new Date(end),
   });
 
-  const bookings = await Booking.getBookingsByProduct({
+  const bookings = await BookingService.getBookingsByProduct({
     shop,
     productId,
     start: new Date(start),

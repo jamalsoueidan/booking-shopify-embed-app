@@ -1,4 +1,4 @@
-import * as Booking from "../database/models/booking.js";
+import * as Booking from "../database/models/booking.model.js";
 
 /**
  * @typedef Property

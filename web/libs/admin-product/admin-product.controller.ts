@@ -1,8 +1,8 @@
-import mongoose, { Document, ObjectId, Types } from "mongoose";
-import * as Product from "../../database/models/product";
-import * as Schedule from "../../database/models/schedule";
-import { StaffModel } from "../../database/models/staff";
-import { ProductModel } from "./../../database/models/product";
+import ProductModel, { IProductModel } from "@models/product.model";
+import ScheduleModel from "@models/schedule.model";
+import ProductService from "@services/product.service";
+import mongoose, { Document, Types } from "mongoose";
+import { IStaffModel } from "../../database/models/staff.model";
 
 export enum ControllerMethods {
   getById = "getById",
@@ -13,16 +13,19 @@ export enum ControllerMethods {
   removeStaff = "removeStaff",
 }
 
-interface Query extends Pick<ProductModel, "shop"> {
+interface Query extends Pick<IProductModel, "shop"> {
   id: string;
 }
 
 const getById = async ({ query }: { query: Query }) => {
   const { shop, id } = query;
-  return await Product.findOne({ shop, _id: new mongoose.Types.ObjectId(id) });
+  return await ProductService.findOne({
+    shop,
+    _id: new mongoose.Types.ObjectId(id),
+  });
 };
 
-interface UpdateBody extends Partial<ProductModel> {
+interface UpdateBody extends Partial<IProductModel> {
   staff?: never;
 }
 
@@ -30,13 +33,16 @@ const update = async ({ query, body }: { query: Query; body: UpdateBody }) => {
   const { shop, id } = query;
 
   // security, should not be able to update staff or other properties then buffertime or duration etc.
-  return await Product.findByIdAndUpdate(new mongoose.Types.ObjectId(id), {
-    shop,
-    ...body,
-  });
+  return await ProductService.findByIdAndUpdate(
+    new mongoose.Types.ObjectId(id),
+    {
+      shop,
+      ...body,
+    }
+  );
 };
 
-interface GetStaffReturn extends StaffModel, Document {
+interface GetStaffReturn extends IStaffModel, Document {
   tag: string;
   staff: Types.ObjectId;
 }
@@ -48,7 +54,7 @@ const getStaff = async ({
 }): Promise<Array<GetStaffReturn>> => {
   const { shop, id } = query;
 
-  return await Product.Model.aggregate([
+  return await ProductModel.aggregate([
     {
       $match: { _id: new mongoose.Types.ObjectId(id), shop },
     },
@@ -93,7 +99,7 @@ const getStaff = async ({
   ]);
 };
 
-interface GetStaffToAddReturn extends StaffModel, Document {
+interface GetStaffToAddReturn extends IStaffModel, Document {
   tags: string[];
 }
 
@@ -104,7 +110,7 @@ const getStaffToAdd = async ({
 }): Promise<Array<GetStaffToAddReturn>> => {
   const { shop, id } = query;
 
-  return await Schedule.Model.aggregate([
+  return await ScheduleModel.aggregate([
     {
       $group: {
         _id: {
@@ -192,11 +198,11 @@ const addStaff = async ({
 }: {
   query: Query;
   body: AddStaffBody;
-}): Promise<ProductModel> => {
+}): Promise<IProductModel> => {
   const { shop, id } = query;
   const { staff, tag } = body;
 
-  return await Product.addStaff({ id, shop, staff, tag });
+  return await ProductService.addStaff({ id, shop, staff, tag });
 };
 
 interface RemoveStaffQuery extends Query {
@@ -205,7 +211,7 @@ interface RemoveStaffQuery extends Query {
 const removeStaff = async ({ query }: { query: RemoveStaffQuery }) => {
   const { shop, id, staffId } = query;
 
-  return await Product.Model.updateOne(
+  return await ProductModel.updateOne(
     { shop, _id: new mongoose.Types.ObjectId(id) },
     { $pull: { staff: { _id: staffId } } }
   );

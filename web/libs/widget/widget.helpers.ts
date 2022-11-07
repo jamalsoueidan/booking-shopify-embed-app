@@ -1,11 +1,13 @@
+import { IProductModel } from "@models/product.model";
 import { addMinutes, differenceInMinutes, format, isBefore } from "date-fns";
-import { GetBookingsByProductReturn } from "../../database/models/booking";
 import {
   GetByStaffAndTagReturn,
   GetByTagReturn,
-} from "../../database/models/schedule";
-import { GetBookingsByProductAndStaffReturn } from "./../../database/models/booking";
-import { ProductModel } from "./../../database/models/product";
+} from "../../database/services/schedule.service";
+import {
+  GetBookingsByProductAndStaffReturn,
+  GetBookingsByProductReturn,
+} from "./../../database/services/booking.service";
 
 export interface ScheduleHourStaff {
   _id: string;
@@ -24,7 +26,7 @@ export interface ScheduleDate {
 }
 
 interface ScheduleReduceProduct
-  extends Pick<ProductModel, "duration" | "buffertime"> {}
+  extends Pick<IProductModel, "duration" | "buffertime"> {}
 
 const scheduleReduce =
   (product: ScheduleReduceProduct) =>

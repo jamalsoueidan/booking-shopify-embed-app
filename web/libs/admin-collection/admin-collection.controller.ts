@@ -1,6 +1,7 @@
+import CollectionModel from "@models/collection.model";
+import ProductModel from "@models/product.model";
+import CollectionService from "@services/collection.service";
 import { Session } from "@shopify/shopify-api/dist/auth/session";
-import * as Collection from "../../database/models/collection";
-import * as Product from "../../database/models/product";
 import { getCollection } from "./admin-collection.helpers";
 
 export enum ControllerMethods {
@@ -68,8 +69,8 @@ const create = async ({
   });
 
   return {
-    collections: await Collection.Model.bulkWrite(collectionBulkWrite),
-    products: await Product.Model.bulkWrite(productsBulkWrite),
+    collections: await CollectionModel.bulkWrite(collectionBulkWrite),
+    products: await ProductModel.bulkWrite(productsBulkWrite),
   };
 };
 
@@ -81,12 +82,12 @@ interface DeleteQuery {
 const remove = async ({ query }: { query: DeleteQuery }) => {
   const { shop, id } = query;
 
-  const collection = await Collection.findOne({ shop, id });
+  const collection = await CollectionService.findOne({ shop, id });
 
   if (collection) {
     return {
-      collection: await Collection.Model.deleteOne({ id }),
-      products: await Product.Model.deleteMany({
+      collection: await CollectionModel.deleteOne({ id }),
+      products: await ProductModel.deleteMany({
         collectionId: collection.collectionId,
       }),
     };
@@ -94,7 +95,7 @@ const remove = async ({ query }: { query: DeleteQuery }) => {
 };
 
 const get = async () => {
-  return await Collection.findAll();
+  return await CollectionService.findAll();
 };
 
 export default { create, get, remove };
