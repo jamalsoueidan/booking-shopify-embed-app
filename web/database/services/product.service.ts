@@ -2,12 +2,12 @@ import Product, { IProductModel } from "@models/product.model";
 import mongoose, { FilterQuery, Types } from "mongoose";
 
 const findOne = async (document) => {
-  return await Product.findOne(document);
+  return await Product.findOne(document).lean();
 };
 
 const findByIdAndUpdate = async (_id, document) => {
   return await Product.findByIdAndUpdate(_id, document, {
-    returnOriginal: false,
+    new: true,
   });
 };
 
@@ -33,7 +33,7 @@ const getProductWithSelectedStaffId = async ({
     {
       $match: {
         shop,
-        productId: "gid://shopify/Product/" + productId,
+        productId,
         active: true,
       },
     },
@@ -68,7 +68,7 @@ const getAllStaff = async ({
   return await Product.aggregate([
     {
       $match: {
-        productId: "gid://shopify/Product/" + productId,
+        productId,
         shop,
         active: true,
       },

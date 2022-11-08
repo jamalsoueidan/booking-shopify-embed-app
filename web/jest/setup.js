@@ -16,6 +16,5 @@ module.exports = async function () {
   fs.writeFileSync(globalConfigPath, JSON.stringify(mongoConfig));
 
   // Set reference to mongod in order to close the server during teardown.
-  global.__MONGOD__ = instance;
   process.env.MONGO_URL = mongoConfig.mongoUri;
 };

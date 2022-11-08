@@ -23,7 +23,7 @@ const getBookingsByProduct = async ({
     {
       $match: {
         shop,
-        productId: "gid://shopify/Product/" + productId,
+        productId,
         $or: [
           {
             start: {
@@ -82,7 +82,7 @@ const getBookingsByProductAndStaff = async ({
     {
       $match: {
         shop,
-        productId: "gid://shopify/Product/" + productId,
+        productId,
         staff: staff,
         $or: [
           {

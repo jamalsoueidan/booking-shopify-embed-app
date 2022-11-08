@@ -1,16 +1,12 @@
-import StaffModel from "@models/staff.model";
+import { createStaff } from "@libs/jest-helpers";
 import mongoose from "mongoose";
 import staffController from "../admin-staff.controller";
 
 describe("Admin-staff controller", () => {
-  beforeAll(async () => {
-    await mongoose.connect(global.__MONGO_URI__);
-    await StaffModel.deleteMany({});
-  });
+  beforeAll(() => mongoose.connect(global.__MONGO_URI__));
+  afterAll(() => mongoose.connection.close());
+  afterEach(() => mongoose.connection.db.dropDatabase());
 
-  afterAll(async () => {
-    mongoose.connection.close();
-  });
   it("Should create a staff", async () => {
     const query = {
       shop: global.shop,
@@ -31,6 +27,7 @@ describe("Admin-staff controller", () => {
       shop: global.shop,
     };
 
+    await createStaff("333");
     const staff = await staffController.get({ query });
     expect(staff.length).toEqual(1);
   });
@@ -39,6 +36,8 @@ describe("Admin-staff controller", () => {
     const query = {
       shop: global.shop,
     };
+
+    await createStaff("222");
 
     const staff = await staffController.get({ query });
     const user = staff[0];
@@ -60,6 +59,8 @@ describe("Admin-staff controller", () => {
     const query = {
       shop: global.shop,
     };
+
+    await createStaff("111");
 
     const staff = await staffController.get({ query });
 

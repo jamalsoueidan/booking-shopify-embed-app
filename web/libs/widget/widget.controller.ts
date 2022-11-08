@@ -5,6 +5,13 @@ import ScheduleService from "@services/schedule.service";
 import mongoose from "mongoose";
 import helpers, { ScheduleDate } from "./widget.helpers";
 
+export enum ControllerMethods {
+  staff = "staff",
+  availabilityDay = "availabilityDay",
+  availabilityRangeByStaff = "availabilityRangeByStaff",
+  availabilityRangeByAll = "availabilityRangeByAll",
+}
+
 export interface Staff {
   _id: string;
   fullname: string;
@@ -147,7 +154,7 @@ const availabilityRangeByAll = async ({
 
   const product = await ProductService.findOne({
     shop,
-    productId: "gid://shopify/Product/" + productId,
+    productId,
     active: true,
   });
 

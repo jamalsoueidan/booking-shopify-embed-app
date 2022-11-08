@@ -7,11 +7,12 @@
     "allowJs": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": "./",
+    "baseUrl": ".",
     "paths": {
       "@models/*": ["database/models/*"],
       "@services/*": ["database/services/*"],
-      "@libs/*": ["libs/*"]
+      "@libs/*": ["libs/*"],
+      "@webhooks/*": ["webhooks/*"]
     }
   },
   "exclude": ["node_modules", "frontend", "dist"]

@@ -19,6 +19,7 @@ interface Query extends Pick<IProductModel, "shop"> {
 
 const getById = async ({ query }: { query: Query }) => {
   const { shop, id } = query;
+
   return await ProductService.findOne({
     shop,
     _id: new mongoose.Types.ObjectId(id),
@@ -47,6 +48,7 @@ interface GetStaffReturn extends IStaffModel, Document {
   staff: Types.ObjectId;
 }
 
+// @description return all staff who are added to the product
 const getStaff = async ({
   query,
 }: {
@@ -103,6 +105,7 @@ interface GetStaffToAddReturn extends IStaffModel, Document {
   tags: string[];
 }
 
+// @description return all staff that don't belong yet to the product
 const getStaffToAdd = async ({
   query,
 }: {
@@ -192,6 +195,7 @@ interface AddStaffBody {
   tag: string;
 }
 
+// @description add staff to product
 const addStaff = async ({
   query,
   body,

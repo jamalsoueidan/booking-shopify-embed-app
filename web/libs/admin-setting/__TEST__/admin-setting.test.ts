@@ -3,13 +3,9 @@ import { ISettingLanguage } from "@models/setting.models";
 import settingController from "../admin-setting.controller";
 
 describe("admin-setting controller", () => {
-  beforeAll(async () => {
-    await mongoose.connect(global.__MONGO_URI__);
-  });
+  beforeAll(() => mongoose.connect(global.__MONGO_URI__));
+  afterAll(() => mongoose.disconnect());
 
-  afterAll(async () => {
-    mongoose.connection.close();
-  });
   it("Should create or update a setting", async () => {
     const query = {
       shop: global.shop,

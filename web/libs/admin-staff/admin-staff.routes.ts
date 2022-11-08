@@ -1,6 +1,7 @@
 import { Router } from "express";
-import controller, { ControllerMethods } from "./admin-staff.controller";
+import { checkSchema } from "express-validator";
 import { expressHandleRoute } from "../express-helpers/handle-route";
+import controller, { ControllerMethods } from "./admin-staff.controller";
 
 export default function adminSettingRoutes(app) {
   const router = Router();
@@ -15,9 +16,15 @@ export default function adminSettingRoutes(app) {
     handleRoute(req, res, ControllerMethods.create);
   });
 
-  router.get("/staff/:staff", async (req, res) => {
-    handleRoute(req, res, ControllerMethods.getById);
-  });
+  router.get(
+    "/staff/:staff",
+    checkSchema({
+      staff: { notEmpty: true },
+    }),
+    async (req, res) => {
+      handleRoute(req, res, ControllerMethods.getById);
+    }
+  );
 
   router.put("/staff/:staff", async (req, res) => {
     handleRoute(req, res, ControllerMethods.update);

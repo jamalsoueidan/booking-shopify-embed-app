@@ -1,8 +1,8 @@
 import mongoose, { Types } from "mongoose";
 
 export interface IBookingModel {
-  productId: string;
-  orderId: string;
+  productId: number;
+  orderId: number;
   staff: Types.ObjectId;
   start: Date;
   end: Date;
@@ -11,8 +11,8 @@ export interface IBookingModel {
 }
 
 const BookingSchema = new mongoose.Schema({
-  productId: String,
-  orderId: String,
+  productId: Number,
+  orderId: Number,
   staff: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Staff",

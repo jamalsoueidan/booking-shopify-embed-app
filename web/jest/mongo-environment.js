@@ -15,7 +15,7 @@ module.exports = class MongoEnvironment extends NodeEnvironment {
 
     this.global.__MONGO_URI__ = globalConfig.mongoUri;
     this.global.__MONGO_DB_NAME__ = globalConfig.mongoDBName;
-    this.global.shop = "testerne.myshopify.com";
+    this.global.shop = "testeriphone.myshopify.com";
 
     await super.setup();
   }

@@ -1,7 +1,7 @@
+import { expressHandleRoute } from "@libs/express-helpers/handle-route";
 import { Router } from "express";
-import controller from "./widget.controller";
-
-const router = Router();
+import { checkSchema } from "express-validator";
+import controller, { ControllerMethods } from "./widget.controller";
 
 declare global {
   interface String {
@@ -17,34 +17,35 @@ String.prototype.toCamelCase = function () {
   });
 };
 
-const handleRoute = async (req, res, methodName) => {
-  try {
-    res.status(202).send({
-      success: true,
-      payload: await controller[methodName]({
-        query: req.query,
-        body: req.body,
-      }),
-    });
-  } catch (error) {
-    res.status(500).json({ error });
-  }
-};
-router.use(async (req, res, next) => {
-  const methodName = req.path.slice(1).replace("-", " ").toCamelCase();
-  if (controller[methodName]) {
-    handleRoute(req, res, methodName);
-  } else {
-    next();
-  }
-});
+export default function widgetRoutes(app) {
+  const router = Router();
 
-router.get("/availability-range", async (req, res) => {
-  const { staffId } = req.query;
-  const methodName = staffId
-    ? "availabilityRangeByStaff"
-    : "availabilityRangeByAll";
-  handleRoute(req, res, methodName);
-});
+  const handleRoute = expressHandleRoute(app, controller);
 
-export default router;
+  router.use(async (req, res, next) => {
+    const methodName = req.path.slice(1).replace("-", " ").toCamelCase();
+    if (controller[methodName]) {
+      handleRoute(req, res, methodName);
+    } else {
+      next();
+    }
+  });
+
+  router.get(
+    "/availability-range",
+    checkSchema({
+      start: { notEmpty: true },
+      end: { notEmpty: true },
+      productId: { notEmpty: true },
+    }),
+    async (req, res) => {
+      const { staffId } = req.query;
+      const methodName = staffId
+        ? ControllerMethods.availabilityRangeByStaff
+        : ControllerMethods.availabilityRangeByAll;
+      handleRoute(req, res, methodName);
+    }
+  );
+
+  return router;
+}

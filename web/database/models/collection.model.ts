@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 export interface ICollectionModel {
   shop: string;
   title: string;
-  collectionId: string;
+  collectionId: number;
 }
 
 const CollectionSchema = new Schema({
@@ -15,7 +15,7 @@ const CollectionSchema = new Schema({
   },
   title: String,
   collectionId: {
-    type: String,
+    type: Number,
     required: true,
     index: true,
   },

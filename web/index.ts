@@ -17,7 +17,7 @@ import adminStaffRoutes from "./libs/admin-staff/admin-staff.routes";
 import widgetRoutes from "./libs/widget/widget.routes";
 import applyAuthMiddleware from "./middleware/auth.js";
 import verifyRequest from "./middleware/verify-request.js";
-import * as order from "./webhooks/order.js";
+import * as order from "./webhooks/order.webhook.js";
 
 const USE_ONLINE_TOKENS = false;
 
@@ -132,7 +132,7 @@ export async function createServer(
   // attribute, as a result of the express.json() middleware
   app.use(express.json({ limit: "1mb", extended: true } as any));
 
-  app.use("/api/widget", widgetRoutes);
+  app.use("/api/widget", widgetRoutes(app));
 
   // All endpoints after this point will require an active session
   app.use(

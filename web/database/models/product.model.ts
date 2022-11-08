@@ -3,8 +3,8 @@ import mongoose, { Schema, Types } from "mongoose";
 // https://tomanagle.medium.com/strongly-typed-models-with-mongoose-and-typescript-7bc2f7197722
 export interface IProductModel {
   shop: string;
-  collectionId: string;
-  productId: string;
+  collectionId: number;
+  productId: number;
   title: string;
   staff: [
     {
@@ -25,12 +25,12 @@ const ProductSchema = new Schema({
     index: true,
   },
   collectionId: {
-    type: String,
+    type: Number,
     required: true,
     index: true,
   },
   productId: {
-    type: String,
+    type: Number,
     required: true,
     index: true,
   },

@@ -5,24 +5,24 @@ import ScheduleService from "@services/schedule.service";
 import StaffService from "@services/staff.service";
 import { addHours } from "date-fns";
 
-export const createStaff = async () => {
+export const createStaff = async (number = "0") => {
   return await StaffService.create({
     shop: global.shop,
-    fullname: faker.name.fullName(),
+    fullname: faker.name.fullName() + number,
     email: faker.internet.email(),
     phone: "+4531317411",
   });
 };
 
 export const createProduct = async ({
-  shopifyProductId,
+  productId,
   duration = 45,
   buffertime = 15,
 }) => {
   return await ProductModel.create({
     shop: global.shop,
-    collectionId: faker.name.jobTitle(),
-    productId: shopifyProductId,
+    collectionId: parseInt(faker.random.numeric(10)),
+    productId,
     title: faker.company.name(),
     duration,
     buffertime,
@@ -56,7 +56,7 @@ export const createNewStaffAndAddToProductWithSchedule = async ({
   product,
   tag,
 }) => {
-  const staff = await createStaff();
+  const staff = await createStaff("createNewStaff");
 
   const updateProduct = await ProductService.addStaff({
     id: product._id.toString(),
@@ -73,6 +73,10 @@ export const createNewStaffAndAddToProductWithSchedule = async ({
   return { staff, updateProduct, schedule };
 };
 
+/**
+ * @param {string}  staff - staff model
+ * @param {string=} product - product model
+ */
 export const addStaffToProduct = async ({ staff, product, tag }) => {
   const updateProduct = await ProductService.addStaff({
     id: product._id.toString(),

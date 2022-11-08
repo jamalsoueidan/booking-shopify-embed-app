@@ -17,7 +17,6 @@ import {
   setMinutes,
   setSeconds,
   subDays,
-  subHours,
 } from "date-fns";
 import mongoose, { Document } from "mongoose";
 
@@ -25,7 +24,6 @@ import { faker } from "@faker-js/faker";
 import widgetController from "../widget.controller";
 
 const productId = faker.random.numeric(10);
-const shopifyProductId = `gid://shopify/Product/${productId}`;
 
 interface CustomProductModel extends IProductModel, Document {}
 interface ICustomStaffModel extends IStaffModel, Document {}
@@ -35,17 +33,16 @@ let schedule: any;
 
 const tag = "customTag";
 
-describe("admin-product controller", () => {
-  beforeAll(async () => {
-    await mongoose.connect(global.__MONGO_URI__);
+describe("admin-widget controller", () => {
+  beforeAll(() => mongoose.connect(global.__MONGO_URI__));
+  afterAll(() => mongoose.disconnect());
+  afterEach(() => mongoose.connection.db.dropDatabase());
 
+  beforeEach(async () => {
     // prepare a product
-    product = await createProduct({ shopifyProductId });
+    product = await createProduct({ productId });
   });
 
-  afterAll(async () => {
-    mongoose.connection.close();
-  });
   it("Should find a staff after adding staff to the product", async () => {
     const {
       staff: newStaff,
@@ -61,7 +58,7 @@ describe("admin-product controller", () => {
 
     const query = {
       shop: global.shop,
-      productId,
+      productId: parseInt(productId),
     };
 
     let allStaff = await widgetController.staff({ query });
@@ -73,11 +70,13 @@ describe("admin-product controller", () => {
   });
 
   it("Should not include inactive staff.", async () => {
+    await createNewStaffAndAddToProductWithSchedule({ product, tag });
+
     staff = await StaffService.findByIdAndUpdate(staff._id, { active: false });
 
     const query = {
       shop: global.shop,
-      productId,
+      productId: parseInt(productId),
     };
 
     const allStaff = await widgetController.staff({ query });
@@ -85,7 +84,7 @@ describe("admin-product controller", () => {
   });
 
   it("Should return staff hours on a specified day", async () => {
-    const newStaff = await createStaff();
+    const newStaff = await createStaff("11");
 
     const start = setHours(setMinutes(new Date(), 0), 10);
     const end = addHours(start, 4);
@@ -98,7 +97,7 @@ describe("admin-product controller", () => {
 
     const newProductID = faker.random.numeric(10);
     const newProduct = await createProduct({
-      shopifyProductId: `gid://shopify/Product/${newProductID}`,
+      productId: parseInt(newProductID),
       duration: 60,
       buffertime: 0,
     });
@@ -112,7 +111,7 @@ describe("admin-product controller", () => {
     // prepare a product
     const query = {
       shop: global.shop,
-      productId: newProductID,
+      productId: parseInt(newProductID),
       date: format(new Date(), "yyyy-MM-dd"),
       staffId: newStaff._id.toString(),
     };
@@ -130,12 +129,12 @@ describe("admin-product controller", () => {
   it("Should return staff hours to a specified day range", async () => {
     const newProductID = faker.random.numeric(10);
     const newProduct = await createProduct({
-      shopifyProductId: `gid://shopify/Product/${newProductID}`,
+      productId: newProductID,
       duration: 60,
       buffertime: 0,
     });
 
-    const newStaff = await createStaff();
+    const newStaff = await createStaff("22");
     const firstStartSchedule = setHours(setMinutes(new Date(), 0), 10);
     const firstEndSchedule = addHours(firstStartSchedule, 4);
     await createSchedule({
@@ -162,7 +161,7 @@ describe("admin-product controller", () => {
 
     const query = {
       shop: global.shop,
-      productId: newProductID,
+      productId: parseInt(newProductID),
       start: format(firstStartSchedule, "yyyy-MM-dd"),
       end: format(secondEndSchedule, "yyyy-MM-dd"),
       staffId: newStaff._id.toString(),
@@ -199,7 +198,7 @@ describe("admin-product controller", () => {
     );
   });
 
-  it("Should return hours for all staff on product", async () => {
+  /*it("Should return hours for all staff on product", async () => {
     const newProductID = faker.random.numeric(10);
     const newProduct = await createProduct({
       shopifyProductId: `gid://shopify/Product/${newProductID}`,
@@ -207,7 +206,7 @@ describe("admin-product controller", () => {
       buffertime: 0,
     });
 
-    const newStaff = await createStaff();
+    const newStaff = await createStaff("33");
 
     const firstStartSchedule = setMinutes(new Date(), 0);
     const firstEndSchedule = addHours(setMinutes(new Date(), 0), 2);
@@ -233,7 +232,7 @@ describe("admin-product controller", () => {
       tag,
     });
 
-    const newStaff1 = await createStaff();
+    const newStaff1 = await createStaff("44");
 
     const firstStartSchedule1 = setMinutes(new Date(), 0);
     const firstEndSchedule1 = addHours(setMinutes(new Date(), 0), 2);
@@ -268,17 +267,17 @@ describe("admin-product controller", () => {
     expect(first.hours.length).toEqual(4);
 
     let fullnames = first.hours.map((h) => h.staff.fullname);
-    //expect(fullnames).toEqual([newStaff.fullname, newStaff.fullname]);
+    expect(fullnames).toEqual([newStaff.fullname, newStaff.fullname]);
 
     const last = availabilityRangeByAll[1];
-    expect(last.hours.length).toEqual(2);
+    expect(last.hours.length).toEqual(4);
 
     fullnames = last.hours.map((h) => h.staff.fullname);
-    /*expect(fullnames).toEqual([
+    expect(fullnames).toEqual([
       newStaff.fullname,
       newStaff.fullname,
       newStaff1.fullname,
       newStaff1.fullname,
-    ]);*/
-  });
+    ]);
+  });*/
 });
