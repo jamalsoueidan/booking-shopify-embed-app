@@ -1,13 +1,19 @@
 import ScheduleModel, { IScheduleModel } from "@models/schedule.model";
 import StaffService from "@services/staff.service";
-import { endOfDay, setMilliseconds, setSeconds, startOfDay } from "date-fns";
+import {
+  endOfDay,
+  parseISO,
+  setMilliseconds,
+  setSeconds,
+  startOfDay,
+} from "date-fns";
 import mongoose, { FilterQuery, Types, UpdateQuery } from "mongoose";
 
 export interface SchedulesProp {
   groupId?: string;
   staff?: string;
-  start: Date;
-  end: Date;
+  start: string;
+  end: string;
   tag: string;
 }
 
@@ -21,14 +27,18 @@ const create = async ({ staff, shop, schedules }: CreateProps) => {
   if (
     await StaffService.findOne(new mongoose.Types.ObjectId(staff), { shop })
   ) {
+    const resetSecMil = (value) => {
+      return setSeconds(setMilliseconds(parseISO(value), 0), 0).toISOString();
+    };
+
     if (Array.isArray(schedules)) {
       const groupId = new Date().getTime();
       return await ScheduleModel.insertMany(
         schedules.map((b: SchedulesProp) => {
           b.groupId = groupId.toString();
           b.staff = staff;
-          b.start = setSeconds(setMilliseconds(b.start, 0), 0);
-          b.end = setSeconds(setMilliseconds(b.end, 0), 0);
+          b.start = resetSecMil(b.start);
+          b.end = resetSecMil(b.end);
           return b;
         })
       );
@@ -37,8 +47,8 @@ const create = async ({ staff, shop, schedules }: CreateProps) => {
         ...schedules,
         staff,
         shop,
-        start: setSeconds(setMilliseconds(schedules.start, 0), 0),
-        end: setSeconds(setMilliseconds(schedules.end, 0), 0),
+        start: resetSecMil(schedules.start),
+        end: resetSecMil(schedules.start),
       });
     }
   }

@@ -33,3 +33,5 @@ web/database.sqlite
 yarn.lock
 package-lock.json
 web/jest/globalConfig.json
+web/dist
+web/frontend/dist

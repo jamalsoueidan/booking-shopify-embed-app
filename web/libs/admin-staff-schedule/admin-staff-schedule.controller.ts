@@ -104,7 +104,7 @@ const updateGroup = async ({ query, body }) => {
 
       return {
         updateOne: {
-          filter: { _id: d._id },
+          filter: { _id: d._id, shop },
           update: {
             $set: {
               start,
@@ -128,10 +128,11 @@ const removeGroup = async ({ query, body }) => {
     _id: schedule,
     staff,
     groupId,
+    shop,
   });
 
   if (documents > 0) {
-    return await ScheduleModel.deleteMany({ groupId });
+    return await ScheduleModel.deleteMany({ groupId, shop });
   } else {
     throw "Groupid doesn't exist";
   }

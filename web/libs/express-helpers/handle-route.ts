@@ -21,15 +21,19 @@ export const expressHandleRoute =
         payload: await controller[methodName]({
           query: {
             shop: req.query.shop || session.shop,
-            accessToken:
-              session?.accessToken || req.headers["x-shopify-access-token"],
             ...req.query,
             ...req.params,
+            session: {
+              ...session,
+              accessToken:
+                session?.accessToken || req.headers["x-shopify-access-token"],
+            },
           },
           body: req.body,
         }),
       });
     } catch (error) {
+      console.log(error);
       res.status(500).json({ success: false, error });
     }
   };

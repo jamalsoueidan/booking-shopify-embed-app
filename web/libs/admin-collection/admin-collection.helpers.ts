@@ -2,12 +2,6 @@
 import { Shopify } from "@shopify/shopify-api";
 import { Session } from "@shopify/shopify-api/dist/auth/session";
 
-interface Metafield {
-  id: string;
-  namespace: string;
-  key: string;
-  value: string;
-}
 interface Product {
   id: string;
   title: string;
@@ -19,9 +13,6 @@ interface Collection {
   products: {
     nodes: Array<Product>;
   };
-  metafields: {
-    nodes: Array<Metafield>;
-  };
 }
 interface GetCollectionQuery {
   body: {
@@ -30,6 +21,7 @@ interface GetCollectionQuery {
     };
   };
 }
+
 const getCollectionQuery = `
   query collectionFind($id: ID!) {
     collection(id: $id) {

@@ -14,7 +14,7 @@ export const useSetting = () => {
     fetch(url).then((res: Response) => res.json())
   );
 
-  return data?.payload || { timeZone: 'European/Paris', language: 'en' };
+  return data?.payload || { timeZone: 'Europe/Paris', language: 'en' };
 };
 
 export const updateSetting = () => {

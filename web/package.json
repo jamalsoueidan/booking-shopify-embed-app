@@ -4,7 +4,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "debug": "node --inspect-brk index.js",
-    "dev": "concurrently \"npx tsc --watch --preserveWatchOutput --project tsconfig.json\" \"npx tsc-alias -w -p tsconfig.json\" \"cross-env NODE_ENV=development nodemon dist/index.js\"",
+    "dev": "concurrently \"npx tsc --watch --preserveWatchOutput --project tsconfig.json\" \"npx tsc-alias -w -p tsconfig.json\" \"cross-env NODE_ENV=development nodemon dist/index.js --delay 1\"",
     "serve": "cross-env NODE_ENV=production node index.js",
     "dev:nodemon": "./node_modules/nodemon/bin/nodemon.js",
     "test": "jest --watch --runInBand --detectOpenHandles"

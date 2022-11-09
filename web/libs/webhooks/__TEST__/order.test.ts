@@ -1,7 +1,7 @@
 import { createProduct } from "@libs/jest-helpers";
 import { IProductModel } from "@models/product.model";
 import ProductService from "@services/product.service";
-import { createOrUpdate } from "@webhooks/order.webhook";
+import { createOrUpdate } from "@libs/webhooks/order.webhook";
 import mongoose from "mongoose";
 import body from "./order.mock";
 
@@ -15,8 +15,7 @@ describe("webhooks order", () => {
   it("Should create a staff", async () => {
     product = await createProduct({ productId });
 
-    console.log(product);
-
-    await createOrUpdate(body);
+    const result = await createOrUpdate(body);
+    console.log(result);
   });
 });

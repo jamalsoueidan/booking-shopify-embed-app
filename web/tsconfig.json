@@ -12,7 +12,7 @@
       "@models/*": ["database/models/*"],
       "@services/*": ["database/services/*"],
       "@libs/*": ["libs/*"],
-      "@webhooks/*": ["webhooks/*"]
+      "@webhooks/*": ["libs/webhooks/*"]
     }
   },
   "exclude": ["node_modules", "frontend", "dist"]

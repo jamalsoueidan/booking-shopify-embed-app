@@ -1,8 +1,12 @@
-import { IBookingModel } from "@models/booking.model";
-import ProductModel from "@models/product.model";
-import productService from "@services/product.service.js";
+import BookingModel, { IBookingModel } from "@models/booking.model";
+import ProductModel, { IProductModel } from "@models/product.model";
+import { addMinutes } from "date-fns";
 import mongoose from "mongoose";
 import { Order } from "./order.types.js";
+
+function onlyUnique(value, index, self) {
+  return self.indexOf(value) === index;
+}
 
 export const createOrUpdate = async (body: Order) => {
   const filter = (lineItem) => {
@@ -17,16 +21,13 @@ export const createOrUpdate = async (body: Order) => {
 
   const lineItems = body.line_items.filter(filter);
 
-  const models = lineItems.map((lineItem) => {
-    const date = lineItem.properties.find((p) => p.name === "Date")?.value;
+  let models = lineItems.map((lineItem) => {
     const hour = lineItem.properties.find((p) => p.name === "Hour")?.value;
     const staff = lineItem.properties.find((p) => p.name === "Staff")?.value;
-    if (date && hour && staff) {
+    if (hour && staff) {
       const staffId = JSON.parse(staff).staff;
-      const hours = parseInt(hour.slice(0, 2));
-      const minutes = parseInt(hour.slice(3));
-      const completeDate = new Date(date);
-      completeDate.setHours(hours, minutes);
+      const completeDate = new Date(hour);
+
       return {
         orderId: body.order_number,
         productId: lineItem.product_id,
@@ -38,15 +39,24 @@ export const createOrUpdate = async (body: Order) => {
     }
   });
 
-  console.log({
+  const query = {
     shop: models[0].shop,
-    productId: models.map((p) => p.productId),
-  });
-  const products = await ProductModel.find({
-    shop: models[0].shop,
-    productId: models.map((p) => p.productId),
+    productId: models.map((model) => model.productId).filter(onlyUnique),
+  };
+
+  const products = await ProductModel.find<IProductModel>(query);
+
+  models = models.map((model) => {
+    const product = products.find(
+      (product) => product.productId === model.productId
+    );
+    return {
+      ...model,
+      end: addMinutes(model.start, product.duration),
+    };
   });
 
-  console.log("products", products);
+  await BookingModel.insertMany(models);
+
   return models;
 };

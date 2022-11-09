@@ -1,5 +1,6 @@
+import { GetProductWithSelectedStaffProps } from "./../../database/services/product.service";
 import CollectionModel from "@models/collection.model";
-import ProductModel from "@models/product.model";
+import ProductModel, { IProductModel } from "@models/product.model";
 import CollectionService from "@services/collection.service";
 import { Session } from "@shopify/shopify-api/dist/auth/session";
 import { getCollection } from "./admin-collection.helpers";
@@ -27,34 +28,41 @@ const create = async ({
   body: CreateBody;
 }) => {
   const { session, shop } = query;
+
   const selections = body.selections;
   const collections = await Promise.all(
     selections.map((id) => getCollection(session, id))
   );
 
+  const getGid = (value: string): number =>
+    parseInt(value.substring(value.lastIndexOf("/") + 1));
+
   const collectionBulkWrite = collections.map((c) => {
     return {
       updateOne: {
-        filter: { collectionId: c.id },
+        filter: { collectionId: getGid(c.id) },
         update: {
-          $set: { shop, title: c.title, collectionId: c.id },
+          $set: { shop, title: c.title, collectionId: getGid(c.id) },
         },
         upsert: true,
       },
     };
   });
 
-  const products = collections.reduce((products, currentCollection) => {
-    currentCollection.products.nodes.forEach((n) => {
-      products.push({
-        shop,
-        collectionId: currentCollection.id,
-        productId: n.id,
-        title: n.title,
+  const products = collections.reduce<Array<Partial<IProductModel>>>(
+    (products, currentCollection) => {
+      currentCollection.products.nodes.forEach((n) => {
+        products.push({
+          shop,
+          collectionId: getGid(currentCollection.id),
+          productId: getGid(n.id),
+          title: n.title,
+        });
       });
-    });
-    return products;
-  }, []);
+      return products;
+    },
+    []
+  );
 
   const productsBulkWrite = products.map((product) => {
     return {
@@ -72,6 +80,8 @@ const create = async ({
     collections: await CollectionModel.bulkWrite(collectionBulkWrite),
     products: await ProductModel.bulkWrite(productsBulkWrite),
   };
+
+  return {};
 };
 
 interface DeleteQuery {

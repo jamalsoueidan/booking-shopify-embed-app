@@ -66,12 +66,12 @@ export default ({ info, setInfo, refresh }: any) => {
 
   const createAllDate = async () => {
     let startDateTime = zonedTimeToUtc(
-      `${info.dateStr} ${startTime}`,
+      `${info.dateStr} ${startTime}:00`,
       timeZone
     );
-    let endDateTime = zonedTimeToUtc(`${info.dateStr} ${endTime}`, timeZone);
+    let endDateTime = zonedTimeToUtc(`${info.dateStr} ${endTime}:00`, timeZone);
 
-    const body = Array(5)
+    const body = Array(5) //5 weeks create groupID
       .fill(0)
       .map((_, index) => {
         let start = addDays(startDateTime, 7 * index);

@@ -16,6 +16,7 @@ export default function adminCollectionRoutes(app) {
   });
 
   router.post("/collections", async (req, res) => {
+    console.log("asd");
     handleRoute(req, res, ControllerMethods.create);
   });
 
