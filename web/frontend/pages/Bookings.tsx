@@ -43,6 +43,7 @@ export default () => {
       const api = calendarRef.current.getApi();
       const isMonth = api.view.type === 'dayGridMonth';
       const booking: Booking = arg.event.extendedProps;
+
       const hour = <i>{format(arg.event.start, 'HH:mm')}</i>;
       const extendHour = (
         <i>
@@ -51,10 +52,15 @@ export default () => {
       );
       return (
         <>
-          <div>{isMonth ? hour : extendHour}</div>
-          <div style={{ marginLeft: isMonth ? '5px' : '0px' }}>
-            {booking.staff.fullname} - {booking.product.title}
-          </div>
+          <span>{isMonth ? hour : extendHour}</span>
+          <span
+            style={{
+              display: !isMonth ? 'block' : '',
+              marginLeft: isMonth ? '5px' : '0px',
+            }}>
+            {booking.staff.fullname}
+            {booking.anyStaff ? '(ET)' : ''} - {booking.product.title}
+          </span>
         </>
       );
     },
@@ -78,6 +84,9 @@ export default () => {
                 meridiem: 'short',
               },
             ]}
+            eventColor="#378006"
+            eventBackgroundColor="#378006"
+            eventDisplay="block"
           />
         </Card.Section>
       </Card>

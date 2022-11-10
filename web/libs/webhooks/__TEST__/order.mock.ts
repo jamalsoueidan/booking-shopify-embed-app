@@ -1,14 +1,14 @@
 export default {
-  id: 5203342917949,
-  admin_graphql_api_id: "gid://shopify/Order/5203342917949",
+  id: 5203467469117,
+  admin_graphql_api_id: "gid://shopify/Order/5203467469117",
   app_id: 580111,
   browser_ip: "212.154.66.68",
   buyer_accepts_marketing: false,
   cancel_reason: null,
   cancelled_at: null,
-  cart_token: "42383a2d3a7fe637265d725f824104d3",
-  checkout_id: 36350608703805,
-  checkout_token: "659d54cc7bfd0f02c959da7c9aa5f75f",
+  cart_token: "3c333c626a01482dc0ace480d5c2c699",
+  checkout_id: 36350972657981,
+  checkout_token: "dc386439922672d81dd87ea4b077a244",
   client_details: {
     accept_language:
       "en-DK,en;q=0.9,da-DK;q=0.8,da;q=0.7,en-GB;q=0.6,en-US;q=0.5",
@@ -16,11 +16,12 @@ export default {
     browser_ip: "212.154.66.68",
     browser_width: 967,
     session_hash: null,
-    user_agent: "Shopify CLI",
+    user_agent:
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
   },
   closed_at: null,
   confirmed: true,
-  created_at: "2022-11-10T15:46:18+03:00",
+  created_at: "2022-11-11T00:09:10+03:00",
   currency: "DKK",
   current_subtotal_price: "270.00",
   current_subtotal_price_set: {
@@ -74,21 +75,21 @@ export default {
   financial_status: "paid",
   fulfillment_status: null,
   gateway: "bogus",
-  landing_site: "",
+  landing_site: "/",
   landing_site_ref: null,
   location_id: null,
   merchant_of_record_app_id: null,
-  name: "#1014",
-  note: "",
+  name: "#1016",
+  note: "a",
   note_attributes: [],
-  number: 14,
-  order_number: 1014,
+  number: 16,
+  order_number: 1016,
   order_status_url:
-    "https://testeriphone.myshopify.com/66323153213/orders/957beaeb8e37b029b0d35ce7f655e649/authenticate?key=249a69d26a17a6dc1a9ae3a638f2e5ee",
+    "https://testeriphone.myshopify.com/66323153213/orders/990d5c4d75920cb9ebfe45fc8e6947e2/authenticate?key=b5f3995af2053a2f1e36890ee49a3cea",
   original_total_duties_set: null,
   payment_gateway_names: ["bogus"],
   presentment_currency: "DKK",
-  processed_at: "2022-11-10T15:46:17+03:00",
+  processed_at: "2022-11-11T00:09:07+03:00",
   processing_method: "direct",
   reference: null,
   referring_site: "",
@@ -110,7 +111,7 @@ export default {
   tax_lines: [],
   taxes_included: true,
   test: true,
-  token: "957beaeb8e37b029b0d35ce7f655e649",
+  token: "990d5c4d75920cb9ebfe45fc8e6947e2",
   total_discounts: "0.00",
   total_discounts_set: {
     shop_money: {
@@ -168,7 +169,7 @@ export default {
   },
   total_tip_received: "0.00",
   total_weight: 0,
-  updated_at: "2022-11-10T15:48:59+03:00",
+  updated_at: "2022-11-11T00:24:48+03:00",
   user_id: null,
   billing_address: {
     province: null,
@@ -179,10 +180,10 @@ export default {
     province_code: null,
   },
   customer: {
-    id: 6674760237373,
+    id: 6674879873341,
     accepts_marketing: false,
-    created_at: "2022-11-10T15:45:43+03:00",
-    updated_at: "2022-11-10T15:46:19+03:00",
+    created_at: "2022-11-11T00:08:51+03:00",
+    updated_at: "2022-11-11T00:09:13+03:00",
     state: "disabled",
     note: null,
     verified_email: true,
@@ -190,7 +191,7 @@ export default {
     tax_exempt: false,
     tags: "",
     currency: "DKK",
-    accepts_marketing_updated_at: "2022-11-10T15:45:43+03:00",
+    accepts_marketing_updated_at: "2022-11-11T00:08:51+03:00",
     marketing_opt_in_level: null,
     tax_exemptions: [],
     email_marketing_consent: {
@@ -199,10 +200,10 @@ export default {
       consent_updated_at: null,
     },
     sms_marketing_consent: null,
-    admin_graphql_api_id: "gid://shopify/Customer/6674760237373",
+    admin_graphql_api_id: "gid://shopify/Customer/6674879873341",
     default_address: {
-      id: 8950728622397,
-      customer_id: 6674760237373,
+      id: 8950890725693,
+      customer_id: 6674879873341,
       company: null,
       province: null,
       country: "Turkey",
@@ -216,8 +217,8 @@ export default {
   fulfillments: [],
   line_items: [
     {
-      id: 13635336044861,
-      admin_graphql_api_id: "gid://shopify/LineItem/13635336044861",
+      id: 13635549135165,
+      admin_graphql_api_id: "gid://shopify/LineItem/13635549135165",
       fulfillable_quantity: 1,
       fulfillment_service: "manual",
       fulfillment_status: null,
@@ -240,24 +241,20 @@ export default {
       properties: [
         {
           name: "staff",
-          value:
-            '{"staff":"636b75b68f6e30e6f8686c68","fullname":"Fida Soueidan"}',
+          value: "Fida Soueidan",
         },
         {
           name: "date",
-          value: "2022-11-23",
+          value: "2022-11-24",
         },
         {
-          name: "startHour",
-          value: "2022-11-23T14:00:00.000Z",
+          name: "time",
+          value: "17:00 - 18:00",
         },
         {
-          name: "endHour",
-          value: "2022-11-23T15:00:00.000Z",
-        },
-        {
-          name: "timeZone",
-          value: "Europe/Istanbul",
+          name: "_data",
+          value:
+            '{"timeZone":"Europe/Istanbul","start":"2022-11-24T14:00:00.000Z","end":"2022-11-24T15:00:00.000Z","staff":{"staff":"636b75a18f6e30e6f8686c63","fullname":"Sara","anyStaff":true}}',
         },
       ],
       quantity: 1,
@@ -285,8 +282,8 @@ export default {
       discount_allocations: [],
     },
     {
-      id: 13635336077629,
-      admin_graphql_api_id: "gid://shopify/LineItem/13635336077629",
+      id: 13635549167933,
+      admin_graphql_api_id: "gid://shopify/LineItem/13635549167933",
       fulfillable_quantity: 1,
       fulfillment_service: "manual",
       fulfillment_status: null,
@@ -309,23 +306,20 @@ export default {
       properties: [
         {
           name: "staff",
-          value: '{"staff":"636b75a18f6e30e6f8686c63","fullname":"Sara"}',
+          value: "Sara",
         },
         {
           name: "date",
-          value: "2022-11-10",
+          value: "2022-11-24",
         },
         {
-          name: "startHour",
-          value: "2022-11-10T10:00:00.000Z",
+          name: "time",
+          value: "14:00 - 15:00",
         },
         {
-          name: "endHour",
-          value: "2022-11-10T11:00:00.000Z",
-        },
-        {
-          name: "timeZone",
-          value: "Europe/Istanbul",
+          name: "_data",
+          value:
+            '{"timeZone":"Europe/Istanbul","start":"2022-11-24T11:00:00.000Z","end":"2022-11-24T12:00:00.000Z","staff":{"staff":"636b75a18f6e30e6f8686c63","fullname":"Sara","anyStaff":true}}',
         },
       ],
       quantity: 1,
@@ -353,8 +347,8 @@ export default {
       discount_allocations: [],
     },
     {
-      id: 13635336110397,
-      admin_graphql_api_id: "gid://shopify/LineItem/13635336110397",
+      id: 13635549200701,
+      admin_graphql_api_id: "gid://shopify/LineItem/13635549200701",
       fulfillable_quantity: 1,
       fulfillment_service: "manual",
       fulfillment_status: null,
@@ -377,24 +371,20 @@ export default {
       properties: [
         {
           name: "staff",
-          value:
-            '{"staff":"636b75a18f6e30e6f8686c63","fullname":"Sara","anyStaff":true}',
+          value: "Enhver tilgC&ngelig",
         },
         {
           name: "date",
-          value: "2022-11-10",
+          value: "2022-11-16",
         },
         {
-          name: "startHour",
-          value: "2022-11-10T09:00:00.000Z",
+          name: "time",
+          value: "15:00 - 16:00",
         },
         {
-          name: "endHour",
-          value: "2022-11-10T10:00:00.000Z",
-        },
-        {
-          name: "timeZone",
-          value: "Europe/Istanbul",
+          name: "_data",
+          value:
+            '{"timeZone":"Europe/Istanbul","start":"2022-11-16T12:00:00.000Z","end":"2022-11-16T13:00:00.000Z","staff":{"staff":"636b75b68f6e30e6f8686c68","fullname":"Fida Soueidan","anyStaff":true}}',
         },
       ],
       quantity: 1,

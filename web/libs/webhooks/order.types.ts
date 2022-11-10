@@ -360,3 +360,16 @@ export interface PaymentDetails {
   cvv_result_code: any;
   credit_card_company: string;
 }
+
+export interface Staff {
+  staff: string;
+  fullname: string;
+  anyStaff: boolean;
+}
+
+export interface Data {
+  timeZone: string;
+  start: Date;
+  end: Date;
+  staff: Staff;
+}

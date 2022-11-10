@@ -2,34 +2,25 @@ import BookingModel, { IBookingModel } from "@models/booking.model";
 import ProductModel, { IProductModel } from "@models/product.model";
 import { addMinutes } from "date-fns";
 import mongoose from "mongoose";
-import { Order } from "./order.types.js";
+import { Data, Order } from "./order.types.js";
 
 function onlyUnique(value, index, self) {
   return self.indexOf(value) === index;
 }
 
 const create = async (body: Order): Promise<Array<IBookingModel>> => {
-  const filter = (lineItem) => {
-    return lineItem.properties.find((property) => {
-      return (
-        property.name === "staff" ||
-        property.name === "date" ||
-        property.name === "hour"
-      );
-    });
-  };
+  const filter = (lineItem) =>
+    lineItem.properties.find((property) => property.name === "_data");
 
   const lineItems = body.line_items.filter(filter);
 
   let models = lineItems.map((lineItem) => {
-    const startHour = lineItem.properties.find(
-      (p) => p.name === "startHour"
-    )?.value;
-    const staff = lineItem.properties.find((p) => p.name === "staff")?.value;
-    if (startHour && staff) {
-      const staffId = JSON.parse(staff).staff;
-      const anyStaff = JSON.parse(staff).anyStaff;
-      const completeDate = new Date(startHour);
+    const _data = lineItem.properties.find((p) => p.name === "_data")?.value;
+    if (_data) {
+      const data: Data = JSON.parse(_data);
+      const staffId = data.staff.staff;
+      const anyStaff = data.staff.anyStaff;
+      const completeDate = new Date(data.start);
 
       return {
         orderId: body.order_number,
