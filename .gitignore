@@ -35,3 +35,4 @@ package-lock.json
 web/jest/globalConfig.json
 web/dist
 web/frontend/dist
+.history

@@ -17,7 +17,7 @@ import adminStaffRoutes from "./libs/admin-staff/admin-staff.routes";
 import widgetRoutes from "./libs/widget/widget.routes";
 import applyAuthMiddleware from "./middleware/auth.js";
 import verifyRequest from "./middleware/verify-request.js";
-import * as order from "./libs/webhooks/order.webhook.js";
+import OrderWebhook from "./libs/webhooks/order.webhook.js";
 
 const USE_ONLINE_TOKENS = false;
 
@@ -57,24 +57,25 @@ Shopify.Webhooks.Registry.addHandler("APP_UNINSTALLED", {
 Shopify.Webhooks.Registry.addHandler("ORDERS_PAID", {
   path: "/api/webhooks",
   webhookHandler: async (_topic, shop, _body) => {
-    order.createOrUpdate({ ...JSON.parse(_body), shop });
+    OrderWebhook.create({ ...JSON.parse(_body), shop });
     console.log("orders/paid");
   },
 });
 
-/*Shopify.Webhooks.Registry.addHandler("ORDERS_UPDATED", {
+Shopify.Webhooks.Registry.addHandler("ORDERS_UPDATED", {
   path: "/api/webhooks",
   webhookHandler: async (_topic, shop, _body) => {
-    order.createOrUpdate({ ...JSON.parse(_body), shop });
+    //OrderWebhook.create({ ...JSON.parse(_body), shop });
     console.log("order/update");
   },
-});*/
+});
 
 Shopify.Webhooks.Registry.addHandler("ORDERS_CANCELLED", {
   path: "/api/webhooks",
   webhookHandler: async (_topic, shop, _body) => {
     //delete
-    console.log("order/cancelled", _body);
+    OrderWebhook.cancel({ ...JSON.parse(_body), shop });
+    console.log("order/cancelled");
   },
 });
 

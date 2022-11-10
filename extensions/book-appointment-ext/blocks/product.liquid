@@ -25,8 +25,8 @@
     }
   </style>
   <div class="product-form__input margin-bottom">
-    <label class="form__label" for="Staff"> Choose artist: </label>
-    <select id="Staff" name="properties[Staff]" class="select" required>
+    <label class="form__label" for="staff"> Choose artist: </label>
+    <select id="staff" name="properties[staff]" class="select" required>
       <option value="" selected>Vælge medarbejder</option>
       <option value="0">Enhver tilgængelig</option>
     </select>
@@ -34,14 +34,16 @@
 
   <div class="product-form__input margin-bottom">
     <label class="form__label" for="date"> Choose date: </label>
-    <input id="datepicker" name="properties[Date]" class="input" required disabled>
+    <input id="datepicker" name="properties[date]" class="input" required disabled>
   </div>
 
   <div class="product-form__input margin-bottom">
-    <label class="form__label" for="Hour"> Choose time: </label>
-    <select id="Hour" name="properties[Hour]" class="select" required disabled>
+    <label class="form__label" for="startHour"> Choose time: </label>
+    <select id="startHour" name="properties[startHour]" class="select" required disabled>
       <option value="" disabled selected>Vælg tid</option>
     </select>
+    <input id="endHour" name="properties[endHour]">
+    <input id="timeZone" name="properties[timeZone]">
   </div>
 </template>
 

@@ -27,7 +27,7 @@ describe("Admin-staff controller", () => {
       shop: global.shop,
     };
 
-    await createStaff("333");
+    await createStaff();
     const staff = await staffController.get({ query });
     expect(staff.length).toEqual(1);
   });
@@ -37,7 +37,7 @@ describe("Admin-staff controller", () => {
       shop: global.shop,
     };
 
-    await createStaff("222");
+    await createStaff();
 
     const staff = await staffController.get({ query });
     const user = staff[0];
@@ -60,7 +60,7 @@ describe("Admin-staff controller", () => {
       shop: global.shop,
     };
 
-    await createStaff("111");
+    await createStaff();
 
     const staff = await staffController.get({ query });
 

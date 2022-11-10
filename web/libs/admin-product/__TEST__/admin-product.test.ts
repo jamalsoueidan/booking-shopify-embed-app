@@ -77,7 +77,7 @@ describe("admin-product controller", () => {
   it("Should be able to add staff, and cannot add same staff twice", async () => {
     product = await createProduct({ productId });
 
-    staff1 = await createStaff("1");
+    staff1 = await createStaff();
 
     await createSchedule({
       tag,
@@ -86,7 +86,7 @@ describe("admin-product controller", () => {
       staff: staff1._id,
     });
 
-    staff2 = await createStaff("2");
+    staff2 = await createStaff();
 
     await createSchedule({
       tag,
@@ -95,7 +95,7 @@ describe("admin-product controller", () => {
       staff: staff2._id,
     });
 
-    staff3 = await createStaff("3");
+    staff3 = await createStaff();
 
     await createSchedule({
       tag,
@@ -140,7 +140,7 @@ describe("admin-product controller", () => {
   it("Should be able to add other staff", async () => {
     product = await createProduct({ productId });
 
-    staff1 = await createStaff("1");
+    staff1 = await createStaff();
 
     await createSchedule({
       tag,
@@ -149,7 +149,7 @@ describe("admin-product controller", () => {
       staff: staff1._id,
     });
 
-    staff2 = await createStaff("2");
+    staff2 = await createStaff();
 
     await createSchedule({
       tag,
@@ -158,7 +158,7 @@ describe("admin-product controller", () => {
       staff: staff2._id,
     });
 
-    staff3 = await createStaff("3");
+    staff3 = await createStaff();
 
     await createSchedule({
       tag,
@@ -202,7 +202,7 @@ describe("admin-product controller", () => {
   it("Should be able to remove staff", async () => {
     product = await createProduct({ productId });
 
-    staff1 = await createStaff("1");
+    staff1 = await createStaff();
 
     await createSchedule({
       tag,

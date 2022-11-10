@@ -8,13 +8,13 @@ function onlyUnique(value, index, self) {
   return self.indexOf(value) === index;
 }
 
-export const createOrUpdate = async (body: Order) => {
+const create = async (body: Order): Promise<Array<IBookingModel>> => {
   const filter = (lineItem) => {
     return lineItem.properties.find((property) => {
       return (
-        property.name === "Staff" ||
-        property.name === "Date" ||
-        property.name === "Hour"
+        property.name === "staff" ||
+        property.name === "date" ||
+        property.name === "hour"
       );
     });
   };
@@ -22,11 +22,14 @@ export const createOrUpdate = async (body: Order) => {
   const lineItems = body.line_items.filter(filter);
 
   let models = lineItems.map((lineItem) => {
-    const hour = lineItem.properties.find((p) => p.name === "Hour")?.value;
-    const staff = lineItem.properties.find((p) => p.name === "Staff")?.value;
-    if (hour && staff) {
+    const startHour = lineItem.properties.find(
+      (p) => p.name === "startHour"
+    )?.value;
+    const staff = lineItem.properties.find((p) => p.name === "staff")?.value;
+    if (startHour && staff) {
       const staffId = JSON.parse(staff).staff;
-      const completeDate = new Date(hour);
+      const anyStaff = JSON.parse(staff).anyStaff;
+      const completeDate = new Date(startHour);
 
       return {
         orderId: body.order_number,
@@ -35,12 +38,13 @@ export const createOrUpdate = async (body: Order) => {
         start: completeDate,
         end: new Date(),
         shop: body.shop,
+        anyStaff,
       } as IBookingModel;
     }
   });
 
   const query = {
-    shop: models[0].shop,
+    shop: body.shop,
     productId: models.map((model) => model.productId).filter(onlyUnique),
   };
 
@@ -56,7 +60,14 @@ export const createOrUpdate = async (body: Order) => {
     };
   });
 
-  await BookingModel.insertMany(models);
-
-  return models;
+  return await BookingModel.insertMany(models);
 };
+
+const cancel = async (body: Order) => {
+  return await BookingModel.updateMany(
+    { orderId: body.order_number },
+    { cancelled: true }
+  );
+};
+
+export default { create, cancel };

@@ -5,10 +5,10 @@ import ScheduleService from "@services/schedule.service";
 import StaffService from "@services/staff.service";
 import { addHours } from "date-fns";
 
-export const createStaff = async (number = "0") => {
+export const createStaff = async () => {
   return await StaffService.create({
     shop: global.shop,
-    fullname: faker.name.fullName() + number,
+    fullname: faker.name.fullName(),
     email: faker.internet.email(),
     phone: "+4531317411",
   });
@@ -46,8 +46,8 @@ export const createSchedule = async ({
     shop: global.shop,
     schedules: {
       tag,
-      start,
-      end,
+      start: start.toISOString(),
+      end: end.toISOString(),
     },
   });
 };
@@ -56,7 +56,7 @@ export const createNewStaffAndAddToProductWithSchedule = async ({
   product,
   tag,
 }) => {
-  const staff = await createStaff("createNewStaff");
+  const staff = await createStaff();
 
   const updateProduct = await ProductService.addStaff({
     id: product._id.toString(),

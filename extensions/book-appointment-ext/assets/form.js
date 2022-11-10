@@ -1,6 +1,6 @@
 window.addEventListener("load", function () {
   const tagName = "product-availability";
-  const url = "https://676981bef40b.eu.ngrok.io";
+  const url = "https://9ab0c3db76aa.eu.ngrok.io";
 
   if (!customElements.get(tagName)) {
     customElements.define(
@@ -9,8 +9,10 @@ window.addEventListener("load", function () {
         dataset = null;
         dateInput = null;
         staffSelect = null;
-        hourSelect = null;
+        startHourSelect = null;
+        endHourInput = null;
         template = null;
+        schedules = null;
 
         constructor() {
           super();
@@ -24,13 +26,38 @@ window.addEventListener("load", function () {
 
         addTemplate() {
           this.appendChild(this.template.content.cloneNode(true));
-          this.staffSelect = this.querySelector("#Staff");
+          this.staffSelect = this.querySelector("#staff");
           this.staffSelect.addEventListener(
             "change",
             this.onStaffSelect.bind(this)
           );
 
-          this.hourSelect = document.querySelector("#Hour");
+          this.endHourInput = document.querySelector("#endHour");
+          this.startHourSelect = document.querySelector("#startHour");
+          this.startHourSelect.addEventListener(
+            "change",
+            this.onHourSelect.bind(this)
+          );
+          document.getElementById("timeZone").value =
+            Intl.DateTimeFormat().resolvedOptions().timeZone;
+        }
+
+        onHourSelect() {
+          const time = this.startHourSelect.value;
+          const schedule = this.schedules.find(
+            (s) => s.date === time.substring(0, 10)
+          );
+          const hour = schedule.hours.find((h) => h.start === time);
+          if (this.staffSelect.value === "0") {
+            var option =
+              this.staffSelect.options[this.staffSelect.selectedIndex];
+            option.value = JSON.stringify({
+              staff: hour.staff._id,
+              fullname: hour.staff.fullname,
+              anyStaff: true,
+            });
+          }
+          this.endHourInput.value = hour.end;
         }
 
         async onStaffFetch(response) {
@@ -50,10 +77,21 @@ window.addEventListener("load", function () {
           });
         }
 
+        resetHourSelect() {
+          this.dateInput && this.dateInput.clear();
+          this.startHourSelect.innerHTML = "";
+          this.endHourInput.value = "";
+          var opt = document.createElement("option");
+          opt.value = "null";
+          opt.innerHTML = "Vælge tid";
+          this.startHourSelect.appendChild(opt);
+        }
+
         onStaffSelect() {
-          const value = JSON.parse(this.staffSelect.value);
-          if (value === "") return;
-          const staffId = value !== "0" ? value.staff : null;
+          this.resetHourSelect();
+          const value = this.staffSelect.value;
+          const staffId =
+            value.substring(0, 1) === "{" ? JSON.parse(value).staff : null;
           const path = new URL(`${url}/api/widget/availability-range`);
           const params = new URLSearchParams(url.search);
           params.append("shop", this.dataset.shop);
@@ -70,18 +108,15 @@ window.addEventListener("load", function () {
 
           params.append("start", currentDate.format("YYYY-MM-DD"));
           params.append("end", endOfMonth.format("YYYY-MM-DD"));
-          fetch(path + "?" + params.toString())
-            .then(this.onAvailabilityFetch.bind(this))
-            .finally(() => {
-              this.hourSelect.disabled = false;
-            });
-        }
 
-        onChange() {}
+          fetch(path + "?" + params.toString()).then(
+            this.onAvailabilityFetch.bind(this)
+          );
+        }
 
         async onAvailabilityFetch(response) {
           const { payload } = await response.json();
-
+          this.schedules = payload;
           //date string format YYYY-MM-DD
           const findSchedule = (date) =>
             payload.find(
@@ -90,9 +125,8 @@ window.addEventListener("load", function () {
 
           const self = this;
 
-          this.querySelector("#datepicker").disabled = false;
           if (this.dateInput) {
-            console.log("destroy");
+            self.startHourSelect.disabled = true;
             this.dateInput.destroy();
           }
 
@@ -110,13 +144,15 @@ window.addEventListener("load", function () {
               },
             },
             setup(picker) {
+              picker.on("render", (evt) => {
+                self.querySelector("#datepicker").disabled = false;
+              });
+
               picker.on("view", (evt) => {
                 const { view, date, target } = evt.detail;
                 const d = date ? date.format("YYYY-MM-DD") : null;
 
-                const schedule = payload.find(
-                  (schedule) => schedule.date === d && schedule.hours.length > 0
-                );
+                const schedule = findSchedule(d);
 
                 if (view === "CalendarDay" && schedule) {
                   const span =
@@ -131,20 +167,31 @@ window.addEventListener("load", function () {
               picker.on("select", (e) => {
                 const { date } = e.detail;
                 const schedule = findSchedule(date.format("YYYY-MM-DD"));
-
-                self.hourSelect.innerHTML = "";
+                self.startHourSelect.disabled = false;
                 if (schedule) {
+                  //remove duplication
+                  schedule.hours = schedule.hours.reduce((hours, current) => {
+                    const notFound = !hours.find(
+                      (h) => h.start === current.start && h.end === current.end
+                    );
+                    if (notFound) {
+                      hours.push(current);
+                    }
+                    return hours;
+                  }, []);
+
                   schedule.hours.forEach((element) => {
+                    const startDate = new Date(element.start);
+                    const endDate = new Date(element.end);
+                    const value = `${startDate.getHours()}:${
+                      startDate.getMinutes() < 10 ? "0" : ""
+                    }${startDate.getMinutes()} - ${endDate.getHours()}:${
+                      endDate.getMinutes() < 10 ? "0" : ""
+                    }${endDate.getMinutes()}`;
                     var opt = document.createElement("option");
-                    const date = new Date(element.start);
-                    const value =
-                      date.getHours() +
-                      ":" +
-                      (date.getMinutes() < 10 ? "0" : "") +
-                      date.getMinutes();
-                    opt.value = date.toISOString();
+                    opt.value = element.start;
                     opt.innerHTML = value;
-                    self.hourSelect.appendChild(opt);
+                    self.startHourSelect.appendChild(opt);
                   });
                 }
               });

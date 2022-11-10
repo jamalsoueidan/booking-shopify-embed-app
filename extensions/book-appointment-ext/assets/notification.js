@@ -23,32 +23,35 @@ window.addEventListener("load", function () {
     };
   })();
 
-  // Observe a specific DOM element:
-  const observer = observeDOM(
-    document.querySelector("cart-notification"),
-    function (m) {
-      observer.disconnect();
-      const options = document.querySelectorAll(".product-option");
-      options.forEach(function (option) {
-        const dt = option.querySelector("dt");
-        const dd = option.querySelector("dd");
-        if (dt && dt) {
-          if (dt.innerHTML.toLowerCase().includes("hour")) {
-            const date = new Date(dd.innerHTML.trim());
-            const value =
-              date.getHours() +
-              ":" +
-              (date.getMinutes() < 10 ? "0" : "") +
-              date.getMinutes();
-            dd.innerHTML = value;
-          }
-
-          if (dt.innerHTML.toLowerCase().includes("staff")) {
-            const value = JSON.parse(dd.innerHTML).fullname;
-            dd.innerHTML = value;
-          }
+  function connect(m) {
+    observer.disconnect();
+    const options = document.querySelectorAll(".product-option");
+    options.forEach(function (option) {
+      const dt = option.querySelector("dt");
+      const dd = option.querySelector("dd");
+      if (dt && dt) {
+        if (dt.innerHTML.toLowerCase().includes("hour")) {
+          const date = new Date(dd.innerHTML.trim());
+          const value =
+            date.getHours() +
+            ":" +
+            (date.getMinutes() < 10 ? "0" : "") +
+            date.getMinutes();
+          dd.innerHTML = value;
         }
-      });
-    }
+
+        if (dt.innerHTML.toLowerCase().includes("staff")) {
+          const value = JSON.parse(dd.innerHTML).fullname;
+          dd.innerHTML = value;
+        }
+      }
+    });
+    observer = observeDOM(document.querySelector("cart-notification"), connect);
+  }
+
+  // Observe a specific DOM element:
+  let observer = observeDOM(
+    document.querySelector("cart-notification"),
+    connect
   );
 });

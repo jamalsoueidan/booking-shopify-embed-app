@@ -58,7 +58,7 @@ describe("admin-widget controller", () => {
 
     const query = {
       shop: global.shop,
-      productId: parseInt(productId),
+      productId,
     };
 
     let allStaff = await widgetController.staff({ query });
@@ -76,7 +76,7 @@ describe("admin-widget controller", () => {
 
     const query = {
       shop: global.shop,
-      productId: parseInt(productId),
+      productId: productId,
     };
 
     const allStaff = await widgetController.staff({ query });
@@ -84,7 +84,7 @@ describe("admin-widget controller", () => {
   });
 
   it("Should return staff hours on a specified day", async () => {
-    const newStaff = await createStaff("11");
+    const newStaff = await createStaff();
 
     const start = setHours(setMinutes(new Date(), 0), 10);
     const end = addHours(start, 4);
@@ -111,7 +111,7 @@ describe("admin-widget controller", () => {
     // prepare a product
     const query = {
       shop: global.shop,
-      productId: parseInt(newProductID),
+      productId: newProductID,
       date: format(new Date(), "yyyy-MM-dd"),
       staffId: newStaff._id.toString(),
     };
@@ -134,7 +134,7 @@ describe("admin-widget controller", () => {
       buffertime: 0,
     });
 
-    const newStaff = await createStaff("22");
+    const newStaff = await createStaff();
     const firstStartSchedule = setHours(setMinutes(new Date(), 0), 10);
     const firstEndSchedule = addHours(firstStartSchedule, 4);
     await createSchedule({
@@ -161,7 +161,7 @@ describe("admin-widget controller", () => {
 
     const query = {
       shop: global.shop,
-      productId: parseInt(newProductID),
+      productId: newProductID,
       start: format(firstStartSchedule, "yyyy-MM-dd"),
       end: format(secondEndSchedule, "yyyy-MM-dd"),
       staffId: newStaff._id.toString(),
@@ -177,6 +177,7 @@ describe("admin-widget controller", () => {
     const first = availabilityRangeByStaff[0];
 
     let firstHour = first.hours[0];
+
     expect(firstHour.start).toEqual(
       setSeconds(setMilliseconds(firstStartSchedule, 0), 0)
     );
@@ -206,7 +207,7 @@ describe("admin-widget controller", () => {
       buffertime: 0,
     });
 
-    const newStaff = await createStaff("33");
+    const newStaff = await createStaff();
 
     const firstStartSchedule = setMinutes(new Date(), 0);
     const firstEndSchedule = addHours(setMinutes(new Date(), 0), 2);
@@ -232,7 +233,7 @@ describe("admin-widget controller", () => {
       tag,
     });
 
-    const newStaff1 = await createStaff("44");
+    const newStaff1 = await createStaff();
 
     const firstStartSchedule1 = setMinutes(new Date(), 0);
     const firstEndSchedule1 = addHours(setMinutes(new Date(), 0), 2);

@@ -14,7 +14,8 @@
           }
 
           if (dt.innerHTML.toLowerCase().includes('staff')) {
-            const value = JSON.parse(dd.innerHTML).fullname;
+            const json = JSON.parse(dd.innerHTML);
+            const value = json.anyStaff ? 'Enhver tilgængelig' : json.fullname;
             dd.innerHTML = value;
           }
         }

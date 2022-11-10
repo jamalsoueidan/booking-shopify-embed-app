@@ -64,7 +64,7 @@ interface GetAllStaffReturn {
 const getAllStaff = async ({
   shop,
   productId,
-}: FilterQuery<IProductModel>): Promise<Array<GetAllStaffReturn>> => {
+}: Partial<IProductModel>): Promise<Array<GetAllStaffReturn>> => {
   return await Product.aggregate([
     {
       $match: {

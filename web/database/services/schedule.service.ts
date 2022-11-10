@@ -48,7 +48,7 @@ const create = async ({ staff, shop, schedules }: CreateProps) => {
         staff,
         shop,
         start: resetSecMil(schedules.start),
-        end: resetSecMil(schedules.start),
+        end: resetSecMil(schedules.end),
       });
     }
   }

@@ -45,12 +45,12 @@ const scheduleReduce =
     let previousHours = previous.find((p) => p.date === date);
     let hours = previousHours?.hours || [];
     while (isBefore(addMinutes(start, 1), end)) {
-      //we add just a minute in case they are equal
       hours.push({
         start: start,
-        end: addMinutes(start, duration),
+        end: addMinutes(start, duration + buffertime),
         staff: current.staff,
       });
+
       start = addMinutes(start, duration + buffertime);
     }
 

@@ -8,6 +8,7 @@ export interface IBookingModel {
   end: Date;
   shop: string;
   anyStaff?: boolean;
+  cancelled?: boolean;
 }
 
 const BookingSchema = new mongoose.Schema({
@@ -22,6 +23,10 @@ const BookingSchema = new mongoose.Schema({
   end: Date,
   shop: String,
   anyStaff: {
+    type: Boolean,
+    default: false,
+  },
+  cancelled: {
     type: Boolean,
     default: false,
   },

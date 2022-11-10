@@ -12,31 +12,22 @@ export enum ControllerMethods {
   availabilityRangeByAll = "availabilityRangeByAll",
 }
 
-export interface Staff {
-  _id: string;
-  fullname: string;
-}
+export interface AvailabilityReturn extends ScheduleDate {}
 
-export interface Hour {
-  start: Date;
-  end: Date;
-  staff: Staff;
+interface StaffQuery {
+  productId: string;
+  shop: string;
 }
-
-export interface AvailabilityReturn {
-  date: string;
-  hours: Hour[];
-}
-
-interface StaffQuery extends Pick<IProductModel, "productId" | "shop"> {}
 
 const staff = async ({ query }: { query: StaffQuery }) => {
   const { productId, shop } = query;
-  return await ProductService.getAllStaff({ shop, productId });
+  return await ProductService.getAllStaff({
+    shop,
+    productId: parseInt(productId),
+  });
 };
 
-interface AvailabilityDayQuery
-  extends Pick<IProductModel, "productId" | "shop"> {
+interface AvailabilityDayQuery extends StaffQuery {
   date: string;
   staffId: string;
 }
@@ -50,7 +41,7 @@ const availabilityDay = async ({
 
   const product = await ProductService.getProductWithSelectedStaffId({
     shop,
-    productId, //without shopify url
+    productId: parseInt(productId),
     staff: new mongoose.Types.ObjectId(staffId),
   });
 
@@ -67,7 +58,7 @@ const availabilityDay = async ({
 
   const bookings = await BookingService.getBookingsByProductAndStaff({
     shop,
-    productId,
+    productId: parseInt(productId),
     start: new Date(date),
     end: new Date(date),
     staff: product.staff.staff,
@@ -88,8 +79,7 @@ const availabilityDay = async ({
   return scheduleDates;
 };
 
-interface AvailabilityRangeByStaffQuery
-  extends Pick<IProductModel, "productId" | "shop"> {
+interface AvailabilityRangeByStaffQuery extends StaffQuery {
   staffId: string;
   start: string;
   end: string;
@@ -104,7 +94,7 @@ const availabilityRangeByStaff = async ({
 
   const product = await ProductService.getProductWithSelectedStaffId({
     shop,
-    productId,
+    productId: parseInt(productId),
     staff: new mongoose.Types.ObjectId(staffId),
   });
 
@@ -121,7 +111,7 @@ const availabilityRangeByStaff = async ({
 
   const bookings = await BookingService.getBookingsByProductAndStaff({
     shop,
-    productId,
+    productId: parseInt(productId),
     staff: product.staff.staff,
     start: new Date(start),
     end: new Date(end),
