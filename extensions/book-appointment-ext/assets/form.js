@@ -11,7 +11,7 @@ function getTime(start, end) {
 
 window.addEventListener("load", function () {
   const tagName = "product-availability";
-  const url = "https://f63afd418e55.eu.ngrok.io";
+  const url = "https://f069e45b477c.eu.ngrok.io";
 
   if (!customElements.get(tagName)) {
     customElements.define(
