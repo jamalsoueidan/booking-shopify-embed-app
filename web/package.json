@@ -6,8 +6,7 @@
     "debug": "node --inspect-brk index.js",
     "dev": "concurrently \"npx tsc --watch --preserveWatchOutput --project tsconfig.json\" \"npx tsc-alias -w -p tsconfig.json\" \"cross-env NODE_ENV=development nodemon dist/index.js --delay 1\"",
     "preserve": "concurrently \"npx tsc --preserveWatchOutput --project tsconfig.json\" \"npx tsc-alias -p tsconfig.json\"",
-    "serve": "cross-env NODE_ENV=production node dist/index.js",
-    "dev:nodemon": "./node_modules/nodemon/bin/nodemon.js",
+    "serve": "cross-env NODE_ENV=production TS_NODE_BASEURL=./dist node -r tsconfig-paths/register dist/index.js",
     "test": "jest --watch --runInBand --detectOpenHandles"
   },
   "engines": {
@@ -44,6 +43,7 @@
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
     "tsc-alias": "^1.7.0",
+    "tsconfig-paths": "^4.1.0",
     "typescript": "^4.8.4"
   }
 }
