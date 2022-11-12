@@ -5,8 +5,6 @@ import https from 'https';
 import react from '@vitejs/plugin-react';
 import checker from 'vite-plugin-checker';
 
-console.log(process.env);
-
 if (
   process.env.npm_lifecycle_event === 'build' &&
   !process.env.CI &&
@@ -45,22 +43,28 @@ if (host === 'localhost') {
   };
 }
 
-export default defineConfig({
-  root: dirname(fileURLToPath(import.meta.url)),
-  plugins: [react(), checker({ typescript: true })],
-  define: {
-    'process.env.SHOPIFY_API_KEY': JSON.stringify(process.env.SHOPIFY_API_KEY),
-  },
-  resolve: {
-    preserveSymlinks: true,
-  },
-  server: {
-    host: 'localhost',
-    port: process.env.FRONTEND_PORT,
-    hmr: hmrConfig,
-    proxy: {
-      '^/(\\?.*)?$': proxyOptions,
-      '^/api(/|(\\?.*)?$)': proxyOptions,
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '');
+  console.log(env);
+  return {
+    root: dirname(fileURLToPath(import.meta.url)),
+    plugins: [react(), checker({ typescript: true })],
+    define: {
+      'process.env.SHOPIFY_API_KEY': JSON.stringify(
+        process.env.SHOPIFY_API_KEY
+      ),
     },
-  },
+    resolve: {
+      preserveSymlinks: true,
+    },
+    server: {
+      host: 'localhost',
+      port: process.env.FRONTEND_PORT,
+      hmr: hmrConfig,
+      proxy: {
+        '^/(\\?.*)?$': proxyOptions,
+        '^/api(/|(\\?.*)?$)': proxyOptions,
+      },
+    },
+  };
 });
