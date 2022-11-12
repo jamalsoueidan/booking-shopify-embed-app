@@ -5,6 +5,12 @@ import https from 'https';
 import react from '@vitejs/plugin-react';
 import checker from 'vite-plugin-checker';
 
+console.log(
+  process.env.npm_lifecycle_event,
+  process.env.CI,
+  process.env.SHOPIFY_API_KEY
+);
+
 if (
   process.env.npm_lifecycle_event === 'build' &&
   !process.env.CI &&
