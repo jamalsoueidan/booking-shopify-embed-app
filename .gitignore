@@ -36,3 +36,4 @@ web/jest/globalConfig.json
 web/dist
 web/frontend/dist
 .history
+web/frontend/stats.html

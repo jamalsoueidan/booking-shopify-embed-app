@@ -5,6 +5,7 @@ import https from 'https';
 import react from '@vitejs/plugin-react';
 import checker from 'vite-plugin-checker';
 import { splitVendorChunkPlugin } from 'vite';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 if (
   process.env.npm_lifecycle_event === 'build' &&
@@ -46,7 +47,12 @@ if (host === 'localhost') {
 
 export default defineConfig({
   root: dirname(fileURLToPath(import.meta.url)),
-  plugins: [react(), checker({ typescript: true }), splitVendorChunkPlugin()],
+  plugins: [
+    react(),
+    checker({ typescript: true }),
+    splitVendorChunkPlugin(),
+    visualizer(),
+  ],
   define: {
     'process.env.SHOPIFY_API_KEY': JSON.stringify(process.env.SHOPIFY_API_KEY),
   },
@@ -60,6 +66,22 @@ export default defineConfig({
     proxy: {
       '^/(\\?.*)?$': proxyOptions,
       '^/api(/|(\\?.*)?$)': proxyOptions,
+    },
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          const chunks = ['fullcalendar', '@shopify'];
+          if (id.includes('/node_modules/')) {
+            for (const chunkName of chunks) {
+              if (id.includes(chunkName)) {
+                return chunkName;
+              }
+            }
+          }
+        },
+      },
     },
   },
 });
