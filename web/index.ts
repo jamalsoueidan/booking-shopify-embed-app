@@ -18,6 +18,7 @@ import widgetRoutes from "./libs/widget/widget.routes";
 import applyAuthMiddleware from "./middleware/auth.js";
 import verifyRequest from "./middleware/verify-request.js";
 import OrderWebhook from "./libs/webhooks/order.webhook.js";
+import cors from "cors";
 
 const USE_ONLINE_TOKENS = false;
 
@@ -106,6 +107,7 @@ export async function createServer(
 ) {
   const app = express();
 
+  app.use(cors());
   app.set("use-online-tokens", USE_ONLINE_TOKENS);
   app.use(cookieParser(Shopify.Context.API_SECRET_KEY));
 
