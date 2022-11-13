@@ -58,7 +58,6 @@ export default defineConfig({
   },
   resolve: {
     preserveSymlinks: true,
-    mainFields: [],
   },
   server: {
     host: 'localhost',
@@ -69,7 +68,7 @@ export default defineConfig({
       '^/api(/|(\\?.*)?$)': proxyOptions,
     },
   },
-  build: {
+  /*build: {
     rollupOptions: {
       output: {
         manualChunks(id) {
@@ -84,5 +83,5 @@ export default defineConfig({
         },
       },
     },
-  },
+  },*/
 });
