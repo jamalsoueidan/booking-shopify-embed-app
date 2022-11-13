@@ -12,7 +12,7 @@ export interface IScheduleModel {
 }
 
 const ScheduleSchema = new Schema({
-  staff: { type: Schema.Types.ObjectId, ref: "Staff" },
+  staff: { type: Schema.Types.ObjectId, ref: "Staff", index: true },
   groupId: String,
   start: {
     type: Date,
@@ -27,6 +27,7 @@ const ScheduleSchema = new Schema({
   available: {
     type: Boolean,
     default: true,
+    index: true,
   },
   tag: {
     type: String,
