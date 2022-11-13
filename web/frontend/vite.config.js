@@ -58,6 +58,7 @@ export default defineConfig({
   },
   resolve: {
     preserveSymlinks: true,
+    mainFields: [],
   },
   server: {
     host: 'localhost',
