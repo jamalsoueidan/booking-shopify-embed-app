@@ -11,7 +11,7 @@ function getTime(start, end) {
 
 window.addEventListener("load", function () {
   const tagName = "product-availability";
-  const url = "https://f069e45b477c.eu.ngrok.io";
+  const url = "https://book-appointment-shopify-app.herokuapp.com";
 
   if (!customElements.get(tagName)) {
     customElements.define(
