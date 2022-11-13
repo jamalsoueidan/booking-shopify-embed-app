@@ -73,7 +73,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          const chunks = ['fullcalendar', '@shopify'];
+          const chunks = ['fullcalendar', 'date-fns', 'react-timezone-select'];
           if (id.includes('/node_modules/')) {
             for (const chunkName of chunks) {
               if (id.includes(chunkName)) {
