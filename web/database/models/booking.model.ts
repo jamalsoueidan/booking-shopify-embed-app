@@ -19,9 +19,21 @@ const BookingSchema = new mongoose.Schema({
     ref: "Staff",
     required: true,
   },
-  start: Date,
-  end: Date,
-  shop: String,
+  start: {
+    type: Date,
+    required: true,
+    index: true,
+  },
+  end: {
+    type: Date,
+    required: true,
+    index: true,
+  },
+  shop: {
+    type: String,
+    required: true,
+    index: true,
+  },
   anyStaff: {
     type: Boolean,
     default: false,
