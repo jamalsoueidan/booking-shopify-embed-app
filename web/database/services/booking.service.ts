@@ -67,11 +67,10 @@ const getBookingsByProduct = async ({
 export interface GetBookingsByProductAndStaffReturn
   extends GetBookingsByProductReturn {}
 export interface GetBookingsByProductAndStaffProps
-  extends Omit<IBookingModel, "orderId"> {}
+  extends Omit<IBookingModel, "orderId" | "productId"> {}
 
 const getBookingsByProductAndStaff = async ({
   shop,
-  productId,
   start,
   end,
   staff,
@@ -82,7 +81,6 @@ const getBookingsByProductAndStaff = async ({
     {
       $match: {
         shop,
-        productId,
         staff: staff,
         $or: [
           {

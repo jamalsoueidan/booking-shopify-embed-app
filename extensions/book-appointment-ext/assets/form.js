@@ -9,9 +9,30 @@ function getTime(start, end) {
   return value;
 }
 
+const EVENT_NAME = "cart-added";
+
+function intercept() {
+  const { fetch: originalFetch } = window;
+
+  window.fetch = async (...args) => {
+    let [resource, config] = args;
+    const response = await originalFetch(resource, config);
+    if (resource === "/cart/add") {
+      const myEvent = new CustomEvent(EVENT_NAME, {
+        detail: {},
+        bubbles: true,
+        cancelable: true,
+        composed: false,
+      });
+      document.querySelector("body").dispatchEvent(myEvent);
+    }
+    return response;
+  };
+}
+
 window.addEventListener("load", function () {
   const tagName = "product-availability";
-  const url = "https://book-appointment-shopify-app.herokuapp.com";
+  const url = "https://a0dea505e5be.eu.ngrok.io";
 
   if (!customElements.get(tagName)) {
     customElements.define(
@@ -24,6 +45,8 @@ window.addEventListener("load", function () {
         endHourInput = null;
         template = null;
         schedules = null;
+        staff = null; //staff data
+        submitButton = null;
         data = {};
 
         constructor() {
@@ -34,6 +57,12 @@ window.addEventListener("load", function () {
           fetch(
             `${url}/api/widget/staff?shop=${this.dataset.shop}&productId=${this.dataset.productId}`
           ).then(this.onStaffFetch.bind(this));
+
+          document
+            .querySelector("body")
+            .addEventListener(EVENT_NAME, this.reset.bind(this));
+
+          this.submitButton = document.querySelector("button[type=submit]");
         }
 
         addTemplate() {
@@ -62,14 +91,56 @@ window.addEventListener("load", function () {
           };
         }
 
-        resetHourSelect() {
+        reset() {
+          fetch(
+            `${url}/api/widget/cart?shop=${this.dataset.shop}&productId=${this.dataset.productId}`,
+            {
+              method: "POST",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                ...this.data,
+                staffId: this.data.staff.staff,
+              }),
+            }
+          );
+          this.resetDate();
+          this.staffSelect.options.selectedIndex = 0;
+          this.querySelector("#dateInput").disabled = true;
+        }
+
+        resetDate() {
           this.dateInput && this.dateInput.clear();
+          this.resetHourSelect();
+        }
+
+        resetHourSelect() {
           this.timeSelect.innerHTML = "";
           var opt = document.createElement("option");
           opt.value = "null";
           opt.innerHTML = "Vælge tid";
           this.timeSelect.appendChild(opt);
           this.timeSelect.disabled = true;
+          this.submitButton.disabled = true;
+        }
+
+        async onStaffFetch(response) {
+          const { payload } = await response.json();
+          this.staff = payload;
+          if (payload.length === 0) return;
+
+          this.submitButton.disabled = true;
+          this.addTemplate();
+          intercept();
+
+          payload.forEach((element) => {
+            var opt = document.createElement("option");
+            opt.value = element.fullname;
+            opt.innerHTML = element.fullname;
+            this.staffSelect.appendChild(opt);
+          });
         }
 
         onHourSelect() {
@@ -78,8 +149,8 @@ window.addEventListener("load", function () {
             (s) => s.date === time.substring(0, 10)
           );
           const hour = schedule.hours.find((h) => h.start === time);
+          const anyAvailable = this.staffSelect.value !== hour.staff.fullname;
 
-          const anyAvailable = this.staffSelect.value.substring(0, 1) !== "{";
           this.updateData({
             ...hour,
             staff: {
@@ -94,33 +165,24 @@ window.addEventListener("load", function () {
             : hour.staff.fullname;
           document.getElementById("time").value = getTime(hour.start, hour.end);
           document.getElementById("data").value = JSON.stringify(this.data);
-        }
-
-        async onStaffFetch(response) {
-          const { payload } = await response.json();
-          if (payload.length > 0) {
-            this.addTemplate();
-          }
-
-          payload.forEach((element) => {
-            var opt = document.createElement("option");
-            opt.value = element.fullname;
-            opt.innerHTML = element.fullname;
-            this.staffSelect.appendChild(opt);
-          });
+          this.submitButton.disabled = false;
         }
 
         onStaffSelect() {
-          this.resetHourSelect();
+          this.resetDate();
           const value = this.staffSelect.value;
-          const staffId =
-            value.substring(0, 1) === "{" ? JSON.parse(value).staff : null;
+          const index = this.staffSelect.options.selectedIndex;
+          if (index === 0) {
+            return this.reset();
+          }
+
+          const staffId = this.staff.find((s) => s.fullname === value);
           const path = new URL(`${url}/api/widget/availability-range`);
           const params = new URLSearchParams(url.search);
           params.append("shop", this.dataset.shop);
           params.append("productId", this.dataset.productId);
           if (staffId) {
-            params.append("staffId", staffId);
+            params.append("staffId", staffId.staff);
           }
 
           const DateTime = easepick.DateTime;
@@ -189,6 +251,7 @@ window.addEventListener("load", function () {
               picker.on("select", (e) => {
                 const { date } = e.detail;
                 const schedule = findSchedule(date.format("YYYY-MM-DD"));
+                self.resetHourSelect();
                 self.timeSelect.disabled = false;
                 if (schedule) {
                   //remove duplication

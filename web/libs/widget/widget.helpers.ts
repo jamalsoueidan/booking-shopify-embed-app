@@ -1,5 +1,12 @@
 import { IProductModel } from "@models/product.model";
-import { addMinutes, differenceInMinutes, format, isBefore } from "date-fns";
+import { GetCartsByStaffReturn } from "@services/cart.service";
+import {
+  addMinutes,
+  format,
+  isBefore,
+  isWithinInterval,
+  subMinutes,
+} from "date-fns";
 import {
   GetByStaffAndTagReturn,
   GetByTagReturn,
@@ -61,7 +68,10 @@ const scheduleReduce =
   };
 
 const scheduleCalculateBooking = (
-  book: GetBookingsByProductReturn | GetBookingsByProductAndStaffReturn
+  book:
+    | GetBookingsByProductReturn
+    | GetBookingsByProductAndStaffReturn
+    | GetCartsByStaffReturn
 ): ((schedule: ScheduleDate) => ScheduleDate) => {
   const { start, end, staff } = book;
   return (schedule: ScheduleDate): ScheduleDate => {
@@ -72,16 +82,13 @@ const scheduleCalculateBooking = (
           return true;
         }
 
-        if (
-          differenceInMinutes(start, hour.start) <= 0 &&
-          differenceInMinutes(end, hour.start) >= 0
-        ) {
+        if (isWithinInterval(addMinutes(start, 1), hour)) {
+          console.log("eliminate", start, end, hour.start, hour.end);
           return false;
         }
-        if (
-          differenceInMinutes(start, hour.end) <= 0 &&
-          differenceInMinutes(end, hour.end) >= 0
-        ) {
+
+        if (isWithinInterval(subMinutes(end, 1), hour)) {
+          console.log("eliminate", start, end, hour.start, hour.end);
           return false;
         }
 

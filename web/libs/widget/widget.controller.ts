@@ -1,11 +1,15 @@
+import CartModel from "@models/cart.model";
 import { IProductModel } from "@models/product.model";
 import BookingService from "@services/booking.service";
+import CartService from "@services/cart.service";
 import ProductService from "@services/product.service";
 import ScheduleService from "@services/schedule.service";
 import mongoose from "mongoose";
 import helpers, { ScheduleDate } from "./widget.helpers";
 
 export enum ControllerMethods {
+  addCart = "addCart",
+  removeCart = "removeCart",
   staff = "staff",
   availabilityDay = "availabilityDay",
   availabilityRangeByStaff = "availabilityRangeByStaff",
@@ -13,6 +17,74 @@ export enum ControllerMethods {
 }
 
 export interface AvailabilityReturn extends ScheduleDate {}
+
+interface CartQuery {
+  shop: string;
+  productId: string;
+}
+interface CartBody {
+  start: string;
+  end: string;
+  staffId: string;
+}
+
+const addCart = async ({
+  query,
+  body,
+}: {
+  query: CartQuery;
+  body: CartBody;
+}) => {
+  const { shop, productId } = query;
+  const { start, end, staffId } = body;
+
+  const response = await availabilityDay({
+    query: { staffId, date: start.substring(0, 10), productId, shop },
+  });
+
+  const validateDate = !!response.find(
+    (scheduleDate) =>
+      scheduleDate.date === start.substring(0, 10) &&
+      scheduleDate.hours.find(
+        (hour) =>
+          hour.start.toISOString() === start && hour.end.toISOString() === end
+      )
+  );
+
+  if (validateDate) {
+    const update = {
+      start,
+      end,
+      staff: new mongoose.Types.ObjectId(staffId),
+      shop,
+    };
+    return await CartModel.updateOne(
+      update,
+      { $set: update },
+      { upsert: true }
+    );
+  } else {
+    throw "Try to hack?";
+  }
+};
+
+const removeCart = async ({
+  query,
+  body,
+}: {
+  query: CartQuery;
+  body: CartBody;
+}) => {
+  const { shop } = query;
+  const { start, end, staffId } = body;
+
+  return await CartModel.deleteOne({
+    start,
+    end,
+    staff: new mongoose.Types.ObjectId(staffId),
+    shop,
+  });
+};
 
 interface StaffQuery {
   productId: string;
@@ -58,7 +130,6 @@ const availabilityDay = async ({
 
   const bookings = await BookingService.getBookingsByProductAndStaff({
     shop,
-    productId: parseInt(productId),
     start: new Date(date),
     end: new Date(date),
     staff: product.staff.staff,
@@ -69,12 +140,20 @@ const availabilityDay = async ({
     []
   );
 
-  bookings.forEach(
-    (book) =>
-      (scheduleDates = scheduleDates.map(
-        helpers.scheduleCalculateBooking(book)
-      ))
-  );
+  bookings.forEach((book) => {
+    scheduleDates = scheduleDates.map(helpers.scheduleCalculateBooking(book));
+  });
+
+  const carts = await CartService.getCartsByStaff({
+    shop,
+    staff: product.staff.staff,
+    start: new Date(date),
+    end: new Date(date),
+  });
+
+  carts.forEach((cart) => {
+    scheduleDates = scheduleDates.map(helpers.scheduleCalculateBooking(cart));
+  });
 
   return scheduleDates;
 };
@@ -111,7 +190,6 @@ const availabilityRangeByStaff = async ({
 
   const bookings = await BookingService.getBookingsByProductAndStaff({
     shop,
-    productId: parseInt(productId),
     staff: product.staff.staff,
     start: new Date(start),
     end: new Date(end),
@@ -125,6 +203,17 @@ const availabilityRangeByStaff = async ({
         helpers.scheduleCalculateBooking(book)
       ))
   );
+
+  const carts = await CartService.getCartsByStaff({
+    shop,
+    staff: product.staff.staff,
+    start: new Date(start),
+    end: new Date(end),
+  });
+
+  carts.forEach((cart) => {
+    scheduleDates = scheduleDates.map(helpers.scheduleCalculateBooking(cart));
+  });
 
   return scheduleDates;
 };
@@ -171,10 +260,23 @@ const availabilityRangeByAll = async ({
       ))
   );
 
+  const carts = await CartService.getCartsByStaffier({
+    shop,
+    staffier: product.staff.map((s) => s.staff), //product.staff.map((s) => s.staff),
+    start: new Date(start),
+    end: new Date(end),
+  });
+
+  carts.forEach((cart) => {
+    scheduleDates = scheduleDates.map(helpers.scheduleCalculateBooking(cart));
+  });
+
   return scheduleDates;
 };
 
 export default {
+  addCart,
+  removeCart,
   staff,
   availabilityDay,
   availabilityRangeByAll,

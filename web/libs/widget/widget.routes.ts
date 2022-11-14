@@ -31,6 +31,14 @@ export default function widgetRoutes(app) {
     }
   });
 
+  router.post("/cart", async (req, res) => {
+    handleRoute(req, res, ControllerMethods.addCart);
+  });
+
+  router.delete("/cart", async (req, res) => {
+    handleRoute(req, res, ControllerMethods.removeCart);
+  });
+
   router.get(
     "/availability-range",
     checkSchema({

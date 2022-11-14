@@ -1,0 +1,1195 @@
+{
+	"info": {
+		"_postman_id": "0936d79f-eb04-45fc-98a6-c7458bf864b5",
+		"name": "book-appointment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23763337"
+	},
+	"item": [
+		{
+			"name": "webhooks",
+			"item": [
+				{
+					"name": "webhooks create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Shopify-Access-Token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"webhook\" : {\n\t\t\t\"topic\" : \"orders/create\",\n\t\t\t\"address\": \"https://ae511afdd320.eu.ngrok.io/webhooks\",\n\t\t\t\"format\": \"json\"\n\t}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{shop}}/admin/api/2022-04/webhooks.json",
+							"protocol": "https",
+							"host": [
+								"{{shop}}"
+							],
+							"path": [
+								"admin",
+								"api",
+								"2022-04",
+								"webhooks.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "webhook list",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Shopify-Access-Token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{shop}}/admin/api/2022-04/webhooks.json?since_id=901431826",
+							"protocol": "https",
+							"host": [
+								"{{shop}}"
+							],
+							"path": [
+								"admin",
+								"api",
+								"2022-04",
+								"webhooks.json"
+							],
+							"query": [
+								{
+									"key": "since_id",
+									"value": "901431826"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "webhooka update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-Shopify-Access-Token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"webhook\" : {\n\t\t\"address\": \"https://4c7569bcd463.eu.ngrok.io/api/webhooks\"\n\t}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{shop}}/admin/api/2022-04/webhooks/1195701141821.json",
+							"protocol": "https",
+							"host": [
+								"{{shop}}"
+							],
+							"path": [
+								"admin",
+								"api",
+								"2022-04",
+								"webhooks",
+								"1195701141821.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "webhooks delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-Shopify-Access-Token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://{{shop}}/admin/api/2022-04/webhooks/1211579892029.json",
+							"protocol": "https",
+							"host": [
+								"{{shop}}"
+							],
+							"path": [
+								"admin",
+								"api",
+								"2022-04",
+								"webhooks",
+								"1211579892029.json"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "staff",
+					"item": [
+						{
+							"name": "schedules",
+							"item": [
+								{
+									"name": "schedule create",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "[{\n    \"start\": \"2022-10-23T10:30:00Z\", \n    \"end\": \"2022-10-23T19:30:00Z\", \n    \"tag\": \"purple\"\n},{\n    \"start\": \"2022-10-23T10:30:00Z\", \n    \"end\": \"2022-10-23T19:30:00Z\", \n    \"tag\": \"black\"\n}]",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/api/admin/staff/635321e4c8af73a745d192dd/schedules?shop={{shop}}",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"admin",
+												"staff",
+												"635321e4c8af73a745d192dd",
+												"schedules"
+											],
+											"query": [
+												{
+													"key": "id",
+													"value": "635178240736f6b114395135",
+													"disabled": true
+												},
+												{
+													"key": "shop",
+													"value": "{{shop}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "schedule delete",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"start\": \"2022-10-23T10:30:00Z\", \n    \"end\": \"2022-10-23T19:30:00Z\", \n    \"tag\": \"blue\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/api/admin/staff/635182259e53eb09e885bf37/schedules/63518e7e63ead7d2c754d5f1?shop={{shop}}",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"admin",
+												"staff",
+												"635182259e53eb09e885bf37",
+												"schedules",
+												"63518e7e63ead7d2c754d5f1"
+											],
+											"query": [
+												{
+													"key": "shop",
+													"value": "{{shop}}"
+												},
+												{
+													"key": "id",
+													"value": "635178240736f6b114395135",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "schedule update",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"groupId\": \"1666480648590\",\n    \"start\": \"2022-10-04T09:00:00.000Z\", \n    \"end\": \"2022-10-04T18:00:00.000Z\", \n    \"tag\": \"asd\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/api/admin/staff/635321e4c8af73a745d192dd/schedules/63547a08a3aadc36a9df218e?shop={{shop}}",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"admin",
+												"staff",
+												"635321e4c8af73a745d192dd",
+												"schedules",
+												"63547a08a3aadc36a9df218e"
+											],
+											"query": [
+												{
+													"key": "id",
+													"value": "635178240736f6b114395135",
+													"disabled": true
+												},
+												{
+													"key": "shop",
+													"value": "{{shop}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "schedule update groupid",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"start\": \"2022-10-22T09:52:41.682Z\", \n    \"end\": \"2022-10-22T20:52:41.682Z\", \n    \"tag\": \"asd\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/api/admin/staff/635321e4c8af73a745d192dd/schedules/63547a08a3aadc36a9df218e/group/1666480648590?shop={{shop}}",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"admin",
+												"staff",
+												"635321e4c8af73a745d192dd",
+												"schedules",
+												"63547a08a3aadc36a9df218e",
+												"group",
+												"1666480648590"
+											],
+											"query": [
+												{
+													"key": "id",
+													"value": "635178240736f6b114395135",
+													"disabled": true
+												},
+												{
+													"key": "shop",
+													"value": "{{shop}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "schedule list",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{url}}/api/admin/staff/635321e4c8af73a745d192dd/schedules?shop={{shop}}",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"admin",
+												"staff",
+												"635321e4c8af73a745d192dd",
+												"schedules"
+											],
+											"query": [
+												{
+													"key": "shop",
+													"value": "{{shop}}"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "staff list",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Shopify-Access-Token",
+										"value": "shpua_e7362500a3939ff163314ffee79cc395",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczpcL1wvdGVzdGVyaXBob25lLm15c2hvcGlmeS5jb21cL2FkbWluIiwiZGVzdCI6Imh0dHBzOlwvXC90ZXN0ZXJpcGhvbmUubXlzaG9waWZ5LmNvbSIsImF1ZCI6IjAyNmMxZDRhNWZjNzRhM2VlZDQwYTYzMGNkZTg0OWEzIiwic3ViIjoiODYzMzU5MTQzMDEiLCJleHAiOjE2NjYyOTAyMDEsIm5iZiI6MTY2NjI5MDE0MSwiaWF0IjoxNjY2MjkwMTQxLCJqdGkiOiI0YWE5ZDA4Yi05NGY4LTRmYTAtYTMzNy1mNGY0MDU0YWQ0MGIiLCJzaWQiOiI4NTJjNjg3Zjg4YWY1Zjg1MDc0ZWYwOWYxMThhNzZmOGY3ZTg0NWIzNTVkODRjYzk5N2FlN2M4OWQzNzVkMmViIn0.HzUbWhr4zZydHsQ8M4m2DTODII-c0oSfvTu4beO4hUc",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/admin/staff?shop={{shop}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"staff"
+									],
+									"query": [
+										{
+											"key": "shop",
+											"value": "{{shop}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "staff create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Shopify-Access-Token",
+										"value": "shpua_e7362500a3939ff163314ffee79cc395",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"fullname\": \"jamasdeidan\",\n    \"email\": \"jamasduaeidan.com\",\n    \"phone\": \"+4531317428\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/admin/staff?shop={{shop}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"staff"
+									],
+									"query": [
+										{
+											"key": "date",
+											"value": "2022-10-19",
+											"disabled": true
+										},
+										{
+											"key": "userId",
+											"value": "2",
+											"disabled": true
+										},
+										{
+											"key": "shop",
+											"value": "{{shop}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "staff get",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Shopify-Access-Token",
+										"value": "shpua_e7362500a3939ff163314ffee79cc395",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/admin/staff/6366d5ce885d61a127f82731?shop={{shop}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"staff",
+										"6366d5ce885d61a127f82731"
+									],
+									"query": [
+										{
+											"key": "shop",
+											"value": "{{shop}}"
+										},
+										{
+											"key": "date",
+											"value": "2022-10-19",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "staff update",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-Shopify-Access-Token",
+										"value": "shpua_e7362500a3939ff163314ffee79cc395",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"fullname\": \"jamal soueidan\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/admin/staff/6366d5ce885d61a127f82731?shop={{shop}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"staff",
+										"6366d5ce885d61a127f82731"
+									],
+									"query": [
+										{
+											"key": "date",
+											"value": "2022-10-19",
+											"disabled": true
+										},
+										{
+											"key": "userId",
+											"value": "2",
+											"disabled": true
+										},
+										{
+											"key": "shop",
+											"value": "{{shop}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "collections",
+					"item": [
+						{
+							"name": "product",
+							"item": [
+								{
+									"name": "staff",
+									"item": [
+										{
+											"name": "add staff",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"staff\": \"635321e4c8af73a745d192dd\",\n    \"tag\": \"#234d43\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{url}}/api/admin/products/6356eaa3e9fa1c00f60c135a/staff?shop={{shop}}",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"api",
+														"admin",
+														"products",
+														"6356eaa3e9fa1c00f60c135a",
+														"staff"
+													],
+													"query": [
+														{
+															"key": "shop",
+															"value": "{{shop}}"
+														}
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "delete staff",
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{url}}/api/admin/products/635d299999e6dbf1b249689f/staff/635dc22459b49ead9052fce9?shop={{shop}}",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"api",
+														"admin",
+														"products",
+														"635d299999e6dbf1b249689f",
+														"staff",
+														"635dc22459b49ead9052fce9"
+													],
+													"query": [
+														{
+															"key": "shop",
+															"value": "{{shop}}"
+														}
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "staff to add",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{url}}/api/admin/products/635d299999e6dbf1b249689f/staff-to-add?shop={{shop}}",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"api",
+														"admin",
+														"products",
+														"635d299999e6dbf1b249689f",
+														"staff-to-add"
+													],
+													"query": [
+														{
+															"key": "shop",
+															"value": "{{shop}}"
+														}
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "existing staff product",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{url}}/api/admin/products/635d299999e6dbf1b249689f/staff?shop={{shop}}",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"api",
+														"admin",
+														"products",
+														"635d299999e6dbf1b249689f",
+														"staff"
+													],
+													"query": [
+														{
+															"key": "shop",
+															"value": "{{shop}}"
+														}
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "get product",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Shopify-Access-Token",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{url}}/api/admin/products/635d299999e6dbf1b249689f?shop={{shop}}",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"admin",
+												"products",
+												"635d299999e6dbf1b249689f"
+											],
+											"query": [
+												{
+													"key": "shop",
+													"value": "{{shop}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "update product",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"duration\": 45,\n    \"buffertime\": 15\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/api/admin/products/6357efd9a4f667d5c1e7be0f?shop={{shop}}",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"admin",
+												"products",
+												"6357efd9a4f667d5c1e7be0f"
+											],
+											"query": [
+												{
+													"key": "shop",
+													"value": "{{shop}}"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "add collection",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Shopify-Access-Token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"selection\": [\"gid://shopify/Collection/425290039613\", \"gid://shopify/Collection/425845817661\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/admin/collections?shop={{shop}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"collections"
+									],
+									"query": [
+										{
+											"key": "shop",
+											"value": "{{shop}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "remove collection",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/admin/collections/6355e891a4f667d5c1e7336b?shop={{shop}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"collections",
+										"6355e891a4f667d5c1e7336b"
+									],
+									"query": [
+										{
+											"key": "shop",
+											"value": "{{shop}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get all collections and products",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/admin/collections?shop={{shop}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"collections"
+									],
+									"query": [
+										{
+											"key": "shop",
+											"value": "{{shop}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "settings",
+					"item": [
+						{
+							"name": "get settings",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/admin/setting?shop={{shop}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"setting"
+									],
+									"query": [
+										{
+											"key": "shop",
+											"value": "{{shop}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update settings",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"language\": \"da\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/admin/setting?shop={{shop}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"setting"
+									],
+									"query": [
+										{
+											"key": "shop",
+											"value": "{{shop}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "bookings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/admin/bookings?shop={{shop}}&start=2022-10-01&end=2022-10-29",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"bookings"
+							],
+							"query": [
+								{
+									"key": "shop",
+									"value": "{{shop}}"
+								},
+								{
+									"key": "start",
+									"value": "2022-10-01"
+								},
+								{
+									"key": "end",
+									"value": "2022-10-29"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "??? bookings by staff id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/widget/availability-day",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"widget",
+								"availability-day"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "widget",
+			"item": [
+				{
+					"name": "widget staff",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/widget/staff?shop={{shop}}&productId=7961951273277",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"widget",
+								"staff"
+							],
+							"query": [
+								{
+									"key": "shop",
+									"value": "{{shop}}"
+								},
+								{
+									"key": "productId",
+									"value": "7961951273277"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "widget create cart",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"staffId\": \"636b75a18f6e30e6f8686c63\",\n    \"start\": \"2022-11-17T08:00:00.000Z\",\n    \"end\": \"2022-11-17T09:00:00.000Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/widget/cart?shop={{shop}}&productId=7961951273277",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"widget",
+								"cart"
+							],
+							"query": [
+								{
+									"key": "shop",
+									"value": "{{shop}}"
+								},
+								{
+									"key": "productId",
+									"value": "7961951273277"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "widget delete cart",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/widget/cart?shop={{shop}}&productId=7961951273277",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"widget",
+								"cart"
+							],
+							"query": [
+								{
+									"key": "shop",
+									"value": "{{shop}}"
+								},
+								{
+									"key": "productId",
+									"value": "7961951273277"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "widget availability day for staff",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/widget/availability-day?shop={{shop}}&date=2022-11-10&staffId=636b75a18f6e30e6f8686c63&productId=7961951273277",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"widget",
+								"availability-day"
+							],
+							"query": [
+								{
+									"key": "shop",
+									"value": "{{shop}}"
+								},
+								{
+									"key": "date",
+									"value": "2022-11-10"
+								},
+								{
+									"key": "staffId",
+									"value": "636b75a18f6e30e6f8686c63"
+								},
+								{
+									"key": "productId",
+									"value": "7961951273277"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "widget availability range date for staff",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/widget/availability-range?shop={{shop}}&start=2022-11-10&end=2022-11-30&staffId=636b9c2f643fac7124863b02&productId=7961951273277",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"widget",
+								"availability-range"
+							],
+							"query": [
+								{
+									"key": "shop",
+									"value": "{{shop}}"
+								},
+								{
+									"key": "start",
+									"value": "2022-11-10"
+								},
+								{
+									"key": "end",
+									"value": "2022-11-30"
+								},
+								{
+									"key": "staffId",
+									"value": "636b9c2f643fac7124863b02"
+								},
+								{
+									"key": "productId",
+									"value": "7961951273277"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "widget availability any available",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/widget/availability-range?shop={{shop}}&start=2022-11-10&end=2022-11-29&productId=7961951273277",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"widget",
+								"availability-range"
+							],
+							"query": [
+								{
+									"key": "shop",
+									"value": "{{shop}}"
+								},
+								{
+									"key": "start",
+									"value": "2022-11-10"
+								},
+								{
+									"key": "end",
+									"value": "2022-11-29"
+								},
+								{
+									"key": "productId",
+									"value": "7961951273277"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
