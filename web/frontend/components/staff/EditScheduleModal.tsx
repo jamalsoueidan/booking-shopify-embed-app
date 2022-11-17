@@ -8,15 +8,17 @@ import {
 } from '@shopify/polaris';
 import { format } from 'date-fns';
 import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useAuthenticatedFetch } from '../../hooks';
-import { useSetting } from '../../services/setting';
+import useSetting from '../../services/setting';
+import {
+  useStaffScheduleDestroy,
+  useStaffScheduleUpdate,
+} from '../../services/staff/schedule';
 
 interface Props {
   info: any;
   setInfo: any;
-  refresh: any;
 }
 
 const options = [
@@ -26,11 +28,12 @@ const options = [
   { label: 'Purple', value: '#4c00b0' },
 ];
 
-export default ({ info, setInfo, refresh }: Props) => {
+export default ({ info, setInfo }: Props) => {
   const params = useParams();
   const toggleActive = () => setInfo(null);
-  const { timeZone } = useSetting();
-  const toTimeZone = (fromUTC: Date) => utcToZonedTime(fromUTC, timeZone);
+  const { data: settings } = useSetting();
+  const toTimeZone = (fromUTC: Date) =>
+    utcToZonedTime(fromUTC, settings.timeZone);
 
   const extendedProps = info.event._def.extendedProps;
   const [startTime, setStartTime] = useState<string>(
@@ -42,43 +45,27 @@ export default ({ info, setInfo, refresh }: Props) => {
   const [tag, setTag] = useState(extendedProps.tag || options[0].value);
   const [available, setAvailable] = useState(extendedProps.available || false);
 
-  const [loadingUpdate, setLoadingUpdate] = useState<boolean>(false);
-  const [loadingDelete, setLoadingDelete] = useState<boolean>(false);
+  const { isUpdating, update: updateSchedule } = useStaffScheduleUpdate({
+    userId: params.id,
+    scheduleId: extendedProps._id,
+  });
 
-  const [loadingUpdateAll, setLoadingUpdateAll] = useState<boolean>(false);
-  const [loadingDeleteAll, setLoadingDeleteAll] = useState<boolean>(false);
+  const { isUpdating: isUpdatingAll, update: updateScheduleAll } =
+    useStaffScheduleUpdate({
+      userId: params.id,
+      scheduleId: extendedProps._id,
+    });
 
-  const fetch = useAuthenticatedFetch();
-  const updateSchedule = useCallback(
-    async (body: { groupId: string }) => {
-      return await fetch(
-        `/api/admin/staff/${params.id}/schedules/${extendedProps._id}${
-          body.groupId ? '/group/' + body.groupId : ''
-        }`,
-        {
-          method: 'PUT',
-          body: JSON.stringify(body),
-          headers: { 'Content-Type': 'application/json' },
-        }
-      ).then((res: Response) => res.json());
-    },
-    [params, info, tag]
-  );
+  const { isDestroying, destroy: destroySchedule } = useStaffScheduleDestroy({
+    userId: params.id,
+    scheduleId: extendedProps._id,
+  });
 
-  const deleteSchedule = useCallback(
-    async (body: { groupId: string }) => {
-      return await fetch(
-        `/api/admin/staff/${params.id}/schedules/${extendedProps._id}${
-          body.groupId ? '/group/' + body.groupId : ''
-        }`,
-        {
-          method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
-        }
-      ).then((res: Response) => res.json());
-    },
-    [params, info, tag]
-  );
+  const { isDestroying: isDestroyingAll, destroy: destroyScheduleAll } =
+    useStaffScheduleDestroy({
+      userId: params.id,
+      scheduleId: extendedProps._id,
+    });
 
   const handleStart = (value: string) => setStartTime(value);
   const handleTag = (value: string) => setTag(value);
@@ -88,11 +75,11 @@ export default ({ info, setInfo, refresh }: Props) => {
   const updateDate = async (type: 'all' | null) => {
     const start = zonedTimeToUtc(
       `${extendedProps.start.substr(0, 10)} ${startTime}`,
-      timeZone
+      settings.timeZone
     );
     const end = zonedTimeToUtc(
       `${extendedProps.end.substr(0, 10)} ${endTime}`,
-      timeZone
+      settings.timeZone
     );
 
     const body: Omit<Schedule, '_id' | 'staff'> = {
@@ -104,12 +91,10 @@ export default ({ info, setInfo, refresh }: Props) => {
     };
 
     if (type == 'all') {
-      setLoadingUpdateAll(true);
+      await updateScheduleAll(body);
     } else {
-      setLoadingUpdate(true);
+      await updateSchedule(body);
     }
-    await updateSchedule(body);
-    refresh();
     setInfo(null);
   };
 
@@ -119,12 +104,10 @@ export default ({ info, setInfo, refresh }: Props) => {
     };
 
     if (type == 'all') {
-      setLoadingDeleteAll(true);
+      await destroyScheduleAll(body);
     } else {
-      setLoadingDelete(true);
+      await destroySchedule(body);
     }
-    await deleteSchedule(body);
-    refresh();
     setInfo(null);
   };
 
@@ -182,7 +165,7 @@ export default ({ info, setInfo, refresh }: Props) => {
             <Button
               primary
               onClick={() => updateDate(null)}
-              loading={loadingUpdate}>
+              loading={isUpdating}>
               Redigere pågældende
             </Button>
           </Layout.Section>
@@ -190,7 +173,7 @@ export default ({ info, setInfo, refresh }: Props) => {
             <Button
               destructive
               onClick={() => deleteDate(null)}
-              loading={loadingDelete}>
+              loading={isDestroying}>
               Slet pågældende
             </Button>
           </Layout.Section>
@@ -199,7 +182,7 @@ export default ({ info, setInfo, refresh }: Props) => {
               <Button
                 primary
                 onClick={() => updateDate('all')}
-                loading={loadingUpdateAll}>
+                loading={isUpdatingAll}>
                 Redigere alle
               </Button>
             </Layout.Section>
@@ -209,7 +192,7 @@ export default ({ info, setInfo, refresh }: Props) => {
               <Button
                 destructive
                 onClick={() => deleteDate('all')}
-                loading={loadingDeleteAll}>
+                loading={isDestroyingAll}>
                 Slet alle
               </Button>
             </Layout.Section>

@@ -13,7 +13,7 @@ import {
   Thumbnail,
 } from '@shopify/polaris';
 import { useCallback, useState } from 'react';
-import { useAuthenticatedFetch } from '../../hooks';
+import { useStaffCreate } from '../../services/staff';
 
 export default () => {
   const navigate = useNavigate();
@@ -22,7 +22,8 @@ export default () => {
   const [fullname, setFullname] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const fetch = useAuthenticatedFetch();
+
+  const { create } = useStaffCreate();
 
   const handleDropZoneDrop = useCallback((_: File[], acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
@@ -52,11 +53,7 @@ export default () => {
       });
       navigate("/Staff");
     };*/
-    await fetch('/api/admin/staff', {
-      method: 'POST',
-      body: JSON.stringify({ fullname, email, phone }),
-      headers: { 'Content-Type': 'application/json' },
-    });
+    await create({ fullname, email, phone, active: true });
     navigate('/Staff');
   }, [fullname, phone, email, file]);
 

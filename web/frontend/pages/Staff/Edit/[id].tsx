@@ -1,6 +1,5 @@
 import { useNavigate } from '@shopify/app-bridge-react';
 import {
-  Badge,
   Caption,
   Card,
   DropZone,
@@ -15,19 +14,15 @@ import {
 } from '@shopify/polaris';
 import { useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import useSWR, { useSWRConfig } from 'swr';
 import Metadata from '../../../components/staff/Metadata';
 import { useAuthenticatedFetch } from '../../../hooks';
+import { useStaffGet } from '../../../services/staff';
 
 export default () => {
   const params = useParams();
   const navigate = useNavigate();
 
-  const { mutate } = useSWRConfig();
-  const { data: staff } = useSWR<StaffApi>(
-    `/api/admin/staff/${params.id}`,
-    (apiURL: string) => fetch(apiURL).then((res: Response) => res.json())
-  );
+  const { data: staff, update } = useStaffGet({ userId: params.id });
 
   if (!staff) {
     return <></>;
@@ -35,9 +30,9 @@ export default () => {
 
   const [file, setFile] = useState<File>();
   const [openFileDialog, setOpenFileDialog] = useState(false);
-  const [fullname, setFullname] = useState<string>(staff.payload.fullname);
-  const [email, setEmail] = useState<string>(staff.payload.email);
-  const [phone, setPhone] = useState(staff.payload.phone);
+  const [fullname, setFullname] = useState<string>(staff.fullname);
+  const [email, setEmail] = useState<string>(staff.email);
+  const [phone, setPhone] = useState(staff.phone);
   const fetch = useAuthenticatedFetch();
 
   const handleDropZoneDrop = useCallback((_: File[], acceptedFiles: File[]) => {
@@ -59,13 +54,8 @@ export default () => {
 
   const handleSubmit = useCallback(
     async (active = false) => {
-      await fetch('/api/admin/staff/' + params.id, {
-        method: 'PUT',
-        body: JSON.stringify({ fullname, email, phone, active }),
-        headers: { 'Content-Type': 'application/json' },
-      });
-      await mutate(`/api/admin/staff/${params.id}`);
-      navigate('/Staff/' + staff.payload._id);
+      await update({ fullname, email, phone, active });
+      navigate('/Staff/' + staff._id);
     },
     [fullname, phone, email, file]
   );
@@ -85,12 +75,12 @@ export default () => {
     </Stack>
   );
 
-  const { _id, active } = staff.payload;
+  const { _id, active } = staff;
   return (
     <Page
       narrowWidth
       breadcrumbs={[{ content: 'Staff', url: '/Staff/' + _id }]}
-      title={staff.payload.fullname}
+      title={staff.fullname}
       titleMetadata={<Metadata active={active} />}
       secondaryActions={[
         {

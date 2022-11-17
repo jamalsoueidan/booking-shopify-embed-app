@@ -7,16 +7,12 @@ import {
   ResourceList,
   TextStyle,
 } from '@shopify/polaris';
-import useSWR from 'swr';
+import { useStaffList } from '../../services/staff';
 import Metadata from './Metadata';
-import { useAuthenticatedFetch } from '../../hooks';
 
 export default () => {
   const navigate = useNavigate();
-  const fetch = useAuthenticatedFetch();
-  const { data } = useSWR<StafferApi>('/api/admin/staff', (apiURL: string) =>
-    fetch(apiURL).then((res: Response) => res.json())
-  );
+  const { data } = useStaffList();
 
   if (!data) {
     return <>Loading</>;
@@ -57,7 +53,7 @@ export default () => {
       <Card>
         <ResourceList
           resourceName={{ singular: 'customer', plural: 'customers' }}
-          items={data?.payload}
+          items={data}
           renderItem={renderItems}
         />
       </Card>

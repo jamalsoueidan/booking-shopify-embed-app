@@ -17,8 +17,8 @@ import {
 import { zonedTimeToUtc } from 'date-fns-tz';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useSetting } from '../../services/setting';
-import { addNewSchedule } from '../../services/staff';
+import useSetting from '../../services/setting';
+import { useStaffScheduleCreate } from '../../services/staff/schedule';
 
 const options = [
   { label: 'Green', value: '#4b6043' },
@@ -39,8 +39,10 @@ export default ({ info, setInfo, refresh }: any) => {
   const [loadingCurrent, setLoadingCurrent] = useState<boolean>(false);
   const [loadingAll, setLoadingAll] = useState<boolean>(false);
 
-  const createSchedule = addNewSchedule();
-  const { timeZone } = useSetting();
+  const { create: createSchedule } = useStaffScheduleCreate({
+    userId: params.id,
+  });
+  const { data: settings } = useSetting();
 
   const handleStart = (value: string) => setStartTime(value);
   const handleTag = (value: string) => setTag(value);
@@ -48,8 +50,11 @@ export default ({ info, setInfo, refresh }: any) => {
   const handleEnd = (value: string) => setEndTime(value);
 
   const createCurrentDate = async () => {
-    const start = zonedTimeToUtc(`${info.dateStr} ${startTime}`, timeZone);
-    const end = zonedTimeToUtc(`${info.dateStr} ${endTime}`, timeZone);
+    const start = zonedTimeToUtc(
+      `${info.dateStr} ${startTime}`,
+      settings.timeZone
+    );
+    const end = zonedTimeToUtc(`${info.dateStr} ${endTime}`, settings.timeZone);
 
     const body = {
       start: start.toISOString(),
@@ -59,7 +64,7 @@ export default ({ info, setInfo, refresh }: any) => {
     };
 
     setLoadingCurrent(true);
-    await createSchedule(params.id, body);
+    await createSchedule(body);
     refresh();
     setInfo(null);
   };
@@ -67,9 +72,12 @@ export default ({ info, setInfo, refresh }: any) => {
   const createAllDate = async () => {
     let startDateTime = zonedTimeToUtc(
       `${info.dateStr} ${startTime}:00`,
-      timeZone
+      settings.timeZone
     );
-    let endDateTime = zonedTimeToUtc(`${info.dateStr} ${endTime}:00`, timeZone);
+    let endDateTime = zonedTimeToUtc(
+      `${info.dateStr} ${endTime}:00`,
+      settings.timeZone
+    );
 
     const body = Array(5) //5 weeks create groupID
       .fill(0)
@@ -104,7 +112,7 @@ export default ({ info, setInfo, refresh }: any) => {
       });
 
     setLoadingAll(true);
-    await createSchedule(params.id, body);
+    await createSchedule(body);
     refresh();
     setInfo(null);
   };

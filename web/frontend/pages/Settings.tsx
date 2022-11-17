@@ -6,36 +6,34 @@ import {
   FormLayout,
   Page,
   Select,
-} from "@shopify/polaris";
-import { useField, useForm } from "@shopify/react-form";
-import TimezoneSelect from "react-timezone-select";
-import { updateSetting, useSetting } from "../services/setting";
+} from '@shopify/polaris';
+import { useField, useForm } from '@shopify/react-form';
+import TimezoneSelect from 'react-timezone-select';
+import useSetting from '../services/setting';
 
 const languageOptions = [
-  { label: "English", value: "en" },
-  { label: "Danish", value: "da" },
+  { label: 'English', value: 'en' },
+  { label: 'Danish', value: 'da' },
 ];
 
 export default () => {
-  const setting = useSetting();
-
-  const update = updateSetting();
+  const { data, update } = useSetting();
 
   //https://codesandbox.io/s/1wpxz?file=/src/MyForm.tsx:2457-2473
   const { fields, submit, submitErrors, submitting, dirty } = useForm({
     fields: {
       timeZone: useField({
-        value: setting.timeZone,
+        value: data.timeZone,
         validates: [],
       }),
       language: useField({
-        value: setting.language,
+        value: data.language,
         validates: [],
       }),
     },
     onSubmit: async (fieldValues) => {
       await update(fieldValues);
-      return { status: "success" as const };
+      return { status: 'success' as const };
     },
   });
 
@@ -54,7 +52,7 @@ export default () => {
       <Card sectioned>
         <Form onSubmit={submit}>
           <FormLayout>
-            <div style={{ zIndex: 99, position: "relative" }}>
+            <div style={{ zIndex: 99, position: 'relative' }}>
               <TimezoneSelect
                 value={{
                   value: fields.timeZone.value,

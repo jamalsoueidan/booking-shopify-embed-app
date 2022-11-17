@@ -1,14 +1,10 @@
 import { useNavigate } from '@shopify/app-bridge-react';
 import { Layout, Page, Spinner } from '@shopify/polaris';
-import useSWR from 'swr';
 import StaffList from '../components/staff/Staff-List';
-import { useAuthenticatedFetch } from '../hooks';
+import { useStaffList } from '../services/staff';
 
 export default () => {
-  const fetch = useAuthenticatedFetch();
-  const { data } = useSWR<StafferApi>('/api/admin/staff', (apiURL: string) =>
-    fetch(apiURL).then((res: Response) => res.json())
-  );
+  const { data } = useStaffList();
 
   const navigate = useNavigate();
 
@@ -22,7 +18,7 @@ export default () => {
     );
   }
 
-  if (data?.payload?.length === 0) {
+  if (data?.length === 0) {
     navigate('/Staff/Empty');
     return <></>;
   }

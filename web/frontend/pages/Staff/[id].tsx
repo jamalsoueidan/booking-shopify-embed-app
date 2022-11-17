@@ -1,34 +1,27 @@
-import '@fullcalendar/react/dist/vdom';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import FullCalendar from '@fullcalendar/react';
+import '@fullcalendar/react/dist/vdom';
 import { useNavigate } from '@shopify/app-bridge-react';
 import { Card, Page } from '@shopify/polaris';
 import { format } from 'date-fns';
+import { utcToZonedTime } from 'date-fns-tz';
 import { useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import useSWR from 'swr';
+import { useStaffScheduleList } from 'services/staff/schedule';
 import CreateScheduleModal from '../../components/staff/CreateScheduleModal';
 import EditScheduleModal from '../../components/staff/EditScheduleModal';
-import { useAuthenticatedFetch } from '../../hooks';
 import Metadata from '../../components/staff/Metadata';
-import { utcToZonedTime } from 'date-fns-tz';
-import { useSetting } from '../../services/setting';
+import useSetting from '../../services/setting';
+import { useStaffGet } from '../../services/staff';
 
 export default () => {
   const params = useParams();
   const navigate = useNavigate();
-  const fetch = useAuthenticatedFetch();
 
-  const { data: staff } = useSWR<StaffApi>(
-    `/api/admin/staff/${params.id}`,
-    (apiURL: string) => fetch(apiURL).then((res: Response) => res.json())
-  );
+  const { data: staff, update } = useStaffGet({ userId: params.id });
 
-  const { data: calendar, mutate: calendarMutate } = useSWR<SchedulesApi>(
-    `/api/admin/staff/${params.id}/schedules`,
-    (apiURL: string) => fetch(apiURL).then((res: Response) => res.json())
-  );
+  const { data: calendar } = useStaffScheduleList({ userId: params.id });
 
   const [createInfo, setCreateInfo] = useState(null);
   const [editInfo, setEditInfo] = useState(null);
@@ -44,21 +37,20 @@ export default () => {
   const createScheduleModal = createInfo && (
     <CreateScheduleModal
       info={createInfo}
-      setInfo={setCreateInfo}
-      refresh={calendarMutate}></CreateScheduleModal>
+      setInfo={setCreateInfo}></CreateScheduleModal>
   );
 
   const editScheduleModal = editInfo && (
     <EditScheduleModal
       info={editInfo}
-      setInfo={setEditInfo}
-      refresh={calendarMutate}></EditScheduleModal>
+      setInfo={setEditInfo}></EditScheduleModal>
   );
 
-  const { timeZone } = useSetting();
+  const { data: settings } = useSetting();
 
   const events = calendar?.payload?.map((c: any) => {
-    const toTimeZone = (fromUTC: Date) => utcToZonedTime(fromUTC, timeZone);
+    const toTimeZone = (fromUTC: Date) =>
+      utcToZonedTime(fromUTC, settings.timeZone);
     const start = toTimeZone(new Date(c.start));
     const end = toTimeZone(new Date(c.end));
     const startHour = format(start, 'HH:mm');
@@ -79,7 +71,7 @@ export default () => {
     return <></>;
   }
 
-  const { _id, fullname, active } = staff?.payload;
+  const { _id, fullname, active } = staff;
 
   return (
     <Page

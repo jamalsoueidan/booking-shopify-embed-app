@@ -4,12 +4,12 @@ import { format, utcToZonedTime } from 'date-fns-tz';
 import { createRef, useCallback, useEffect, useState } from 'react';
 import Fullcalendar from '../components/bookings/fullcalendar';
 import { useBookings } from '../services/bookings';
-import { useSetting } from '../services/setting';
+import useSetting from '../services/setting';
 
 export default () => {
   const [start, setStart] = useState(null);
   const [end, setEnd] = useState(null);
-  const { timeZone } = useSetting();
+  const { data: settings } = useSetting();
   const calendarRef = createRef<FullCalendar>();
 
   const bookings = useBookings({ start, end });
@@ -27,7 +27,8 @@ export default () => {
         event.remove();
       });
 
-      const toTimeZone = (fromUTC: Date) => utcToZonedTime(fromUTC, timeZone);
+      const toTimeZone = (fromUTC: Date) =>
+        utcToZonedTime(fromUTC, settings.timeZone);
       bookings.forEach((d) => {
         api.addEvent({
           ...d,
@@ -36,7 +37,7 @@ export default () => {
         });
       });
     }
-  }, [timeZone, bookings, calendarRef]);
+  }, [settings, bookings, calendarRef]);
 
   const eventContent = useCallback(
     (arg: any) => {
