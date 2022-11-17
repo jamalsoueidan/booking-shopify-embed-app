@@ -36,22 +36,8 @@ const useStaffGet = ({ userId }: UseStaffGetProps): UseStaffGetReturn => {
     (apiURL: string) => fetch(apiURL).then((res: Response) => res.json())
   );
 
-  const update = useCallback(
-    async (body: UpdateOrCreateProps) => {
-      await fetch('/api/admin/staff/' + userId, {
-        method: 'PUT',
-        body: JSON.stringify(body),
-        headers: { 'Content-Type': 'application/json' },
-      });
-      await mutate(`/api/admin/staff`);
-      await mutate(`/api/admin/staff/${userId}`);
-    },
-    [userId]
-  );
-
   return {
     data: data?.payload,
-    update,
   };
 };
 
@@ -77,4 +63,35 @@ const useStaffCreate = (): UseStaffCreateReturn => {
   };
 };
 
-export { useStaffList, useStaffGet, useStaffCreate };
+interface UseStaffUpdateProps {
+  userId: string;
+}
+interface UseStaffUpdateReturn {
+  update: (body: UpdateOrCreateProps) => void;
+}
+
+const useStaffUpdate = ({
+  userId,
+}: UseStaffUpdateProps): UseStaffUpdateReturn => {
+  const { mutate } = useSWRConfig();
+  const fetch = useAuthenticatedFetch();
+
+  const update = useCallback(
+    async (body: UpdateOrCreateProps) => {
+      await fetch('/api/admin/staff/' + userId, {
+        method: 'PUT',
+        body: JSON.stringify(body),
+        headers: { 'Content-Type': 'application/json' },
+      });
+      await mutate(`/api/admin/staff`);
+      await mutate(`/api/admin/staff/${userId}`);
+    },
+    [userId]
+  );
+
+  return {
+    update,
+  };
+};
+
+export { useStaffList, useStaffGet, useStaffCreate, useStaffUpdate };

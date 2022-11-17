@@ -15,14 +15,14 @@ import {
 import { useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Metadata from '../../../components/staff/Metadata';
-import { useAuthenticatedFetch } from '../../../hooks';
-import { useStaffGet } from '../../../services/staff';
+import { useStaffGet, useStaffUpdate } from '../../../services/staff';
 
 export default () => {
   const params = useParams();
   const navigate = useNavigate();
 
-  const { data: staff, update } = useStaffGet({ userId: params.id });
+  const { data: staff } = useStaffGet({ userId: params.id });
+  const { update } = useStaffUpdate({ userId: params.id });
 
   if (!staff) {
     return <></>;
@@ -33,7 +33,6 @@ export default () => {
   const [fullname, setFullname] = useState<string>(staff.fullname);
   const [email, setEmail] = useState<string>(staff.email);
   const [phone, setPhone] = useState(staff.phone);
-  const fetch = useAuthenticatedFetch();
 
   const handleDropZoneDrop = useCallback((_: File[], acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {

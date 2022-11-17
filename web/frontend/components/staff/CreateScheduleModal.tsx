@@ -27,7 +27,7 @@ const options = [
   { label: 'Purple', value: '#4c00b0' },
 ];
 
-export default ({ info, setInfo, refresh }: any) => {
+export default ({ info, setInfo }: any) => {
   const params = useParams();
   const toggleActive = () => setInfo(null);
 
@@ -36,12 +36,15 @@ export default ({ info, setInfo, refresh }: any) => {
   const [tag, setTag] = useState(options[0].value);
   const [available, setAvailable] = useState(true);
 
-  const [loadingCurrent, setLoadingCurrent] = useState<boolean>(false);
-  const [loadingAll, setLoadingAll] = useState<boolean>(false);
-
-  const { create: createSchedule } = useStaffScheduleCreate({
+  const { isCreating, create: createSchedule } = useStaffScheduleCreate({
     userId: params.id,
   });
+
+  const { isCreating: isCreatingAll, create: createScheduleAll } =
+    useStaffScheduleCreate({
+      userId: params.id,
+    });
+
   const { data: settings } = useSetting();
 
   const handleStart = (value: string) => setStartTime(value);
@@ -63,9 +66,7 @@ export default ({ info, setInfo, refresh }: any) => {
       tag,
     };
 
-    setLoadingCurrent(true);
     await createSchedule(body);
-    refresh();
     setInfo(null);
   };
 
@@ -111,9 +112,7 @@ export default ({ info, setInfo, refresh }: any) => {
         };
       });
 
-    setLoadingAll(true);
-    await createSchedule(body);
-    refresh();
+    await createScheduleAll(body);
     setInfo(null);
   };
 
@@ -168,15 +167,12 @@ export default ({ info, setInfo, refresh }: any) => {
             />
           </Layout.Section>
           <Layout.Section>
-            <Button
-              primary
-              onClick={createCurrentDate}
-              loading={loadingCurrent}>
+            <Button primary onClick={createCurrentDate} loading={isCreating}>
               Opret for pågældende dag
             </Button>
           </Layout.Section>
           <Layout.Section>
-            <Button primary onClick={createAllDate} loading={loadingAll}>
+            <Button primary onClick={createAllDate} loading={isCreatingAll}>
               Opret for alle {format(new Date(info.dateStr), 'iiii')}
             </Button>
           </Layout.Section>

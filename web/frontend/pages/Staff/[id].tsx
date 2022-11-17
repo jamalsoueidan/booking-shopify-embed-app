@@ -19,7 +19,7 @@ export default () => {
   const params = useParams();
   const navigate = useNavigate();
 
-  const { data: staff, update } = useStaffGet({ userId: params.id });
+  const { data: staff } = useStaffGet({ userId: params.id });
 
   const { data: calendar } = useStaffScheduleList({ userId: params.id });
 
