@@ -1,8 +1,14 @@
+import { useCollectionProductStaffCreate } from '@services/product/staff';
 import { ActionList, Popover } from '@shopify/polaris';
 import { useCallback, useState } from 'react';
-import { useSWRConfig } from 'swr';
-import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
 import StaffAvatar from '../StaffAvatar';
+
+const options = [
+  { label: 'Green', value: '#4b6043' },
+  { label: 'Blue', value: '#235284' },
+  { label: 'Orange', value: '#d24e01' },
+  { label: 'Purple', value: '#4c00b0' },
+];
 
 export default ({
   staff,
@@ -20,22 +26,13 @@ export default ({
     []
   );
 
-  const fetch = useAuthenticatedFetch();
-  const { mutate } = useSWRConfig();
-
-  const addNewStaffProduct = useCallback(async (staff: string, tag: string) => {
-    await fetch(`/api/admin/products/${productId}/staff`, {
-      method: 'POST',
-      body: JSON.stringify({ staff, tag }),
-      headers: { 'Content-Type': 'application/json' },
-    });
-    mutate(`/api/admin/products/${productId}/staff`);
-    mutate(`/api/admin/products/${productId}/staff-to-add`);
-  }, []);
+  const { create: addNewStaffProduct } = useCollectionProductStaffCreate({
+    productId,
+  });
 
   const handleAction = (tag: string) => async () => {
     togglePopoverActive();
-    await addNewStaffProduct(staff._id, tag);
+    await addNewStaffProduct({ staffId: staff._id, tag });
     toggleShowStaff();
   };
 
@@ -47,8 +44,19 @@ export default ({
     </div>
   );
 
+  const IconContent = (t?: string) => () => {
+    return (
+      <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="10" cy="10" r="10" fill={t} />
+        <circle cx="10" cy="10" r="6" fill={t} />
+        <circle cx="10" cy="10" r="3" />
+      </svg>
+    );
+  };
+
   const tags = staff.tags?.map((t) => ({
-    content: t,
+    icon: IconContent(t),
+    content: options.find((o) => o.value === t).label,
     onAction: handleAction(t),
   }));
 

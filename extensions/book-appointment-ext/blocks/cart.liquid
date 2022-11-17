@@ -1,6 +1,6 @@
 <script language="javascript" type="text/javascript">
-  const url = "https://a0dea505e5be.eu.ngrok.io";
-  const shop = "testeriphone.myshopify.com";
+  const url = "https://c9aac3035369.eu.ngrok.io";
+  const shop = "{{ shop.domain }}";
   const productId = "";
 
   const items = [];
@@ -9,12 +9,14 @@
   for(let i=0;i<cartItems;i++) {
     let item = {};
     {% for item in cart.items -%}
-      if(i === ({{forloop.index}}-1)) {
+      let index = {{forloop.index}};
+      if(i === (index-1)) {
         item.productId = {{item.product_id}};
         {% assign property_size = item.properties | size -%}
         {% for p in item.properties -%}
           {% if p.first contains '_' -%}
             item.data = JSON.parse("{{ p.last }}".split("&quot;").join('"'));
+            document.getElementById("CartItem-" + index).getElementsByTagName('quantity-input')[0].remove();
           {% endif -%}
         {% endfor -%}
       }
@@ -24,7 +26,6 @@
 
   function cartDelete(index, quantity) {
     const item = items[index]
-    console.log(item, quantity)
     if(item && item.data && quantity === 0) {
       fetch(`${url}/api/widget/cart?shop=${shop}&productId=${item.productId}`,
         {

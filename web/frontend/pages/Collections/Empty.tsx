@@ -1,38 +1,23 @@
-import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
+import { useCollectionCreate, useCollectionList } from '@services/collection';
 import { ResourcePicker, useNavigate } from '@shopify/app-bridge-react';
 import { EmptyState, Layout, Page } from '@shopify/polaris';
-import { useCallback, useState } from 'react';
-import useSWR, { useSWRConfig } from 'swr';
+import { useState } from 'react';
 import { notFoundImage } from '../../assets';
 
 export default () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-  const fetch = useAuthenticatedFetch();
-  const { mutate } = useSWRConfig();
-
-  const fetchData = useCallback(async (selections: string[]) => {
-    await fetch('/api/admin/collections', {
-      method: 'POST',
-      body: JSON.stringify({ selections }),
-      headers: { 'Content-Type': 'application/json' },
-    });
-
-    mutate('/api/admin/collections');
-  }, []);
+  const { create } = useCollectionCreate();
 
   const handleSelection = async (resources: Resources) => {
     const ids = resources.selection.map((s) => s.id);
-    await fetchData(ids);
+    await create(ids);
     setOpen(false);
   };
 
-  const { data } = useSWR<CollectionsApi>(
-    '/api/admin/collections',
-    (apiURL: string) => fetch(apiURL).then((res: Response) => res.json())
-  );
+  const { data } = useCollectionList();
 
-  if (data?.payload?.length > 0) {
+  if (data?.length > 0) {
     navigate('/Collections');
     return <></>;
   }

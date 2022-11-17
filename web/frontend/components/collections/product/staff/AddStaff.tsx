@@ -2,6 +2,7 @@ import { Stack } from '@shopify/polaris';
 import useSWR from 'swr';
 import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
 import StaffPopover from './AddStaff/StaffPopover';
+import { useCollectionProductStaffToAdd } from '@services/product/staff';
 
 export default ({
   productId,
@@ -11,20 +12,17 @@ export default ({
   setShowStaff: any;
 }) => {
   const fetch = useAuthenticatedFetch();
-  const { data: staff } = useSWR<ProductStaffToAddApi>(
-    `/api/admin/products/${productId}/staff-to-add`,
-    (apiURL: string) => fetch(apiURL).then((res: Response) => res.json())
-  );
+  const { data: staff } = useCollectionProductStaffToAdd({ productId });
 
   if (!staff) {
     return <>Loading...</>;
   }
 
-  if (staff.payload.length === 0) {
+  if (staff.length === 0) {
     return <>Du har allerede tilføjet alle brugere</>;
   }
 
-  const staffer = staff?.payload?.map((s) => {
+  const staffer = staff?.map((s) => {
     return (
       <StaffPopover
         key={s._id}

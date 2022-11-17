@@ -1,8 +1,10 @@
+import {
+  useCollectionProductStaffDestroy,
+  useCollectionProductStaffList,
+} from '@services/product/staff';
 import { Button, Stack } from '@shopify/polaris';
-import useSWR, { useSWRConfig } from 'swr';
-import StaffAvatar from './StaffAvatar';
-import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
 import { useCallback } from 'react';
+import StaffAvatar from './StaffAvatar';
 
 interface Props {
   productId: string;
@@ -16,22 +18,11 @@ export default ({
   canDelete,
   toggleCanDelete,
 }: Props) => {
-  const { mutate } = useSWRConfig();
-  const fetch = useAuthenticatedFetch();
+  const { data: staffier } = useCollectionProductStaffList({ productId });
+  const { destroy } = useCollectionProductStaffDestroy({ productId });
 
-  const { data: staffier } = useSWR<ProductStaffApi>(
-    `/api/admin/products/${productId}/staff`,
-    (apiURL: string) => fetch(apiURL).then((res: Response) => res.json())
-  );
-
-  const removeStaffProduct = useCallback(async (staff: string) => {
-    await fetch(`/api/admin/products/${productId}/staff/${staff}`, {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-    });
-
-    await mutate(`/api/admin/products/${productId}/staff`);
-    await mutate(`/api/admin/products/${productId}/staff-to-add`);
+  const removeStaffProduct = useCallback(async (staffId: string) => {
+    await destroy({ staffId });
     toggleCanDelete(false);
   }, []);
 
@@ -39,7 +30,7 @@ export default ({
     return <>Loading...</>;
   }
 
-  const staffierMarkup = staffier?.payload?.map((staff) => (
+  const staffierMarkup = staffier?.map((staff) => (
     <Stack spacing="loose" key={staff._id}>
       <StaffAvatar fullname={staff.fullname}>
         {canDelete && (

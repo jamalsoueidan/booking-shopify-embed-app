@@ -32,7 +32,7 @@ function intercept() {
 
 window.addEventListener("load", function () {
   const tagName = "product-availability";
-  const url = "https://a0dea505e5be.eu.ngrok.io";
+  const url = "https://c9aac3035369.eu.ngrok.io";
 
   if (!customElements.get(tagName)) {
     customElements.define(

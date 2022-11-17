@@ -92,11 +92,11 @@ interface DeleteQuery {
 const remove = async ({ query }: { query: DeleteQuery }) => {
   const { shop, id } = query;
 
-  const collection = await CollectionService.findOne({ shop, id });
+  const collection = await CollectionService.findOne({ shop, _id: id });
 
   if (collection) {
     return {
-      collection: await CollectionModel.deleteOne({ id }),
+      collection: await CollectionModel.deleteOne({ shop, _id: id }),
       products: await ProductModel.deleteMany({
         collectionId: collection.collectionId,
       }),

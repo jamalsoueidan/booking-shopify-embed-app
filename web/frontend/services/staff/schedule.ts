@@ -16,7 +16,7 @@ const useStaffScheduleList = ({
   const fetch = useAuthenticatedFetch();
   const { data } = useSWR<SchedulesApi>(
     `/api/admin/staff/${userId}/schedules`,
-    (apiURL: string) => fetch(apiURL)
+    (apiURL: string) => fetch(apiURL).then((r: Response) => r.json())
   );
   return { data: data?.payload };
 };
