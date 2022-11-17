@@ -1,5 +1,4 @@
 import {
-  Badge,
   Caption,
   Card,
   Icon,
@@ -9,8 +8,8 @@ import {
 } from '@shopify/polaris';
 import { ProductsMajor } from '@shopify/polaris-icons';
 import { useState } from 'react';
-import useSWR, { useSWRConfig } from 'swr';
-import { useAuthenticatedFetch } from '../../hooks';
+import { useSWRConfig } from 'swr';
+import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
 import ModalConfirm from '../modals/ModalConfirm.js';
 
 export default ({ collection }: { collection: Collection }) => {
@@ -18,11 +17,6 @@ export default ({ collection }: { collection: Collection }) => {
 
   const fetch = useAuthenticatedFetch();
   const { mutate } = useSWRConfig();
-
-  const { data } = useSWR<CollectionsApi>(
-    '/api/admin/collections',
-    (apiURL: string) => fetch(apiURL).then((res: Response) => res.json())
-  );
 
   const removeCollection = (collection: any) => {
     const setActive = async (value: boolean) => {

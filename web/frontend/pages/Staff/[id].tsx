@@ -8,12 +8,12 @@ import { format } from 'date-fns';
 import { utcToZonedTime } from 'date-fns-tz';
 import { useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useStaffScheduleList } from 'services/staff/schedule';
-import CreateScheduleModal from '../../components/staff/CreateScheduleModal';
-import EditScheduleModal from '../../components/staff/EditScheduleModal';
-import Metadata from '../../components/staff/Metadata';
-import useSetting from '../../services/setting';
-import { useStaffGet } from '../../services/staff';
+import { useStaffScheduleList } from '@services/staff/schedule';
+import CreateScheduleModal from '@components/staff/CreateScheduleModal';
+import EditScheduleModal from '@components/staff/EditScheduleModal';
+import Metadata from '@components/staff/Metadata';
+import useSetting from '@services/setting';
+import { useStaffGet } from '@services/staff';
 
 export default () => {
   const params = useParams();
@@ -48,7 +48,7 @@ export default () => {
 
   const { data: settings } = useSetting();
 
-  const events = calendar?.payload?.map((c: any) => {
+  const events = calendar?.map((c: any) => {
     const toTimeZone = (fromUTC: Date) =>
       utcToZonedTime(fromUTC, settings.timeZone);
     const start = toTimeZone(new Date(c.start));

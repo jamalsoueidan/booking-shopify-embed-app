@@ -12,7 +12,7 @@ import {
 } from '@shopify/polaris';
 import { ClockMajor } from '@shopify/polaris-icons';
 import { useCallback, useState } from 'react';
-import { updateProduct } from '../../../services/product';
+import { useCollectionProductUpdate } from '@services/product';
 
 export default ({
   productId,
@@ -43,9 +43,9 @@ export default ({
     { label: '30 min', value: '30' },
   ];
 
-  const handleSubmit = updateProduct(productId);
+  const { update } = useCollectionProductUpdate({ productId });
   const onSave = async () => {
-    await handleSubmit({
+    await update({
       buffertime: parseInt(buffertime),
       duration: parseInt(duration),
     });

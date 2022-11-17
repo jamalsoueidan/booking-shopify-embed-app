@@ -1,34 +1,29 @@
 import { Page } from '@shopify/polaris';
 import { useParams } from 'react-router-dom';
-import useSWR from 'swr';
-import ProductActivate from '../../../components/collections/product/ProductActivate';
-import ProductOptionsCard from '../../../components/collections/product/ProductOptionsCard';
-import StaffCard from '../../../components/collections/product/staff/StaffCard';
-import { useAuthenticatedFetch } from '../../../hooks';
+import { useCollectionProductGet } from '@services/product';
+import ProductActivate from '@components/collections/product/ProductActivate';
+import ProductOptionsCard from '@components/collections/product/ProductOptionsCard';
+import StaffCard from '@components/collections/product/staff/StaffCard';
 
 export default () => {
   const params = useParams();
-  const fetch = useAuthenticatedFetch();
 
-  const { data: product } = useSWR<ProductApi>(
-    `/api/admin/products/${params.id}`,
-    (apiURL: string) => fetch(apiURL).then((res: Response) => res.json())
-  );
+  const { data: product } = useCollectionProductGet({ productId: params.id });
 
   return (
     <Page
       narrowWidth
-      title={product?.payload?.title}
+      title={product?.title}
       breadcrumbs={[{ content: 'Collections', url: '/Collections' }]}>
-      {product?.payload && (
+      {product && (
         <>
-          <ProductActivate product={product?.payload}></ProductActivate>
+          <ProductActivate product={product}></ProductActivate>
           <br />
-          <StaffCard product={product?.payload}></StaffCard>
+          <StaffCard product={product}></StaffCard>
           <br />
           <ProductOptionsCard
-            product={product?.payload}
-            productId={product?.payload._id}></ProductOptionsCard>
+            product={product}
+            productId={product?._id}></ProductOptionsCard>
           <br />
         </>
       )}

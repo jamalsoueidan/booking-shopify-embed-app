@@ -1,9 +1,9 @@
+import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
 import { ResourcePicker, useNavigate } from '@shopify/app-bridge-react';
 import { EmptyState, Layout, Page } from '@shopify/polaris';
 import { useCallback, useState } from 'react';
-import useSWR, { mutate, useSWRConfig } from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 import { notFoundImage } from '../../assets';
-import { useAuthenticatedFetch } from '../../hooks';
 
 export default () => {
   const [open, setOpen] = useState(false);

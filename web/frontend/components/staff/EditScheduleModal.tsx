@@ -10,11 +10,11 @@ import { format } from 'date-fns';
 import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import useSetting from '../../services/setting';
+import useSetting from '@services/setting';
 import {
   useStaffScheduleDestroy,
   useStaffScheduleUpdate,
-} from '../../services/staff/schedule';
+} from '@services/staff/schedule';
 
 interface Props {
   info: any;

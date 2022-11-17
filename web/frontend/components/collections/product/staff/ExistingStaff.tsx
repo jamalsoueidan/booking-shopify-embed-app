@@ -1,7 +1,7 @@
 import { Button, Stack } from '@shopify/polaris';
 import useSWR, { useSWRConfig } from 'swr';
 import StaffAvatar from './StaffAvatar';
-import { useAuthenticatedFetch } from '../../../../hooks';
+import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
 import { useCallback } from 'react';
 
 interface Props {

@@ -14,8 +14,8 @@ import {
 } from '@shopify/polaris';
 import { useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import Metadata from '../../../components/staff/Metadata';
-import { useStaffGet, useStaffUpdate } from '../../../services/staff';
+import Metadata from '@components/staff/Metadata';
+import { useStaffGet, useStaffUpdate } from '@services/staff';
 
 export default () => {
   const params = useParams();

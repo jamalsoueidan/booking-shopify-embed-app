@@ -7,7 +7,7 @@ import {
   ResourceList,
   TextStyle,
 } from '@shopify/polaris';
-import { useStaffList } from '../../services/staff';
+import { useStaffList } from '@services/staff';
 import Metadata from './Metadata';
 
 export default () => {

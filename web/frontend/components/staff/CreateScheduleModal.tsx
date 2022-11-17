@@ -17,8 +17,8 @@ import {
 import { zonedTimeToUtc } from 'date-fns-tz';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import useSetting from '../../services/setting';
-import { useStaffScheduleCreate } from '../../services/staff/schedule';
+import useSetting from '@services/setting';
+import { useStaffScheduleCreate } from '@services/staff/schedule';
 
 const options = [
   { label: 'Green', value: '#4b6043' },

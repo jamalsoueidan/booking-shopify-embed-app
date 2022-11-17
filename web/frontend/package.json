@@ -49,6 +49,7 @@
     "prettier": "^2.6.0",
     "rollup-plugin-visualizer": "^5.8.3",
     "vi-fetch": "^0.6.1",
-    "vite-plugin-checker": "^0.5.1"
+    "vite-plugin-checker": "^0.5.1",
+    "vite-tsconfig-paths": "^3.5.2"
   }
 }

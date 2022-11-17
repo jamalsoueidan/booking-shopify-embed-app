@@ -2,9 +2,9 @@ import FullCalendar from '@fullcalendar/react'; // must go before plugins
 import { Card, Page } from '@shopify/polaris';
 import { format, utcToZonedTime } from 'date-fns-tz';
 import { createRef, useCallback, useEffect, useState } from 'react';
-import Fullcalendar from '../components/bookings/fullcalendar';
-import { useBookings } from '../services/bookings';
-import useSetting from '../services/setting';
+import Fullcalendar from '@components/bookings/fullcalendar';
+import { useBookings } from '@services/bookings';
+import useSetting from '@services/setting';
 
 export default () => {
   const [start, setStart] = useState(null);

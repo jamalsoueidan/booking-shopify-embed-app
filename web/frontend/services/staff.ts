@@ -1,6 +1,6 @@
+import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
 import { useCallback } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
-import { useAuthenticatedFetch } from '../hooks';
 
 interface UseStaffListReturn {
   data: Staff[];
@@ -10,7 +10,7 @@ const useStaffList = (): UseStaffListReturn => {
   const fetch = useAuthenticatedFetch();
 
   const { data } = useSWR<StafferApi>('/api/admin/staff', (apiURL: string) =>
-    fetch(apiURL).then((res: Response) => res.json())
+    fetch(apiURL).then((r: Response) => r.json())
   );
 
   return { data: data?.payload };
@@ -28,12 +28,11 @@ interface UseStaffGetReturn {
 }
 
 const useStaffGet = ({ userId }: UseStaffGetProps): UseStaffGetReturn => {
-  const { mutate } = useSWRConfig();
   const fetch = useAuthenticatedFetch();
 
   const { data } = useSWR<StaffApi>(
     `/api/admin/staff/${userId}`,
-    (apiURL: string) => fetch(apiURL).then((res: Response) => res.json())
+    (apiURL: string) => fetch(apiURL).then((r: Response) => r.json())
   );
 
   return {

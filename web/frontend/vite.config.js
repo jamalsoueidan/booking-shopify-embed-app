@@ -6,6 +6,7 @@ import react from '@vitejs/plugin-react';
 import checker from 'vite-plugin-checker';
 import { splitVendorChunkPlugin } from 'vite';
 import { visualizer } from 'rollup-plugin-visualizer';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 if (
   process.env.npm_lifecycle_event === 'build' &&
@@ -52,6 +53,7 @@ export default defineConfig({
     checker({ typescript: true }),
     splitVendorChunkPlugin(),
     visualizer(),
+    tsconfigPaths(),
   ],
   define: {
     'process.env.SHOPIFY_API_KEY': JSON.stringify(process.env.SHOPIFY_API_KEY),
@@ -68,20 +70,4 @@ export default defineConfig({
       '^/api(/|(\\?.*)?$)': proxyOptions,
     },
   },
-  /*build: {
-    rollupOptions: {
-      output: {
-        manualChunks(id) {
-          const chunks = ['fullcalendar', 'date-fns', 'react-timezone-select'];
-          if (id.includes('/node_modules/')) {
-            for (const chunkName of chunks) {
-              if (id.includes(chunkName)) {
-                return chunkName;
-              }
-            }
-          }
-        },
-      },
-    },
-  },*/
 });

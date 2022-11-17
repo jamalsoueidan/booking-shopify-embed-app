@@ -13,27 +13,17 @@
     "outDir": "dist",
     "baseUrl": ".",
     "noEmit": true,
-    "paths": {
-      "*": ["node_modules/*"]
-    },
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "paths": {
+      "*": ["node_modules/*"],
+      "@services/*": ["services/*"],
+      "@pages/*": ["pages/*"],
+      "@components/*": ["components/*"],
+      "@hooks/*": ["hooks/*"]
+    }
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "hooks/index.js",
-    "hooks/useAppQuery.js",
-    "components/providers/AppBridgeProvider.jsx",
-    "components/providers/index.js",
-    "components/providers/PolarisProvider.jsx",
-    "components/providers/QueryProvider.jsx",
-    "hooks/useAuthenticatedFetch.js",
-    "App.jsx",
-    "Routes.jsx",
-    "index.jsx",
-    "components/index.js"
-  ],
-  "exclude": ["node_modules/**"]
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules/**", "dist"]
 }

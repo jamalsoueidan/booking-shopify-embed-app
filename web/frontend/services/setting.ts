@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import useSWR from 'swr';
-import { useAuthenticatedFetch } from '../hooks';
+import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
 
 interface SettingBody {
   timeZone: string;

@@ -13,7 +13,7 @@ import {
   Thumbnail,
 } from '@shopify/polaris';
 import { useCallback, useState } from 'react';
-import { useStaffCreate } from '../../services/staff';
+import { useStaffCreate } from '@services/staff';
 
 export default () => {
   const navigate = useNavigate();

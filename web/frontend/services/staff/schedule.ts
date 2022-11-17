@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
-import { useAuthenticatedFetch } from '../hooks';
+import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
 
 interface UseStaffScheduleListProps {
   userId: string;

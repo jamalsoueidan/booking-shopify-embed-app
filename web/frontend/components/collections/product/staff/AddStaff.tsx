@@ -1,6 +1,6 @@
 import { Stack } from '@shopify/polaris';
 import useSWR from 'swr';
-import { useAuthenticatedFetch } from '../../../../hooks';
+import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
 import StaffPopover from './AddStaff/StaffPopover';
 
 export default ({

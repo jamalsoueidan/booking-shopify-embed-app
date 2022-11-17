@@ -1,7 +1,7 @@
 import { ActionList, Popover } from '@shopify/polaris';
 import { useCallback, useState } from 'react';
 import { useSWRConfig } from 'swr';
-import { useAuthenticatedFetch } from '../../../../../hooks';
+import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
 import StaffAvatar from '../StaffAvatar';
 
 export default ({

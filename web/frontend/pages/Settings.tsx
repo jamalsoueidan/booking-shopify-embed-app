@@ -9,7 +9,7 @@ import {
 } from '@shopify/polaris';
 import { useField, useForm } from '@shopify/react-form';
 import TimezoneSelect from 'react-timezone-select';
-import useSetting from '../services/setting';
+import useSetting from '@services/setting';
 
 const languageOptions = [
   { label: 'English', value: 'en' },

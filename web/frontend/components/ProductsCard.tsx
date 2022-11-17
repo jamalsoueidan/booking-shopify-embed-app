@@ -7,7 +7,8 @@ import {
   TextStyle,
 } from '@shopify/polaris';
 import { Toast } from '@shopify/app-bridge-react';
-import { useAppQuery, useAuthenticatedFetch } from '../hooks';
+import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
+import { useAppQuery } from '@hooks/useAppQuery';
 
 export function ProductsCard() {
   const emptyToastProps: any = { content: null };

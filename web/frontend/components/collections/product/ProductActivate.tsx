@@ -6,7 +6,7 @@ import {
   TextStyle,
 } from '@shopify/polaris';
 import { useCallback } from 'react';
-import { updateProduct } from '../../../services/product';
+import { useCollectionProductUpdate } from '@services/product';
 
 interface ExtendBanner {
   status: BannerStatus;
@@ -14,10 +14,10 @@ interface ExtendBanner {
   errors: Array<{ message: string }>;
 }
 export default ({ product }: { product: Product }) => {
-  const handleSubmit = updateProduct(product._id);
+  const { update } = useCollectionProductUpdate({ productId: product._id });
 
   const handleToggle = useCallback(() => {
-    handleSubmit({
+    update({
       active: !product.active,
     });
   }, [product]);

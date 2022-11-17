@@ -1,20 +1,15 @@
 import { useNavigate } from '@shopify/app-bridge-react';
 import { Layout, Page, Spinner } from '@shopify/polaris';
 import { useState } from 'react';
-import useSWR from 'swr';
-import AddNewCollection from '../components/collections/AddNewCollection';
-import CollectionsList from '../components/collections/Collections-List';
-import { useAuthenticatedFetch } from '../hooks';
+import { useCollectionList } from '@services/collection';
+import AddNewCollection from '@components/collections/AddNewCollection';
+import CollectionsList from '@components/collections/Collections-List';
 
 export default () => {
   const [open, setOpen] = useState(false);
 
   const navigate = useNavigate();
-  const fetch = useAuthenticatedFetch();
-  const { data } = useSWR<CollectionsApi>(
-    '/api/admin/collections',
-    (apiURL: string) => fetch(apiURL).then((res: Response) => res.json())
-  );
+  const { data } = useCollectionList();
 
   if (!data) {
     return (
@@ -26,12 +21,12 @@ export default () => {
     );
   }
 
-  if (data?.payload.length === 0) {
+  if (data?.length === 0) {
     navigate('/Collections/Empty');
     return <></>;
   }
 
-  const collection = data.payload.map((collection) => (
+  const collection = data.map((collection: Collection) => (
     <CollectionsList
       key={collection._id}
       collection={collection}></CollectionsList>
