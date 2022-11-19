@@ -1,4 +1,4 @@
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 
 export interface ICustomerModel {
   customerId: number;
@@ -6,6 +6,7 @@ export interface ICustomerModel {
   lastName: string;
   email: string;
   phone: string;
+  shop: string;
 }
 
 const CustomerSchema = new mongoose.Schema({
@@ -14,7 +15,18 @@ const CustomerSchema = new mongoose.Schema({
   lastName: String,
   email: String,
   phone: String,
+  shop: { type: String, index: true },
 });
+
+CustomerSchema.index(
+  {
+    customerId: 1,
+    shop: 1,
+  },
+  {
+    unique: true,
+  }
+);
 
 export default mongoose.model<ICustomerModel>(
   "customer",

@@ -37,10 +37,11 @@ const findCustomerAndUpdate = async ({
     },
   });
 
-  return await CustomerModel.findOneAndUpdate(
-    { customerId },
+  return await CustomerModel.updateOne(
+    { customerId, shop },
     {
       customerId,
+      shop,
       ...customerData.body.data.customer,
     },
     { upsert: true, new: true }

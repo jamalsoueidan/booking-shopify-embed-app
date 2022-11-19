@@ -146,6 +146,17 @@ const getBookings = async ({ shop, start, end, staff }: GetBookingsProps) => {
     },
     {
       $lookup: {
+        from: "Customer",
+        localField: "customerId",
+        foreignField: "customerId",
+        as: "customer",
+      },
+    },
+    {
+      $unwind: "$customer",
+    },
+    {
+      $lookup: {
         from: "Staff",
         localField: "staff",
         foreignField: "_id",

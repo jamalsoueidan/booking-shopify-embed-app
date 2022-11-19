@@ -29,50 +29,53 @@ interface CreateProps {
 
 const modify = async ({ body, shop }: CreateProps) => {
   // TODO: Maybe compare lineItems and only remove those that needs to be removed!!!
-  await CartModel.deleteMany({ cartId: body.id });
+  await CartModel.deleteMany({ cartId: body.id, shop });
 
   const lineItems = body.line_items;
-  lineItems.forEach(async (lineItem) => {
-    const productId = lineItem.product_id.toString();
-    const data: Data = JSON.parse(
-      lineItem.properties._data.split("\\").join("")
-    );
-    const { timeZone, start, end, staff } = data;
-
-    const response = await widgetController.availabilityDay({
-      query: {
-        staffId: staff.staff,
-        date: start.substring(0, 10),
-        productId,
-        shop,
-      },
-    });
-
-    const validateDate = !!response.find(
-      (scheduleDate) =>
-        scheduleDate.date === start.substring(0, 10) &&
-        scheduleDate.hours.find(
-          (hour) =>
-            hour.start.toISOString() === start && hour.end.toISOString() === end
-        )
-    );
-
-    if (validateDate) {
-      const update = {
-        cartId: body.id,
-        start,
-        end,
-        staff: new mongoose.Types.ObjectId(staff.staff),
-        shop,
-      };
-
-      await CartModel.updateOne(
-        { cartId: body.id },
-        { $set: update },
-        { upsert: true }
+  return Promise.all(
+    lineItems.map(async (lineItem) => {
+      const productId = lineItem.product_id.toString();
+      const data: Data = JSON.parse(
+        lineItem.properties._data.split("\\").join("")
       );
-    }
-  });
+      const { timeZone, start, end, staff } = data;
+
+      const response = await widgetController.availabilityDay({
+        query: {
+          staffId: staff.staff,
+          date: start.substring(0, 10),
+          productId,
+          shop,
+        },
+      });
+
+      const validateDate = !!response.find(
+        (scheduleDate) =>
+          scheduleDate.date === start.substring(0, 10) &&
+          scheduleDate.hours.find(
+            (hour) =>
+              hour.start.toISOString() === start &&
+              hour.end.toISOString() === end
+          )
+      );
+
+      if (validateDate) {
+        const update = {
+          cartId: body.id,
+          start,
+          end,
+          staff: new mongoose.Types.ObjectId(staff.staff),
+          shop,
+        };
+
+        return await CartModel.updateOne(
+          { cartId: body.id },
+          { $set: update },
+          { upsert: true }
+        );
+      }
+    })
+  );
 };
 
 export default { modify };

@@ -3,7 +3,7 @@ import { createProduct, createSchedule, createStaff } from "@libs/jest-helpers";
 import CartWebhook from "@libs/webhooks/cart/cart.webhook";
 import { IProductModel } from "@models/product.model";
 import ShopifySessions from "@models/shopify-sessions.model";
-import { addHours, setMilliseconds, setSeconds } from "date-fns";
+import { addHours, setMilliseconds, setSeconds, startOfDay } from "date-fns";
 import mongoose from "mongoose";
 import body from "./cart.mock";
 
@@ -31,10 +31,11 @@ describe("webhooks order", () => {
 
     const staff1 = await createStaff();
 
+    const date = startOfDay(new Date());
     await createSchedule({
       tag,
-      start: new Date(),
-      end: addHours(new Date(), 5),
+      start: addHours(date, 5),
+      end: addHours(date, 10),
       staff: staff1._id.toString(),
     });
 
@@ -53,14 +54,8 @@ describe("webhooks order", () => {
     const lineItems = body.line_items[0];
     lineItems.properties._data = JSON.stringify({
       timeZone: "Europe/Istanbul",
-      start: addHours(
-        setSeconds(setMilliseconds(new Date(), 0), 0),
-        1
-      ).toISOString(),
-      end: addHours(
-        setSeconds(setMilliseconds(new Date(), 0), 0),
-        2
-      ).toISOString(),
+      start: addHours(setSeconds(setMilliseconds(date, 0), 0), 6).toISOString(),
+      end: addHours(setSeconds(setMilliseconds(date, 0), 0), 7).toISOString(),
       staff: {
         staff: staff1._id.toString(),
         fullname: "Fida Soueidan",
@@ -68,6 +63,7 @@ describe("webhooks order", () => {
       },
     });
 
-    await CartWebhook.modify({ body, shop: global.shop });
+    const response = await CartWebhook.modify({ body, shop: global.shop });
+    expect(response[0].upsertedCount).toEqual(1);
   });
 });

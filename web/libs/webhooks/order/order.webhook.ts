@@ -38,6 +38,7 @@ const create = async ({
         end: new Date(),
         shop,
         anyStaff,
+        customerId: body.customer.id,
       } as IBookingModel;
     }
   });
@@ -53,10 +54,10 @@ const create = async ({
     const product = products.find(
       (product) => product.productId === model.productId
     );
+    // TODO: validate time?
     return {
       ...model,
       end: addMinutes(model.start, product.duration),
-      customerId: body.customer.id,
     };
   });
 
@@ -66,6 +67,7 @@ const create = async ({
     customerGraphqlApiId: body.customer.admin_graphql_api_id,
   });
 
+  await BookingModel.deleteMany({ orderId: body.order_number, shop });
   return await BookingModel.insertMany(models);
 };
 
@@ -74,13 +76,8 @@ interface UpdateProps {
   shop: string;
 }
 
-const update = async ({ body, shop }: UpdateProps) => {
-  await CustomerService.findCustomerAndUpdate({
-    shop,
-    customerId: body.customer.id,
-    customerGraphqlApiId: body.customer.admin_graphql_api_id,
-  });
-};
+const update = async ({ body, shop }: UpdateProps) =>
+  await create({ body, shop });
 
 interface CancelProps {
   body: OrderTypes.Order;

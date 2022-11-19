@@ -20,6 +20,7 @@ import verifyRequest from "./middleware/verify-request.js";
 import OrderWebhook from "./libs/webhooks/order/order.webhook.js";
 import cors from "cors";
 import CartWebhook from "@libs/webhooks/cart/cart.webhook.js";
+import CustomerWebhook from "@libs/webhooks/customer/customer.webhook.js";
 
 const USE_ONLINE_TOKENS = false;
 
@@ -83,8 +84,7 @@ Shopify.Webhooks.Registry.addHandler("ORDERS_CANCELLED", {
 Shopify.Webhooks.Registry.addHandler("CUSTOMERS_UPDATE", {
   path: "/api/webhooks",
   webhookHandler: async (_topic, shop, _body) => {
-    //OrderWebhook.cancel({ ...JSON.parse(_body), shop });
-    console.log(JSON.stringify(_body));
+    CustomerWebhook.modify({ body: JSON.parse(_body), shop });
     console.log("customers/update");
   },
 });
