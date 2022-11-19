@@ -1,6 +1,7 @@
+import ShopifySessions from "@models/shopify-sessions.model";
 import { differenceInMinutes } from "date-fns";
 import { createProduct } from "@libs/jest-helpers";
-import OrderWebhook from "@libs/webhooks/order.webhook";
+import OrderWebhook from "@libs/webhooks/order/order.webhook";
 import { IProductModel } from "@models/product.model";
 import mongoose from "mongoose";
 import body from "./order.mock";
@@ -13,9 +14,19 @@ describe("webhooks order", () => {
   afterAll(() => mongoose.disconnect());
 
   it("Should create booking when we recieve data from webhook", async () => {
+    await ShopifySessions.create({
+      id: "offline_testeriphone.myshopify.com",
+      shop: "testeriphone.myshopify.com",
+      state: "offline_095054804630505",
+      isOnline: false,
+      accessToken: "shpua_e7362500a3939ff163314ffee79cc395",
+      scope:
+        "unauthenticated_read_product_listings,write_products,write_orders,read_customers",
+    });
+
     product = await createProduct({ productId });
 
-    const result = await OrderWebhook.create({ ...body, shop: global.shop });
+    const result = await OrderWebhook.create({ body, shop: global.shop });
     expect(result.length).toEqual(3);
 
     const order1 = result[0];
@@ -31,7 +42,7 @@ describe("webhooks order", () => {
   it("Should cancel booking when we recieve data from webhook", async () => {
     product = await createProduct({ productId });
 
-    const result = await OrderWebhook.cancel({ ...body, shop: global.shop });
+    const result = await OrderWebhook.cancel({ body, shop: global.shop });
     expect(result.modifiedCount).toEqual(3);
   });
 });

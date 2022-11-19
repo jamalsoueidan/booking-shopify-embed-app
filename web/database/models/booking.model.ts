@@ -3,6 +3,7 @@ import mongoose, { Types } from "mongoose";
 export interface IBookingModel {
   productId: number;
   orderId: number;
+  customerId: number;
   staff: Types.ObjectId;
   start: Date;
   end: Date;
@@ -14,6 +15,7 @@ export interface IBookingModel {
 const BookingSchema = new mongoose.Schema({
   productId: Number,
   orderId: Number,
+  customerId: Number,
   staff: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Staff",

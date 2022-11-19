@@ -1,4 +1,5 @@
 import { endOfDay, startOfDay } from "date-fns";
+import mongoose from "mongoose";
 import Booking, { IBookingModel } from "../models/booking.model";
 
 const find = async (shop) => {
@@ -11,7 +12,7 @@ export interface GetBookingsByProductReturn
 }
 
 export interface GetBookingsByProductProps
-  extends Omit<IBookingModel, "orderId" | "staff"> {}
+  extends Omit<IBookingModel, "orderId" | "staff" | "customerId"> {}
 
 const getBookingsByProduct = async ({
   shop,
@@ -67,7 +68,7 @@ const getBookingsByProduct = async ({
 export interface GetBookingsByProductAndStaffReturn
   extends GetBookingsByProductReturn {}
 export interface GetBookingsByProductAndStaffProps
-  extends Omit<IBookingModel, "orderId" | "productId"> {}
+  extends Omit<IBookingModel, "orderId" | "productId" | "customerId"> {}
 
 const getBookingsByProductAndStaff = async ({
   shop,
@@ -126,9 +127,10 @@ interface GetBookingsProps {
   shop: string;
   start: string;
   end: string;
+  staff: string;
 }
 
-const getBookings = async ({ shop, start, end }: GetBookingsProps) => {
+const getBookings = async ({ shop, start, end, staff }: GetBookingsProps) => {
   return await Booking.aggregate([
     {
       $match: {
@@ -139,6 +141,7 @@ const getBookings = async ({ shop, start, end }: GetBookingsProps) => {
         end: {
           $lt: new Date(`${end}T23:59:59.0Z`),
         },
+        ...(staff && { staff: new mongoose.Types.ObjectId(staff) }),
       },
     },
     {

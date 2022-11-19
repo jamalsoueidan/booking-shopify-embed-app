@@ -1,14 +1,22 @@
 import BookingModel, { IBookingModel } from "@models/booking.model";
 import ProductModel, { IProductModel } from "@models/product.model";
+import CustomerService from "@services/customer.service";
 import { addMinutes } from "date-fns";
 import mongoose from "mongoose";
-import { Data, Order } from "./order.types.js";
 
 function onlyUnique(value, index, self) {
   return self.indexOf(value) === index;
 }
 
-const create = async (body: Order): Promise<Array<IBookingModel>> => {
+interface CreateProps {
+  body: OrderTypes.Order;
+  shop: string;
+}
+
+const create = async ({
+  body,
+  shop,
+}: CreateProps): Promise<Array<IBookingModel>> => {
   const filter = (lineItem) =>
     lineItem.properties.find((property) => property.name === "_data");
 
@@ -17,7 +25,7 @@ const create = async (body: Order): Promise<Array<IBookingModel>> => {
   let models = lineItems.map((lineItem) => {
     const _data = lineItem.properties.find((p) => p.name === "_data")?.value;
     if (_data) {
-      const data: Data = JSON.parse(_data);
+      const data: OrderTypes.Data = JSON.parse(_data);
       const staffId = data.staff.staff;
       const anyStaff = data.staff.anyStaff;
       const completeDate = new Date(data.start);
@@ -28,14 +36,14 @@ const create = async (body: Order): Promise<Array<IBookingModel>> => {
         staff: new mongoose.Types.ObjectId(staffId),
         start: completeDate,
         end: new Date(),
-        shop: body.shop,
+        shop,
         anyStaff,
       } as IBookingModel;
     }
   });
 
   const query = {
-    shop: body.shop,
+    shop,
     productId: models.map((model) => model.productId).filter(onlyUnique),
   };
 
@@ -48,17 +56,42 @@ const create = async (body: Order): Promise<Array<IBookingModel>> => {
     return {
       ...model,
       end: addMinutes(model.start, product.duration),
+      customerId: body.customer.id,
     };
+  });
+
+  await CustomerService.findCustomerAndUpdate({
+    shop,
+    customerId: body.customer.id,
+    customerGraphqlApiId: body.customer.admin_graphql_api_id,
   });
 
   return await BookingModel.insertMany(models);
 };
 
-const cancel = async (body: Order) => {
+interface UpdateProps {
+  body: OrderTypes.Order;
+  shop: string;
+}
+
+const update = async ({ body, shop }: UpdateProps) => {
+  await CustomerService.findCustomerAndUpdate({
+    shop,
+    customerId: body.customer.id,
+    customerGraphqlApiId: body.customer.admin_graphql_api_id,
+  });
+};
+
+interface CancelProps {
+  body: OrderTypes.Order;
+  shop: string;
+}
+
+const cancel = async ({ body, shop }: CancelProps) => {
   return await BookingModel.updateMany(
-    { orderId: body.order_number },
+    { orderId: body.order_number, shop },
     { cancelled: true }
   );
 };
 
-export default { create, cancel };
+export default { create, update, cancel };

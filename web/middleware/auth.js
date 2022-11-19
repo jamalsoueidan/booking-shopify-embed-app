@@ -46,6 +46,27 @@ export default function applyAuthMiddleware(
         shop: session.shop,
       });
 
+      await Shopify.Webhooks.Registry.register({
+        path: "/api/webhooks",
+        topic: "CUSTOMERS_UPDATE",
+        accessToken: session.accessToken,
+        shop: session.shop,
+      });
+
+      await Shopify.Webhooks.Registry.register({
+        path: "/api/webhooks",
+        topic: "CARTS_UPDATE",
+        accessToken: session.accessToken,
+        shop: session.shop,
+      });
+
+      await Shopify.Webhooks.Registry.register({
+        path: "/api/webhooks",
+        topic: "CARTS_CREATE",
+        accessToken: session.accessToken,
+        shop: session.shop,
+      });
+
       Object.entries(responses).map(([topic, response]) => {
         // The response from registerAll will include errors for the GDPR topics.  These can be safely ignored.
         // To register the GDPR topics, please set the appropriate webhook endpoint in the

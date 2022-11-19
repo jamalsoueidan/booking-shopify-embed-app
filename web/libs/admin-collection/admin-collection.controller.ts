@@ -1,4 +1,3 @@
-import { GetProductWithSelectedStaffProps } from "./../../database/services/product.service";
 import CollectionModel from "@models/collection.model";
 import ProductModel, { IProductModel } from "@models/product.model";
 import CollectionService from "@services/collection.service";

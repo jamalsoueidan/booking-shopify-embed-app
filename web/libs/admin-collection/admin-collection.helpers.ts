@@ -43,14 +43,14 @@ export const getCollection = async (
 ): Promise<Collection> => {
   const client = new Shopify.Clients.Graphql(session.shop, session.accessToken);
   try {
-    const payload = (await client.query({
+    const payload: GetCollectionQuery = await client.query({
       data: {
         query: getCollectionQuery,
         variables: {
           id,
         },
       },
-    })) as GetCollectionQuery;
+    });
 
     return payload.body.data.collection;
   } catch (error) {

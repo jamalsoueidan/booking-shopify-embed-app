@@ -1,6 +1,7 @@
 import mongoose, { Types } from "mongoose";
 
 export interface ICartModel {
+  cartId?: string;
   staff: Types.ObjectId;
   start: Date;
   end: Date;
@@ -9,6 +10,11 @@ export interface ICartModel {
 }
 
 const CartSchema = new mongoose.Schema({
+  cartId: {
+    type: String,
+    required: true,
+    index: true,
+  },
   staff: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Staff",

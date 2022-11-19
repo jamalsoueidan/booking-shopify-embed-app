@@ -17,8 +17,9 @@ import adminStaffRoutes from "./libs/admin-staff/admin-staff.routes";
 import widgetRoutes from "./libs/widget/widget.routes";
 import applyAuthMiddleware from "./middleware/auth.js";
 import verifyRequest from "./middleware/verify-request.js";
-import OrderWebhook from "./libs/webhooks/order.webhook.js";
+import OrderWebhook from "./libs/webhooks/order/order.webhook.js";
 import cors from "cors";
+import CartWebhook from "@libs/webhooks/cart/cart.webhook.js";
 
 const USE_ONLINE_TOKENS = false;
 
@@ -58,7 +59,7 @@ Shopify.Webhooks.Registry.addHandler("APP_UNINSTALLED", {
 Shopify.Webhooks.Registry.addHandler("ORDERS_PAID", {
   path: "/api/webhooks",
   webhookHandler: async (_topic, shop, _body) => {
-    OrderWebhook.create({ ...JSON.parse(_body), shop });
+    OrderWebhook.create({ body: JSON.parse(_body), shop });
     console.log("orders/paid");
   },
 });
@@ -66,7 +67,7 @@ Shopify.Webhooks.Registry.addHandler("ORDERS_PAID", {
 Shopify.Webhooks.Registry.addHandler("ORDERS_UPDATED", {
   path: "/api/webhooks",
   webhookHandler: async (_topic, shop, _body) => {
-    //OrderWebhook.create({ ...JSON.parse(_body), shop });
+    OrderWebhook.update({ body: JSON.parse(_body), shop });
     console.log("order/update");
   },
 });
@@ -74,9 +75,33 @@ Shopify.Webhooks.Registry.addHandler("ORDERS_UPDATED", {
 Shopify.Webhooks.Registry.addHandler("ORDERS_CANCELLED", {
   path: "/api/webhooks",
   webhookHandler: async (_topic, shop, _body) => {
-    //delete
-    OrderWebhook.cancel({ ...JSON.parse(_body), shop });
+    OrderWebhook.cancel({ body: JSON.parse(_body), shop });
     console.log("order/cancelled");
+  },
+});
+
+Shopify.Webhooks.Registry.addHandler("CUSTOMERS_UPDATE", {
+  path: "/api/webhooks",
+  webhookHandler: async (_topic, shop, _body) => {
+    //OrderWebhook.cancel({ ...JSON.parse(_body), shop });
+    console.log(JSON.stringify(_body));
+    console.log("customers/update");
+  },
+});
+
+Shopify.Webhooks.Registry.addHandler("CARTS_CREATE", {
+  path: "/api/webhooks",
+  webhookHandler: async (_topic, shop, _body) => {
+    CartWebhook.modify({ body: JSON.parse(_body), shop });
+    console.log("carts/create");
+  },
+});
+
+Shopify.Webhooks.Registry.addHandler("CARTS_UPDATE", {
+  path: "/api/webhooks",
+  webhookHandler: async (_topic, shop, _body) => {
+    CartWebhook.modify({ body: JSON.parse(_body), shop });
+    console.log("carts/update");
   },
 });
 

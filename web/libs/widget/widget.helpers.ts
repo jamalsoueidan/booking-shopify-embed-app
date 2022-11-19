@@ -83,12 +83,10 @@ const scheduleCalculateBooking = (
         }
 
         if (isWithinInterval(addMinutes(start, 1), hour)) {
-          console.log("eliminate", start, end, hour.start, hour.end);
           return false;
         }
 
         if (isWithinInterval(subMinutes(end, 1), hour)) {
-          console.log("eliminate", start, end, hour.start, hour.end);
           return false;
         }
 

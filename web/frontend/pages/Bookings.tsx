@@ -1,18 +1,21 @@
+import Fullcalendar from '@components/bookings/fullcalendar';
+import StaffSelection from '@components/bookings/staff-selection';
 import FullCalendar from '@fullcalendar/react'; // must go before plugins
+import { useBookings } from '@services/bookings';
+import useSetting from '@services/setting';
 import { Card, Page } from '@shopify/polaris';
 import { format, utcToZonedTime } from 'date-fns-tz';
 import { createRef, useCallback, useEffect, useState } from 'react';
-import Fullcalendar from '@components/bookings/fullcalendar';
-import { useBookings } from '@services/bookings';
-import useSetting from '@services/setting';
 
 export default () => {
   const [start, setStart] = useState(null);
   const [end, setEnd] = useState(null);
+  const [staff, setStaff] = useState(null);
+
   const { data: settings } = useSetting();
   const calendarRef = createRef<FullCalendar>();
 
-  const bookings = useBookings({ start, end });
+  const { data: bookings, isLoading } = useBookings({ start, end, staff });
 
   const dateChanged = useCallback((props: { start: Date; end: Date }) => {
     setStart(format(props.start, 'yyyy-MM-dd'));
@@ -71,6 +74,12 @@ export default () => {
   return (
     <Page fullWidth title="Bookinger">
       <Card sectioned>
+        <Card.Section>
+          <StaffSelection
+            isLoading={isLoading}
+            staff={staff}
+            onSelect={setStaff}></StaffSelection>
+        </Card.Section>
         <Card.Section>
           <Fullcalendar
             ref={calendarRef}
