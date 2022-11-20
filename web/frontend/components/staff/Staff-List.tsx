@@ -5,6 +5,7 @@ import {
   Page,
   ResourceItem,
   ResourceList,
+  Text,
   TextStyle,
 } from '@shopify/polaris';
 import { useStaffList } from '@services/staff';
@@ -29,11 +30,9 @@ export default () => {
         url={url}
         media={media}
         accessibilityLabel={`View details for ${fullname}`}>
-        <h3>
-          <TextStyle variation="strong">
-            {fullname} <Metadata active={active} />
-          </TextStyle>
-        </h3>
+        <Text variant="headingSm" as="h6">
+          {fullname} <Metadata active={active} />
+        </Text>
         <div>
           {email}
           {phone}

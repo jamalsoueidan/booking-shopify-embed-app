@@ -17,6 +17,7 @@ const create = async ({
   body,
   shop,
 }: CreateProps): Promise<Array<IBookingModel>> => {
+  const orderId = body.id;
   const filter = (lineItem) =>
     lineItem.properties.find((property) => property.name === "_data");
 
@@ -31,7 +32,7 @@ const create = async ({
       const completeDate = new Date(data.start);
 
       return {
-        orderId: body.order_number,
+        orderId,
         productId: lineItem.product_id,
         staff: new mongoose.Types.ObjectId(staffId),
         start: completeDate,
@@ -67,7 +68,7 @@ const create = async ({
     customerGraphqlApiId: body.customer.admin_graphql_api_id,
   });
 
-  await BookingModel.deleteMany({ orderId: body.order_number, shop });
+  await BookingModel.deleteMany({ orderId, shop });
   return await BookingModel.insertMany(models);
 };
 
@@ -86,7 +87,7 @@ interface CancelProps {
 
 const cancel = async ({ body, shop }: CancelProps) => {
   return await BookingModel.updateMany(
-    { orderId: body.order_number, shop },
+    { orderId: body.id, shop },
     { cancelled: true }
   );
 };

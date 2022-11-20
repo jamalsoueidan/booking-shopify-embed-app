@@ -1,6 +1,7 @@
+import BookingModal from '@components/bookings/booking-modal';
 import Fullcalendar from '@components/bookings/fullcalendar';
 import StaffSelection from '@components/bookings/staff-selection';
-import FullCalendar from '@fullcalendar/react'; // must go before plugins
+import FullCalendar, { EventClickArg } from '@fullcalendar/react'; // must go before plugins
 import { useBookings } from '@services/bookings';
 import useSetting from '@services/setting';
 import { Card, Page } from '@shopify/polaris';
@@ -8,6 +9,7 @@ import { format, utcToZonedTime } from 'date-fns-tz';
 import { createRef, useCallback, useEffect, useState } from 'react';
 
 export default () => {
+  const [info, setInfo] = useState(null);
   const [start, setStart] = useState(null);
   const [end, setEnd] = useState(null);
   const [staff, setStaff] = useState(null);
@@ -37,6 +39,8 @@ export default () => {
           ...d,
           start: toTimeZone(new Date(d.start)),
           end: toTimeZone(new Date(d.end)),
+          backgroundColor: d.cancelled ? '#c9c9c9' : '#378006',
+          color: d.cancelled ? '#c9c9c9' : '#378006',
         });
       });
     }
@@ -55,7 +59,7 @@ export default () => {
         </i>
       );
       return (
-        <>
+        <div style={{ cursor: 'pointer' }}>
           <span>{isMonth ? hour : extendHour}</span>
           <span
             style={{
@@ -65,14 +69,27 @@ export default () => {
             {booking.staff.fullname}
             {booking.anyStaff ? '(ET)' : ''} - {booking.product.title}
           </span>
-        </>
+        </div>
       );
     },
     [calendarRef]
   );
 
+  const showBooking = useCallback(({ event }: EventClickArg) => {
+    setInfo({
+      ...event._def.extendedProps,
+      start: event.startStr,
+      end: event.endStr,
+    });
+  }, []);
+
+  const bookingModal = info ? (
+    <BookingModal show={info !== null} toggle={setInfo} info={info} />
+  ) : null;
+
   return (
     <Page fullWidth title="Bookinger">
+      {bookingModal}
       <Card sectioned>
         <Card.Section>
           <StaffSelection
@@ -94,9 +111,8 @@ export default () => {
                 meridiem: 'short',
               },
             ]}
-            eventColor="#378006"
-            eventBackgroundColor="#378006"
             eventDisplay="block"
+            eventClick={showBooking}
           />
         </Card.Section>
       </Card>

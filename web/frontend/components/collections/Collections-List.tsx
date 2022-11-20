@@ -1,15 +1,8 @@
-import {
-  Caption,
-  Card,
-  Icon,
-  ResourceItem,
-  ResourceList,
-  TextStyle,
-} from '@shopify/polaris';
+import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
+import { Card, Icon, ResourceItem, ResourceList, Text } from '@shopify/polaris';
 import { ProductsMajor } from '@shopify/polaris-icons';
 import { useState } from 'react';
 import { useSWRConfig } from 'swr';
-import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
 import ModalConfirm from '../modals/ModalConfirm.js';
 
 export default ({ collection }: { collection: Collection }) => {
@@ -64,10 +57,12 @@ export default ({ collection }: { collection: Collection }) => {
                 accessibilityLabel={`View details for ${title}`}
                 media={<Icon source={ProductsMajor} color={status} />}
                 verticalAlignment="center">
-                <h3>
-                  <TextStyle variation="strong">{title}</TextStyle>
-                </h3>
-                <Caption>{item.staff.length} staff added.</Caption>
+                <Text variant="headingSm" as="h6">
+                  {title}
+                </Text>
+                <Text variant="bodySm" as="p">
+                  {item.staff.length} staff added.
+                </Text>
               </ResourceItem>
             );
           }}

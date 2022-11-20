@@ -1,12 +1,12 @@
+import { useCollectionProductUpdate } from '@services/product';
 import {
   Banner,
   BannerStatus,
   Layout,
   SettingToggle,
-  TextStyle,
+  Text,
 } from '@shopify/polaris';
 import { useCallback } from 'react';
-import { useCollectionProductUpdate } from '@services/product';
 
 interface ExtendBanner {
   status: BannerStatus;
@@ -60,7 +60,10 @@ export default ({ product }: { product: Product }) => {
           }}
           enabled={product.active}>
           Dette product kan{' '}
-          <TextStyle variation="strong">{textStatus}</TextStyle> online.
+          <Text variant="headingSm" as="h6">
+            {textStatus}
+          </Text>{' '}
+          online.
         </SettingToggle>
       </Layout.Section>
     </Layout>

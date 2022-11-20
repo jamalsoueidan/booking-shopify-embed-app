@@ -1,3 +1,4 @@
+import { useCollectionProductUpdate } from '@services/product';
 import {
   Button,
   ButtonGroup,
@@ -8,11 +9,10 @@ import {
   Layout,
   Select,
   Stack,
-  TextStyle,
+  Text,
 } from '@shopify/polaris';
 import { ClockMajor } from '@shopify/polaris-icons';
 import { useCallback, useState } from 'react';
-import { useCollectionProductUpdate } from '@services/product';
 
 export default ({
   productId,
@@ -75,7 +75,9 @@ export default ({
           <Card.Section>
             <Form onSubmit={onSave}>
               <FormLayout>
-                <TextStyle>Meeting duration</TextStyle>
+                <Text variant="headingSm" as="h6">
+                  Meeting duration
+                </Text>
                 <ButtonGroup segmented>
                   <Button
                     pressed={duration === '30'}
@@ -93,9 +95,9 @@ export default ({
                     60 min
                   </Button>
                 </ButtonGroup>
-                <TextStyle variation="subdued">
+                <Text variant="headingXs" as="h6">
                   How long should your meeting last?(minutes)
-                </TextStyle>
+                </Text>
                 <Select
                   label={selectLabel}
                   options={options}
