@@ -1,0 +1,19 @@
+{
+	"settings": {
+		"store_settings": {
+			"language": {
+				"danish": "Danish",
+				"english": "English"
+			},
+			"subtitle": "Time zone and locale",
+			"title": "Store settings"
+		},
+		"title": "Settings"
+	},
+	"tabs": {
+		"bookings": "Bookings",
+		"collections": "Categories",
+		"settings": "Settings",
+		"staff": "Staff"
+	}
+}

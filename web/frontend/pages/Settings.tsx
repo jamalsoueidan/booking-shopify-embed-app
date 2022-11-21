@@ -1,23 +1,32 @@
+import { useSettingGet, useSettingUpdate } from '@services/setting';
 import {
   Banner,
-  Button,
   Card,
   Form,
   FormLayout,
+  Layout,
   Page,
+  PageActions,
   Select,
+  Stack,
 } from '@shopify/polaris';
 import { useField, useForm } from '@shopify/react-form';
+import { useTranslation } from 'react-i18next';
 import TimezoneSelect from 'react-timezone-select';
-import useSetting from '@services/setting';
-
-const languageOptions = [
-  { label: 'English', value: 'en' },
-  { label: 'Danish', value: 'da' },
-];
 
 export default () => {
-  const { data, update } = useSetting();
+  const { data } = useSettingGet();
+  const { update } = useSettingUpdate();
+
+  const { t } = useTranslation('settings');
+
+  const languageOptions = [
+    {
+      label: t('store_settings.language.english'),
+      value: 'en',
+    },
+    { label: t('store_settings.language.danish'), value: 'da' },
+  ];
 
   //https://codesandbox.io/s/1wpxz?file=/src/MyForm.tsx:2457-2473
   const { fields, submit, submitErrors, submitting, dirty } = useForm({
@@ -37,8 +46,15 @@ export default () => {
     },
   });
 
+  const primaryAction = {
+    content: 'Save',
+    loading: submitting,
+    disabled: !dirty,
+    onAction: submit,
+  };
+
   return (
-    <Page narrowWidth title="Store settings" subtitle="Timezone and localize">
+    <Page title={t('title')} primaryAction={primaryAction}>
       {submitErrors.length > 0 && (
         <Banner status="critical">
           <p>Errors</p>
@@ -49,31 +65,38 @@ export default () => {
           </ul>
         </Banner>
       )}
-      <Card sectioned>
-        <Form onSubmit={submit}>
-          <FormLayout>
-            <div style={{ zIndex: 99, position: 'relative' }}>
-              <TimezoneSelect
-                value={{
-                  value: fields.timeZone.value,
-                  label: fields.timeZone.value,
-                }}
-                onChange={(timezone) =>
-                  fields.timeZone.onChange(timezone.value)
-                }
-              />
-            </div>
-            <Select
-              label="Language"
-              options={languageOptions}
-              {...fields.language}
-            />
-            <Button submit primary loading={submitting} disabled={!dirty}>
-              Save
-            </Button>
-          </FormLayout>
-        </Form>
-      </Card>
+      <Form onSubmit={submit}>
+        <Layout>
+          <Layout.AnnotatedSection
+            title={t('store_settings.title')}
+            description={t('store_settings.subtitle')}>
+            <Card sectioned>
+              <FormLayout>
+                <Stack vertical spacing="extraTight">
+                  <Stack.Item>Price</Stack.Item>
+                  <div style={{ zIndex: 99, position: 'relative' }}>
+                    <TimezoneSelect
+                      value={{
+                        value: fields.timeZone.value,
+                        label: fields.timeZone.value,
+                      }}
+                      onChange={(timezone) =>
+                        fields.timeZone.onChange(timezone.value)
+                      }
+                    />
+                  </div>
+                </Stack>
+                <Select
+                  label="Language"
+                  options={languageOptions}
+                  {...fields.language}
+                />
+              </FormLayout>
+            </Card>
+          </Layout.AnnotatedSection>
+        </Layout>
+      </Form>
+      <PageActions primaryAction={primaryAction} />
     </Page>
   );
 };

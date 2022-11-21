@@ -17,7 +17,7 @@ import {
 import { zonedTimeToUtc } from 'date-fns-tz';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import useSetting from '@services/setting';
+import { useSettingGet } from '@services/setting';
 import { useStaffScheduleCreate } from '@services/staff/schedule';
 
 const options = [
@@ -30,7 +30,7 @@ const options = [
 export default ({ info, setInfo }: any) => {
   const params = useParams();
   const toggleActive = () => setInfo(null);
-
+  const { data: settings } = useSettingGet();
   const [startTime, setStartTime] = useState<string>('09:00');
   const [endTime, setEndTime] = useState<string>('16:00');
   const [tag, setTag] = useState(options[0].value);
@@ -44,8 +44,6 @@ export default ({ info, setInfo }: any) => {
     useStaffScheduleCreate({
       userId: params.id,
     });
-
-  const { data: settings } = useSetting();
 
   const handleStart = (value: string) => setStartTime(value);
   const handleTag = (value: string) => setTag(value);

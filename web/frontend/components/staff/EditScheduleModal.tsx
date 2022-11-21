@@ -10,7 +10,7 @@ import { format } from 'date-fns';
 import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import useSetting from '@services/setting';
+import { useSettingGet } from '@services/setting';
 import {
   useStaffScheduleDestroy,
   useStaffScheduleUpdate,
@@ -31,7 +31,7 @@ const options = [
 export default ({ info, setInfo }: Props) => {
   const params = useParams();
   const toggleActive = () => setInfo(null);
-  const { data: settings } = useSetting();
+  const { data: settings } = useSettingGet();
   const toTimeZone = (fromUTC: Date) =>
     utcToZonedTime(fromUTC, settings.timeZone);
 

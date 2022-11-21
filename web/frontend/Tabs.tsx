@@ -1,38 +1,42 @@
+import { useSettingGet } from '@services/setting';
 import { useNavigate } from '@shopify/app-bridge-react';
 import { Tabs } from '@shopify/polaris';
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default ({ children }: { children: JSX.Element }) => {
   const navigate = useNavigate();
 
   const [selected, setSelected] = useState<number>(null);
+  const { data } = useSettingGet();
+  const { t, i18n } = useTranslation('tabs');
+
+  useEffect(() => {
+    i18n.changeLanguage(data.language);
+  }, [data]);
 
   const tabs = [
     {
       id: 'bookings',
-      content: 'Bookings',
-      panelID: 'bookings',
+      content: t('bookings'),
     },
     {
       id: 'collections',
-      content: 'Collections',
-      panelID: 'collections',
+      content: t('collections'),
     },
     {
       id: 'staff',
-      content: 'Staff',
-      panelID: 'staff',
+      content: t('staff'),
     },
     {
-      id: 'setting',
-      content: 'Settings',
-      panelID: 'settings',
+      id: 'settings',
+      content: t('settings'),
     },
   ];
 
   const handleTabChange = useCallback((selectedTabIndex: number) => {
     setSelected(selectedTabIndex);
-    navigate(`/${tabs[selectedTabIndex].content}`);
+    navigate(`/${tabs[selectedTabIndex].id}`);
   }, []);
 
   useEffect(() => {

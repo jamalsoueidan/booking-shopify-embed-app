@@ -1,0 +1,19 @@
+{
+	"settings": {
+		"store_settings": {
+			"language": {
+				"danish": "Dansk",
+				"english": "Engelsk"
+			},
+			"subtitle": "Tidszone og sprog",
+			"title": "Butiksindstillinger"
+		},
+		"title": "Indstillinger"
+	},
+	"tabs": {
+		"bookings": "Bestillinger",
+		"collections": "Kategorier",
+		"settings": "Indstillinger",
+		"staff": "Medarbejder"
+	}
+}

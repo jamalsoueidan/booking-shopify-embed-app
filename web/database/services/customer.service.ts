@@ -37,7 +37,7 @@ const findCustomerAndUpdate = async ({
     },
   });
 
-  return await CustomerModel.updateOne(
+  return await CustomerModel.findOneAndUpdate(
     { customerId, shop },
     {
       customerId,

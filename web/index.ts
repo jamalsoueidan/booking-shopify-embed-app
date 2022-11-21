@@ -21,6 +21,7 @@ import OrderWebhook from "./libs/webhooks/order/order.webhook.js";
 import cors from "cors";
 import CartWebhook from "@libs/webhooks/cart/cart.webhook.js";
 import CustomerWebhook from "@libs/webhooks/customer/customer.webhook.js";
+import smsService from "@services/sms.service";
 
 const USE_ONLINE_TOKENS = false;
 

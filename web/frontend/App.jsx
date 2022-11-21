@@ -6,6 +6,19 @@ import {
 } from './components/providers';
 import Routes from './Routes';
 import Tabs from './Tabs';
+import { I18nextProvider } from 'react-i18next';
+import i18next from 'i18next';
+import da from './translations/da.json';
+import en from './translations/en.json';
+
+i18next.init({
+  interpolation: { escapeValue: false }, // React already does escaping
+  lng: 'en', // language to use
+  resources: {
+    en,
+    da,
+  },
+});
 
 export default function App() {
   // Any .tsx or .jsx files in /pages will become a route
@@ -17,9 +30,11 @@ export default function App() {
       <BrowserRouter>
         <AppBridgeProvider>
           <QueryProvider>
-            <Tabs>
-              <Routes pages={pages} />
-            </Tabs>
+            <I18nextProvider i18n={i18next}>
+              <Tabs>
+                <Routes pages={pages} />
+              </Tabs>
+            </I18nextProvider>
           </QueryProvider>
         </AppBridgeProvider>
       </BrowserRouter>

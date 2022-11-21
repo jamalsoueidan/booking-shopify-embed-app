@@ -1,6 +1,7 @@
 import BookingModel, { IBookingModel } from "@models/booking.model";
 import ProductModel, { IProductModel } from "@models/product.model";
 import CustomerService from "@services/customer.service";
+import SmsService from "@services/sms.service";
 import { addMinutes } from "date-fns";
 import mongoose from "mongoose";
 
@@ -8,20 +9,24 @@ function onlyUnique(value, index, self) {
   return self.indexOf(value) === index;
 }
 
-interface CreateProps {
+interface ModifyProps {
   body: OrderTypes.Order;
   shop: string;
+  sendBooking?: boolean;
 }
 
-const create = async ({
+const modify = async ({
   body,
   shop,
-}: CreateProps): Promise<Array<IBookingModel>> => {
+  sendBooking,
+}: ModifyProps): Promise<Array<IBookingModel>> => {
   const orderId = body.id;
   const filter = (lineItem) =>
     lineItem.properties.find((property) => property.name === "_data");
 
   const lineItems = body.line_items.filter(filter);
+
+  const boughtProductTitles = [];
 
   let models = lineItems.map((lineItem) => {
     const _data = lineItem.properties.find((p) => p.name === "_data")?.value;
@@ -30,6 +35,8 @@ const create = async ({
       const staffId = data.staff.staff;
       const anyStaff = data.staff.anyStaff;
       const completeDate = new Date(data.start);
+
+      boughtProductTitles.push(lineItem.title);
 
       return {
         orderId,
@@ -62,15 +69,26 @@ const create = async ({
     };
   });
 
-  await CustomerService.findCustomerAndUpdate({
+  const customer = await CustomerService.findCustomerAndUpdate({
     shop,
     customerId: body.customer.id,
     customerGraphqlApiId: body.customer.admin_graphql_api_id,
   });
 
+  SmsService.sendBookingConfirmation({ customer, boughtProductTitles });
+  SmsService.sendReminder({ customer, bookings: models });
+
   await BookingModel.deleteMany({ orderId, shop });
   return await BookingModel.insertMany(models);
 };
+
+interface CreateProps {
+  body: OrderTypes.Order;
+  shop: string;
+}
+
+const create = async ({ body, shop }: CreateProps) =>
+  await modify({ body, shop, sendBooking: true });
 
 interface UpdateProps {
   body: OrderTypes.Order;
@@ -78,7 +96,7 @@ interface UpdateProps {
 }
 
 const update = async ({ body, shop }: UpdateProps) =>
-  await create({ body, shop });
+  await modify({ body, shop });
 
 interface CancelProps {
   body: OrderTypes.Order;
