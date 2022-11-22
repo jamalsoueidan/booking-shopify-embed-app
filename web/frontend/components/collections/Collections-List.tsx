@@ -1,73 +1,65 @@
-import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
+import { useCollectionDestroy } from '@services/collection';
 import { Card, Icon, ResourceItem, ResourceList, Text } from '@shopify/polaris';
-import { ProductsMajor } from '@shopify/polaris-icons';
-import { useState } from 'react';
-import { useSWRConfig } from 'swr';
+import { CancelMinor, TickMinor } from '@shopify/polaris-icons';
+import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ModalConfirm from '../modals/ModalConfirm.js';
 
 export default ({ collection }: { collection: Collection }) => {
   const [modalConfirm, setModalConfirm] = useState<any>();
+  const { destroy } = useCollectionDestroy({ collectionId: collection._id });
+  const { t } = useTranslation('collections');
 
-  const fetch = useAuthenticatedFetch();
-  const { mutate } = useSWRConfig();
+  const setActive = useCallback(async (shouldDestroy: boolean) => {
+    if (shouldDestroy) {
+      await destroy();
+    }
+    setModalConfirm(null);
+  }, []);
 
-  const removeCollection = (collection: any) => {
-    const setActive = async (value: boolean) => {
-      if (value) {
-        await fetch(`/api/admin/collections/${collection._id}`, {
-          method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
-        });
-      }
-      mutate('/api/admin/collections');
-      setModalConfirm(null);
-    };
-
+  const removeCollection = useCallback(() => {
     setModalConfirm(
       <ModalConfirm active={true} setActive={setActive}></ModalConfirm>
     );
-  };
+  }, []);
 
   return (
     <>
       {modalConfirm}
       <Card
+        sectioned
         key={collection._id}
         title={collection.title}
         actions={[
           {
-            content: 'Remove',
-            onAction: () => {
-              removeCollection(collection);
-            },
+            content: t('remove_collection'),
+            onAction: removeCollection,
           },
         ]}>
         <ResourceList
-          resourceName={{ singular: 'product', plural: 'products' }}
           items={collection.products}
           renderItem={(item) => {
             const { _id, title, active } = item;
 
             const status = active ? 'success' : 'critical';
+            const icon = active ? TickMinor : CancelMinor;
 
             return (
               <ResourceItem
                 id={_id}
                 url={'/Collections/Product/' + _id}
                 accessibilityLabel={`View details for ${title}`}
-                media={<Icon source={ProductsMajor} color={status} />}
+                media={<Icon source={icon} color={status} />}
                 verticalAlignment="center">
                 <Text variant="headingSm" as="h6">
                   {title}
                 </Text>
                 <Text variant="bodySm" as="p">
-                  {item.staff.length} staff added.
+                  {t('staff', { count: item.staff.length })}
                 </Text>
               </ResourceItem>
             );
           }}
-          showHeader
-          totalItemsCount={collection.products.length}
         />
       </Card>
     </>

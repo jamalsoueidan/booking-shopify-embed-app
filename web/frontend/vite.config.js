@@ -23,6 +23,11 @@ const proxyOptions = {
   changeOrigin: false,
   secure: true,
   ws: false,
+  configure: (proxy, _options) => {
+    proxy.on('error', (err, _req, _res) => {
+      console.log('proxy error', err);
+    });
+  },
 };
 
 const host = process.env.HOST

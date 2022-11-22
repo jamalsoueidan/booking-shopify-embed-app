@@ -6,13 +6,11 @@ interface ModalConfirmProps {
   setActive: (value: boolean) => {};
 }
 export default ({ active, setActive }: ModalConfirmProps) => {
-  const toggleActive = useCallback(() => setActive(null), []);
-
   return (
     <Modal
       small
       open={active}
-      onClose={toggleActive}
+      onClose={() => setActive(false)}
       title="Remove product"
       primaryAction={{
         content: 'Delete',
@@ -21,7 +19,7 @@ export default ({ active, setActive }: ModalConfirmProps) => {
       secondaryActions={[
         {
           content: 'Cancel',
-          onAction: toggleActive,
+          onAction: () => setActive(false),
         },
       ]}>
       <Modal.Section>

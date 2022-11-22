@@ -9,6 +9,7 @@ export interface ISettingModel {
   shop: string;
   timeZone: string;
   language: ISettingLanguage;
+  status: boolean;
 }
 
 const SettingSchema = new Schema({
@@ -24,6 +25,10 @@ const SettingSchema = new Schema({
   language: {
     type: String,
     default: "en",
+  },
+  status: {
+    type: Boolean,
+    default: true,
   },
 });
 

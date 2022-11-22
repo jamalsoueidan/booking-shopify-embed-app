@@ -1,12 +1,54 @@
 {
+	"bookings": {
+		"all": "Alle",
+		"day_grid_month": "Måned",
+		"list": "Liste",
+		"time_grid_day": "Dag",
+		"time_grid_week": "Uge",
+		"title": "Bestillinger",
+		"today": "I dag"
+	},
+	"collections": {
+		"add_collection": "Tilføj kategori",
+		"empty": {
+			"choose_collections": "Vælge kollektion(er)",
+			"text": "Vælg kollektioner(er) fra din butik, og vi omdanner dem til kategori(er) og dens produkter!",
+			"title": "Begynd at tag imod reservationer i din butik."
+		},
+		"remove_collection": "Fjern",
+		"staff_plural": "{{count}} medarbejder tilføjet",
+		"staff_zero": "Tillføje medarbejder til dette produkt",
+		"title": "Kategorier"
+	},
+	"common": {
+		"buttons": {
+			"save": "Gem"
+		}
+	},
 	"settings": {
 		"store_settings": {
 			"language": {
-				"danish": "Dansk",
-				"english": "Engelsk"
+				"label": "Sprog",
+				"options": {
+					"danish": "Dansk",
+					"english": "Engelsk"
+				}
 			},
 			"subtitle": "Tidszone og sprog",
+			"timezone": {
+				"label": "Tidszone"
+			},
 			"title": "Butiksindstillinger"
+		},
+		"store_status": {
+			"status": {
+				"disable": "Deaktivere",
+				"disabled": "App er deaktiveret",
+				"enable": "Aktivere",
+				"enabled": "App er aktiveret"
+			},
+			"subtitle": "Deaktiver reservationer på online butik.",
+			"title": "App Status"
 		},
 		"title": "Indstillinger"
 	},

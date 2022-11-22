@@ -17,10 +17,8 @@ const useSettingGet = (): UseSettingGetReturn => {
   };
 };
 
-interface SettingBody {
-  timeZone: string;
-  language: string;
-}
+interface SettingBody extends Setting {}
+
 interface UseSettingUpdateReturn {
   update: (body: SettingBody) => void;
 }

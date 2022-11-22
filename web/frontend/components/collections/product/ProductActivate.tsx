@@ -51,7 +51,7 @@ export default ({ product }: { product: Product }) => {
           </Banner>
         </Layout.Section>
       )}
-      <Layout.Section>
+      <Layout.AnnotatedSection>
         <SettingToggle
           action={{
             content: contentStatus,
@@ -60,12 +60,12 @@ export default ({ product }: { product: Product }) => {
           }}
           enabled={product.active}>
           Dette product kan{' '}
-          <Text variant="headingSm" as="h6">
+          <Text variant="headingSm" as="span">
             {textStatus}
           </Text>{' '}
           online.
         </SettingToggle>
-      </Layout.Section>
+      </Layout.AnnotatedSection>
     </Layout>
   );
 };

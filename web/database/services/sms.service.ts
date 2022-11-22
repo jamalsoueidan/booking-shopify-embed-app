@@ -57,6 +57,7 @@ interface SendReminder {
 }
 
 const sendReminder = ({ customer, bookings }: SendReminder) => {
+  // TODO: use timezone from settings
   bookings.forEach((booking) => {
     send({
       receiver: customer.phone.replace("+", ""),

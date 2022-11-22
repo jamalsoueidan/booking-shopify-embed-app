@@ -9,8 +9,7 @@
     "dev": "shopify app dev -t Dawn",
     "info": "shopify app info",
     "generate": "shopify app generate",
-    "deploy": "shopify app deploy",
-    "heroku-prebuild": "echo ----------------This runs after Heroku prunes and caches dependencies."
+    "deploy": "shopify app deploy"
   },
   "dependencies": {
     "@shopify/app": "3.16.3",

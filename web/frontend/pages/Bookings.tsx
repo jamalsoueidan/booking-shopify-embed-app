@@ -7,6 +7,7 @@ import { useSettingGet } from '@services/setting';
 import { Card, Page } from '@shopify/polaris';
 import { format, utcToZonedTime } from 'date-fns-tz';
 import { createRef, useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default () => {
   const [info, setInfo] = useState(null);
@@ -14,6 +15,7 @@ export default () => {
   const [end, setEnd] = useState(null);
   const [staff, setStaff] = useState(null);
 
+  const { t } = useTranslation('bookings');
   const { data: settings } = useSettingGet();
   const calendarRef = createRef<FullCalendar>();
 
@@ -88,7 +90,7 @@ export default () => {
   ) : null;
 
   return (
-    <Page fullWidth title="Bookinger">
+    <Page fullWidth title={t('title')}>
       {bookingModal}
       <Card sectioned>
         <Card.Section>
@@ -113,6 +115,7 @@ export default () => {
             ]}
             eventDisplay="block"
             eventClick={showBooking}
+            locale={settings.language}
           />
         </Card.Section>
       </Card>

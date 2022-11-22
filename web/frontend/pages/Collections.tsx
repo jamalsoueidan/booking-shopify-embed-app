@@ -4,12 +4,14 @@ import { useState } from 'react';
 import { useCollectionList } from '@services/collection';
 import AddNewCollection from '@components/collections/AddNewCollection';
 import CollectionsList from '@components/collections/Collections-List';
+import { useTranslation } from 'react-i18next';
 
 export default () => {
   const [open, setOpen] = useState(false);
 
   const navigate = useNavigate();
   const { data } = useCollectionList();
+  const { t } = useTranslation('collections');
 
   if (!data) {
     return (
@@ -34,10 +36,9 @@ export default () => {
 
   return (
     <Page
-      narrowWidth
-      title="Collections"
+      title={t('title')}
       primaryAction={{
-        content: 'Add collection',
+        content: t('add_collection'),
         onAction: () => setOpen(true),
       }}>
       <AddNewCollection open={open} setOpen={setOpen}></AddNewCollection>

@@ -8,7 +8,9 @@ import {
   Page,
   PageActions,
   Select,
+  SettingToggle,
   Stack,
+  Text,
 } from '@shopify/polaris';
 import { useField, useForm } from '@shopify/react-form';
 import { useTranslation } from 'react-i18next';
@@ -19,13 +21,14 @@ export default () => {
   const { update } = useSettingUpdate();
 
   const { t } = useTranslation('settings');
+  const { t: tc } = useTranslation('common');
 
   const languageOptions = [
     {
-      label: t('store_settings.language.english'),
+      label: t('store_settings.language.options.english'),
       value: 'en',
     },
-    { label: t('store_settings.language.danish'), value: 'da' },
+    { label: t('store_settings.language.options.danish'), value: 'da' },
   ];
 
   //https://codesandbox.io/s/1wpxz?file=/src/MyForm.tsx:2457-2473
@@ -39,6 +42,10 @@ export default () => {
         value: data.language,
         validates: [],
       }),
+      status: useField({
+        value: data.status,
+        validates: [],
+      }),
     },
     onSubmit: async (fieldValues) => {
       await update(fieldValues);
@@ -47,25 +54,26 @@ export default () => {
   });
 
   const primaryAction = {
-    content: 'Save',
+    content: tc('buttons.save'),
     loading: submitting,
     disabled: !dirty,
     onAction: submit,
   };
 
   return (
-    <Page title={t('title')} primaryAction={primaryAction}>
-      {submitErrors.length > 0 && (
-        <Banner status="critical">
-          <p>Errors</p>
-          <ul>
-            {submitErrors.map(({ message }, i) => (
-              <li key={i}>{message}</li>
-            ))}
-          </ul>
-        </Banner>
-      )}
-      <Form onSubmit={submit}>
+    <Form onSubmit={submit}>
+      <Page title={t('title')} primaryAction={primaryAction}>
+        {submitErrors.length > 0 && (
+          <Banner status="critical">
+            <p>Errors</p>
+            <ul>
+              {submitErrors.map(({ message }, i) => (
+                <li key={i}>{message}</li>
+              ))}
+            </ul>
+          </Banner>
+        )}
+
         <Layout>
           <Layout.AnnotatedSection
             title={t('store_settings.title')}
@@ -73,7 +81,7 @@ export default () => {
             <Card sectioned>
               <FormLayout>
                 <Stack vertical spacing="extraTight">
-                  <Stack.Item>Price</Stack.Item>
+                  <Stack.Item>{t('store_settings.timezone.label')}</Stack.Item>
                   <div style={{ zIndex: 99, position: 'relative' }}>
                     <TimezoneSelect
                       value={{
@@ -87,16 +95,41 @@ export default () => {
                   </div>
                 </Stack>
                 <Select
-                  label="Language"
+                  label={t('store_settings.language.label')}
                   options={languageOptions}
                   {...fields.language}
                 />
               </FormLayout>
             </Card>
           </Layout.AnnotatedSection>
+          <Layout.AnnotatedSection
+            title={t('store_status.title')}
+            description={t('store_status.subtitle')}>
+            <Card sectioned>
+              <FormLayout>
+                <SettingToggle
+                  action={{
+                    content: fields.status.value
+                      ? t('store_status.status.disable')
+                      : t('store_status.status.enable'),
+                    onAction: () =>
+                      fields.status.onChange(!fields.status.value),
+                  }}
+                  enabled={fields.status.value}>
+                  <Text variant="bodyMd" fontWeight="bold" as="span">
+                    {fields.status.value
+                      ? t('store_status.status.enabled')
+                      : t('store_status.status.disabled')}
+                  </Text>
+                  .
+                </SettingToggle>
+              </FormLayout>
+            </Card>
+          </Layout.AnnotatedSection>
         </Layout>
-      </Form>
-      <PageActions primaryAction={primaryAction} />
-    </Page>
+        <br />
+        <PageActions primaryAction={primaryAction} />
+      </Page>
+    </Form>
   );
 };

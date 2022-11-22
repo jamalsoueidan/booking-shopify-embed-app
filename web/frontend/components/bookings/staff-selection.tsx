@@ -1,5 +1,6 @@
 import { useStaffList } from '@services/staff';
 import { Button, Stack } from '@shopify/polaris';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   staff: string;
@@ -8,6 +9,7 @@ interface Props {
 }
 export default ({ staff, onSelect, isLoading }: Props) => {
   const { data } = useStaffList();
+  const { t } = useTranslation('bookings');
   if (!data) {
     return <></>;
   }
@@ -18,7 +20,7 @@ export default ({ staff, onSelect, isLoading }: Props) => {
         onClick={() => onSelect(null)}
         pressed={staff === null}
         loading={staff === null ? isLoading : false}>
-        All
+        {t('all')}
       </Button>
       {data.map((s) => {
         return (

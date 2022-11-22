@@ -1,11 +1,15 @@
 // @ts-check
+import CartWebhook from "@libs/webhooks/cart/cart.webhook.js";
+import CustomerWebhook from "@libs/webhooks/customer/customer.webhook.js";
 import { LATEST_API_VERSION, Shopify } from "@shopify/shopify-api";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import express from "express";
 import { readFileSync } from "fs";
 import { join } from "path";
+import { exit } from "process";
 import { AppInstallations } from "./app_installations.js";
-import * as database from "./database/database.js";
+import connect from "./database/database.js";
 import { setupGDPRWebHooks } from "./gdpr.js";
 import redirectToAuth from "./helpers/redirect-to-auth.js";
 import adminBookingRoutes from "./libs/admin-booking/admin-booking.routes.js";
@@ -14,14 +18,10 @@ import adminProductRoutes from "./libs/admin-product/admin-product.routes";
 import adminSettingRoutes from "./libs/admin-setting/admin-setting.routes";
 import adminStaffScheduleRoutes from "./libs/admin-staff-schedule/admin-staff-schedule.routes.js";
 import adminStaffRoutes from "./libs/admin-staff/admin-staff.routes";
+import OrderWebhook from "./libs/webhooks/order/order.webhook.js";
 import widgetRoutes from "./libs/widget/widget.routes";
 import applyAuthMiddleware from "./middleware/auth.js";
 import verifyRequest from "./middleware/verify-request.js";
-import OrderWebhook from "./libs/webhooks/order/order.webhook.js";
-import cors from "cors";
-import CartWebhook from "@libs/webhooks/cart/cart.webhook.js";
-import CustomerWebhook from "@libs/webhooks/customer/customer.webhook.js";
-import smsService from "@services/sms.service";
 
 const USE_ONLINE_TOKENS = false;
 
@@ -31,7 +31,7 @@ const PORT = parseInt(process.env.BACKEND_PORT || process.env.PORT, 10) || 8000;
 const DEV_INDEX_PATH = `${process.cwd()}/frontend/`;
 const PROD_INDEX_PATH = `${process.cwd()}/frontend/dist/`;
 
-database.connect();
+connect();
 
 Shopify.Context.initialize({
   API_KEY: process.env.SHOPIFY_API_KEY,

@@ -121,7 +121,9 @@ interface BookingsApi {
 interface Setting {
   language: string;
   timeZone: string;
+  status?: boolean;
 }
+
 interface SettingApi {
   payload: Setting;
 }

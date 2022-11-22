@@ -9,11 +9,13 @@ export default ({ children }: { children: JSX.Element }) => {
 
   const [selected, setSelected] = useState<number>(null);
   const { data } = useSettingGet();
+  const { language } = data;
+
   const { t, i18n } = useTranslation('tabs');
 
   useEffect(() => {
-    i18n.changeLanguage(data.language);
-  }, [data]);
+    i18n.changeLanguage(language);
+  }, [language]);
 
   const tabs = [
     {

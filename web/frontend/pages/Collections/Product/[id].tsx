@@ -12,7 +12,6 @@ export default () => {
 
   return (
     <Page
-      narrowWidth
       title={product?.title}
       breadcrumbs={[{ content: 'Collections', url: '/Collections' }]}>
       {product && (

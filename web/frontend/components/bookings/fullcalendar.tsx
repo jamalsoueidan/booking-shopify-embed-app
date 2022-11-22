@@ -3,12 +3,11 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import FullCalendar, { CalendarOptions } from '@fullcalendar/react'; // must go before plugins
 import timeGridPlugin from '@fullcalendar/timegrid';
-import { forwardRef, useEffect } from 'react';
+import { forwardRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default forwardRef((props: CalendarOptions, ref: any) => {
-  useEffect(() => {
-    //console.log(ref)
-  }, [ref]);
+  const { t } = useTranslation('bookings');
 
   return (
     <FullCalendar
@@ -22,18 +21,17 @@ export default forwardRef((props: CalendarOptions, ref: any) => {
         right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
       }}
       firstDay={1}
-      locale="da"
       dayMaxEvents={true}
       slotMinTime="07:00"
       slotMaxTime="20:00"
       buttonText={{
         prev: '<<',
         next: '>>',
-        today: 'I dag',
-        dayGridMonth: 'Måned',
-        timeGridWeek: 'Uge',
-        timeGridDay: 'Dag',
-        list: 'Liste',
+        today: t('today'),
+        dayGridMonth: t('day_grid_month'),
+        timeGridWeek: t('time_grid_week'),
+        timeGridDay: t('time_grid_day'),
+        list: t('list'),
       }}
       {...props}
     />

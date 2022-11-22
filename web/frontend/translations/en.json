@@ -1,12 +1,54 @@
 {
+	"bookings": {
+		"all": "All",
+		"day_grid_month": "Month",
+		"list": "List",
+		"time_grid_day": "Day",
+		"time_grid_week": "Week",
+		"title": "Bookings",
+		"today": "Today"
+	},
+	"collections": {
+		"add_collection": "Add Category",
+		"empty": {
+			"choose_collections": "Choose collection(s)",
+			"text": "Choose collection(s) from your store, and we'll transform it to category and its products!",
+			"title": "Start collecting appointments on your store."
+		},
+		"remove_collection": "Remove",
+		"staff_plural": "{{count}} staff added",
+		"staff_zero": "Add staff to this product",
+		"title": "Categories"
+	},
+	"common": {
+		"buttons": {
+			"save": "Save"
+		}
+	},
 	"settings": {
 		"store_settings": {
 			"language": {
-				"danish": "Danish",
-				"english": "English"
+				"label": "Language",
+				"options": {
+					"danish": "Danish",
+					"english": "English"
+				}
 			},
 			"subtitle": "Time zone and locale",
+			"timezone": {
+				"label": "Timezone"
+			},
 			"title": "Store settings"
+		},
+		"store_status": {
+			"status": {
+				"disable": "Disable",
+				"disabled": "App is disabled",
+				"enable": "Enable",
+				"enabled": "App is enabled"
+			},
+			"subtitle": "Disable bookings on the storefront.",
+			"title": "App Status"
 		},
 		"title": "Settings"
 	},

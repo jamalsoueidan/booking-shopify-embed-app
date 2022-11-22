@@ -2,12 +2,14 @@ import { useCollectionCreate, useCollectionList } from '@services/collection';
 import { ResourcePicker, useNavigate } from '@shopify/app-bridge-react';
 import { EmptyState, Layout, Page } from '@shopify/polaris';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { notFoundImage } from '../../assets';
 
 export default () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { create } = useCollectionCreate();
+  const { t } = useTranslation('collections');
 
   const handleSelection = async (resources: Resources) => {
     const ids = resources.selection.map((s) => s.id);
@@ -23,7 +25,7 @@ export default () => {
   }
 
   return (
-    <Page narrowWidth title="Collections">
+    <Page narrowWidth title={t('title')}>
       <ResourcePicker
         resourceType="Collection"
         open={open}
@@ -33,15 +35,12 @@ export default () => {
       <Layout>
         <EmptyState
           image={notFoundImage}
-          heading="Start collecting appointments on your store."
+          heading={t('empty.title')}
           action={{
-            content: 'Choose collections',
+            content: t('empty.choose_collections'),
             onAction: () => setOpen(true),
           }}>
-          <p>
-            Choose collection(s) from your store, and we'll transform it to
-            category and its products into treatments! 🚀
-          </p>
+          <p>{t('empty.text')} 🚀</p>
         </EmptyState>
       </Layout>
     </Page>
