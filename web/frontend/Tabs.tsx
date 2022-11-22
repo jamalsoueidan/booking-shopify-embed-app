@@ -1,6 +1,7 @@
+import LoadingPage from '@components/LoadingPage';
 import { useSettingGet } from '@services/setting';
 import { useNavigate } from '@shopify/app-bridge-react';
-import { Tabs } from '@shopify/polaris';
+import { Frame, Tabs } from '@shopify/polaris';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -12,6 +13,10 @@ export default ({ children }: { children: JSX.Element }) => {
   const { language } = data;
 
   const { t, i18n } = useTranslation('tabs');
+
+  if (!data) {
+    return <LoadingPage />;
+  }
 
   useEffect(() => {
     i18n.changeLanguage(language);
@@ -50,7 +55,7 @@ export default ({ children }: { children: JSX.Element }) => {
       <div style={{ backgroundColor: '#fff' }}>
         <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange}></Tabs>
       </div>
-      {children}
+      <Frame>{children}</Frame>
     </>
   );
 };

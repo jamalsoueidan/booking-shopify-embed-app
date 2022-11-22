@@ -1,3 +1,5 @@
+import Metadata from '@components/staff/Metadata';
+import { useStaffGet, useStaffUpdate } from '@services/staff';
 import { useNavigate } from '@shopify/app-bridge-react';
 import {
   Caption,
@@ -8,14 +10,12 @@ import {
   Layout,
   Page,
   Stack,
+  Text,
   TextField,
-  TextStyle,
   Thumbnail,
 } from '@shopify/polaris';
 import { useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import Metadata from '@components/staff/Metadata';
-import { useStaffGet, useStaffUpdate } from '@services/staff';
 
 export default () => {
   const params = useParams();
@@ -144,9 +144,9 @@ export default () => {
             allowMultiple={false}>
             {uploadedFiles || <DropZone.FileUpload />}
           </DropZone>
-          <TextStyle variation="subdued">
+          <Text variant="headingSm" as="span">
             Image size must be less than 300kb and ideally in square format.
-          </TextStyle>
+          </Text>
         </Layout.Section>
       </Layout>
     </Page>

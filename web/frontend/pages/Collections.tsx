@@ -5,6 +5,7 @@ import { useCollectionList } from '@services/collection';
 import AddNewCollection from '@components/collections/AddNewCollection';
 import CollectionsList from '@components/collections/Collections-List';
 import { useTranslation } from 'react-i18next';
+import LoadingPage from '@components/LoadingPage';
 
 export default () => {
   const [open, setOpen] = useState(false);
@@ -14,13 +15,7 @@ export default () => {
   const { t } = useTranslation('collections');
 
   if (!data) {
-    return (
-      <Page>
-        <Layout>
-          <Spinner accessibilityLabel="Spinner example" size="large" />
-        </Layout>
-      </Page>
-    );
+    return <LoadingPage />;
   }
 
   if (data?.length === 0) {

@@ -22,8 +22,10 @@
 	},
 	"common": {
 		"buttons": {
+			"discard": "Annullere",
 			"save": "Gem"
-		}
+		},
+		"unsaved": "Ikke-gemte ændringer"
 	},
 	"settings": {
 		"store_settings": {

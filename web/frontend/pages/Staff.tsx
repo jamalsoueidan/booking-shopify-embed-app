@@ -1,7 +1,7 @@
-import { useNavigate } from '@shopify/app-bridge-react';
-import { Layout, Page, Spinner } from '@shopify/polaris';
+import LoadingPage from '@components/LoadingPage';
 import StaffList from '@components/staff/Staff-List';
 import { useStaffList } from '@services/staff';
+import { useNavigate } from '@shopify/app-bridge-react';
 
 export default () => {
   const { data } = useStaffList();
@@ -9,13 +9,7 @@ export default () => {
   const navigate = useNavigate();
 
   if (!data) {
-    return (
-      <Page>
-        <Layout>
-          <Spinner accessibilityLabel="Spinner" size="large" />
-        </Layout>
-      </Page>
-    );
+    return <LoadingPage />;
   }
 
   if (data?.length === 0) {

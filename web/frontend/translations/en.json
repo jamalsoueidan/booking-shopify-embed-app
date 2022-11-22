@@ -22,8 +22,10 @@
 	},
 	"common": {
 		"buttons": {
+			"discard": "Discard",
 			"save": "Save"
-		}
+		},
+		"unsaved": "Unsaved changes"
 	},
 	"settings": {
 		"store_settings": {

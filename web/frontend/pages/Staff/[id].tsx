@@ -1,19 +1,20 @@
+import '@fullcalendar/react/dist/vdom';
+import LoadingPage from '@components/LoadingPage';
+import CreateScheduleModal from '@components/staff/CreateScheduleModal';
+import EditScheduleModal from '@components/staff/EditScheduleModal';
+import Metadata from '@components/staff/Metadata';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import FullCalendar from '@fullcalendar/react';
-import '@fullcalendar/react/dist/vdom';
+import { useSettingGet } from '@services/setting';
+import { useStaffGet } from '@services/staff';
+import { useStaffScheduleList } from '@services/staff/schedule';
 import { useNavigate } from '@shopify/app-bridge-react';
 import { Card, Page } from '@shopify/polaris';
 import { format } from 'date-fns';
 import { utcToZonedTime } from 'date-fns-tz';
 import { useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useStaffScheduleList } from '@services/staff/schedule';
-import CreateScheduleModal from '@components/staff/CreateScheduleModal';
-import EditScheduleModal from '@components/staff/EditScheduleModal';
-import Metadata from '@components/staff/Metadata';
-import { useSettingGet } from '@services/setting';
-import { useStaffGet } from '@services/staff';
 
 export default () => {
   const params = useParams();
@@ -35,6 +36,10 @@ export default () => {
   const editSchedule = useCallback((info: any) => {
     setEditInfo(info);
   }, []);
+
+  if (!staff || !calendar) {
+    return <LoadingPage />;
+  }
 
   const createScheduleModal = createInfo && (
     <CreateScheduleModal

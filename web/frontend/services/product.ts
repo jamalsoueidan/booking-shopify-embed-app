@@ -40,13 +40,12 @@ const useCollectionProductUpdate = ({
   const { mutate } = useSWRConfig();
   const fetch = useAuthenticatedFetch();
   const update = useCallback(async (body: UseCollectionProductUpdateBody) => {
-    const result = await fetch(`/api/admin/products/${productId}`, {
+    await fetch(`/api/admin/products/${productId}`, {
       method: 'PUT',
       body: JSON.stringify(body),
       headers: { 'Content-Type': 'application/json' },
-    }).then((res: Response) => res.json());
+    });
     mutate(`/api/admin/products/${productId}`);
-    return result;
   }, []);
 
   return {

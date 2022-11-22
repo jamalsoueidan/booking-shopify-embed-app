@@ -1,3 +1,5 @@
+import LoadingPage from '@components/LoadingPage';
+import useSave from '@hooks/useSave';
 import { useSettingGet, useSettingUpdate } from '@services/setting';
 import {
   Banner,
@@ -21,7 +23,6 @@ export default () => {
   const { update } = useSettingUpdate();
 
   const { t } = useTranslation('settings');
-  const { t: tc } = useTranslation('common');
 
   const languageOptions = [
     {
@@ -32,7 +33,7 @@ export default () => {
   ];
 
   //https://codesandbox.io/s/1wpxz?file=/src/MyForm.tsx:2457-2473
-  const { fields, submit, submitErrors, submitting, dirty } = useForm({
+  const { fields, submit, submitErrors, submitting, dirty, reset } = useForm({
     fields: {
       timeZone: useField({
         value: data.timeZone,
@@ -49,32 +50,36 @@ export default () => {
     },
     onSubmit: async (fieldValues) => {
       await update(fieldValues);
-      return { status: 'success' as const };
+      return { status: 'success' };
     },
   });
 
-  const primaryAction = {
-    content: tc('buttons.save'),
-    loading: submitting,
-    disabled: !dirty,
-    onAction: submit,
-  };
+  const { primaryAction, saveBar } = useSave({
+    dirty,
+    reset,
+    submit,
+    submitting,
+  });
+
+  if (!data) {
+    return <LoadingPage />;
+  }
 
   return (
     <Form onSubmit={submit}>
-      <Page title={t('title')} primaryAction={primaryAction}>
-        {submitErrors.length > 0 && (
-          <Banner status="critical">
-            <p>Errors</p>
-            <ul>
-              {submitErrors.map(({ message }, i) => (
-                <li key={i}>{message}</li>
-              ))}
-            </ul>
-          </Banner>
-        )}
-
+      <Page title={t('title')}>
+        {saveBar}
         <Layout>
+          {submitErrors.length > 0 && (
+            <Banner status="critical">
+              <p>Errors</p>
+              <ul>
+                {submitErrors.map(({ message }, i) => (
+                  <li key={i}>{message}</li>
+                ))}
+              </ul>
+            </Banner>
+          )}
           <Layout.AnnotatedSection
             title={t('store_settings.title')}
             description={t('store_settings.subtitle')}>

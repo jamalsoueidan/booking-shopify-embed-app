@@ -1,7 +1,7 @@
-import { Card, Layout } from "@shopify/polaris";
-import { useCallback, useState } from "react";
-import AddStaff from "./AddStaff";
-import ExistingStaff from "./ExistingStaff";
+import { Card, Layout } from '@shopify/polaris';
+import { useCallback, useState } from 'react';
+import AddStaff from './AddStaff';
+import ExistingStaff from './ExistingStaff';
 
 export default ({ product }: { product: Product }) => {
   const [showStaff, setShowStaff] = useState<boolean>(false);
@@ -21,38 +21,33 @@ export default ({ product }: { product: Product }) => {
     product.staff.length > 0
       ? [
           {
-            content: canDelete ? "Færdig" : "Administrer",
+            content: canDelete ? 'Færdig' : 'Administrer',
             onAction: toggleCanDelete,
           },
         ]
       : [];
 
   return (
-    <Layout>
-      <Layout.AnnotatedSection
-        id="staff"
-        title="Tilføj medarbejder"
-        description="Hvilken medarbejder kan man booke service hos?"
-      >
-        <Card actions={actions}>
+    <Layout.AnnotatedSection
+      id="staff"
+      title="Tilføj medarbejder"
+      description="Hvilken medarbejder kan man booke service hos?">
+      <Card actions={actions}>
+        <Card.Section>
+          <ExistingStaff
+            productId={product._id}
+            toggleAddStaff={toggleShowStaff}
+            canDelete={canDelete}
+            toggleCanDelete={setCanDelete}></ExistingStaff>
+        </Card.Section>
+        {showStaff && (
           <Card.Section>
-            <ExistingStaff
+            <AddStaff
               productId={product._id}
-              toggleAddStaff={toggleShowStaff}
-              canDelete={canDelete}
-              toggleCanDelete={setCanDelete}
-            ></ExistingStaff>
+              setShowStaff={toggleShowStaff}></AddStaff>
           </Card.Section>
-          {showStaff && (
-            <Card.Section>
-              <AddStaff
-                productId={product._id}
-                setShowStaff={toggleShowStaff}
-              ></AddStaff>
-            </Card.Section>
-          )}
-        </Card>
-      </Layout.AnnotatedSection>
-    </Layout>
+        )}
+      </Card>
+    </Layout.AnnotatedSection>
   );
 };

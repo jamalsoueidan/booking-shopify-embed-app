@@ -48,7 +48,6 @@ export default ({ collection }: { collection: Collection }) => {
               <ResourceItem
                 id={_id}
                 url={'/Collections/Product/' + _id}
-                accessibilityLabel={`View details for ${title}`}
                 media={<Icon source={icon} color={status} />}
                 verticalAlignment="center">
                 <Text variant="headingSm" as="h6">
