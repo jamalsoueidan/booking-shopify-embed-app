@@ -1,5 +1,12 @@
 import { useCollectionDestroy } from '@services/collection';
-import { Card, Icon, ResourceItem, ResourceList, Text } from '@shopify/polaris';
+import {
+  Card,
+  Icon,
+  List,
+  ResourceItem,
+  ResourceList,
+  Text,
+} from '@shopify/polaris';
 import { CancelMinor, TickMinor } from '@shopify/polaris-icons';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -27,7 +34,6 @@ export default ({ collection }: { collection: Collection }) => {
     <>
       {modalConfirm}
       <Card
-        sectioned
         key={collection._id}
         title={collection.title}
         actions={[

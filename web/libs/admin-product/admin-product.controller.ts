@@ -78,13 +78,12 @@ const getById = async ({ query }: { query: Query }) => {
   return products.length > 0 ? products[0] : null;
 };
 
+interface UpdateStaffBody {
+  _id: string;
+  tag: string;
+}
 interface UpdateBody {
-  staff?: [
-    {
-      _id: string;
-      tag: string;
-    }
-  ];
+  staff?: UpdateStaffBody[];
   duration?: number;
   buffertime?: number;
   active?: boolean;

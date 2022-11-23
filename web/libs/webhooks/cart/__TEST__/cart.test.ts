@@ -39,7 +39,7 @@ describe("webhooks order", () => {
       staff: staff1._id.toString(),
     });
 
-    await adminProductController.update({
+    const productUpdated = await adminProductController.update({
       query: {
         id: product["_id"].toString(),
         shop: global.shop,
@@ -48,6 +48,8 @@ describe("webhooks order", () => {
         staff: [{ tag, _id: staff1._id.toString() }],
       },
     });
+
+    console.log(productUpdated);
 
     const lineItems = body.line_items[0];
     lineItems.properties._data = JSON.stringify({

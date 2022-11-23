@@ -24,6 +24,6 @@
       "@hooks/*": ["hooks/*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": ["**/*.ts", "**/*.tsx", "App.jsx"],
   "exclude": ["node_modules/**", "dist"]
 }

@@ -1,3 +1,5 @@
+import i18next from 'i18next';
+import { I18nextProvider } from 'react-i18next';
 import { BrowserRouter } from 'react-router-dom';
 import {
   AppBridgeProvider,
@@ -5,9 +7,7 @@ import {
   QueryProvider,
 } from './components/providers';
 import Routes from './Routes';
-import Tabs from './Tabs';
-import { I18nextProvider } from 'react-i18next';
-import i18next from 'i18next';
+import Wrapper from './Wrapper';
 import da from './translations/da.json';
 import en from './translations/en.json';
 
@@ -31,9 +31,9 @@ export default function App() {
         <AppBridgeProvider>
           <QueryProvider>
             <I18nextProvider i18n={i18next}>
-              <Tabs>
+              <Wrapper>
                 <Routes pages={pages} />
-              </Tabs>
+              </Wrapper>
             </I18nextProvider>
           </QueryProvider>
         </AppBridgeProvider>

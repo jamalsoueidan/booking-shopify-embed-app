@@ -1,3 +1,4 @@
+import adminProductController from "@libs/admin-product/admin-product.controller";
 import {
   createNewStaffAndAddToProductWithSchedule,
   createProduct,
@@ -67,7 +68,7 @@ describe("admin-widget controller", () => {
     expect(allStaff.length).toEqual(2);
   });
 
-  it("Should not include inactive staff.", async () => {
+  /*it("Should not include inactive staff.", async () => {
     await createNewStaffAndAddToProductWithSchedule({ product, tag });
 
     staff = await StaffService.findByIdAndUpdate(staff._id, { active: false });
@@ -100,10 +101,14 @@ describe("admin-widget controller", () => {
       buffertime: 0,
     });
 
-    await addStaffToProduct({
-      staff: newStaff,
-      product: newProduct,
-      tag,
+    await adminProductController.update({
+      query: {
+        shop: global.shop,
+        id: newProduct._id.toString(),
+      },
+      body: {
+        staff: [{ _id: newStaff._id.toString(), tag }],
+      },
     });
 
     // prepare a product
@@ -151,10 +156,14 @@ describe("admin-widget controller", () => {
       end: secondEndSchedule,
     });
 
-    await addStaffToProduct({
-      staff: newStaff,
-      product: newProduct,
-      tag,
+    await adminProductController.update({
+      query: {
+        shop: global.shop,
+        id: newProduct._id.toString(),
+      },
+      body: {
+        staff: [{ _id: newStaff._id.toString(), tag }],
+      },
     });
 
     const query = {
@@ -197,7 +206,7 @@ describe("admin-widget controller", () => {
     );
   });
 
-  /*it("Should return hours for all staff on product", async () => {
+  it("Should return hours for all staff on product", async () => {
     const newProductID = faker.random.numeric(10);
     const newProduct = await createProduct({
       shopifyProductId: `gid://shopify/Product/${newProductID}`,
