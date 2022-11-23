@@ -16,8 +16,8 @@
 			"title": "Start collecting appointments on your store."
 		},
 		"remove_collection": "Remove",
-		"staff_plural": "{{count}} staff added",
-		"staff_zero": "Add staff to this product",
+		"staff": "{{count}} staff added",
+		"staff_0": "Add staff to this product",
 		"title": "Categories"
 	},
 	"common": {

@@ -16,8 +16,8 @@
 			"title": "Begynd at tag imod reservationer i din butik."
 		},
 		"remove_collection": "Fjern",
-		"staff_plural": "{{count}} medarbejder tilføjet",
-		"staff_zero": "Tillføje medarbejder til dette produkt",
+		"staff": "{{count}} medarbejder tilføjet",
+		"staff_0": "Tillføje medarbejder til dette produkt",
 		"title": "Kategorier"
 	},
 	"common": {

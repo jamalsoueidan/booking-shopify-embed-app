@@ -1,6 +1,7 @@
 import { useCollectionCreate, useCollectionList } from '@services/collection';
 import { ResourcePicker, useNavigate } from '@shopify/app-bridge-react';
 import { EmptyState, Layout, Page } from '@shopify/polaris';
+import { useDynamicList, useField, useForm } from '@shopify/react-form';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { notFoundImage } from '../../assets';

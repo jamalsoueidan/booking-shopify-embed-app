@@ -1,3 +1,4 @@
+import FormStatus from '@components/FormStatus';
 import LoadingPage from '@components/LoadingPage';
 import useSave from '@hooks/useSave';
 import { useSettingGet, useSettingUpdate } from '@services/setting';
@@ -15,6 +16,7 @@ import {
   Text,
 } from '@shopify/polaris';
 import { useField, useForm } from '@shopify/react-form';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import TimezoneSelect from 'react-timezone-select';
 
@@ -32,6 +34,7 @@ export default () => {
     { label: t('store_settings.language.options.danish'), value: 'da' },
   ];
 
+  const [success, setSuccess] = useState(false);
   //https://codesandbox.io/s/1wpxz?file=/src/MyForm.tsx:2457-2473
   const { fields, submit, submitErrors, submitting, dirty, reset } = useForm({
     fields: {
@@ -70,16 +73,7 @@ export default () => {
       <Page title={t('title')}>
         {saveBar}
         <Layout>
-          {submitErrors.length > 0 && (
-            <Banner status="critical">
-              <p>Errors</p>
-              <ul>
-                {submitErrors.map(({ message }, i) => (
-                  <li key={i}>{message}</li>
-                ))}
-              </ul>
-            </Banner>
-          )}
+          <FormStatus errors={submitErrors} success={submitting && dirty} />
           <Layout.AnnotatedSection
             title={t('store_settings.title')}
             description={t('store_settings.subtitle')}>

@@ -72,18 +72,3 @@ export const createNewStaffAndAddToProductWithSchedule = async ({
 
   return { staff, updateProduct, schedule };
 };
-
-/**
- * @param {string}  staff - staff model
- * @param {string=} product - product model
- */
-export const addStaffToProduct = async ({ staff, product, tag }) => {
-  const updateProduct = await ProductService.addStaff({
-    id: product._id.toString(),
-    shop: global.shop,
-    staff: staff._id.toString(),
-    tag: tag,
-  });
-
-  return { updateProduct };
-};

@@ -20,48 +20,22 @@ interface Query extends Pick<IProductModel, "shop"> {
 const getById = async ({ query }: { query: Query }) => {
   const { shop, id } = query;
 
-  return await ProductService.findOne({
-    shop,
+  const product = await ProductModel.findOne({
     _id: new mongoose.Types.ObjectId(id),
-  });
-};
+    shop,
+    "staff.0": { $exists: false },
+  }).lean();
 
-interface UpdateBody extends Partial<IProductModel> {
-  staff?: never;
-}
+  if (product) {
+    return product;
+  }
 
-const update = async ({ query, body }: { query: Query; body: UpdateBody }) => {
-  const { shop, id } = query;
-
-  // security, should not be able to update staff or other properties then buffertime or duration etc.
-  return await ProductService.findByIdAndUpdate(
-    new mongoose.Types.ObjectId(id),
-    {
-      shop,
-      ...body,
-    }
-  );
-};
-
-interface GetStaffReturn extends IStaffModel, Document {
-  tag: string;
-  staff: Types.ObjectId;
-}
-
-// @description return all staff who are added to the product
-const getStaff = async ({
-  query,
-}: {
-  query: Query;
-}): Promise<Array<GetStaffReturn>> => {
-  const { shop, id } = query;
-
-  return await ProductModel.aggregate([
+  const products = await ProductModel.aggregate([
     {
       $match: { _id: new mongoose.Types.ObjectId(id), shop },
     },
     {
-      $unwind: { path: "$staff" },
+      $unwind: { path: "$staff", preserveNullAndEmptyArrays: true },
     },
     {
       $lookup: {
@@ -79,38 +53,80 @@ const getStaff = async ({
     {
       $addFields: {
         "staff.staff.tag": "$staff.tag",
-        "staff.staff.staff": "$staff.staff._id",
-        "staff.staff._id": "$staff._id",
       },
     },
     {
       $addFields: {
-        "_id.staff": "$staff.staff",
+        staff: "$staff.staff",
       },
     },
     {
-      $replaceRoot: {
-        newRoot: "$_id",
+      $group: {
+        _id: "$_id",
+        product: { $first: "$$ROOT" },
+        staff: { $push: "$staff" },
       },
     },
     {
-      $replaceRoot: {
-        newRoot: "$staff",
+      $addFields: {
+        "product.staff": "$staff",
       },
     },
+    { $replaceRoot: { newRoot: "$product" } },
   ]);
+
+  return products.length > 0 ? products[0] : null;
 };
 
-interface GetStaffToAddReturn extends IStaffModel, Document {
+interface UpdateBody {
+  staff?: [
+    {
+      _id: string;
+      tag: string;
+    }
+  ];
+  duration?: number;
+  buffertime?: number;
+  active?: boolean;
+}
+
+const update = async ({ query, body }: { query: Query; body: UpdateBody }) => {
+  const { staff, ...properties } = body;
+
+  const newStaffier =
+    staff?.map((s) => {
+      return {
+        staff: s._id,
+        tag: s.tag,
+      };
+    }) || [];
+
+  const active = newStaffier.length === 0 ? false : properties.active;
+
+  return await ProductModel.findOneAndUpdate(
+    {
+      _id: new mongoose.Types.ObjectId(query.id),
+      shop: query.shop,
+    },
+    {
+      $set: { ...properties, staff: newStaffier, active },
+    },
+    {
+      new: true,
+    }
+  ).lean();
+};
+
+interface GetStaffReturn extends IStaffModel, Document {
   tags: string[];
 }
 
 // @description return all staff that don't belong yet to the product
-const getStaffToAdd = async ({
+const getStaff = async ({
   query,
 }: {
   query: Query;
-}): Promise<Array<GetStaffToAddReturn>> => {
+}): Promise<Array<GetStaffReturn>> => {
   const { shop, id } = query;
 
   return await ScheduleModel.aggregate([
@@ -190,42 +206,8 @@ const getStaffToAdd = async ({
   ]);
 };
 
-interface AddStaffBody {
-  staff: string;
-  tag: string;
-}
-
-// @description add staff to product
-const addStaff = async ({
-  query,
-  body,
-}: {
-  query: Query;
-  body: AddStaffBody;
-}): Promise<IProductModel> => {
-  const { shop, id } = query;
-  const { staff, tag } = body;
-
-  return await ProductService.addStaff({ id, shop, staff, tag });
-};
-
-interface RemoveStaffQuery extends Query {
-  staffId: string;
-}
-const removeStaff = async ({ query }: { query: RemoveStaffQuery }) => {
-  const { shop, id, staffId } = query;
-
-  return await ProductModel.updateOne(
-    { shop, _id: new mongoose.Types.ObjectId(id) },
-    { $pull: { staff: { _id: staffId } } }
-  );
-};
-
 export default {
   getById,
   update,
-  addStaff,
-  removeStaff,
   getStaff,
-  getStaffToAdd,
 };

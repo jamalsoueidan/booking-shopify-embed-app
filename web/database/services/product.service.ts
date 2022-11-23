@@ -1,14 +1,8 @@
 import Product, { IProductModel } from "@models/product.model";
-import mongoose, { FilterQuery, Types } from "mongoose";
+import mongoose, { Types } from "mongoose";
 
 const findOne = async (document) => {
   return await Product.findOne(document).lean();
-};
-
-const findByIdAndUpdate = async (_id, document) => {
-  return await Product.findByIdAndUpdate(_id, document, {
-    new: true,
-  });
 };
 
 export interface GetProductWithSelectedStaffReturn
@@ -161,7 +155,6 @@ const addStaff = async ({ id, shop, staff, tag }: AddStaff) => {
 
 export default {
   findOne,
-  findByIdAndUpdate,
   getProductWithSelectedStaffId,
   getAllStaff,
   addStaff,

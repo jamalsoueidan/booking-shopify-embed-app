@@ -1,8 +1,8 @@
+import { useCollectionProductStaff } from '@services/product/staff';
 import { Stack } from '@shopify/polaris';
-import useSWR from 'swr';
-import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
+import { useContext } from 'react';
 import StaffPopover from './AddStaff/StaffPopover';
-import { useCollectionProductStaffToAdd } from '@services/product/staff';
+import FormContext from './FormContext';
 
 export default ({
   productId,
@@ -11,8 +11,8 @@ export default ({
   productId: string;
   setShowStaff: any;
 }) => {
-  const fetch = useAuthenticatedFetch();
-  const { data: staff } = useCollectionProductStaffToAdd({ productId });
+  const { value } = useContext(FormContext);
+  const { data: staff } = useCollectionProductStaff({ productId });
 
   if (!staff) {
     return <>Loading...</>;
@@ -22,15 +22,16 @@ export default ({
     return <>Du har allerede tilføjet alle brugere</>;
   }
 
-  const staffer = staff?.map((s) => {
-    return (
-      <StaffPopover
-        key={s._id}
-        staff={s}
-        productId={productId}
-        toggleShowStaff={setShowStaff}></StaffPopover>
-    );
-  });
+  const staffer = staff
+    ?.filter((s) => !value.find((t) => t._id === s._id))
+    .map((s) => {
+      return (
+        <StaffPopover
+          key={s._id}
+          staff={s}
+          toggleShowStaff={setShowStaff}></StaffPopover>
+      );
+    });
 
   return <Stack>{staffer}</Stack>;
 };

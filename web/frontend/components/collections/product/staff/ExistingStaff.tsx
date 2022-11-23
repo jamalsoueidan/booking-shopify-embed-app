@@ -1,28 +1,19 @@
-import {
-  useCollectionProductStaffDestroy,
-  useCollectionProductStaffList,
-} from '@services/product/staff';
+import { useCollectionProductStaffList } from '@services/product/staff';
 import { Button, Stack } from '@shopify/polaris';
-import { useCallback } from 'react';
+import { useCallback, useContext } from 'react';
+import FormContext from './FormContext';
 import StaffAvatar from './StaffAvatar';
 
 interface Props {
-  productId: string;
   toggleAddStaff: any;
   canDelete: boolean;
   toggleCanDelete: any;
 }
-export default ({
-  productId,
-  toggleAddStaff,
-  canDelete,
-  toggleCanDelete,
-}: Props) => {
-  const { data: staffier } = useCollectionProductStaffList({ productId });
-  const { destroy } = useCollectionProductStaffDestroy({ productId });
+export default ({ toggleAddStaff, canDelete, toggleCanDelete }: Props) => {
+  const { value: staffier, removeItem } = useContext(FormContext);
 
-  const removeStaffProduct = useCallback(async (staffId: string) => {
-    await destroy({ staffId });
+  const removeStaffProduct = useCallback((staff: any) => {
+    removeItem(staff);
     toggleCanDelete(false);
   }, []);
 
@@ -36,7 +27,7 @@ export default ({
         {canDelete && (
           <div
             style={{ textAlign: 'center' }}
-            onClick={() => removeStaffProduct(staff._id)}>
+            onClick={() => removeStaffProduct(staff)}>
             <Button size="slim" destructive>
               Fjern
             </Button>

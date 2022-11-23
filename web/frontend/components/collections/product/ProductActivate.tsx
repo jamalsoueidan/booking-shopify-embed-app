@@ -14,7 +14,7 @@ export default ({ active, staffLength }: FormFields) => {
       <SettingToggle
         action={{
           content: contentStatus,
-          onAction: () => active.onChange(!!active.value),
+          onAction: () => active.onChange(!active.value),
           disabled: staffLength === 0,
         }}
         enabled={active.value}>

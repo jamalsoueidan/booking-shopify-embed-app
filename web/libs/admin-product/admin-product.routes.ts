@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { expressHandleRoute } from "../express-helpers/handle-route";
 import controller, { ControllerMethods } from "./admin-product.controller";
+import { body, validationResult } from "express-validator";
 
 export default function adminProductRoutes(app) {
   const router = Router();
@@ -11,24 +12,19 @@ export default function adminProductRoutes(app) {
     handleRoute(req, res, ControllerMethods.getById);
   });
 
-  router.put("/products/:id", async (req, res) => {
-    handleRoute(req, res, ControllerMethods.update);
-  });
+  router.put(
+    "/products/:id",
+    body("_id").isEmpty(),
+    body("shop").isEmpty(),
+    body("collectionId").isEmpty(),
+    body("productId").isEmpty(),
+    async (req, res) => {
+      handleRoute(req, res, ControllerMethods.update);
+    }
+  );
 
   router.get("/products/:id/staff", async (req, res) => {
     handleRoute(req, res, ControllerMethods.getStaff);
-  });
-
-  router.get("/products/:id/staff-to-add", async (req, res) => {
-    handleRoute(req, res, ControllerMethods.getStaffToAdd);
-  });
-
-  router.post("/products/:id/staff", async (req, res) => {
-    handleRoute(req, res, ControllerMethods.addStaff);
-  });
-
-  router.delete("/products/:id/staff/:staffId", async (req, res) => {
-    handleRoute(req, res, ControllerMethods.removeStaff);
   });
 
   return router;

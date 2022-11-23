@@ -8,9 +8,10 @@ interface Api {
   success: boolean;
 }
 
-interface StaffTag extends Staff {
-  tags: string;
-  staff: string;
+interface StaffTag {
+  _id: string;
+  tag: string;
+  fullname: string;
 }
 
 interface Product {
@@ -18,7 +19,7 @@ interface Product {
   productId: string;
   collectionId: string;
   title: string;
-  staff: Array<ProductStaff>;
+  staff: Array<StaffTag>;
   buffertime: number;
   duration: number;
   active: boolean;
@@ -57,7 +58,9 @@ interface ProductStaff {
 
 interface ProductStaffToAdd {
   _id: string;
-  staff: string;
+  email: string;
+  active: boolean;
+  phone: string;
   tags: string[];
   fullname: string;
 }

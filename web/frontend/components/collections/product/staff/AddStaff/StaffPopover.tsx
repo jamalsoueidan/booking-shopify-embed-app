@@ -1,6 +1,6 @@
-import { useCollectionProductStaffCreate } from '@services/product/staff';
 import { ActionList, Popover } from '@shopify/polaris';
-import { useCallback, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
+import FormContext from '../FormContext';
 import StaffAvatar from '../StaffAvatar';
 
 const options = [
@@ -12,13 +12,13 @@ const options = [
 
 export default ({
   staff,
-  productId,
   toggleShowStaff,
 }: {
   staff: ProductStaffToAdd;
-  productId: string;
   toggleShowStaff: any;
 }) => {
+  const { addItem } = useContext(FormContext);
+
   const [popoverActive, setPopoverActive] = useState(false);
 
   const togglePopoverActive = useCallback(
@@ -26,15 +26,14 @@ export default ({
     []
   );
 
-  const { create: addNewStaffProduct } = useCollectionProductStaffCreate({
-    productId,
-  });
-
-  const handleAction = (tag: string) => async () => {
-    togglePopoverActive();
-    await addNewStaffProduct({ staffId: staff._id, tag });
-    toggleShowStaff();
-  };
+  const handleAction = useCallback(
+    (tag: string) => () => {
+      togglePopoverActive();
+      addItem({ ...staff, tag });
+      toggleShowStaff();
+    },
+    []
+  );
 
   const avatar = (
     <div
@@ -54,7 +53,7 @@ export default ({
     );
   };
 
-  const tags = staff.tags?.map((t) => ({
+  const tags = staff.tags.map((t) => ({
     icon: IconContent(t),
     content: options.find((o) => o.value === t).label,
     onAction: handleAction(t),

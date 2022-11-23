@@ -2,14 +2,21 @@ import ProductActivate from '@components/collections/product/ProductActivate';
 import ProductBanner from '@components/collections/product/ProductBanner';
 import ProductOptionsCard from '@components/collections/product/ProductOptionsCard';
 import StaffCard from '@components/collections/product/staff/StaffCard';
+import FormStatus from '@components/FormStatus';
 import LoadingPage from '@components/LoadingPage';
 import useSave from '@hooks/useSave';
 import {
   useCollectionProductGet,
   useCollectionProductUpdate,
 } from '@services/product';
+import { ActionVerb } from '@shopify/app-bridge/actions/ResourcePicker';
 import { Form, Layout, Page, PageActions } from '@shopify/polaris';
-import { useField, useForm } from '@shopify/react-form';
+import {
+  DynamicListBag,
+  useDynamicList,
+  useField,
+  useForm,
+} from '@shopify/react-form';
 import { useParams } from 'react-router-dom';
 
 export default () => {
@@ -20,25 +27,42 @@ export default () => {
     productId: params.id,
   });
 
-  const { fields, submit, reset, submitErrors, submitting, dirty } = useForm({
-    fields: {
-      buffertime: useField({
-        value: product?.buffertime.toString(),
-        validates: [],
-      }),
-      duration: useField({
-        value: product?.duration,
-        validates: [],
-      }),
-      active: useField({
-        value: product?.active,
-        validates: [],
-      }),
+  const formFields = {
+    buffertime: useField({
+      value: product?.buffertime.toString(),
+      validates: [],
+    }),
+    duration: useField({
+      value: product?.duration,
+      validates: [],
+    }),
+    active: useField({
+      value: product?.active,
+      validates: [],
+    }),
+  };
+
+  const staff = useDynamicList<StaffTag>(
+    product?.staff || [],
+    (staff): StaffTag[] => {
+      return staff;
+    }
+  );
+
+  const { fields, submit, reset, submitErrors, submitting, dirty } = useForm<
+    typeof formFields,
+    any
+  >({
+    fields: formFields,
+    dynamicLists: {
+      staff,
     },
     onSubmit: async (fieldValues) => {
       await update({
         buffertime: parseInt(fieldValues.buffertime),
         duration: fieldValues.duration,
+        active: fieldValues.active,
+        staff: staff.value,
       });
       return { status: 'success' };
     },
@@ -63,12 +87,13 @@ export default () => {
         {saveBar}
         {product && (
           <Layout>
-            <ProductBanner product={product}></ProductBanner>
+            <FormStatus errors={submitErrors} success={submitting && dirty} />
+            {product.staff.length === 0 && <ProductBanner></ProductBanner>}
             <ProductActivate
               active={fields.active}
               staffLength={product.staff.length}></ProductActivate>
             <br />
-            <StaffCard product={product}></StaffCard>
+            <StaffCard product={product} form={staff}></StaffCard>
             <br />
             <ProductOptionsCard fields={fields}></ProductOptionsCard>
           </Layout>

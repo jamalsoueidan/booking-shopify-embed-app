@@ -39,15 +39,13 @@ describe("webhooks order", () => {
       staff: staff1._id.toString(),
     });
 
-    let updatedProduct: IProductModel;
-    updatedProduct = await adminProductController.addStaff({
+    await adminProductController.update({
       query: {
+        id: product["_id"].toString(),
         shop: global.shop,
-        id: product["_id"],
       },
       body: {
-        tag,
-        staff: staff1._id.toString(),
+        staff: [{ tag, _id: staff1._id.toString() }],
       },
     });
 

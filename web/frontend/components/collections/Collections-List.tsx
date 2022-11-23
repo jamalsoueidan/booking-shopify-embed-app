@@ -54,7 +54,10 @@ export default ({ collection }: { collection: Collection }) => {
                   {title}
                 </Text>
                 <Text variant="bodySm" as="p">
-                  {t('staff', { count: item.staff.length })}
+                  {t('staff', {
+                    count: item.staff.length,
+                    context: item.staff.length,
+                  })}
                 </Text>
               </ResourceItem>
             );
