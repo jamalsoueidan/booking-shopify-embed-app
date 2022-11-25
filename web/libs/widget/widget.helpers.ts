@@ -66,7 +66,7 @@ const scheduleReduce =
         staff: current.staff,
       });
 
-      start = end;
+      start = addMinutes(start, 15);
     }
 
     if (!previousHours) {

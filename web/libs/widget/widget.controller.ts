@@ -1,4 +1,3 @@
-import CartModel from "@models/cart.model";
 import { IProductModel } from "@models/product.model";
 import BookingService from "@services/booking.service";
 import CartService from "@services/cart.service";

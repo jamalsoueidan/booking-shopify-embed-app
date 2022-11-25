@@ -35,44 +35,45 @@ const modify = async ({ body, shop }: CreateProps) => {
   return Promise.all(
     lineItems.map(async (lineItem) => {
       const productId = lineItem.product_id.toString();
-      const data: Data = JSON.parse(
-        lineItem.properties._data.split("\\").join("")
-      );
-      const { timeZone, start, end, staff } = data;
+      const _data = lineItem.properties?._data;
+      if (_data) {
+        const data: Data = JSON.parse(_data.split("\\").join(""));
+        const { timeZone, start, end, staff } = data;
 
-      const response = await widgetController.availabilityDay({
-        query: {
-          staffId: staff.staff,
-          date: start.substring(0, 10),
-          productId,
-          shop,
-        },
-      });
+        const response = await widgetController.availabilityDay({
+          query: {
+            staffId: staff.staff,
+            date: start.substring(0, 10),
+            productId,
+            shop,
+          },
+        });
 
-      const validateDate = !!response.find(
-        (scheduleDate) =>
-          scheduleDate.date === start.substring(0, 10) &&
-          scheduleDate.hours.find(
-            (hour) =>
-              hour.start.toISOString() === start &&
-              hour.end.toISOString() === end
-          )
-      );
-
-      if (validateDate) {
-        const update = {
-          cartId: body.id,
-          start,
-          end,
-          staff: new mongoose.Types.ObjectId(staff.staff),
-          shop,
-        };
-
-        return await CartModel.updateOne(
-          { cartId: body.id },
-          { $set: update },
-          { upsert: true }
+        const validateDate = !!response.find(
+          (scheduleDate) =>
+            scheduleDate.date === start.substring(0, 10) &&
+            scheduleDate.hours.find(
+              (hour) =>
+                hour.start.toISOString() === start &&
+                hour.end.toISOString() === end
+            )
         );
+
+        if (validateDate) {
+          const update = {
+            cartId: body.id,
+            start,
+            end,
+            staff: new mongoose.Types.ObjectId(staff.staff),
+            shop,
+          };
+
+          return await CartModel.updateOne(
+            { cartId: body.id },
+            { $set: update },
+            { upsert: true }
+          );
+        }
       }
     })
   );
