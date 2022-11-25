@@ -1,61 +1,89 @@
 <script src="{{ 'index.umd.min.js' | asset_url }}" defer="defer"></script>
 
-<template
-  id="product-availability"
-  data-product-id="{{ product.id }}"
-  data-shop="{{ shop.domain }}"
->
-  <style>
-    .margin-bottom {
-      margin: 1.5rem 0 2.5rem 0;
+{%- if block.settings.environment == 'production' -%}
+  {%- assign api = 'https://book-appointment-shopify-app.herokuapp.com' -%}
+{%- else -%}
+  {%- assign api = 'https://0bfa8d57d0af.eu.ngrok.io' -%}
+{%- endif -%}
+
+  <template
+    id="product-availability"
+    data-product-id="{{ product.id }}"
+    data-api-url="{{ api }}"
+  >
+    <style>
+      .mb {
+        margin-bottom: 1.5rem;
+      }
+    </style>
+
+    <input id="staff" name="properties[staff]" hidden>
+
+    <div class="customer">
+      <div class="mb">
+        <label class="form__label" for="staffSelect"> 1. Vælg frisør: </label>
+        <div class="select">
+          <select id="staffSelect" required>
+            <option value="" selected>Vælg frisør</option>
+            <option value="Enhver tilgængelig">Enhver tilgængelig</option>
+          </select>
+          <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-caret" viewBox="0 0 10 6">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor">
+            </path>
+          </svg>
+        </div>
+      </div>
+
+      <div class="mb">
+        <label class="form__label" for="dateInput"> 2. Vælg dato: </label>
+        <div class="field">
+          <input id="dateInput" name="properties[date]" class="input" required disabled placeholder="">
+        </div>
+      </div>
+
+      <div class="mb">
+        <label class="form__label" for="timeSelect"> 3. Vælg tid: </label>
+        <div class="select">
+          <select id="timeSelect" class="select" required disabled>
+            <option value="" disabled selected>Vælg tid</option>
+          </select>
+          <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-caret" viewBox="0 0 10 6">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor">
+            </path>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <input id="time" name="properties[time]" hidden>
+    <input id="data" name="properties[_data]" hidden>
+  </template>
+
+    {% schema %}
+    {
+      "name": "product",
+      "target": "body",
+      "javascript": "form.js",
+      "templates": ["product"],
+      "settings": [
+        {
+          "label": "Environment",
+          "id": "environment",
+          "type": "select",
+          "options": [
+            {
+              "label": "Development",
+              "value": "development"
+            },
+            {
+              "label": "Production",
+              "value": "production"
+            }
+          ],
+          "default": "production"
+        }
+      ]
     }
-
-    .product-form {
-      margin-top: -0.5rem !important;
-    }
-
-    .select,
-    .input {
-      min-height: calc(4.5rem + var(--buttons-border-width) * 2);
-      font-size: 1.4rem;
-      font-weight: 500;
-      opacity: 0.85;
-      padding: 0.5rem;
-    }
-  </style>
-
-  <input id="staff" name="properties[staff]" hidden>
-
-  <div class="product-form__input margin-bottom">
-    <label class="form__label" for="staffSelect"> Choose artist: </label>
-    <select id="staffSelect" class="select" required>
-      <option value="" selected>Vælge medarbejder</option>
-      <option value="Enhver tilgængelig">Enhver tilgængelig</option>
-    </select>
-  </div>
-
-  <div class="product-form__input margin-bottom">
-    <label class="form__label" for="dateInput"> Choose date: </label>
-    <input id="dateInput" name="properties[date]" class="input" required disabled>
-  </div>
-
-  <div class="product-form__input margin-bottom">
-    <label class="form__label" for="timeSelect"> Choose time: </label>
-    <select id="timeSelect" class="select" required disabled>
-      <option value="" disabled selected>Vælg tid</option>
-    </select>
-  </div>
-
-  <input id="time" name="properties[time]" hidden>
-  <input id="data" name="properties[_data]" hidden>
-</template>
-
-{% schema %}
-{
-  "name": "product",
-  "target": "body",
-  "javascript": "form.js",
-  "templates": ["product"],
-  "settings": []
-}
-{% endschema %}
+    {% endschema %}
+  </h1>
+</h1>

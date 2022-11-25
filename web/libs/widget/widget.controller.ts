@@ -8,8 +8,6 @@ import mongoose from "mongoose";
 import helpers, { ScheduleDate } from "./widget.helpers";
 
 export enum ControllerMethods {
-  addCart = "addCart",
-  removeCart = "removeCart",
   staff = "staff",
   availabilityDay = "availabilityDay",
   availabilityRangeByStaff = "availabilityRangeByStaff",
@@ -17,74 +15,6 @@ export enum ControllerMethods {
 }
 
 export interface AvailabilityReturn extends ScheduleDate {}
-
-interface CartQuery {
-  shop: string;
-  productId: string;
-}
-interface CartBody {
-  start: string;
-  end: string;
-  staffId: string;
-}
-
-const addCart = async ({
-  query,
-  body,
-}: {
-  query: CartQuery;
-  body: CartBody;
-}) => {
-  const { shop, productId } = query;
-  const { start, end, staffId } = body;
-
-  const response = await availabilityDay({
-    query: { staffId, date: start.substring(0, 10), productId, shop },
-  });
-
-  const validateDate = !!response.find(
-    (scheduleDate) =>
-      scheduleDate.date === start.substring(0, 10) &&
-      scheduleDate.hours.find(
-        (hour) =>
-          hour.start.toISOString() === start && hour.end.toISOString() === end
-      )
-  );
-
-  if (validateDate) {
-    const update = {
-      start,
-      end,
-      staff: new mongoose.Types.ObjectId(staffId),
-      shop,
-    };
-    return await CartModel.updateOne(
-      update,
-      { $set: update },
-      { upsert: true }
-    );
-  } else {
-    throw "Try to hack?";
-  }
-};
-
-const removeCart = async ({
-  query,
-  body,
-}: {
-  query: CartQuery;
-  body: CartBody;
-}) => {
-  const { shop } = query;
-  const { start, end, staffId } = body;
-
-  return await CartModel.deleteOne({
-    start,
-    end,
-    staff: new mongoose.Types.ObjectId(staffId),
-    shop,
-  });
-};
 
 interface StaffQuery {
   productId: string;
@@ -231,6 +161,7 @@ const availabilityRangeByAll = async ({
 }): Promise<Array<AvailabilityReturn>> => {
   const { start, end, shop, productId } = query;
 
+  console.log("all");
   const product = await ProductService.findOne({
     shop,
     productId,
@@ -275,8 +206,6 @@ const availabilityRangeByAll = async ({
 };
 
 export default {
-  addCart,
-  removeCart,
   staff,
   availabilityDay,
   availabilityRangeByAll,

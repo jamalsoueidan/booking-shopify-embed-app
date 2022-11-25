@@ -41,24 +41,32 @@ const scheduleReduce =
     previous: Array<ScheduleDate>,
     current: GetByStaffAndTagReturn | GetByTagReturn
   ): Array<ScheduleDate> => {
-    const end = new Date(current.end);
+    const scheduleEnd = new Date(current.end);
     const duration = product.duration || 60;
     const buffertime = product.buffertime || 0;
 
     // we push start time everytime
     let start = new Date(current.start);
+    let end;
+
     const date = format(start, "yyyy-MM-dd");
 
     let previousHours = previous.find((p) => p.date === date);
     let hours = previousHours?.hours || [];
-    while (isBefore(addMinutes(start, 1), end)) {
+
+    //TODO: needs to create more hours
+    while (
+      isBefore(addMinutes(start, 1), scheduleEnd) &&
+      isBefore(addMinutes(start, duration + buffertime), scheduleEnd)
+    ) {
+      end = addMinutes(start, duration + buffertime);
       hours.push({
         start: start,
-        end: addMinutes(start, duration + buffertime),
+        end,
         staff: current.staff,
       });
 
-      start = addMinutes(start, duration + buffertime);
+      start = end;
     }
 
     if (!previousHours) {
