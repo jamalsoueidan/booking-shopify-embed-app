@@ -1,7 +1,6 @@
 function getTime(start, end) {
   const startDate = new Date(start);
   const endDate = new Date(end);
-  console.log(startDate, endDate);
   const value = `${startDate.getHours()}:${
     startDate.getMinutes() < 10 ? "0" : ""
   }${startDate.getMinutes()} - ${endDate.getHours()}:${
@@ -53,10 +52,6 @@ window.addEventListener("load", function () {
           this.template = document.getElementById("product-availability");
           this.dataset = this.template.dataset;
 
-          console.log(
-            `${this.dataset.apiUrl}/api/widget/staff?shop=${Shopify.shop}&productId=${this.dataset.productId}`
-          );
-
           fetch(
             `${this.dataset.apiUrl}/api/widget/staff?shop=${Shopify.shop}&productId=${this.dataset.productId}`
           ).then(this.onStaffFetch.bind(this));
@@ -95,20 +90,6 @@ window.addEventListener("load", function () {
         }
 
         reset() {
-          fetch(
-            `${this.dataset.apiUrl}/api/widget/cart?shop=${Shopify.shop}&productId=${this.dataset.productId}`,
-            {
-              method: "POST",
-              headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                ...this.data,
-                staffId: this.data.staff.staff,
-              }),
-            }
-          );
           this.resetDate();
           this.staffSelect.options.selectedIndex = 0;
           this.querySelector("#dateInput").disabled = true;
@@ -256,7 +237,7 @@ window.addEventListener("load", function () {
               picker.on("select", (e) => {
                 const { date } = e.detail;
                 const schedule = findSchedule(date.format("YYYY-MM-DD"));
-                console.log(schedule);
+
                 self.resetHourSelect();
                 self.timeSelect.disabled = false;
                 if (schedule) {

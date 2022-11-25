@@ -1,20 +1,23 @@
 <script language="javascript" type="text/javascript">
-  {% assign cart_items = cart.items | size %}
-  const cartItems = {{cart_items}};
-  let index = undefined;
-  for(let i=0;i<cartItems;i++) {
-    {% for item in cart.items -%}
-      index = {{forloop.index}};
-      if(i === (index-1)) {
-        {% assign property_size = item.properties | size -%}
-        {% for p in item.properties -%}
-          {% if p.first contains '_' -%}
-            document.getElementById("CartItem-" + index).getElementsByTagName('quantity-input')[0].remove();
-          {% endif -%}
-        {% endfor -%}
+  function hideQuantity() {
+    const items = document.getElementsByClassName('cart-item');
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].querySelectorAll('dl .product-option').length === 3) {
+        items[i].getElementsByTagName('quantity-input')[0].style.display = 'none';
       }
-    {% endfor -%}
+    }
   }
+
+  window.addEventListener('load', hideQuantity);
+
+  const observer = new MutationObserver((mutations, observer) => {
+    hideQuantity();
+  });
+
+  observer.observe(document.getElementById('cart-live-region-text'), {
+    subtree: true,
+    attributes: true,
+  });
 </script>
 
 {% schema %}
