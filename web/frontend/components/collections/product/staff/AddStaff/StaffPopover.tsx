@@ -1,14 +1,8 @@
+import TagOptions from '@components/staff/TagOptions';
 import { ActionList, Popover } from '@shopify/polaris';
 import { useCallback, useContext, useState } from 'react';
 import FormContext from '../FormContext';
 import StaffAvatar from '../StaffAvatar';
-
-const options = [
-  { label: 'Green', value: '#4b6043' },
-  { label: 'Blue', value: '#235284' },
-  { label: 'Orange', value: '#d24e01' },
-  { label: 'Purple', value: '#4c00b0' },
-];
 
 export default ({
   staff,
@@ -55,7 +49,7 @@ export default ({
 
   const tags = staff.tags.map((t) => ({
     icon: IconContent(t),
-    content: options.find((o) => o.value === t).label,
+    content: TagOptions.find((o) => o.value === t).label,
     onAction: handleAction(t),
   }));
 

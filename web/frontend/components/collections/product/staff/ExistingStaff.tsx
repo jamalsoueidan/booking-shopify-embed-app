@@ -1,4 +1,3 @@
-import { useCollectionProductStaffList } from '@services/product/staff';
 import { Button, Stack } from '@shopify/polaris';
 import { useCallback, useContext } from 'react';
 import FormContext from './FormContext';

@@ -19,13 +19,7 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSettingGet } from '@services/setting';
 import { useStaffScheduleCreate } from '@services/staff/schedule';
-
-const options = [
-  { label: 'Green', value: '#4b6043' },
-  { label: 'Blue', value: '#235284' },
-  { label: 'Orange', value: '#d24e01' },
-  { label: 'Purple', value: '#4c00b0' },
-];
+import TagOptions from './TagOptions';
 
 export default ({ info, setInfo }: any) => {
   const params = useParams();
@@ -33,7 +27,7 @@ export default ({ info, setInfo }: any) => {
   const { data: settings } = useSettingGet();
   const [startTime, setStartTime] = useState<string>('09:00');
   const [endTime, setEndTime] = useState<string>('16:00');
-  const [tag, setTag] = useState(options[0].value);
+  const [tag, setTag] = useState(TagOptions[0].value);
   const [available, setAvailable] = useState(true);
 
   const { isCreating, create: createSchedule } = useStaffScheduleCreate({
@@ -159,7 +153,7 @@ export default ({ info, setInfo }: any) => {
           <Layout.Section>
             <Select
               label="Tag"
-              options={options}
+              options={TagOptions}
               onChange={handleTag}
               value={tag}
             />
