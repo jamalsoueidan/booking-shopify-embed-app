@@ -21,7 +21,8 @@
       "@services/*": ["services/*"],
       "@pages/*": ["pages/*"],
       "@components/*": ["components/*"],
-      "@hooks/*": ["hooks/*"]
+      "@hooks/*": ["hooks/*"],
+      "@libs/*": ["libs/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", "App.jsx"],

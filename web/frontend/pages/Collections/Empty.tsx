@@ -1,10 +1,8 @@
 import { useCollectionCreate, useCollectionList } from '@services/collection';
 import { ResourcePicker, useNavigate } from '@shopify/app-bridge-react';
-import { EmptyState, Layout, Page } from '@shopify/polaris';
-import { useDynamicList, useField, useForm } from '@shopify/react-form';
+import { Card, EmptyState, Page } from '@shopify/polaris';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { notFoundImage } from '../../assets';
 
 export default () => {
   const [open, setOpen] = useState(false);
@@ -21,21 +19,21 @@ export default () => {
   const { data } = useCollectionList();
 
   if (data?.length > 0) {
-    navigate('/Collections');
+    navigate('/Collections/List');
     return <></>;
   }
 
   return (
-    <Page narrowWidth title={t('title')}>
+    <Page title={t('title')}>
       <ResourcePicker
         resourceType="Collection"
         open={open}
         onSelection={(resources) => handleSelection(resources)}
         onCancel={() => setOpen(false)}
       />
-      <Layout>
+      <Card sectioned>
         <EmptyState
-          image={notFoundImage}
+          image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
           heading={t('empty.title')}
           action={{
             content: t('empty.choose_collections'),
@@ -43,7 +41,7 @@ export default () => {
           }}>
           <p>{t('empty.text')} 🚀</p>
         </EmptyState>
-      </Layout>
+      </Card>
     </Page>
   );
 };

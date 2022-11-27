@@ -54,6 +54,39 @@
 		},
 		"title": "Indstillinger"
 	},
+	"staff": {
+		"empty": {
+			"add": "Tilføj medarbejder",
+			"heading": "Gå igang med at oprette medarbejder!",
+			"text": "Tilføj nye medarbejder. Efterfølgende kan du tilføje timer, og tilføje medarbejder til behandlinger.",
+			"title": "Medarbejder"
+		},
+		"new": {
+			"image": {
+				"title": "Vedhæft"
+			},
+			"save": "Gem",
+			"staff": {
+				"email": {
+					"help": "Vi bruger denne e-mailadresse til at informere dig om fremtidige aftaler.",
+					"label": "E-mail",
+					"placeholder": "Eksempel: kristina.larsen@gmail.com"
+				},
+				"fullname": {
+					"label": "Fuldnavn",
+					"placeholder": "Eksempel: Kristina Larsen"
+				},
+				"phone": {
+					"help": "Vi bruger denne mobilnummer til at informere dig om fremtidige aftaler.",
+					"label": "Mobilnummer",
+					"placeholder": "Eksempel: +4531311234"
+				},
+				"title": "Medarbejder overblik"
+			},
+			"title": "Ny medarbejder"
+		},
+		"title": "test"
+	},
 	"tabs": {
 		"bookings": "Bestillinger",
 		"collections": "Kategorier",

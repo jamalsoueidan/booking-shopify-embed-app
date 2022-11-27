@@ -1,3 +1,6 @@
+import LoadingPage from '@components/LoadingPage';
+import Metadata from '@components/staff/Metadata';
+import { useStaffList } from '@services/staff';
 import { useNavigate } from '@shopify/app-bridge-react';
 import {
   Avatar,
@@ -6,17 +9,14 @@ import {
   ResourceItem,
   ResourceList,
   Text,
-  TextStyle,
 } from '@shopify/polaris';
-import { useStaffList } from '@services/staff';
-import Metadata from './Metadata';
 
 export default () => {
   const navigate = useNavigate();
   const { data } = useStaffList();
 
   if (!data) {
-    return <>Loading</>;
+    return <LoadingPage />;
   }
 
   const renderItems = (item: Staff) => {
@@ -35,6 +35,7 @@ export default () => {
         </Text>
         <div>
           {email}
+          <br />
           {phone}
         </div>
       </ResourceItem>

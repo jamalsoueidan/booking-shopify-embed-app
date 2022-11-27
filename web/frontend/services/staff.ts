@@ -1,5 +1,5 @@
 import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 
 interface UseStaffListReturn {
@@ -41,7 +41,7 @@ const useStaffGet = ({ userId }: UseStaffGetProps): UseStaffGetReturn => {
 };
 
 interface UseStaffCreateReturn {
-  create: (body: UpdateOrCreateProps) => void;
+  create: (body: UpdateOrCreateProps) => Promise<Staff>;
 }
 
 const useStaffCreate = (): UseStaffCreateReturn => {
@@ -49,12 +49,13 @@ const useStaffCreate = (): UseStaffCreateReturn => {
   const fetch = useAuthenticatedFetch();
 
   const create = useCallback(async (body: UpdateOrCreateProps) => {
-    await fetch('/api/admin/staff', {
+    const { payload } = await fetch('/api/admin/staff', {
       method: 'POST',
       body: JSON.stringify(body),
       headers: { 'Content-Type': 'application/json' },
-    });
+    }).then((r: Response) => r.json());
     await mutate(`/api/admin/staff`);
+    return payload;
   }, []);
 
   return {

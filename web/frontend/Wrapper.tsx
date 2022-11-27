@@ -1,12 +1,13 @@
 import LoadingPage from '@components/LoadingPage';
 import { useSettingGet } from '@services/setting';
-import { NavigationMenu } from '@shopify/app-bridge-react';
+import { NavigationMenu, useNavigate } from '@shopify/app-bridge-react';
 import { Frame } from '@shopify/polaris';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default ({ children }: { children: JSX.Element }) => {
   const { data } = useSettingGet();
+
   const { language } = data;
 
   const { t, i18n } = useTranslation('tabs');
@@ -14,6 +15,10 @@ export default ({ children }: { children: JSX.Element }) => {
   if (!data) {
     return <LoadingPage />;
   }
+
+  useEffect(() => {
+    i18n.changeLanguage(language);
+  }, []);
 
   useEffect(() => {
     i18n.changeLanguage(language);
@@ -40,6 +45,11 @@ export default ({ children }: { children: JSX.Element }) => {
             label: t('settings'),
           },
         ]}
+        matcher={(link, location) => {
+          return (
+            location.pathname.toLowerCase().indexOf(link.destination) !== -1
+          );
+        }}
       />
       <Frame>{children}</Frame>
     </>

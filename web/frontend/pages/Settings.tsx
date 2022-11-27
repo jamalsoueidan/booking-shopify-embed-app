@@ -3,7 +3,6 @@ import LoadingPage from '@components/LoadingPage';
 import useSave from '@hooks/useSave';
 import { useSettingGet, useSettingUpdate } from '@services/setting';
 import {
-  Banner,
   Card,
   Form,
   FormLayout,
@@ -16,7 +15,6 @@ import {
   Text,
 } from '@shopify/polaris';
 import { useField, useForm } from '@shopify/react-form';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import TimezoneSelect from 'react-timezone-select';
 
@@ -34,7 +32,6 @@ export default () => {
     { label: t('store_settings.language.options.danish'), value: 'da' },
   ];
 
-  const [success, setSuccess] = useState(false);
   //https://codesandbox.io/s/1wpxz?file=/src/MyForm.tsx:2457-2473
   const { fields, submit, submitErrors, submitting, dirty, reset } = useForm({
     fields: {

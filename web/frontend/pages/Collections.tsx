@@ -8,11 +8,8 @@ import { useTranslation } from 'react-i18next';
 import LoadingPage from '@components/LoadingPage';
 
 export default () => {
-  const [open, setOpen] = useState(false);
-
   const navigate = useNavigate();
   const { data } = useCollectionList();
-  const { t } = useTranslation('collections');
 
   if (!data) {
     return <LoadingPage />;
@@ -20,24 +17,8 @@ export default () => {
 
   if (data?.length === 0) {
     navigate('/Collections/Empty');
-    return <></>;
+  } else {
+    navigate('/Collections/List');
   }
-
-  const collection = data.map((collection: Collection) => (
-    <CollectionsList
-      key={collection._id}
-      collection={collection}></CollectionsList>
-  ));
-
-  return (
-    <Page
-      title={t('title')}
-      primaryAction={{
-        content: t('add_collection'),
-        onAction: () => setOpen(true),
-      }}>
-      <AddNewCollection open={open} setOpen={setOpen}></AddNewCollection>
-      {collection}
-    </Page>
-  );
+  return <></>;
 };

@@ -6,13 +6,14 @@ import { useTimeout } from 'usehooks-ts';
 interface FormStatusProps {
   errors: FormError[];
   success: boolean;
+  showErrors?: boolean;
 }
 
-export default ({ errors, success }: FormStatusProps) => {
+export default ({ errors, success, showErrors = true }: FormStatusProps) => {
   const [startFetching, setStartFetching] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const toggleActive = useCallback(() => {
-    setShowToast((showToast) => false);
+    setShowToast(() => false);
   }, []);
 
   useEffect(() => {
@@ -22,13 +23,18 @@ export default ({ errors, success }: FormStatusProps) => {
   }, [success]);
 
   useEffect(() => {
+    let timer1: any;
     if (startFetching && errors.length === 0 && !success) {
       setShowToast(true);
-      setTimeout(() => {
-        setStartFetching((value) => false);
-        setShowToast((value) => false);
+      timer1 = setTimeout(() => {
+        setStartFetching(() => false);
+        setShowToast(() => false);
       }, 2000);
     }
+
+    return () => {
+      clearTimeout(timer1);
+    };
   }, [success, startFetching]);
 
   if (showToast) {
@@ -37,7 +43,7 @@ export default ({ errors, success }: FormStatusProps) => {
     );
   }
 
-  if (errors.length > 0) {
+  if (errors.length > 0 && showErrors) {
     return (
       <Banner status="critical">
         <p>Errors</p>

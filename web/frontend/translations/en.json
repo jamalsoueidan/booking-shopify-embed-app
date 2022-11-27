@@ -54,6 +54,39 @@
 		},
 		"title": "Settings"
 	},
+	"staff": {
+		"empty": {
+			"add": "Add Staff",
+			"heading": "Team up and do even more!",
+			"text": "Add new staff. Then you'll be able to manage member profiles, working hours and who's doing what service.",
+			"title": "Staff"
+		},
+		"new": {
+			"image": {
+				"title": "Upload"
+			},
+			"save": "Save",
+			"staff": {
+				"email": {
+					"help": "We’ll use this email address to inform you about future appointments.",
+					"label": "Email",
+					"placeholder": "Example: kristina.larsen@gmail.com"
+				},
+				"fullname": {
+					"label": "Full name",
+					"placeholder": "Example: Kristina Larsen"
+				},
+				"phone": {
+					"help": "We’ll use this phone number to inform you about future appointments.",
+					"label": "Phone number",
+					"placeholder": "Example: +4531311234"
+				},
+				"title": "Staff overview"
+			},
+			"title": "New staff"
+		},
+		"title": "test"
+	},
 	"tabs": {
 		"bookings": "Bookings",
 		"collections": "Categories",

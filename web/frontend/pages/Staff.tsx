@@ -1,5 +1,4 @@
 import LoadingPage from '@components/LoadingPage';
-import StaffList from '@components/staff/Staff-List';
 import { useStaffList } from '@services/staff';
 import { useNavigate } from '@shopify/app-bridge-react';
 
@@ -14,8 +13,9 @@ export default () => {
 
   if (data?.length === 0) {
     navigate('/Staff/Empty');
-    return <></>;
+  } else {
+    navigate('/Staff/List');
   }
 
-  return <StaffList></StaffList>;
+  return <></>;
 };
