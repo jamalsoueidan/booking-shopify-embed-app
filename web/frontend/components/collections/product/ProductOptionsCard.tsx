@@ -10,9 +10,12 @@ import {
   Text,
 } from '@shopify/polaris';
 import { ClockMajor } from '@shopify/polaris-icons';
+import { useTranslation } from 'react-i18next';
 import { ProductFormFields } from './FormFields';
 
 export default ({ fields }: { fields: ProductFormFields }) => {
+  const { t } = useTranslation('collections', { keyPrefix: 'product.options' });
+
   const options = [
     { label: '0 min', value: '0' },
     { label: '5 min', value: '5' },
@@ -28,20 +31,20 @@ export default ({ fields }: { fields: ProductFormFields }) => {
       <Stack.Item>
         <Icon source={ClockMajor} />
       </Stack.Item>
-      <Stack.Item>Buffertime</Stack.Item>
+      <Stack.Item>{t('buffertime.label')}</Stack.Item>
     </Stack>
   );
 
   return (
     <Layout.AnnotatedSection
       id="settings"
-      title="Indstillinger"
-      description="Ændre indstillinger for den behandling?">
+      title={t('title')}
+      description={t('description')}>
       <Card>
         <Card.Section>
           <FormLayout>
             <Text variant="headingSm" as="h6">
-              Meeting duration
+              {t('duration.label')}
             </Text>
             <ButtonGroup segmented>
               <Button
@@ -61,12 +64,12 @@ export default ({ fields }: { fields: ProductFormFields }) => {
               </Button>
             </ButtonGroup>
             <Text variant="headingXs" as="h6">
-              How long should your meeting last?(minutes)
+              {t('duration.help')}
             </Text>
             <Select
               label={selectLabel}
               options={options}
-              helpText="Free time between meetings"
+              helpText={t('buffertime.help')}
               {...fields.buffertime}
             />
           </FormLayout>

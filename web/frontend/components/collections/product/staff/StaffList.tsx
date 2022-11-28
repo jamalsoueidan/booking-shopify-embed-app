@@ -16,6 +16,7 @@ interface StaffListProps {
 }
 
 export default ({ action }: StaffListProps) => {
+  const { t } = useTranslation('collections', { keyPrefix: 'product.staff' });
   const tagOptions = useTagOptions();
   const { value } = useContext(FormContext);
 
@@ -23,7 +24,7 @@ export default ({ action }: StaffListProps) => {
     <ResourceList
       emptyState={<StaffEmptyState action={action}></StaffEmptyState>}
       items={value.sort((a, b) => (a.fullname > b.fullname ? 1 : -1))}
-      alternateTool={<Button onClick={action}>Browse</Button>}
+      alternateTool={<Button onClick={action}>{t('browse')}</Button>}
       renderItem={(item, _, index) => {
         const { _id, fullname } = item;
 

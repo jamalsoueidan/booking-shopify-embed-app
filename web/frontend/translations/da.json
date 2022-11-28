@@ -18,7 +18,20 @@
 		"product": {
 			"activate": "Aktivere",
 			"deactivate": "Deaktivere",
+			"options": {
+				"buffertime": {
+					"help": "Pause tid mellem møderne",
+					"label": "Pausetid"
+				},
+				"description": "Ændre indstillinger for dette product?",
+				"duration": {
+					"help": "Hvor længe kommer behandling til at tag tid?",
+					"label": "Behandlingstid"
+				},
+				"title": "Indstillinger"
+			},
 			"staff": {
+				"browse": "Vælge",
 				"description": "Hvilken medarbejder kan man booke service hos?",
 				"empty": {
 					"browse": "Vælge",
@@ -115,7 +128,7 @@
 	},
 	"tags": {
 		"all": "Alle dage",
-		"end": "slutning af ugen",
+		"end": "Slutning af ugen",
 		"everyday": "Hverdag",
 		"middle": "Midten af ugen",
 		"start": "Starten af ugen",

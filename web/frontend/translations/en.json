@@ -18,7 +18,20 @@
 		"product": {
 			"activate": "Activate",
 			"deactivate": "Deactivate",
+			"options": {
+				"buffertime": {
+					"help": "Free time between meetings",
+					"label": "Buffertime"
+				},
+				"description": "Change options for this product?",
+				"duration": {
+					"help": "How long should your meeting last?",
+					"label": "Meeting duration"
+				},
+				"title": "Settings"
+			},
 			"staff": {
+				"browse": "Browse",
 				"description": "Which staff can be booked?",
 				"empty": {
 					"browse": "Browse",
