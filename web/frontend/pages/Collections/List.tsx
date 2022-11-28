@@ -1,5 +1,6 @@
 import AddNewCollection from '@components/collections/AddNewCollection';
 import CollectionsList from '@components/collections/Collections-List';
+import LoadingPage from '@components/LoadingPage';
 import { useCollectionList } from '@services/collection';
 import { Page } from '@shopify/polaris';
 import { useState } from 'react';
@@ -10,6 +11,10 @@ export default () => {
 
   const { data } = useCollectionList();
   const { t } = useTranslation('collections');
+
+  if (!data) {
+    return <LoadingPage />;
+  }
 
   const collection = data.map((collection: Collection) => (
     <CollectionsList

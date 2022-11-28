@@ -100,7 +100,15 @@ const update = async ({ query, body }: { query: Query; body: UpdateBody }) => {
       };
     }) || [];
 
-  const active = newStaffier.length === 0 ? false : properties.active;
+  // turn active ON=true first time customer add staff to product
+  const product = await ProductModel.findById(
+    new mongoose.Types.ObjectId(query.id)
+  ).lean();
+
+  let active = properties.active;
+  if (product.staff.length === 0 && newStaffier.length > 0) {
+    active = true;
+  }
 
   return await ProductModel.findOneAndUpdate(
     {
@@ -178,7 +186,7 @@ const getStaff = async ({
         newRoot: "$staffs",
       },
     },
-    {
+    /*{
       $lookup: {
         from: "Product",
         localField: "_id",
@@ -201,7 +209,7 @@ const getStaff = async ({
       $project: {
         products: 0,
       },
-    },
+    },*/
   ]);
 };
 

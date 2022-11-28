@@ -1,7 +1,7 @@
 import ProductActivate from '@components/collections/product/ProductActivate';
 import ProductBanner from '@components/collections/product/ProductBanner';
 import ProductOptionsCard from '@components/collections/product/ProductOptionsCard';
-import StaffCard from '@components/collections/product/staff/StaffCard';
+import ProductStaff from '@components/collections/product/ProductStaff';
 import FormStatus from '@components/FormStatus';
 import LoadingPage from '@components/LoadingPage';
 import useSave from '@hooks/useSave';
@@ -27,35 +27,34 @@ export default () => {
     productId: params.id,
   });
 
-  const formFields = {
-    buffertime: useField({
-      value: product?.buffertime.toString(),
-      validates: [],
-    }),
-    duration: useField({
-      value: product?.duration,
-      validates: [],
-    }),
-    active: useField({
-      value: product?.active,
-      validates: [],
-    }),
-  };
-
-  const staff = useDynamicList<StaffTag>(
-    product?.staff || [],
-    (staff): StaffTag[] => {
-      return staff;
-    }
-  );
-
-  const { fields, submit, reset, submitErrors, submitting, dirty } = useForm<
-    typeof formFields,
-    any
-  >({
-    fields: formFields,
+  const {
+    fields,
+    submit,
+    reset,
+    submitErrors,
+    dynamicLists: { staff },
+    submitting,
+    dirty,
+  } = useForm({
+    fields: {
+      buffertime: useField({
+        value: product?.buffertime.toString(),
+        validates: [],
+      }),
+      duration: useField({
+        value: product?.duration,
+        validates: [],
+      }),
+      active: useField({
+        value: product?.active,
+        validates: [],
+      }),
+    },
     dynamicLists: {
-      staff,
+      staff: useDynamicList<StaffTag>(
+        product?.staff || [],
+        (staff: StaffTag) => staff
+      ),
     },
     onSubmit: async (fieldValues) => {
       await update({
@@ -93,7 +92,7 @@ export default () => {
               active={fields.active}
               staffLength={product.staff.length}></ProductActivate>
             <br />
-            <StaffCard product={product} form={staff}></StaffCard>
+            <ProductStaff product={product} form={staff}></ProductStaff>
             <br />
             <ProductOptionsCard fields={fields}></ProductOptionsCard>
           </Layout>
