@@ -41,6 +41,10 @@ const sendBookingConfirmation = ({
   customer,
   boughtProductTitles,
 }: SendBookingConfirmation) => {
+  if (!customer.phone) {
+    return;
+  }
+
   send({
     receiver: customer.phone.replace("+", ""),
     message: `Hej ${
@@ -57,6 +61,10 @@ interface SendReminder {
 }
 
 const sendReminder = ({ customer, bookings }: SendReminder) => {
+  if (!customer.phone) {
+    return;
+  }
+
   // TODO: use timezone from settings
   bookings.forEach((booking) => {
     send({

@@ -1,11 +1,13 @@
 import { useCollectionDestroy } from '@services/collection';
 import {
+  Button,
   Card,
   Icon,
   List,
   ResourceItem,
   ResourceList,
   Text,
+  TextContainer,
 } from '@shopify/polaris';
 import { CancelMinor, TickMinor } from '@shopify/polaris-icons';
 import { useCallback, useState } from 'react';
@@ -33,43 +35,45 @@ export default ({ collection }: { collection: Collection }) => {
   return (
     <>
       {modalConfirm}
-      <Card
-        key={collection._id}
-        title={collection.title}
-        actions={[
-          {
-            content: t('remove_collection'),
-            onAction: removeCollection,
-          },
-        ]}>
-        <ResourceList
-          items={collection.products}
-          renderItem={(item) => {
-            const { _id, title, active } = item;
+      <TextContainer>
+        <Text variant="heading2xl" as="h1">
+          {collection.title}{' '}
+          <Button plain destructive onClick={removeCollection}>
+            {t('remove_collection')}
+          </Button>
+        </Text>
+        <Card>
+          <ResourceList
+            items={collection.products}
+            renderItem={(item) => {
+              const { _id, title, active } = item;
 
-            const status = active ? 'success' : 'critical';
-            const icon = active ? TickMinor : CancelMinor;
+              const status = active ? 'success' : 'critical';
+              const icon = active ? TickMinor : CancelMinor;
 
-            return (
-              <ResourceItem
-                id={_id}
-                url={'/Collections/Product/' + _id}
-                media={<Icon source={icon} color={status} />}
-                verticalAlignment="center">
-                <Text variant="headingSm" as="h6">
-                  {title}
-                </Text>
-                <Text variant="bodySm" as="p">
-                  {t('staff', {
-                    count: item.staff.length,
-                    context: item.staff.length,
-                  })}
-                </Text>
-              </ResourceItem>
-            );
-          }}
-        />
-      </Card>
+              return (
+                <ResourceItem
+                  id={_id}
+                  url={'/Collections/Product/' + _id}
+                  media={<Icon source={icon} color={status} />}
+                  verticalAlignment="center">
+                  <Text variant="headingSm" as="h6">
+                    {title}
+                  </Text>
+                  <Text variant="bodySm" as="p">
+                    {t('staff', {
+                      count: item.staff.length,
+                      context: item.staff.length,
+                    })}
+                  </Text>
+                </ResourceItem>
+              );
+            }}
+          />
+        </Card>
+      </TextContainer>
+      <br />
+      <br />
     </>
   );
 };
