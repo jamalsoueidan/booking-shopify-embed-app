@@ -1,6 +1,8 @@
 <h1 align="center">Shopify Booking Appointment Application</h1>
 
-<img src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-view-schedule.png?raw=true" width="600"/>
+<p align="center">
+  <img src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-view-schedule.png?raw=true" width="600"/>
+</p>
 
 ## What is this and who is it for 🤷‍♀️
 
