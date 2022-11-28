@@ -15,14 +15,6 @@ There are numerous showcase/example React projects available, but the majority o
 - A variety of custom light-weight UI components, such as a calendar, modal, and various form elements, among others.
 - Simple local React state management without the use of redux, mobx, or anything else.
 
-## Contributing
-
-I will not be accepting PR's on this repository. Feel free to fork and maintain your own version.
-
-## License
-
-[MIT](https://opensource.org/licenses/MIT)
-
 ## Getting started
 
 The structur of this project is follows:
@@ -171,3 +163,11 @@ If you use the `express.json()` middleware in your app **and** if you use `Shopi
 - [App authentication](https://shopify.dev/apps/auth)
 - [Shopify CLI](https://shopify.dev/apps/tools/cli)
 - [Shopify API Library documentation](https://github.com/Shopify/shopify-api-node/tree/main/docs)
+
+## Contributing
+
+I will not be accepting PR's on this repository. Feel free to fork and maintain your own version.
+
+## License
+
+[MIT](https://opensource.org/licenses/MIT)
