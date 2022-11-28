@@ -1,4 +1,4 @@
-<h1 align="center">Book Appointment Shopify Application</h1>
+<h1 align="center">Shopify Appointment Booking Application</h1>
 
 ![App screenshot](https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/booking.png?raw=true)
 
