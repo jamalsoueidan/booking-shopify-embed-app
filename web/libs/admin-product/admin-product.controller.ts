@@ -109,6 +109,9 @@ const update = async ({ query, body }: { query: Query; body: UpdateBody }) => {
   if (product.staff.length === 0 && newStaffier.length > 0) {
     active = true;
   }
+  if (newStaffier.length === 0) {
+    active = false;
+  }
 
   return await ProductModel.findOneAndUpdate(
     {

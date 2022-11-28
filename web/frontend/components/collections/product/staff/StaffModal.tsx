@@ -1,8 +1,9 @@
-import TagOptions from '@components/staff/TagOptions';
+import TagOptions from '@components/TagOptions';
+import useTagOptions from '@components/useTagOptions';
 import { useCollectionProductStaff } from '@services/product/staff';
-import { ChoiceList, Modal, OptionList, Spinner } from '@shopify/polaris';
-import { useEffect } from 'react';
-import { useCallback, useContext, useMemo, useState } from 'react';
+import { Modal, OptionList, Spinner } from '@shopify/polaris';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import FormContext from './FormContext';
 
 interface StaffModalProps {
@@ -12,6 +13,9 @@ interface StaffModalProps {
 }
 
 export default ({ productId, show, close }: StaffModalProps) => {
+  const { t } = useTranslation('collections', {
+    keyPrefix: 'product.staff.modal',
+  });
   const { data } = useCollectionProductStaff({ productId });
   const { value, fields, addItem, removeItems } = useContext(FormContext);
   const [selected, setSelected] = useState<Array<StaffTag>>([]);
@@ -29,8 +33,13 @@ export default ({ productId, show, close }: StaffModalProps) => {
     [selected]
   );
 
+  const didChange = useMemo(
+    () => JSON.stringify(value) !== JSON.stringify(selected),
+    [value, selected]
+  );
+
   const submit = () => {
-    if (JSON.stringify(value) !== JSON.stringify(selected)) {
+    if (didChange) {
       removeItems(fields.map((_, index) => index));
       selected.forEach((s) => addItem(s));
     }
@@ -57,15 +66,15 @@ export default ({ productId, show, close }: StaffModalProps) => {
     <Modal
       open={show}
       onClose={close}
-      title="Medarbejder"
+      title={t('title')}
       primaryAction={{
-        content: 'Done',
+        content: t('done'),
         onAction: submit,
-        disabled: selected.length === 0,
+        disabled: !didChange,
       }}
       secondaryActions={[
         {
-          content: 'Luk',
+          content: t('close'),
           onAction: close,
         },
       ]}>
@@ -88,12 +97,14 @@ interface ChoiceStaffProps {
 }
 
 const ChoiceStaff = ({ staff, selected, toggle }: ChoiceStaffProps) => {
+  const tagOptions = useTagOptions();
+
   const choices = useMemo(
     () =>
       staff.tags.sort().map((t) => {
         return {
           value: t,
-          label: TagOptions.find((o) => o.value === t).label,
+          label: tagOptions.find((o) => o.value === t).label,
         };
       }),
     [staff.tags]
@@ -101,7 +112,8 @@ const ChoiceStaff = ({ staff, selected, toggle }: ChoiceStaffProps) => {
 
   const handleChange = useCallback(
     (value: string[]) => {
-      toggle({ _id: staff._id, fullname: staff.fullname, tag: value[0] });
+      const { tags, ...spreadStaff } = staff;
+      toggle({ ...spreadStaff, tag: value[0] });
     },
     [toggle]
   );

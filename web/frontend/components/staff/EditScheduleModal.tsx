@@ -15,7 +15,7 @@ import {
   useStaffScheduleDestroy,
   useStaffScheduleUpdate,
 } from '@services/staff/schedule';
-import TagOptions from './TagOptions';
+import useTagOptions from '@components/useTagOptions';
 
 interface Props {
   info: any;
@@ -23,6 +23,7 @@ interface Props {
 }
 
 export default ({ info, setInfo }: Props) => {
+  const tagOptions = useTagOptions();
   const params = useParams();
   const toggleActive = () => setInfo(null);
   const { data: settings } = useSettingGet();
@@ -36,7 +37,7 @@ export default ({ info, setInfo }: Props) => {
   const [endTime, setEndTime] = useState<string>(
     format(toTimeZone(extendedProps.end), 'HH:mm')
   );
-  const [tag, setTag] = useState(extendedProps.tag || TagOptions[0].value);
+  const [tag, setTag] = useState(extendedProps.tag || tagOptions[0].value);
   const [available, setAvailable] = useState(extendedProps.available || false);
 
   const { isUpdating, update: updateSchedule } = useStaffScheduleUpdate({
@@ -150,7 +151,7 @@ export default ({ info, setInfo }: Props) => {
           <Layout.Section>
             <Select
               label="Tag"
-              options={TagOptions}
+              options={tagOptions}
               onChange={handleTag}
               value={tag}
             />

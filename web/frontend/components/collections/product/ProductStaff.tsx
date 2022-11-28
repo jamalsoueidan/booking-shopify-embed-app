@@ -1,6 +1,7 @@
 import { Card, Layout } from '@shopify/polaris';
 import { DynamicList } from '@shopify/react-form/build/ts/hooks/list/dynamiclist';
 import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import FormContext from './staff/FormContext';
 import StaffList from './staff/StaffList';
 import StaffModal from './staff/StaffModal';
@@ -12,6 +13,7 @@ interface StaffCardProps {
 
 export default ({ product, form }: StaffCardProps) => {
   const [showModal, setShowModal] = useState(false);
+  const { t } = useTranslation('collections', { keyPrefix: 'product.staff' });
 
   const action = useCallback(() => setShowModal(() => true), []);
 
@@ -19,8 +21,8 @@ export default ({ product, form }: StaffCardProps) => {
     <FormContext.Provider value={form}>
       <Layout.AnnotatedSection
         id="staff"
-        title="Tilføj medarbejder"
-        description="Hvilken medarbejder kan man booke service hos?">
+        title={t('title')}
+        description={t('description')}>
         <Card>
           <StaffList action={action}></StaffList>
           <StaffModal

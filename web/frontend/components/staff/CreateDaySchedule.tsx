@@ -1,3 +1,4 @@
+import useTagOptions from '@components/useTagOptions';
 import { useSettingGet } from '@services/setting';
 import { useStaffScheduleCreate } from '@services/staff/schedule';
 import {
@@ -11,10 +12,9 @@ import {
 import { useField, useForm } from '@shopify/react-form';
 import { format } from 'date-fns';
 import { zonedTimeToUtc } from 'date-fns-tz';
+import da from 'date-fns/locale/da';
 import { forwardRef, useImperativeHandle } from 'react';
 import { useParams } from 'react-router-dom';
-import TagOptions from './TagOptions';
-import da from 'date-fns/locale/da';
 
 interface CreateDayScheduleProps {
   date: string;
@@ -22,6 +22,7 @@ interface CreateDayScheduleProps {
 }
 
 export default forwardRef(({ date, close }: CreateDayScheduleProps, ref) => {
+  const tagOptions = useTagOptions();
   const params = useParams();
   const { data: settings } = useSettingGet();
 
@@ -40,7 +41,7 @@ export default forwardRef(({ date, close }: CreateDayScheduleProps, ref) => {
         validates: [],
       }),
       tag: useField({
-        value: TagOptions[0].value,
+        value: tagOptions[0].value,
         validates: [],
       }),
       available: useField({
@@ -110,7 +111,7 @@ export default forwardRef(({ date, close }: CreateDayScheduleProps, ref) => {
           </Columns>
         </Layout.Section>
         <Layout.Section>
-          <Select label="Tag" options={TagOptions} {...fields.tag} />
+          <Select label="Tag" options={tagOptions} {...fields.tag} />
         </Layout.Section>
       </Layout>
     </Modal.Section>

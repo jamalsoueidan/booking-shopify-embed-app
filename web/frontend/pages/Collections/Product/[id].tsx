@@ -9,14 +9,8 @@ import {
   useCollectionProductGet,
   useCollectionProductUpdate,
 } from '@services/product';
-import { ActionVerb } from '@shopify/app-bridge/actions/ResourcePicker';
 import { Form, Layout, Page, PageActions } from '@shopify/polaris';
-import {
-  DynamicListBag,
-  useDynamicList,
-  useField,
-  useForm,
-} from '@shopify/react-form';
+import { useDynamicList, useField, useForm } from '@shopify/react-form';
 import { useParams } from 'react-router-dom';
 
 export default () => {

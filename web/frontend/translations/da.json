@@ -15,6 +15,26 @@
 			"text": "Vælg kollektioner(er) fra din butik, og vi omdanner dem til kategori(er) og dens produkter!",
 			"title": "Begynd at tag imod reservationer i din butik."
 		},
+		"product": {
+			"activate": "Aktivere",
+			"deactivate": "Deaktivere",
+			"staff": {
+				"description": "Hvilken medarbejder kan man booke service hos?",
+				"empty": {
+					"browse": "Vælge",
+					"title": "Der er ikke tilføjet brugere endnu."
+				},
+				"modal": {
+					"close": "Luk",
+					"done": "Færdig",
+					"title": "Medarbejder"
+				},
+				"singular": "medarbejd",
+				"title": "Tilføj medarbejder"
+			},
+			"status_active": "Dette product kan books online",
+			"status_deactive": "Dette product kan IKKE books online"
+		},
 		"remove_collection": "Fjern",
 		"staff": "{{count}} medarbejder tilføjet",
 		"staff_0": "Tillføje medarbejder til dette produkt",
@@ -92,5 +112,13 @@
 		"collections": "Kategorier",
 		"settings": "Indstillinger",
 		"staff": "Medarbejder"
+	},
+	"tags": {
+		"all": "Alle dage",
+		"end": "slutning af ugen",
+		"everyday": "Hverdag",
+		"middle": "Midten af ugen",
+		"start": "Starten af ugen",
+		"weekend": "Weekend"
 	}
 }
