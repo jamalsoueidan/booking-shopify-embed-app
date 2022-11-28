@@ -1,6 +1,6 @@
 <h1 align="center">Shopify Booking Appointment Application</h1>
 
-![App screenshot](https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/booking.png?raw=true)
+![App screenshot](https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-view-schedule.png?raw=true)
 
 ## What is this and who is it for 🤷‍♀️
 
@@ -27,9 +27,11 @@ The structur of this project is follows:
 
 ## Application screens
 
+![alt text](https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/product-view.png?raw=true)
+
 ![alt text](https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-list.png?raw=true)
 
-![alt text](https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-edit.png?raw=true)
+![alt text](https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-view.png?raw=true)
 
 ## Widget screen
 
