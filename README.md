@@ -34,21 +34,27 @@ The structur of this project is follows:
     <td>
       <img src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/product-view.png?raw=true" width="300" />
     </td>
-  <td style="border:0px">
+    <td>
      <img  src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-list.png?raw=true"  width="300" />
     </td>
-  <td style="border:0px">
-    <img  src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-view.png?raw=true"  width="300" />
-  </td>
+    <td>
+      <img  src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-view.png?raw=true"  width="300" />
+    </td>
  </tr>
 </table>
 
 ## Widget screen
 
-<p align="center">
-  <img src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/extension1.png?raw=true" width="600"/>
-  <img src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/extension2.png?raw=true" width="600"/>
-</p>
+<table>
+ <tr>
+    <td>
+      <img src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/extension1.png?raw=true" width="300"/>
+    </td>
+    <td>
+     <img src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/extension2.png?raw=true" width="300"/>
+    </td>
+ </tr>
+</table>
 
 ## Tech Stack
 
