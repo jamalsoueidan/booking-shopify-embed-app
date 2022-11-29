@@ -1,13 +1,4 @@
 {
-	"bookings": {
-		"all": "Alle",
-		"day_grid_month": "Måned",
-		"list": "Liste",
-		"time_grid_day": "Dag",
-		"time_grid_week": "Uge",
-		"title": "Bestillinger",
-		"today": "I dag"
-	},
 	"collections": {
 		"add_collection": "Tilføj kategori",
 		"empty": {
@@ -57,6 +48,15 @@
 		"buttons": {
 			"discard": "Annullere",
 			"save": "Gem"
+		},
+		"calendar": {
+			"all": "Alle",
+			"day_grid_month": "Måned",
+			"list": "Liste",
+			"time_grid_day": "Dag",
+			"time_grid_week": "Uge",
+			"title": "Bestillinger",
+			"today": "I dag"
 		},
 		"unsaved": "Ikke-gemte ændringer"
 	},

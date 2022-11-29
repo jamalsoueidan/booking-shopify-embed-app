@@ -15,6 +15,7 @@ import {
   addDays,
   addHours,
   eachDayOfInterval,
+  endOfMonth,
   format,
   getMonth,
   getYear,
@@ -37,13 +38,13 @@ export default forwardRef(({ date, close }: CreateDayScheduleProps, ref) => {
   const tagOptions = useTagOptions();
   const params = useParams();
   const [{ month, year }, setDate] = useState({
-    month: getMonth(new Date(date)),
+    month: getMonth(new Date(date)) - 1,
     year: getYear(new Date(date)),
   });
 
   const [selectedDates, setSelectedDates] = useState({
-    start: new Date(date),
-    end: addDays(new Date(), 24),
+    start: subDays(new Date(), 1),
+    end: endOfMonth(addDays(new Date(), 30)),
   });
 
   const { data: settings } = useSettingGet();

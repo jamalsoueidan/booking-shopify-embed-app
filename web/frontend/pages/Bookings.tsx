@@ -1,5 +1,5 @@
 import BookingModal from '@components/bookings/booking-modal';
-import Fullcalendar from '@components/bookings/fullcalendar';
+import Calendar from '@components/Calendar';
 import StaffSelection from '@components/bookings/staff-selection';
 import FullCalendar, { EventClickArg } from '@fullcalendar/react'; // must go before plugins
 import { useBookings } from '@services/bookings';
@@ -100,22 +100,11 @@ export default () => {
             onSelect={setStaff}></StaffSelection>
         </Card.Section>
         <Card.Section>
-          <Fullcalendar
+          <Calendar
             ref={calendarRef}
             eventContent={eventContent}
             datesSet={dateChanged}
-            slotDuration="00:15:00"
-            slotLabelFormat={[
-              {
-                hour: 'numeric',
-                minute: '2-digit',
-                omitZeroMinute: false,
-                meridiem: 'short',
-              },
-            ]}
-            eventDisplay="block"
             eventClick={showBooking}
-            locale={settings.language}
           />
         </Card.Section>
       </Card>

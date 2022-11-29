@@ -1,13 +1,4 @@
 {
-	"bookings": {
-		"all": "All",
-		"day_grid_month": "Month",
-		"list": "List",
-		"time_grid_day": "Day",
-		"time_grid_week": "Week",
-		"title": "Bookings",
-		"today": "Today"
-	},
 	"collections": {
 		"add_collection": "Add Category",
 		"empty": {
@@ -57,6 +48,15 @@
 		"buttons": {
 			"discard": "Discard",
 			"save": "Save"
+		},
+		"calendar": {
+			"all": "All",
+			"day_grid_month": "Month",
+			"list": "List",
+			"time_grid_day": "Day",
+			"time_grid_week": "Week",
+			"title": "Bookings",
+			"today": "Today"
 		},
 		"unsaved": "Unsaved changes"
 	},

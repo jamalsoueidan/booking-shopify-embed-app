@@ -1,18 +1,14 @@
-import '@fullcalendar/react/dist/vdom';
 import LoadingPage from '@components/LoadingPage';
 import CreateScheduleModal from '@components/staff/CreateScheduleModal';
 import EditScheduleModal from '@components/staff/EditScheduleModal';
 import Metadata from '@components/staff/Metadata';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import FullCalendar from '@fullcalendar/react';
-import { useSettingGet } from '@services/setting';
+import StaffCalendar from '@components/staff/StaffCalendar';
+import { DateClickArg } from '@fullcalendar/interaction';
+import { EventClickArg } from '@fullcalendar/react';
 import { useStaffGet } from '@services/staff';
 import { useStaffScheduleList } from '@services/staff/schedule';
 import { useNavigate } from '@shopify/app-bridge-react';
 import { Card, Page } from '@shopify/polaris';
-import { format } from 'date-fns';
-import { utcToZonedTime } from 'date-fns-tz';
 import { useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -20,40 +16,40 @@ export default () => {
   const params = useParams();
   const navigate = useNavigate();
 
-  const { data: settings } = useSettingGet();
-
   const { data: staff } = useStaffGet({ userId: params.id });
 
   const { data: calendar } = useStaffScheduleList({ userId: params.id });
 
-  const [createInfo, setCreateInfo] = useState(null);
-  const [editInfo, setEditInfo] = useState(null);
+  const [showCreate, setShowCreate] = useState(null);
+  const [showEdit, setShowEdit] = useState(null);
 
-  const createSchedule = useCallback((info: any) => {
-    setCreateInfo(info);
-  }, []);
+  const createSchedule = useCallback(
+    (info: DateClickArg) => setShowCreate(info),
+    []
+  );
 
-  const editSchedule = useCallback((info: any) => {
-    setEditInfo(info);
-  }, []);
+  const createScheduleModal = showCreate && (
+    <CreateScheduleModal
+      info={showCreate}
+      setInfo={setShowCreate}></CreateScheduleModal>
+  );
+
+  const editSchedule = useCallback(
+    (info: EventClickArg) => setShowEdit(info),
+    []
+  );
+
+  const editScheduleModal = showEdit && (
+    <EditScheduleModal
+      info={showEdit}
+      setInfo={setShowEdit}></EditScheduleModal>
+  );
 
   if (!staff || !calendar) {
     return <LoadingPage />;
   }
 
-  const createScheduleModal = createInfo && (
-    <CreateScheduleModal
-      info={createInfo}
-      setInfo={setCreateInfo}></CreateScheduleModal>
-  );
-
-  const editScheduleModal = editInfo && (
-    <EditScheduleModal
-      info={editInfo}
-      setInfo={setEditInfo}></EditScheduleModal>
-  );
-
-  const events = calendar?.map((c: any) => {
+  /*const events = calendar?.map((c: any) => {
     const toTimeZone = (fromUTC: Date) =>
       utcToZonedTime(fromUTC, settings.timeZone);
     const start = toTimeZone(new Date(c.start));
@@ -70,7 +66,7 @@ export default () => {
       display: 'block',
       title: `${startHour}-${endHour}`,
     };
-  });
+  });*/
 
   if (!staff) {
     return <></>;
@@ -89,21 +85,11 @@ export default () => {
       }}>
       {createScheduleModal}
       {editScheduleModal}
-      <Card sectioned title="Time planning">
-        <FullCalendar
-          plugins={[interactionPlugin, dayGridPlugin]}
-          initialView="dayGridMonth"
-          headerToolbar={{
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth',
-          }}
-          events={events}
-          firstDay={1}
-          locale="da"
-          dateClick={createSchedule}
-          eventClick={editSchedule}
-          selectable={true}
+      <Card sectioned>
+        <StaffCalendar
+          events={calendar}
+          create={createSchedule}
+          edit={editSchedule}
         />
       </Card>
     </Page>
