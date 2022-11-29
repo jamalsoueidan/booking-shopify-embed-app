@@ -29,11 +29,19 @@ The structur of this project is follows:
 
 ## Application screens
 
-<p align="center">
-  <img src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/product-view.png?raw=true" width="600"/>
-  <img src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-list.png?raw=true" width="600"/>
-  <img src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-view.png?raw=true" width="600"/>
-</p>
+<table>
+ <tr>
+    <td>
+      <img src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/product-view.png?raw=true" width="600" style="float: left; margin-right: 10px;" />
+    </td>
+  <td style="border:0px">
+     <img  src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-list.png?raw=true"  width="300"  style="float: left; margin-right: 10px;"  />
+    </td>
+  <td style="border:0px">
+    <img  src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-view.png?raw=true"  width="300"  style="float: left; margin-right: 10px;"  />
+  </td>
+ </tr>
+</table>
 
 ## Widget screen
 
