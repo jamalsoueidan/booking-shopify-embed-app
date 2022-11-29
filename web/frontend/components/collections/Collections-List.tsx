@@ -36,7 +36,7 @@ export default ({ collection }: { collection: Collection }) => {
     <>
       {modalConfirm}
       <TextContainer>
-        <Text variant="heading2xl" as="h1">
+        <Text variant="headingLg" as="h1">
           {collection.title}{' '}
           <Button plain destructive onClick={removeCollection}>
             {t('remove_collection')}

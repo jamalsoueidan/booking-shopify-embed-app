@@ -29,17 +29,18 @@ The structur of this project is follows:
 
 ## Application screens
 
-![alt text](https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/product-view.png?raw=true)
-
-![alt text](https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-list.png?raw=true)
-
-![alt text](https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-view.png?raw=true)
+<p align="center">
+  <img src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/product-view.png?raw=true" width="600"/>
+  <img src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-list.png?raw=true" width="600"/>
+  <img src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-view.png?raw=true" width="600"/>
+</p>
 
 ## Widget screen
 
-![alt text](https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/extension1.png?raw=true)
-
-![alt text](https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/extension2.png?raw=true)
+<p align="center">
+  <img src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/extension1.png?raw=true" width="600"/>
+  <img src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/extension2.png?raw=true" width="600"/>
+</p>
 
 ## Tech Stack
 
