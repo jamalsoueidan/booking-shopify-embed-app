@@ -1,4 +1,7 @@
 {
+	"bookings": {
+		"title": "Bookings"
+	},
 	"collections": {
 		"add_collection": "Add Category",
 		"empty": {
@@ -55,7 +58,6 @@
 			"list": "List",
 			"time_grid_day": "Day",
 			"time_grid_week": "Week",
-			"title": "Bookings",
 			"today": "Today"
 		},
 		"unsaved": "Unsaved changes"

@@ -103,9 +103,11 @@ export default ({ create, edit, events }: StaffCalendarProps) => {
         center: 'title',
         right: 'dayGridMonth',
       }}
-      initialView="dayGridMonth"
       dateClick={create}
       eventClick={edit}
+      validRange={(nowDate) => {
+        return { start: nowDate };
+      }}
     />
   );
 };

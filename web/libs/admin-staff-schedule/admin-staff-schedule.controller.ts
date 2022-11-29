@@ -14,9 +14,9 @@ export enum ControllerMethods {
   get = "get",
   create = "create",
   update = "update",
-  remove = "remove",
+  destroy = "destroy",
   updateGroup = "updateGroup",
-  removeGroup = "removeGroup",
+  destroyGroup = "destroyGroup",
 }
 
 const get = async ({ query }) => {
@@ -43,7 +43,7 @@ const update = async ({ query, body }) => {
   }
 };
 
-const remove = async ({ query }) => {
+const destroy = async ({ query }) => {
   const { shop, staff, schedule } = query;
 
   if (await StaffService.findOne(staff, { shop })) {
@@ -121,7 +121,7 @@ const updateGroup = async ({ query, body }) => {
   }
 };
 
-const removeGroup = async ({ query, body }) => {
+const destroyGroup = async ({ query }) => {
   const { shop, staff, schedule, groupId } = query;
 
   const documents = await ScheduleModel.countDocuments({
@@ -138,4 +138,4 @@ const removeGroup = async ({ query, body }) => {
   }
 };
 
-export default { get, remove, create, update, updateGroup, removeGroup };
+export default { get, destroy, create, update, updateGroup, destroyGroup };

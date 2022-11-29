@@ -21,8 +21,8 @@ export default function adminStaffScheduleRoutes(app) {
     handleRoute(req, res, ControllerMethods.update);
   });
 
-  router.delete("/staff/:staff/schedules", async (req, res) => {
-    handleRoute(req, res, ControllerMethods.remove);
+  router.delete("/staff/:staff/schedules/:schedule", async (req, res) => {
+    handleRoute(req, res, ControllerMethods.destroy);
   });
 
   router.put(
@@ -35,7 +35,7 @@ export default function adminStaffScheduleRoutes(app) {
   router.delete(
     "/staff/:staff/schedules/:schedule/group/:groupId",
     async (req, res) => {
-      handleRoute(req, res, ControllerMethods.removeGroup);
+      handleRoute(req, res, ControllerMethods.destroyGroup);
     }
   );
 

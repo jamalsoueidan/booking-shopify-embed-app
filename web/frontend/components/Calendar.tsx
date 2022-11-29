@@ -17,7 +17,7 @@ export default forwardRef((props: CalendarOptions, ref: any) => {
       height="auto"
       ref={ref}
       plugins={[timeGridPlugin, dayGridPlugin, listPlugin, interactionPlugin]}
-      initialView="timeGridWeek"
+      initialView="dayGridMonth"
       headerToolbar={{
         left: 'today prev,next',
         center: 'title',
@@ -46,9 +46,6 @@ export default forwardRef((props: CalendarOptions, ref: any) => {
         timeGridWeek: t('time_grid_week'),
         timeGridDay: t('time_grid_day'),
         list: t('list'),
-      }}
-      validRange={(nowDate) => {
-        return { start: nowDate };
       }}
       {...props}
     />
