@@ -32,13 +32,13 @@ The structur of this project is follows:
 <table>
  <tr>
     <td>
-      <img src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/product-view.png?raw=true" width="600" style="float: left; margin-right: 10px;" />
+      <img src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/product-view.png?raw=true" width="300" />
     </td>
   <td style="border:0px">
-     <img  src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-list.png?raw=true"  width="300"  style="float: left; margin-right: 10px;"  />
+     <img  src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-list.png?raw=true"  width="300" />
     </td>
   <td style="border:0px">
-    <img  src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-view.png?raw=true"  width="300"  style="float: left; margin-right: 10px;"  />
+    <img  src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-view.png?raw=true"  width="300" />
   </td>
  </tr>
 </table>
