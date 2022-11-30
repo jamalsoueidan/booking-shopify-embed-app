@@ -37,3 +37,8 @@ web/dist
 web/frontend/dist
 .history
 web/frontend/stats.html
+
+extensions/book-appointment-ext/assets/main*
+
+react-extensions/node_modules
+react-extensions/dist

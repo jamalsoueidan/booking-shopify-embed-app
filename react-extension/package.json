@@ -1,0 +1,56 @@
+{
+  "name": "book-appointment-ext",
+  "version": "0.1.0",
+  "private": true,
+  "homepage": "/book-appointment-ext/",
+  "dependencies": {
+    "@easepick/bundle": "^1.2.0",
+    "@emotion/react": "^11.9.3",
+    "@emotion/styled": "^11.9.3",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.3.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^28.1.6",
+    "@types/node": "^18.6.1",
+    "@types/react": "^18.0.15",
+    "@types/react-dom": "^18.0.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "react-to-webcomponent": "^1.6.1",
+    "swr": "^1.3.0",
+    "typescript": "^4.7.4",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "concurrently \"npm run build:watch\" \"react-scripts start\"",
+    "postbuild": "sh predeploy.sh",
+    "build": "BUILD_PATH='./dist' react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "build:watch": "run-when-changed --watch \"src/*.tsx\" --exec \"npm run build\""
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "concurrently": "^7.6.0",
+    "prop-types": "^15.8.1",
+    "run-when-changed": "^2.1.0"
+  }
+}

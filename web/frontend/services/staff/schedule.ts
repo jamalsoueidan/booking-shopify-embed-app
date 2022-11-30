@@ -20,10 +20,11 @@ const useStaffScheduleList = ({
   const fetch = useAuthenticatedFetch();
 
   const { data } = useSWR<SchedulesApi>(
-    start &&
-      end &&
-      `/api/admin/staff/${userId}/schedules?start=${start}&end=${end}`,
-    (apiURL: string) => fetch(apiURL).then((r: Response) => r.json())
+    start && end && `/api/admin/staff/${userId}/schedules`,
+    () =>
+      fetch(
+        `/api/admin/staff/${userId}/schedules?start=${start}&end=${end}`
+      ).then((r: Response) => r.json())
   );
   return { data: data?.payload || [] };
 };

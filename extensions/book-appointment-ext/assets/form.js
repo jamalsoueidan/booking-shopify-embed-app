@@ -40,12 +40,15 @@ window.addEventListener("load", function () {
         dateInput = null;
         staffSelect = null;
         timeSelect = null;
-        endHourInput = null;
         template = null;
         schedules = null;
         staff = null; //staff data
         submitButton = null;
         data = {};
+        start = new easepick.DateTime();
+        end = new easepick.DateTime(
+          new Date(this.start.getFullYear(), this.start.getMonth() + 1, 0)
+        );
 
         constructor() {
           super();
@@ -102,7 +105,7 @@ window.addEventListener("load", function () {
 
         resetHourSelect() {
           this.timeSelect.innerHTML = "";
-          var opt = document.createElement("option");
+          let opt = document.createElement("option");
           opt.value = "null";
           opt.innerHTML = "Vælge tid";
           this.timeSelect.appendChild(opt);
@@ -152,6 +155,25 @@ window.addEventListener("load", function () {
           this.submitButton.disabled = false;
         }
 
+        update(date) {
+          let newStartDate = date;
+          const todayDate = new easepick.DateTime();
+          if (newStartDate.isBefore(todayDate)) {
+            newStartDate = todayDate;
+          }
+
+          if (this.start.isSame(newStartDate)) {
+            return;
+          }
+
+          this.start = newStartDate;
+          this.end = new easepick.DateTime(
+            new Date(this.start.getFullYear(), this.start.getMonth() + 1, 0)
+          );
+
+          this.onStaffSelect();
+        }
+
         onStaffSelect() {
           this.resetDate();
           const value = this.staffSelect.value;
@@ -171,14 +193,8 @@ window.addEventListener("load", function () {
             params.append("staffId", staffId.staff);
           }
 
-          const DateTime = easepick.DateTime;
-          const currentDate = new DateTime();
-          const endOfMonth = new DateTime(
-            new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0)
-          );
-
-          params.append("start", currentDate.format("YYYY-MM-DD"));
-          params.append("end", endOfMonth.format("YYYY-MM-DD"));
+          params.append("start", this.start.format("YYYY-MM-DD"));
+          params.append("end", this.end.format("YYYY-MM-DD"));
 
           fetch(path + "?" + params.toString()).then(
             this.onAvailabilityFetch.bind(this)
@@ -197,7 +213,7 @@ window.addEventListener("load", function () {
           const self = this;
 
           if (this.dateInput) {
-            this.dateInput.destroy();
+            //this.dateInput.destroy();
           }
 
           this.dateInput = new easepick.create({
@@ -206,23 +222,31 @@ window.addEventListener("load", function () {
               "https://cdn.jsdelivr.net/npm/@easepick/bundle@1.2.0/dist/index.css",
               "https://easepick.com/css/demo_prices.css",
             ],
+            lang: "da-DK",
             zIndex: 10,
             plugins: ["LockPlugin"],
             LockPlugin: {
               filter(date, picked) {
                 return !findSchedule(date.format("YYYY-MM-DD"));
               },
+              minDate: new Date(),
             },
             setup(picker) {
-              picker.on("render", (evt) => {
-                self.querySelector("#dateInput").disabled = false;
-              });
-
               picker.on("view", (evt) => {
                 const { view, date, target } = evt.detail;
                 const d = date ? date.format("YYYY-MM-DD") : null;
 
                 const schedule = findSchedule(d);
+
+                if (view === "CalendarHeader") {
+                  self.update(date);
+                  return;
+                }
+
+                if (view === "Main") {
+                  self.querySelector("#dateInput").disabled = false;
+                  return;
+                }
 
                 if (view === "CalendarDay" && schedule) {
                   const span =
@@ -239,7 +263,6 @@ window.addEventListener("load", function () {
                 const schedule = findSchedule(date.format("YYYY-MM-DD"));
 
                 self.resetHourSelect();
-                self.timeSelect.disabled = false;
                 if (schedule) {
                   //remove duplication
                   schedule.hours = schedule.hours.reduce((hours, current) => {
@@ -253,12 +276,13 @@ window.addEventListener("load", function () {
                   }, []);
 
                   schedule.hours.forEach((element) => {
-                    var opt = document.createElement("option");
+                    let opt = document.createElement("option");
                     opt.value = element.start;
                     opt.innerHTML = getTime(element.start, element.end);
                     self.timeSelect.appendChild(opt);
                   });
                 }
+                self.timeSelect.disabled = false;
               });
             },
           });
