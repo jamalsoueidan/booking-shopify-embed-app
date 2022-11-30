@@ -1,17 +1,23 @@
 import { Router } from "express";
+import { query } from "express-validator";
+import { expressHandleRoute } from "../express-helpers/handle-route";
 import controller, {
   ControllerMethods,
 } from "./admin-staff-schedule.controller";
-import { expressHandleRoute } from "../express-helpers/handle-route";
 
 export default function adminStaffScheduleRoutes(app) {
   const router = Router();
 
   const handleRoute = expressHandleRoute(app, controller);
 
-  router.get("/staff/:staff/schedules", async (req, res) => {
-    handleRoute(req, res, ControllerMethods.get);
-  });
+  router.get(
+    "/staff/:staff/schedules",
+    query("start").notEmpty(),
+    query("end").notEmpty(),
+    async (req, res) => {
+      handleRoute(req, res, ControllerMethods.get);
+    }
+  );
 
   router.post("/staff/:staff/schedules", async (req, res) => {
     handleRoute(req, res, ControllerMethods.create);

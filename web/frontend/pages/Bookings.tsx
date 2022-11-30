@@ -1,7 +1,11 @@
 import BookingModal from '@components/bookings/booking-modal';
 import Calendar from '@components/Calendar';
 import StaffSelection from '@components/bookings/staff-selection';
-import FullCalendar, { EventClickArg } from '@fullcalendar/react'; // must go before plugins
+import FullCalendar, {
+  DatesSetArg,
+  EventClickArg,
+  EventContentArg,
+} from '@fullcalendar/react'; // must go before plugins
 import { useBookings } from '@services/bookings';
 import { useSettingGet } from '@services/setting';
 import { Card, Page } from '@shopify/polaris';
@@ -21,7 +25,7 @@ export default () => {
 
   const { data: bookings, isLoading } = useBookings({ start, end, staff });
 
-  const dateChanged = useCallback((props: { start: Date; end: Date }) => {
+  const dateChanged = useCallback((props: DatesSetArg) => {
     setStart(format(props.start, 'yyyy-MM-dd'));
     setEnd(format(props.end, 'yyyy-MM-dd'));
   }, []);

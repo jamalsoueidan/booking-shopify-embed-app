@@ -81,8 +81,8 @@ const findByIdAndUpdate = async (scheduleId, document) => {
   });
 };
 
-const remove = async (scheduleId) => {
-  return await ScheduleModel.deleteOne({ _id: scheduleId });
+const remove = async ({ schedule, shop }) => {
+  return await ScheduleModel.deleteOne({ _id: schedule, shop });
 };
 
 const insertMany = async (schedules: UpdateQuery<IScheduleModel>) => {
@@ -96,6 +96,29 @@ const updateMany = async (
   return await ScheduleModel.updateMany(filter, {
     $set: { ...schedules },
   });
+};
+
+interface GetByDateRangeProps {
+  staff: string;
+  start: string;
+  end: string;
+}
+
+const getByDateRange = async ({ staff, start, end }: GetByDateRangeProps) => {
+  return await ScheduleModel.aggregate([
+    {
+      $match: {
+        staff: new mongoose.Types.ObjectId(staff),
+        available: true,
+        start: {
+          $gte: new Date(`${start}T00:00:00.0Z`),
+        },
+        end: {
+          $lt: new Date(`${end}T23:59:59.0Z`),
+        },
+      },
+    },
+  ]);
 };
 
 interface GetByStaffAndTagProps {
@@ -235,4 +258,5 @@ export default {
   updateMany,
   getByStaffAndTag,
   getByTag,
+  getByDateRange,
 };

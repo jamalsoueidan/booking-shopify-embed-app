@@ -4,6 +4,8 @@ import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
 
 interface UseStaffScheduleListProps {
   userId: string;
+  start: string;
+  end: string;
 }
 
 interface UseStaffScheduleListReturn {
@@ -12,13 +14,18 @@ interface UseStaffScheduleListReturn {
 
 const useStaffScheduleList = ({
   userId,
+  start,
+  end,
 }: UseStaffScheduleListProps): UseStaffScheduleListReturn => {
   const fetch = useAuthenticatedFetch();
+
   const { data } = useSWR<SchedulesApi>(
-    `/api/admin/staff/${userId}/schedules`,
+    start &&
+      end &&
+      `/api/admin/staff/${userId}/schedules?start=${start}&end=${end}`,
     (apiURL: string) => fetch(apiURL).then((r: Response) => r.json())
   );
-  return { data: data?.payload };
+  return { data: data?.payload || [] };
 };
 
 interface UseStaffScheduleCreateProps {

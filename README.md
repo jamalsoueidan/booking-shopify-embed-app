@@ -6,7 +6,7 @@
 
 ## What is this and who is it for 🤷‍♀️
 
-I offer Frontend consulting, and this is a showcase product that I created in my spare time. It is a good example of a modern, real-world React codebase.
+Frontend consulting is what I do! and this is a showcase product I made in my spare time. It is an excellent example of a modern, real-world React codebase and it integrate with the Shopify Admin, uses Shopify Polaris UI Framework, and extensions that are built into the Shopify theme.
 
 There are numerous showcase/example React projects available, but the majority of them are far too simple. I like to think that this codebase is complex enough to provide valuable insights to React developers of all skill levels while remaining _relatively_ simple to understand.
 

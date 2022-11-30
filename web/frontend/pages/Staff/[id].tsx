@@ -16,9 +16,14 @@ export default () => {
   const params = useParams();
   const navigate = useNavigate();
 
+  const [rangeDate, setRangeDate] = useState<CalendarDateChangeProps>();
   const { data: staff } = useStaffGet({ userId: params.id });
 
-  const { data: calendar } = useStaffScheduleList({ userId: params.id });
+  const { data: calendar } = useStaffScheduleList({
+    userId: params.id,
+    start: rangeDate?.start,
+    end: rangeDate?.end,
+  });
 
   const [showCreate, setShowCreate] = useState(null);
   const [showEdit, setShowEdit] = useState(null);
@@ -45,31 +50,17 @@ export default () => {
       setInfo={setShowEdit}></EditScheduleModal>
   );
 
+  const onChangeDate = useCallback(
+    (props: CalendarDateChangeProps) => {
+      if (props.start !== rangeDate?.start || props.end !== rangeDate?.end) {
+        setRangeDate(props);
+      }
+    },
+    [rangeDate]
+  );
+
   if (!staff || !calendar) {
     return <LoadingPage />;
-  }
-
-  /*const events = calendar?.map((c: any) => {
-    const toTimeZone = (fromUTC: Date) =>
-      utcToZonedTime(fromUTC, settings.timeZone);
-    const start = toTimeZone(new Date(c.start));
-    const end = toTimeZone(new Date(c.end));
-    const startHour = format(start, 'HH:mm');
-    const endHour = format(end, 'HH:mm');
-
-    return {
-      start,
-      end,
-      extendedProps: c,
-      backgroundColor: c.tag,
-      editable: true,
-      display: 'block',
-      title: `${startHour}-${endHour}`,
-    };
-  });*/
-
-  if (!staff) {
-    return <></>;
   }
 
   const { _id, fullname, active } = staff;
@@ -87,6 +78,7 @@ export default () => {
       {editScheduleModal}
       <Card sectioned>
         <StaffCalendar
+          onChangeDate={onChangeDate}
           events={calendar}
           create={createSchedule}
           edit={editSchedule}

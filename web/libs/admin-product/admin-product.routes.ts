@@ -1,7 +1,7 @@
 import { Router } from "express";
+import { body } from "express-validator";
 import { expressHandleRoute } from "../express-helpers/handle-route";
 import controller, { ControllerMethods } from "./admin-product.controller";
-import { body, validationResult } from "express-validator";
 
 export default function adminProductRoutes(app) {
   const router = Router();

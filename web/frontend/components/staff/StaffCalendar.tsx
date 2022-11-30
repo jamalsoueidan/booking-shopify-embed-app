@@ -2,35 +2,38 @@ import Calendar from '@components/Calendar';
 import useTagOptions from '@components/useTagOptions';
 import { DateClickArg } from '@fullcalendar/interaction';
 import FullCalendar, {
+  DatesSetArg,
   EventClickArg,
   EventContentArg,
 } from '@fullcalendar/react';
 import { useSettingGet } from '@services/setting';
-import { Icon, Tag } from '@shopify/polaris';
-import { DynamicSourceMajor } from '@shopify/polaris-icons';
 import { format } from 'date-fns';
 import { utcToZonedTime } from 'date-fns-tz';
-import { createRef, useCallback, useEffect, useState } from 'react';
+import { createRef, useCallback, useEffect } from 'react';
 
 interface StaffCalendarProps {
   create: (info: DateClickArg) => void;
   edit: (event: EventClickArg) => void;
+  onChangeDate: (props: CalendarDateChangeProps) => void;
   events: Schedule[];
 }
 
-export default ({ create, edit, events }: StaffCalendarProps) => {
+export default ({ create, edit, events, onChangeDate }: StaffCalendarProps) => {
   const calendarRef = createRef<FullCalendar>();
-  const [start, setStart] = useState(null);
-  const [end, setEnd] = useState(null);
   const {
     data: { timeZone },
   } = useSettingGet();
   const tagOptions = useTagOptions();
 
-  const dateChanged = useCallback((props: { start: Date; end: Date }) => {
-    setStart(format(props.start, 'yyyy-MM-dd'));
-    setEnd(format(props.end, 'yyyy-MM-dd'));
-  }, []);
+  const dateChanged = useCallback(
+    (props: DatesSetArg) => {
+      onChangeDate({
+        start: format(props.start, 'yyyy-MM-dd'),
+        end: format(props.end, 'yyyy-MM-dd'),
+      });
+    },
+    [onChangeDate]
+  );
 
   const toTimeZone = useCallback(
     (fromUTC: Date) => {
@@ -40,7 +43,7 @@ export default ({ create, edit, events }: StaffCalendarProps) => {
   );
 
   useEffect(() => {
-    if (events) {
+    if (events?.length > 0 && calendarRef.current) {
       const api = calendarRef.current.getApi();
       const removeEvents = api.getEvents();
       removeEvents.forEach((event) => {
@@ -67,7 +70,7 @@ export default ({ create, edit, events }: StaffCalendarProps) => {
           {format(arg.event.start, 'HH:mm')} - {format(arg.event.end, 'HH:mm')}
         </i>
       );
-      console.log(schedule.groupId);
+
       return (
         <div
           style={{

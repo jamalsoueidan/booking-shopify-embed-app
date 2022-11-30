@@ -20,10 +20,8 @@ export enum ControllerMethods {
 }
 
 const get = async ({ query }) => {
-  const { shop, staff } = query;
-  if (await StaffService.findOne(staff, { shop })) {
-    return await ScheduleService.find({ staff });
-  }
+  const { shop, staff, start, end } = query;
+  return await ScheduleService.getByDateRange({ staff, start, end });
 };
 
 const create = async ({ query, body }) => {
@@ -46,9 +44,7 @@ const update = async ({ query, body }) => {
 const destroy = async ({ query }) => {
   const { shop, staff, schedule } = query;
 
-  if (await StaffService.findOne(staff, { shop })) {
-    return await ScheduleService.remove(schedule);
-  }
+  return await ScheduleService.remove({ schedule, shop });
 };
 
 const updateGroup = async ({ query, body }) => {
