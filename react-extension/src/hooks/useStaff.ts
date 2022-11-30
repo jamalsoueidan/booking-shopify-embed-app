@@ -1,11 +1,12 @@
 import { useContext } from "react";
 import useSWR from "swr";
-import AppContext from "../AppContext";
+import AppContext from "../contexts/AppContext";
 
-export const useStaff = () => {
+interface UseStaffReturn {
+  data: Staff[];
+}
+export const useStaff = (): UseStaffReturn => {
   const { api, productId, shop } = useContext(AppContext);
-
-  console.log(api, productId, shop);
 
   const { data } = useSWR(
     `${api}/api/widget/staff?shop=${shop}&productId=${productId}`,

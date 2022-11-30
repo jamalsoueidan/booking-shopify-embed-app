@@ -1,4 +1,16 @@
+import { DateTime, easepick } from "@easepick/bundle";
 import styled from "@emotion/styled";
+import {
+  createRef,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import FormContext from "../contexts/FormContext";
+import { useDate } from "../hooks/useDate";
+import { LockPlugin } from "@easepick/bundle";
 
 const SVG = styled.svg`
   width: 1em;
@@ -8,20 +20,117 @@ const SVG = styled.svg`
   overflow: hidden;
 `;
 
-export const SelectDate = () => {
+interface SelectDateProps {
+  onChange: (value: Schedule | undefined) => void;
+}
+
+export const SelectDate = ({ onChange }: SelectDateProps) => {
+  const { staff } = useContext(FormContext);
+  const [date, setDate] = useState(new DateTime());
+
+  const dateInput = createRef<HTMLInputElement>();
+  const datePicker = useRef<easepick.Core>();
+  const { data: events } = useDate({ date });
+
+  const findSchedule = useCallback(
+    (date: string) =>
+      events?.find(
+        (schedule) => schedule.date === date && schedule.hours.length > 0
+      ),
+    [events]
+  );
+
+  const filter = useCallback(
+    (date: DateTime | DateTime[], picked: DateTime[]) => {
+      if (!Array.isArray(date)) {
+        return !findSchedule(date.format("YYYY-MM-DD"));
+      }
+      return false;
+    },
+    [findSchedule]
+  );
+
+  const select = useCallback(
+    (e: any) => {
+      const { date } = e.detail;
+      onChange(findSchedule(date.format("YYYY-MM-DD")));
+    },
+    [findSchedule, onChange]
+  );
+
+  const view = useCallback(
+    (e: any) => {
+      const { view, date, target } = e.detail;
+      if (view === "CalendarHeader") {
+        setDate(date);
+        return;
+      }
+
+      const d = date ? date.format("YYYY-MM-DD") : null;
+      if (view === "CalendarDay" && d) {
+        const schedule = findSchedule(d);
+        if (schedule) {
+          const span =
+            target.querySelector(".day-price") ||
+            document.createElement("span");
+          span.className = "day-price";
+          span.innerHTML = `${schedule.hours.length}`;
+          target.append(span);
+        }
+      }
+    },
+    [findSchedule]
+  );
+
+  useEffect(() => {
+    if (dateInput.current && !datePicker.current) {
+      datePicker.current = new easepick.create({
+        element: dateInput.current,
+        css: [
+          "https://cdn.jsdelivr.net/npm/@easepick/bundle@1.2.0/dist/index.css",
+          "https://easepick.com/css/demo_prices.css",
+        ],
+        lang: "da-DK",
+        zIndex: 10,
+        plugins: [LockPlugin],
+      });
+    }
+  }, [dateInput, datePicker]);
+
+  useEffect(() => {
+    const picker = datePicker.current;
+    if (picker) {
+      const lockPlugin =
+        picker.PluginManager.getInstance<LockPlugin>("LockPlugin");
+
+      lockPlugin.options.filter = filter;
+      lockPlugin.options.minDate = new Date();
+      picker.on("select", select);
+      picker.on("view", view);
+      picker.renderAll();
+    }
+    return () => {
+      const picker = datePicker.current;
+      if (picker) {
+        picker.off("select", select);
+        picker.off("view", view);
+      }
+    };
+  }, [datePicker, filter, events, select, view]);
+
   return (
-    <div className="mb">
+    <div>
       <label className="form__label" htmlFor="dateInput">
         {" "}
         2. Vælg dato:{" "}
       </label>
       <div className="field">
         <input
-          id="dateInput"
+          ref={dateInput}
           name="properties[date]"
           className="input"
           required
-          disabled
+          disabled={!staff}
           placeholder=""
         />
         <SVG

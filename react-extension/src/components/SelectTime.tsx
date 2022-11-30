@@ -1,4 +1,6 @@
 import styled from "@emotion/styled";
+import { useCallback, useContext, useEffect, useState } from "react";
+import FormContext from "../contexts/FormContext";
 
 const SVG = styled.svg`
   position: absolute;
@@ -12,17 +14,58 @@ const SVG = styled.svg`
 `;
 
 export const SelectTime = () => {
+  const { schedule } = useContext(FormContext);
+  const [hours, setHours] = useState<Array<Hour>>([]);
+
+  useEffect(() => {
+    if (schedule) {
+      const hours: Hour[] = schedule.hours.reduce((hours: Hour[], current) => {
+        const notFound = !hours.find(
+          (h) => h.start === current.start && h.end === current.end
+        );
+        if (notFound) {
+          hours.push(current);
+        }
+        return hours;
+      }, []);
+
+      setHours(hours);
+    }
+  }, [schedule]);
+
+  const getTime = useCallback(
+    ({ start, end }: { start: string; end: string }) => {
+      const startDate = new Date(start);
+      const endDate = new Date(end);
+      const value = `${startDate.getHours()}:${
+        startDate.getMinutes() < 10 ? "0" : ""
+      }${startDate.getMinutes()} - ${endDate.getHours()}:${
+        endDate.getMinutes() < 10 ? "0" : ""
+      }${endDate.getMinutes()}`;
+      return value;
+    },
+    []
+  );
+
   return (
-    <div className="mb">
+    <div>
       <label className="form__label" htmlFor="timeSelect">
         {" "}
         3. Vælg tid:{" "}
       </label>
       <div className="select">
-        <select id="timeSelect" className="select" required disabled>
+        <select
+          id="timeSelect"
+          className="select"
+          required
+          disabled={!schedule}
+        >
           <option value="" disabled selected>
             Vælg tid
           </option>
+          {hours?.map((option) => {
+            return <option key={option.start}>{getTime(option)}</option>;
+          })}
         </select>
         <SVG
           aria-hidden="true"
