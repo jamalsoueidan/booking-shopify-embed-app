@@ -12,7 +12,7 @@ import { getTime } from "./libs/getTime";
 const ApplicationStyled = styled("div")`
   .customer div {
     margin-bottom: 15px;
-  }
+  }k
 `;
 
 function App({ config }: AppProps) {
@@ -28,7 +28,10 @@ function App({ config }: AppProps) {
         value: undefined,
         validates: [],
       }),
-      hour: useField<Hour | undefined>({ value: undefined, validates: [] }),
+      hour: useField<Hour | undefined>({
+        value: undefined,
+        validates: [],
+      }),
     },
     onSubmit: async (fieldValues: any) => {
       return { status: "fail", errors: [{ message: "bad form data" }] };
@@ -37,14 +40,25 @@ function App({ config }: AppProps) {
 
   // on first render, assign submit
   useEffect(() => {
-    const submitButton = document.querySelector<HTMLButtonElement>(
+    const submit = document.querySelector<HTMLButtonElement>(
       "button[type=submit]"
     );
-    if (submitButton) {
-      setSubmit(submitButton);
-      submitButton.disabled = true;
+    if (submit) {
+      setSubmit(submit);
+      submit.disabled = true;
     }
   }, []);
+
+  useEffect(() => {
+    if (
+      submit &&
+      fields.staff.value &&
+      fields.hour.value &&
+      fields.schedule.value
+    ) {
+      submit.disabled = false;
+    }
+  }, [submit, fields]);
 
   return (
     <AppContext.Provider value={config}>
@@ -65,6 +79,7 @@ function App({ config }: AppProps) {
                   ? "Enhver tilgængelig"
                   : fields.staff.value?.fullname
               }
+              hidden
             />
 
             <div className="customer">
@@ -76,11 +91,13 @@ function App({ config }: AppProps) {
               id="time"
               name="properties[time]"
               defaultValue={fields.hour.value && getTime(fields.hour.value)}
+              hidden
             />
             <input
               id="data"
               name="properties[data]"
               value={JSON.stringify({ ...fields.hour.value })}
+              hidden
             />
           </ApplicationStyled>
         </Bootup>

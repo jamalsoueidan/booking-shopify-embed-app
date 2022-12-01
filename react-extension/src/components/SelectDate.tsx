@@ -124,6 +124,7 @@ export const SelectDate = ({ fields }: SelectDateProps) => {
   useEffect(() => {
     if (!fields.schedule.value && datePicker.current) {
       datePicker.current.clear();
+      datePicker.current.renderAll();
     }
   }, [datePicker, fields]);
 

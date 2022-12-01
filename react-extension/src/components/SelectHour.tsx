@@ -39,6 +39,8 @@ export const SelectHour = ({ fields }: SelectHourProps) => {
       }, []);
 
       setHours(hours);
+    } else {
+      setHours([]);
     }
   }, [schedule]);
 
