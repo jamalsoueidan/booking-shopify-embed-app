@@ -92,22 +92,8 @@ The following Shopify tools complement these third-party tools to ease app devel
 
 This template can be installed using your preferred package manager:
 
-Using yarn:
-
-```shell
-yarn create @shopify/app
-```
-
-Using npx:
-
 ```shell
 npm init @shopify/app@latest
-```
-
-Using pnpm:
-
-```shell
-pnpm create @shopify/app@latest
 ```
 
 This will clone the template and install the required dependencies.
@@ -118,22 +104,8 @@ This will clone the template and install the required dependencies.
 
 You can develop locally using your preferred package manager. Run one of the following commands from the root of your app.
 
-Using yarn:
-
-```shell
-yarn dev
-```
-
-Using npm:
-
 ```shell
 npm run dev
-```
-
-Using pnpm:
-
-```shell
-pnpm run dev
 ```
 
 Open the URL generated in your console. Once you grant permission to the app, you can start development.
@@ -144,37 +116,11 @@ Open the URL generated in your console. Once you grant permission to the app, yo
 
 The frontend is a single page app. It requires the `SHOPIFY_API_KEY`, which you can find on the page for your app in your partners dashboard. Paste your app’s key in the command for the package manager of your choice:
 
-Using yarn:
-
-```shell
-cd web/frontend/ && SHOPIFY_API_KEY=REPLACE_ME yarn build
-```
-
-Using npm:
-
 ```shell
 cd web/frontend/ && SHOPIFY_API_KEY=REPLACE_ME npm run build
 ```
 
-Using pnpm:
-
-```shell
-cd web/frontend/ && SHOPIFY_API_KEY=REPLACE_ME pnpm run build
-```
-
 You do not need to build the backend.
-
-## Hosting
-
-When you're ready to set up your app in production, you can follow [our deployment documentation](https://shopify.dev/apps/deployment/web) to host your app on a cloud provider like [Heroku](https://www.heroku.com/) or [Fly.io](https://fly.io/).
-
-When you reach the step for [setting up environment variables](https://shopify.dev/apps/deployment/web#set-env-vars), you also need to set the variable `NODE_ENV=production`.
-
-## Some things to watch out for
-
-### Using `express.json` middleware
-
-If you use the `express.json()` middleware in your app **and** if you use `Shopify.Webhooks.Registry.process()` to process webhooks API calls from Shopify (which we recommend), the webhook processing must occur **_before_** calling `app.use(express.json())`. See the [API documentation](https://github.com/Shopify/shopify-api-node/blob/main/docs/usage/webhooks.md#note-regarding-use-of-body-parsers) for more details.
 
 ## Developer resources
 

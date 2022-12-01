@@ -7,6 +7,7 @@
     "@easepick/bundle": "^1.2.0",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
+    "@shopify/react-form": "^2.4.1",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
@@ -23,12 +24,13 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "concurrently \"npm run build:watch\" \"react-scripts start\"",
+    "start": "concurrently \"npm run dev\" \"npm run watch\"",
+    "dev": "react-scripts start",
     "postbuild": "sh predeploy.sh",
     "build": "BUILD_PATH='./dist' react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build:watch": "run-when-changed --watch \"src/*.tsx\" --exec \"npm run build\""
+    "watch": "run-when-changed --watch \"src/*.tsx\" --exec \"npm run build\""
   },
   "eslintConfig": {
     "extends": [

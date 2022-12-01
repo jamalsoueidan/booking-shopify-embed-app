@@ -6,26 +6,31 @@ const SVG = styled.svg`
   height: 0.6rem;
 `;
 
-interface SelectStaffProps {
-  onChange: (value: Staff | undefined) => void;
-}
+interface SelectStaffProps extends FieldProps {}
 
-export const SelectStaff = ({ onChange }: SelectStaffProps) => {
+export const SelectStaff = ({ fields }: SelectStaffProps) => {
   const { data } = useStaff();
 
   const selectOnChange = useCallback(
     (event: ChangeEvent<HTMLSelectElement>) => {
+      const staff = fields.staff;
       const selectedIndex = event.target.selectedIndex;
       if (selectedIndex === 0) {
-        return onChange(undefined);
+        return staff.reset();
       }
       if (selectedIndex === 1) {
-        return onChange({ _id: "", fullname: "", staff: "", tag: "" });
+        return staff.onChange({
+          fullname: "Enhver tilgængelig",
+          staff: "",
+          anyAvailable: true,
+        });
       }
 
-      onChange(data[selectedIndex - 2]);
+      staff.onChange(data[selectedIndex - 2]);
+      fields.schedule.onChange(undefined);
+      fields.hour.onChange(undefined);
     },
-    [onChange, data]
+    [fields, data]
   );
 
   return (
@@ -35,11 +40,24 @@ export const SelectStaff = ({ onChange }: SelectStaffProps) => {
         1. Vælg frisør:{" "}
       </label>
       <div className="select">
-        <select id="staffSelect" onChange={selectOnChange} required>
+        <select
+          id="staffSelect"
+          onChange={selectOnChange}
+          required
+          value={
+            fields.staff.value?.anyAvailable
+              ? "Enhver tilgængelig"
+              : fields.staff.value?.staff
+          }
+        >
           <option value="">Vælg frisør</option>
           <option value="Enhver tilgængelig">Enhver tilgængelig</option>
-          {data?.map((option, index) => {
-            return <option key={option.staff}>{option.fullname}</option>;
+          {data?.map((option) => {
+            return (
+              <option key={option.staff} value={option.staff}>
+                {option.fullname}
+              </option>
+            );
           })}
         </select>
         <SVG

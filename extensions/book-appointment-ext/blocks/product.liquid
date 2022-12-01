@@ -1,7 +1,7 @@
 {%- if block.settings.environment == 'production' -%}
   {%- assign api = 'https://book-appointment-shopify-app.herokuapp.com' -%}
 {%- else -%}
-  {%- assign api = 'https://d8fd568c8f48.eu.ngrok.io' -%}
+  {%- assign api = 'https://52b517dcb0fd.eu.ngrok.io' -%}
 {%- endif -%}
 
 <script type="text/javascript">
@@ -10,14 +10,15 @@
   Shopify.api = '{{api}}';
   Shopify.productId = '8006173360445';
   //]]>
-</script>
 
-<book-appointment-ext />
+  const div = document.querySelector('.form');
+  div.insertAdjacentHTML('afterbegin', '<book-appointment-ext />');
+</script>
 
 {% schema %}
 {
   "name": "product",
-  "target": "section",
+  "target": "body",
   "javascript": "main.js",
   "templates": ["product"],
   "settings": [

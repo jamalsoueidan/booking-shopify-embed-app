@@ -1,4 +1,4 @@
-import { DateTime, easepick } from "@easepick/bundle";
+import { DateTime, easepick, LockPlugin } from "@easepick/bundle";
 import styled from "@emotion/styled";
 import {
   createRef,
@@ -10,7 +10,6 @@ import {
 } from "react";
 import FormContext from "../contexts/FormContext";
 import { useDate } from "../hooks/useDate";
-import { LockPlugin } from "@easepick/bundle";
 
 const SVG = styled.svg`
   width: 1em;
@@ -20,11 +19,15 @@ const SVG = styled.svg`
   overflow: hidden;
 `;
 
-interface SelectDateProps {
-  onChange: (value: Schedule | undefined) => void;
-}
+const Input = styled.input`
+  &:not(:placeholder-shown) {
+    padding: 1.5rem !important;
+  }
+`;
 
-export const SelectDate = ({ onChange }: SelectDateProps) => {
+interface SelectDateProps extends FieldProps {}
+
+export const SelectDate = ({ fields }: SelectDateProps) => {
   const { staff } = useContext(FormContext);
   const [date, setDate] = useState(new DateTime());
 
@@ -51,11 +54,11 @@ export const SelectDate = ({ onChange }: SelectDateProps) => {
   );
 
   const select = useCallback(
-    (e: any) => {
-      const { date } = e.detail;
-      onChange(findSchedule(date.format("YYYY-MM-DD")));
+    ({ detail }: any) => {
+      const { date } = detail;
+      fields.schedule.onChange(findSchedule(date.format("YYYY-MM-DD")));
     },
-    [findSchedule, onChange]
+    [findSchedule, fields]
   );
 
   const view = useCallback(
@@ -118,6 +121,12 @@ export const SelectDate = ({ onChange }: SelectDateProps) => {
     };
   }, [datePicker, filter, events, select, view]);
 
+  useEffect(() => {
+    if (!fields.schedule.value && datePicker.current) {
+      datePicker.current.clear();
+    }
+  }, [datePicker, fields]);
+
   return (
     <div>
       <label className="form__label" htmlFor="dateInput">
@@ -125,7 +134,7 @@ export const SelectDate = ({ onChange }: SelectDateProps) => {
         2. Vælg dato:{" "}
       </label>
       <div className="field">
-        <input
+        <Input
           ref={dateInput}
           name="properties[date]"
           className="input"

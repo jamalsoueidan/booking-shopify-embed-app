@@ -1,6 +1,13 @@
 import styled from "@emotion/styled";
-import { useCallback, useContext, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import FormContext from "../contexts/FormContext";
+import { getTime } from "../libs/getTime";
 
 const SVG = styled.svg`
   position: absolute;
@@ -13,7 +20,9 @@ const SVG = styled.svg`
   top: 15px !important;
 `;
 
-export const SelectTime = () => {
+interface SelectHourProps extends FieldProps {}
+
+export const SelectHour = ({ fields }: SelectHourProps) => {
   const { schedule } = useContext(FormContext);
   const [hours, setHours] = useState<Array<Hour>>([]);
 
@@ -33,18 +42,19 @@ export const SelectTime = () => {
     }
   }, [schedule]);
 
-  const getTime = useCallback(
-    ({ start, end }: { start: string; end: string }) => {
-      const startDate = new Date(start);
-      const endDate = new Date(end);
-      const value = `${startDate.getHours()}:${
-        startDate.getMinutes() < 10 ? "0" : ""
-      }${startDate.getMinutes()} - ${endDate.getHours()}:${
-        endDate.getMinutes() < 10 ? "0" : ""
-      }${endDate.getMinutes()}`;
-      return value;
+  const selectOnChange = useCallback(
+    (event: ChangeEvent<HTMLSelectElement>) => {
+      const selectedIndex = event.target.selectedIndex;
+      const hour = hours[selectedIndex - 1];
+      fields.hour.onChange({
+        ...hour,
+        staff: {
+          ...hour.staff,
+          anyAvailable: fields.staff?.value?.anyAvailable,
+        },
+      });
     },
-    []
+    [fields, hours]
   );
 
   return (
@@ -57,14 +67,18 @@ export const SelectTime = () => {
         <select
           id="timeSelect"
           className="select"
-          required
           disabled={!schedule}
+          onChange={selectOnChange}
+          value={fields.hour.value?.start}
+          required
         >
-          <option value="" disabled selected>
-            Vælg tid
-          </option>
+          <option value="">Vælg tid</option>
           {hours?.map((option) => {
-            return <option key={option.start}>{getTime(option)}</option>;
+            return (
+              <option key={option.start} value={fields.hour.value?.start}>
+                {getTime(option)}
+              </option>
+            );
           })}
         </select>
         <SVG

@@ -9,6 +9,7 @@ interface ApplicationContext {
 interface FormContext {
   staff?: Staff;
   schedule?: Schedule;
+  hour?: Hour;
 }
 
 interface AppProps {
@@ -18,8 +19,7 @@ interface AppProps {
 interface Staff {
   fullname: string;
   staff: string;
-  tag: string;
-  _id: string;
+  anyAvailable?: boolean;
 }
 
 interface Hour {
@@ -33,4 +33,14 @@ interface Hour {
 interface Schedule {
   date: string;
   hours: Hour[];
+}
+
+interface CustomForm {
+  staff: Field<Staff | undefined>;
+  schedule: Field<Schedule | undefined>;
+  hour: Field<Hour | undefined>;
+}
+
+interface FieldProps {
+  fields: CustomForm;
 }
