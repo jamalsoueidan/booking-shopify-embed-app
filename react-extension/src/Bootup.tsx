@@ -1,11 +1,38 @@
+import { useEffect, useState } from "react";
 import { useStaff } from "./hooks/useStaff";
 
-export const Bootup = ({ children }: any) => {
+interface BootupProps extends FieldProps {
+  children: any;
+}
+
+export const Bootup = ({ fields, children }: BootupProps) => {
+  const [submit, setSubmit] = useState<HTMLButtonElement>();
   const { data } = useStaff();
 
-  if (data?.length === 0) {
-    return <></>;
+  // on first render, assign submit
+  useEffect(() => {
+    const submit = document.querySelector<HTMLButtonElement>(
+      "button[type=submit]"
+    );
+    if (submit && data?.length > 0) {
+      setSubmit(submit);
+      submit.disabled = true;
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (!submit) return;
+
+    if (fields.staff.value && fields.hour.value && fields.schedule.value) {
+      submit.disabled = false;
+    } else {
+      submit.disabled = true;
+    }
+  }, [submit, fields]);
+
+  if (data?.length > 0) {
+    return children;
   }
 
-  return children;
+  return <></>;
 };

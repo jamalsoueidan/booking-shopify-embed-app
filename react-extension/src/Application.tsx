@@ -1,7 +1,7 @@
 import { DateTime } from "@easepick/bundle";
 import styled from "@emotion/styled";
 import { useField, useForm } from "@shopify/react-form";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Bootup } from "./Bootup";
 import { SelectDate } from "./components/SelectDate";
 import { SelectHour } from "./components/SelectHour";
@@ -24,8 +24,6 @@ const ApplicationStyled = styled("div")`
 `;
 
 function App({ config }: AppProps) {
-  const [submit, setSubmit] = useState<HTMLButtonElement>();
-
   const { fields, reset } = useForm({
     fields: {
       staff: useField<Staff | undefined>({
@@ -46,20 +44,8 @@ function App({ config }: AppProps) {
     },
   });
 
-  // on first render, assign submit
-  useEffect(() => {
-    const submit = document.querySelector<HTMLButtonElement>(
-      "button[type=submit]"
-    );
-    if (submit) {
-      setSubmit(submit);
-      submit.disabled = true;
-    }
-  }, []);
-
   useEffect(() => {
     const { fetch: originalFetch } = window;
-    console.log("reset");
     window.fetch = async (...args) => {
       let [resource, config] = args;
       const response = await originalFetch(resource, config);
@@ -70,16 +56,6 @@ function App({ config }: AppProps) {
     };
   }, [reset]);
 
-  useEffect(() => {
-    if (!submit) return;
-
-    if (fields.staff.value && fields.hour.value && fields.schedule.value) {
-      submit.disabled = false;
-    } else {
-      submit.disabled = true;
-    }
-  }, [submit, fields]);
-
   return (
     <AppContext.Provider value={config}>
       <FormContext.Provider
@@ -89,7 +65,7 @@ function App({ config }: AppProps) {
           hour: fields.hour.value,
         }}
       >
-        <Bootup>
+        <Bootup fields={fields}>
           <ApplicationStyled>
             <div className="customer">
               <SelectStaff fields={fields}></SelectStaff>
