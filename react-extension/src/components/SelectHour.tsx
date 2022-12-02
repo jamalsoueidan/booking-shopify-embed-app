@@ -11,12 +11,11 @@ import { getTime } from "../libs/getTime";
 
 const SVG = styled.svg`
   position: absolute;
-  width: 1em !important;
-  height: 1em !important;
+  height: 0.8em !important;
   vertical-align: middle;
   fill: currentcolor;
   overflow: hidden;
-  right: 15px !important;
+  right: 12px !important;
   top: 15px !important;
 `;
 

@@ -17,6 +17,9 @@ const SVG = styled.svg`
   vertical-align: middle;
   fill: currentColor;
   overflow: hidden;
+  position: absolute;
+  right: 12px;
+  top: 15px;
 `;
 
 const Input = styled.input`

@@ -12,7 +12,14 @@ import { getTime } from "./libs/getTime";
 const ApplicationStyled = styled("div")`
   .customer div {
     margin-bottom: 15px;
-  }k
+  }
+
+  input:disabled,
+  select:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+    background: #ebebeb !important;
+  }
 `;
 
 function App({ config }: AppProps) {
