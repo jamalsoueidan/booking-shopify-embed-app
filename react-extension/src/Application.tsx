@@ -1,3 +1,4 @@
+import { DateTime } from "@easepick/bundle";
 import styled from "@emotion/styled";
 import { useField, useForm } from "@shopify/react-form";
 import { useEffect, useState } from "react";
@@ -25,7 +26,7 @@ const ApplicationStyled = styled("div")`
 function App({ config }: AppProps) {
   const [submit, setSubmit] = useState<HTMLButtonElement>();
 
-  const { fields } = useForm({
+  const { fields, reset } = useForm({
     fields: {
       staff: useField<Staff | undefined>({
         value: undefined,
@@ -57,13 +58,25 @@ function App({ config }: AppProps) {
   }, []);
 
   useEffect(() => {
-    if (
-      submit &&
-      fields.staff.value &&
-      fields.hour.value &&
-      fields.schedule.value
-    ) {
+    const { fetch: originalFetch } = window;
+    console.log("reset");
+    window.fetch = async (...args) => {
+      let [resource, config] = args;
+      const response = await originalFetch(resource, config);
+      if (resource === "/cart/add") {
+        reset();
+      }
+      return response;
+    };
+  }, [reset]);
+
+  useEffect(() => {
+    if (!submit) return;
+
+    if (fields.staff.value && fields.hour.value && fields.schedule.value) {
       submit.disabled = false;
+    } else {
+      submit.disabled = true;
     }
   }, [submit, fields]);
 
@@ -78,9 +91,14 @@ function App({ config }: AppProps) {
       >
         <Bootup>
           <ApplicationStyled>
+            <div className="customer">
+              <SelectStaff fields={fields}></SelectStaff>
+              <SelectDate fields={fields}></SelectDate>
+              <SelectHour fields={fields}></SelectHour>
+            </div>
             <input
               id="staff"
-              name="properties[staff]"
+              name="properties[Medarbejder]"
               defaultValue={
                 fields.staff.value?.anyAvailable
                   ? "Enhver tilgængelig"
@@ -88,22 +106,32 @@ function App({ config }: AppProps) {
               }
               hidden
             />
-
-            <div className="customer">
-              <SelectStaff fields={fields}></SelectStaff>
-              <SelectDate fields={fields}></SelectDate>
-              <SelectHour fields={fields}></SelectHour>
-            </div>
+            <input
+              id="date"
+              name="properties[Dato]"
+              defaultValue={
+                fields.schedule.value
+                  ? new DateTime(new Date(fields.schedule.value?.date)).format(
+                      "DD. MMM YYYY",
+                      "da"
+                    )
+                  : ""
+              }
+              hidden
+            />
             <input
               id="time"
-              name="properties[time]"
+              name="properties[Tid]"
               defaultValue={fields.hour.value && getTime(fields.hour.value)}
               hidden
             />
             <input
               id="data"
               name="properties[data]"
-              value={JSON.stringify({ ...fields.hour.value })}
+              value={JSON.stringify({
+                ...fields.hour.value,
+                timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+              })}
               hidden
             />
           </ApplicationStyled>

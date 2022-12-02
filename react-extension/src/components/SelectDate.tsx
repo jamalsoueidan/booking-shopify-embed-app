@@ -140,7 +140,6 @@ export const SelectDate = ({ fields }: SelectDateProps) => {
       <div className="field">
         <Input
           ref={dateInput}
-          name="properties[date]"
           className="input"
           required
           disabled={!staff}
