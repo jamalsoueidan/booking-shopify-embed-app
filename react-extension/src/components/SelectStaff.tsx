@@ -37,7 +37,7 @@ export const SelectStaff = ({ fields }: SelectStaffProps) => {
     <div>
       <label className="form__label" htmlFor="staffSelect">
         {" "}
-        1. Vælg frisør:{" "}
+        1. Vælg medarbejder:{" "}
       </label>
       <div className="select">
         <select

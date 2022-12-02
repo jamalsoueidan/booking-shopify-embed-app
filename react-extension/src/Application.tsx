@@ -127,7 +127,7 @@ function App({ config }: AppProps) {
             />
             <input
               id="data"
-              name="properties[data]"
+              name="properties[_data]"
               value={JSON.stringify({
                 ...fields.hour.value,
                 timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
