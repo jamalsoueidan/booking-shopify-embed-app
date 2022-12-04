@@ -23,7 +23,7 @@ interface Props {
 }
 
 export default ({ info, setInfo }: Props) => {
-  const tagOptions = useTagOptions();
+  const { options } = useTagOptions();
   const params = useParams();
   const toggleActive = () => setInfo(null);
   const { data: settings } = useSettingGet();
@@ -37,7 +37,7 @@ export default ({ info, setInfo }: Props) => {
   const [endTime, setEndTime] = useState<string>(
     format(toTimeZone(extendedProps.end), 'HH:mm')
   );
-  const [tag, setTag] = useState(extendedProps.tag || tagOptions[0].value);
+  const [tag, setTag] = useState(extendedProps.tag || options[0].value);
   const [available, setAvailable] = useState(extendedProps.available || false);
 
   const { isUpdating, update: updateSchedule } = useStaffScheduleUpdate({
@@ -151,7 +151,7 @@ export default ({ info, setInfo }: Props) => {
           <Layout.Section>
             <Select
               label="Tag"
-              options={tagOptions}
+              options={options}
               onChange={handleTag}
               value={tag}
             />

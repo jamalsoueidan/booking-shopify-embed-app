@@ -1,5 +1,6 @@
 import LoadingPage from '@components/LoadingPage';
 import Metadata from '@components/staff/Metadata';
+import usePositions from '@components/usePositions';
 import { useStaffList } from '@services/staff';
 import { useNavigate } from '@shopify/app-bridge-react';
 import {
@@ -14,15 +15,18 @@ import {
 export default () => {
   const navigate = useNavigate();
   const { data } = useStaffList();
+  const { select } = usePositions();
 
   if (!data) {
     return <LoadingPage />;
   }
 
   const renderItems = (item: Staff) => {
-    const { _id, fullname, email, phone, active } = item;
+    const { _id, fullname, active, avatar, position } = item;
     const url = '/Staff/' + _id;
-    const media = <Avatar customer size="medium" name={fullname} />;
+    const media = (
+      <Avatar customer size="medium" name={fullname} source={avatar} />
+    );
 
     return (
       <ResourceItem
@@ -34,9 +38,8 @@ export default () => {
           {fullname} <Metadata active={active} />
         </Text>
         <div>
-          {email}
+          {select(position)}
           <br />
-          {phone}
         </div>
       </ResourceItem>
     );

@@ -7,7 +7,6 @@ import cors from "cors";
 import express from "express";
 import { readFileSync } from "fs";
 import { join } from "path";
-import { exit } from "process";
 import { AppInstallations } from "./app_installations.js";
 import connect from "./database/database.js";
 import { setupGDPRWebHooks } from "./gdpr.js";
@@ -162,6 +161,7 @@ export async function createServer(
   app.use(express.json({ limit: "1mb", extended: true } as any));
 
   app.use("/api/widget", widgetRoutes(app));
+  app.use("/api/admin", adminCollectionRoutes(app));
 
   // All endpoints after this point will require an active session
   app.use(

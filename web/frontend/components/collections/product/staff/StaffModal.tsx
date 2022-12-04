@@ -1,4 +1,5 @@
 import TagOptions from '@components/TagOptions';
+import usePositions from '@components/usePositions';
 import useTagOptions from '@components/useTagOptions';
 import { useCollectionProductStaff } from '@services/product/staff';
 import { Modal, OptionList, Spinner } from '@shopify/polaris';
@@ -97,14 +98,15 @@ interface ChoiceStaffProps {
 }
 
 const ChoiceStaff = ({ staff, selected, toggle }: ChoiceStaffProps) => {
-  const tagOptions = useTagOptions();
+  const { select: selectTag } = useTagOptions();
+  const { select: selectPosition } = usePositions();
 
   const choices = useMemo(
     () =>
       staff.tags.sort().map((t) => {
         return {
           value: t,
-          label: tagOptions.find((o) => o.value === t).label,
+          label: selectTag(t),
         };
       }),
     [staff.tags]
@@ -124,7 +126,7 @@ const ChoiceStaff = ({ staff, selected, toggle }: ChoiceStaffProps) => {
 
   return (
     <OptionList
-      title={staff.fullname}
+      title={staff.fullname + ', ' + selectPosition(staff.position)}
       options={choices}
       selected={choiceSelected}
       onChange={handleChange}

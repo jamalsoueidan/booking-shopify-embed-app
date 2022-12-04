@@ -12,6 +12,8 @@ interface StaffTag {
   _id: string;
   tag: string;
   fullname: string;
+  avatar?: string;
+  position?: string;
 }
 
 interface Product {
@@ -47,6 +49,8 @@ interface Staff {
   email: string;
   phone: string;
   active: boolean;
+  avatar: string;
+  position: string;
 }
 
 interface ProductStaff {
@@ -56,13 +60,8 @@ interface ProductStaff {
   fullname: string;
 }
 
-interface ProductStaffToAdd {
-  _id: string;
-  email: string;
-  active: boolean;
-  phone: string;
+interface ProductStaffToAdd extends Staff {
   tags: string[];
-  fullname: string;
 }
 
 interface Schedule {

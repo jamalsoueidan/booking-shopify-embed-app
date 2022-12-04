@@ -1,3 +1,4 @@
+import usePositions from '@components/usePositions';
 import useTagOptions from '@components/useTagOptions';
 import {
   Avatar,
@@ -17,7 +18,8 @@ interface StaffListProps {
 
 export default ({ action }: StaffListProps) => {
   const { t } = useTranslation('collections', { keyPrefix: 'product.staff' });
-  const tagOptions = useTagOptions();
+  const { select: selectTag } = useTagOptions();
+  const { select: selectPosition } = usePositions();
   const { value } = useContext(FormContext);
 
   return (
@@ -26,18 +28,18 @@ export default ({ action }: StaffListProps) => {
       items={value.sort((a, b) => (a.fullname > b.fullname ? 1 : -1))}
       alternateTool={<Button onClick={action}>{t('browse')}</Button>}
       renderItem={(item, _, index) => {
-        const { _id, fullname } = item;
+        const { _id, fullname, avatar, position } = item;
+
+        const media = (
+          <Avatar customer size="medium" name={fullname} source={avatar} />
+        );
 
         return (
-          <ResourceItem
-            id={_id}
-            media={<Avatar customer />}
-            name={fullname}
-            onClick={action}>
+          <ResourceItem id={_id} media={media} name={fullname} onClick={action}>
             <Text variant="bodyMd" fontWeight="bold" as="h3">
-              {fullname}
+              {fullname}, {selectPosition(position)}
             </Text>
-            <div>{tagOptions.find((t) => t.value === item.tag)?.label}</div>
+            <div>{selectTag(item.tag)}</div>
           </ResourceItem>
         );
       }}

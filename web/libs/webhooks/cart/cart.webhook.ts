@@ -40,7 +40,6 @@ const modify = async ({ body, shop }: CreateProps) => {
     if (_data) {
       const data: Data = JSON.parse(_data.split("\\").join(""));
       const { start, end, staff } = data;
-      console.log(_data);
       /*
 
       const response = await widgetController.availabilityDay({

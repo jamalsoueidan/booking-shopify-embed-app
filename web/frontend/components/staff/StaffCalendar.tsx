@@ -23,7 +23,7 @@ export default ({ create, edit, events, onChangeDate }: StaffCalendarProps) => {
   const {
     data: { timeZone },
   } = useSettingGet();
-  const tagOptions = useTagOptions();
+  const { select: selectTag } = useTagOptions();
 
   const dateChanged = useCallback(
     (props: DatesSetArg) => {
@@ -80,7 +80,7 @@ export default ({ create, edit, events, onChangeDate }: StaffCalendarProps) => {
             flexDirection: 'column',
           }}>
           <div>{hour}</div>
-          <div>{tagOptions.find((v) => v.value === schedule.tag).label} </div>
+          <div>{selectTag(schedule.tag)} </div>
           {schedule.groupId && (
             <div
               style={{

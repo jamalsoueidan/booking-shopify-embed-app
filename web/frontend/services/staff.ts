@@ -16,7 +16,7 @@ const useStaffList = (): UseStaffListReturn => {
   return { data: data?.payload };
 };
 
-interface UpdateOrCreateProps extends Omit<Staff, '_id' | 'shop'> {}
+export interface UpdateOrCreateProps extends Omit<Staff, '_id' | 'shop'> {}
 
 interface UseStaffGetProps {
   userId: string;

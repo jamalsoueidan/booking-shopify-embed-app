@@ -1,4 +1,5 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface UseTagOptionsReturn {
@@ -12,23 +13,19 @@ interface UseTagOptions {
 }
 
 export default (): UseTagOptionsReturn => {
-  const { t } = useTranslation('tags');
+  const { t } = useTranslation('positions');
 
   const options: UseTagOptions[] = useMemo(
     () => [
-      { label: t('everyday'), value: '#4b6043' },
-      { label: t('weekend'), value: '#235284' },
-      { label: t('all'), value: '#d24e01' },
-      { label: t('end'), value: '#2980B9' },
-      { label: t('start'), value: '#8E44AD' },
-      { label: t('middle'), value: '#A93226' },
+      { label: t('makeup'), value: '1' },
+      { label: t('hairdresser'), value: '2' },
     ],
     []
   );
 
   const select = useCallback(
     (value: string) => {
-      return options.find((o) => o.value === value)?.label;
+      return options.find((o) => o.value === value)?.label || '';
     },
     [options]
   );

@@ -1,5 +1,6 @@
 import { useCollectionDestroy } from '@services/collection';
 import {
+  Avatar,
   Button,
   Card,
   Icon,

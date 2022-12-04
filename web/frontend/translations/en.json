@@ -62,6 +62,10 @@
 		},
 		"unsaved": "Unsaved changes"
 	},
+	"positions": {
+		"hairdresser": "Hairdresser",
+		"makeup": "Makeup"
+	},
 	"settings": {
 		"store_settings": {
 			"language": {
@@ -102,6 +106,11 @@
 			},
 			"save": "Save",
 			"staff": {
+				"avatarUrl": {
+					"help": "Use url to import a picture",
+					"label": "Avatar URL",
+					"placeholder": "http://..."
+				},
 				"email": {
 					"help": "We’ll use this email address to inform you about future appointments.",
 					"label": "Email",
@@ -115,6 +124,9 @@
 					"help": "We’ll use this phone number to inform you about future appointments.",
 					"label": "Phone number",
 					"placeholder": "Example: +4531311234"
+				},
+				"position": {
+					"label": "Title"
 				},
 				"title": "Staff overview"
 			},

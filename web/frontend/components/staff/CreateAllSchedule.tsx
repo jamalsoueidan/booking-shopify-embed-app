@@ -35,7 +35,7 @@ interface CreateDayScheduleProps {
 }
 
 export default forwardRef(({ date, close }: CreateDayScheduleProps, ref) => {
-  const tagOptions = useTagOptions();
+  const { options } = useTagOptions();
   const params = useParams();
   const [{ month, year }, setDate] = useState({
     month: getMonth(new Date(date)) - 1,
@@ -64,7 +64,7 @@ export default forwardRef(({ date, close }: CreateDayScheduleProps, ref) => {
         validates: [],
       }),
       tag: useField({
-        value: tagOptions[0].value,
+        value: options[0].value,
         validates: [],
       }),
       available: useField({
@@ -194,7 +194,7 @@ export default forwardRef(({ date, close }: CreateDayScheduleProps, ref) => {
           </Columns>
         </Layout.Section>
         <Layout.Section>
-          <Select label="Tag" options={tagOptions} {...fields.tag} />
+          <Select label="Tag" options={options} {...fields.tag} />
         </Layout.Section>
       </Layout>
     </Modal.Section>
