@@ -1,5 +1,6 @@
 {
 	"bookings": {
+		"all": "All staff",
 		"title": "Bookings"
 	},
 	"collections": {

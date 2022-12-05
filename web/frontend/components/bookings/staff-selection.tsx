@@ -1,5 +1,5 @@
 import { useStaffList } from '@services/staff';
-import { Button, Stack } from '@shopify/polaris';
+import { Avatar, Button, Stack } from '@shopify/polaris';
 import { useTranslation } from 'react-i18next';
 
 interface Props {
@@ -17,6 +17,8 @@ export default ({ staff, onSelect, isLoading }: Props) => {
   return (
     <Stack>
       <Button
+        icon={<Avatar size="medium" />}
+        size="large"
         onClick={() => onSelect(null)}
         pressed={staff === null}
         loading={staff === null ? isLoading : false}>
@@ -25,10 +27,12 @@ export default ({ staff, onSelect, isLoading }: Props) => {
       {data.map((s) => {
         return (
           <Button
+            size="large"
             key={s._id}
             onClick={() => onSelect(s._id)}
             pressed={staff === s._id}
-            loading={staff === s._id ? isLoading : false}>
+            loading={staff === s._id ? isLoading : false}
+            icon={<Avatar size="medium" name={s.fullname} source={s.avatar} />}>
             {s.fullname}
           </Button>
         );

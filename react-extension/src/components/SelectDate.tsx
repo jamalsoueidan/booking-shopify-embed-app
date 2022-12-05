@@ -68,6 +68,8 @@ export const SelectDate = ({ fields }: SelectDateProps) => {
     (e: any) => {
       const { view, date, target } = e.detail;
       if (view === "CalendarHeader") {
+        target.querySelector(".previous-button").style.display =
+          date.getMonth() < new Date().getMonth() ? "block" : "none";
         setDate(date);
         return;
       }

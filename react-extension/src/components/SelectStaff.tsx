@@ -37,7 +37,7 @@ export const SelectStaff = ({ fields }: SelectStaffProps) => {
     <div>
       <label className="form__label" htmlFor="staffSelect">
         {" "}
-        1. Vælg medarbejder:{" "}
+        1. Vælg behandler:{" "}
       </label>
       <div className="select">
         <select
@@ -50,7 +50,7 @@ export const SelectStaff = ({ fields }: SelectStaffProps) => {
               : fields.staff.value?.staff
           }
         >
-          <option value="">Vælg frisør</option>
+          <option value="">Vælg behandler</option>
           <option value="Enhver tilgængelig">Enhver tilgængelig</option>
           {data?.map((option) => {
             return (
