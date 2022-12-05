@@ -49,6 +49,9 @@ export const SelectDate = ({ fields }: SelectDateProps) => {
   const filter = useCallback(
     (date: DateTime | DateTime[], picked: DateTime[]) => {
       if (!Array.isArray(date)) {
+        if (date.isBefore(new DateTime())) {
+          return true;
+        }
         return !findSchedule(date.format("YYYY-MM-DD"));
       }
       return false;
@@ -75,7 +78,7 @@ export const SelectDate = ({ fields }: SelectDateProps) => {
       }
 
       const d = date ? date.format("YYYY-MM-DD") : null;
-      if (view === "CalendarDay" && d) {
+      if (view === "CalendarDay" && d && date?.isAfter(new DateTime())) {
         const schedule = findSchedule(d);
         if (schedule) {
           const span =
