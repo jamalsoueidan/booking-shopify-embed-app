@@ -43,7 +43,7 @@ export default ({ create, edit, events, onChangeDate }: StaffCalendarProps) => {
   );
 
   useEffect(() => {
-    if (events?.length > 0 && calendarRef.current) {
+    if (Array.isArray(events) && calendarRef.current) {
       const api = calendarRef.current.getApi();
       const removeEvents = api.getEvents();
       removeEvents.forEach((event) => {

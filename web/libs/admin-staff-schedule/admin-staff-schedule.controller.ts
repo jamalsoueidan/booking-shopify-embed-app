@@ -4,10 +4,13 @@ import StaffService from "@services/staff.service";
 import {
   addHours,
   getHours,
+  getMinutes,
   isAfter,
   isBefore,
   parseISO,
+  setMinutes,
   subHours,
+  subMinutes,
 } from "date-fns";
 
 export enum ControllerMethods {
@@ -97,6 +100,9 @@ const updateGroup = async ({ query, body }) => {
         start = addHours(start, 1);
         end = addHours(end, 1);
       }
+
+      start = setMinutes(start, getMinutes(startDateTime));
+      end = setMinutes(end, getMinutes(endDateTime));
 
       return {
         updateOne: {

@@ -4,7 +4,7 @@ import CreateAllSchedule from './CreateAllSchedule';
 import CreateDaySchedule from './CreateDaySchedule';
 
 interface RefMethod {
-  submit: () => void;
+  submit: () => boolean;
 }
 export default ({ info, setInfo }: any) => {
   const ref = useRef<RefMethod>();
@@ -18,8 +18,7 @@ export default ({ info, setInfo }: any) => {
   );
 
   const submit = useCallback(() => {
-    setLoading(true);
-    ref.current.submit();
+    setLoading(ref.current.submit());
   }, [ref]);
 
   const tabs = [

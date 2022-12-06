@@ -1,8 +1,8 @@
 import useTagOptions from '@components/useTagOptions';
+import isSelectedDays from '@libs/validators/isSelectedDays';
 import { useSettingGet } from '@services/setting';
 import { useStaffScheduleCreate } from '@services/staff/schedule';
 import {
-  Card,
   Columns,
   DatePicker,
   Layout,
@@ -12,22 +12,17 @@ import {
 } from '@shopify/polaris';
 import { useField, useForm } from '@shopify/react-form';
 import {
-  addDays,
-  addHours,
   eachDayOfInterval,
   endOfMonth,
   format,
   getMonth,
   getYear,
-  isAfter,
-  isBefore,
   subDays,
-  subHours,
 } from 'date-fns';
 import { zonedTimeToUtc } from 'date-fns-tz';
-import da from 'date-fns/locale/da';
 import { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { SelectDays } from './SelectDays';
 
 interface CreateDayScheduleProps {
   date: string;
@@ -43,8 +38,8 @@ export default forwardRef(({ date, close }: CreateDayScheduleProps, ref) => {
   });
 
   const [selectedDates, setSelectedDates] = useState({
-    start: subDays(new Date(), 1),
-    end: endOfMonth(addDays(new Date(), 30)),
+    start: new Date(date),
+    end: endOfMonth(new Date(date)),
   });
 
   const { data: settings } = useSettingGet();
@@ -53,8 +48,12 @@ export default forwardRef(({ date, close }: CreateDayScheduleProps, ref) => {
     userId: params.id,
   });
 
-  const { fields, submit, submitting } = useForm({
+  const { fields, submit, validate } = useForm({
     fields: {
+      days: useField({
+        value: [format(new Date(date), 'EEEE').toLowerCase()],
+        validates: [isSelectedDays('You must select atleast one day')],
+      }),
       startTime: useField({
         value: '09:00',
         validates: [],
@@ -74,55 +73,28 @@ export default forwardRef(({ date, close }: CreateDayScheduleProps, ref) => {
     },
     onSubmit: async (fieldValues) => {
       const result = eachDayOfInterval(selectedDates);
-      const daysToFilterFor = result.filter(
-        (r) => format(r, 'EEEE') === format(new Date(date), 'EEEE')
+      const daysToFilterFor = result.filter((r) =>
+        fieldValues.days.includes(format(r, 'EEEE').toLowerCase())
       );
 
-      let startDateTime = zonedTimeToUtc(
-        `${format(daysToFilterFor[0], 'yyyy-MM-dd')} ${
-          fieldValues.startTime
-        }:00`,
-        settings.timeZone
-      );
-      let endDateTime = zonedTimeToUtc(
-        `${format(daysToFilterFor[0], 'yyyy-MM-dd')} ${fieldValues.endTime}:00`,
-        settings.timeZone
-      );
+      const getZonedTime = (date: Date, time: string) => {
+        return zonedTimeToUtc(
+          `${format(date, 'yyyy-MM-dd')} ${time}:00`,
+          settings.timeZone
+        ).toISOString();
+      };
 
-      const body = Array(daysToFilterFor.length) //5 weeks create groupID
-        .fill(0)
-        .map((_, index) => {
-          let start = addDays(startDateTime, 7 * index);
-          let end = addDays(endDateTime, 7 * index);
-
-          // summer time ends
-          if (
-            isBefore(startDateTime, new Date(start.getFullYear(), 9, 30)) &&
-            isAfter(start, new Date(start.getFullYear(), 9, 30)) // 9 is for october
-          ) {
-            start = addHours(start, 1);
-            end = addHours(end, 1);
-          }
-
-          // summer time starts
-          if (
-            isBefore(startDateTime, new Date(start.getFullYear(), 2, 27)) &&
-            isAfter(start, new Date(start.getFullYear(), 2, 27)) // 2 is for march
-          ) {
-            start = subHours(start, 1);
-            end = subHours(end, 1);
-          }
-
-          return {
-            start: start.toISOString(),
-            end: end.toISOString(),
-            available: true,
-            tag: fieldValues.tag,
-          };
-        });
-
+      const body = daysToFilterFor.map((date) => {
+        return {
+          start: getZonedTime(date, fieldValues.startTime),
+          end: getZonedTime(date, fieldValues.endTime),
+          available: true,
+          tag: fieldValues.tag,
+        };
+      });
       await create(body);
       close(null);
+
       return { status: 'success' };
     },
   });
@@ -130,6 +102,7 @@ export default forwardRef(({ date, close }: CreateDayScheduleProps, ref) => {
   useImperativeHandle(ref, () => ({
     submit() {
       submit();
+      return validate().length == 0;
     },
   }));
 
@@ -142,24 +115,7 @@ export default forwardRef(({ date, close }: CreateDayScheduleProps, ref) => {
     <Modal.Section>
       <Layout>
         <Layout.Section>
-          <Card>
-            <Card.Section>
-              Alle{' '}
-              <strong>{format(new Date(date), 'EEEE', { locale: da })}</strong>{' '}
-              arbejdsdag fra{' '}
-              <strong>
-                {format(new Date(selectedDates.start), 'dd/MM/yyyy', {
-                  locale: da,
-                })}
-              </strong>{' '}
-              til og med{' '}
-              <strong>
-                {format(new Date(selectedDates.end), 'dd/MM/yyyy', {
-                  locale: da,
-                })}
-              </strong>
-            </Card.Section>
-          </Card>
+          <SelectDays days={fields.days}></SelectDays>
         </Layout.Section>
         <Layout.Section>
           <DatePicker

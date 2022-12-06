@@ -30,7 +30,7 @@ export default forwardRef(({ date, close }: CreateDayScheduleProps, ref) => {
     userId: params.id,
   });
 
-  const { fields, submit } = useForm({
+  const { fields, submit, validate } = useForm({
     fields: {
       startTime: useField({
         value: '09:00',
@@ -75,6 +75,7 @@ export default forwardRef(({ date, close }: CreateDayScheduleProps, ref) => {
   useImperativeHandle(ref, () => ({
     submit() {
       submit();
+      return validate().length == 0;
     },
   }));
 

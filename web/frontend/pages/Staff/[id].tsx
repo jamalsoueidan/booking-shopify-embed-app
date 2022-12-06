@@ -15,7 +15,6 @@ import { useParams } from 'react-router-dom';
 export default () => {
   const params = useParams();
   const navigate = useNavigate();
-
   const [rangeDate, setRangeDate] = useState<CalendarDateChangeProps>();
   const { data: staff } = useStaffGet({ userId: params.id });
 

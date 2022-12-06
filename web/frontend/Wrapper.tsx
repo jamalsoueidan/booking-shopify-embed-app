@@ -45,11 +45,9 @@ export default ({ children }: { children: JSX.Element }) => {
             label: t('settings'),
           },
         ]}
-        matcher={(link, location) => {
-          return (
-            location.pathname.toLowerCase().indexOf(link.destination) !== -1
-          );
-        }}
+        matcher={(link, location) =>
+          location.pathname.toLowerCase().indexOf(link.destination) !== -1
+        }
       />
       <Frame>{children}</Frame>
     </>
