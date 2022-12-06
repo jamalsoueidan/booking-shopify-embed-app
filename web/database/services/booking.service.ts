@@ -164,7 +164,10 @@ const getBookings = async ({ shop, start, end, staff }: GetBookingsProps) => {
       },
     },
     {
-      $unwind: "$staff",
+      $unwind: {
+        path: "$staff",
+        preserveNullAndEmptyArrays: true,
+      },
     },
     {
       $lookup: {
@@ -175,7 +178,10 @@ const getBookings = async ({ shop, start, end, staff }: GetBookingsProps) => {
       },
     },
     {
-      $unwind: "$product",
+      $unwind: {
+        path: "$product",
+        preserveNullAndEmptyArrays: true,
+      },
     },
   ]);
 };

@@ -72,7 +72,7 @@ export default () => {
               display: !isMonth ? 'block' : '',
               marginLeft: isMonth ? '5px' : '0px',
             }}>
-            {booking.staff.fullname}
+            {booking.staff?.fullname}
             {booking.anyStaff ? '(ET)' : ''} - {booking.product.title}
           </span>
         </div>

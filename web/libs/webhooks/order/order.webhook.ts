@@ -32,7 +32,7 @@ const modify = async ({
     const _data = lineItem.properties.find((p) => p.name === "_data")?.value;
     if (_data) {
       const data: OrderTypes.Data = JSON.parse(_data);
-      const staffId = data.staff.staff;
+      const staffId = data.staff._id;
       const anyStaff = data.staff.anyStaff;
       const completeDate = new Date(data.start);
 
@@ -75,8 +75,10 @@ const modify = async ({
     customerGraphqlApiId: body.customer.admin_graphql_api_id,
   });
 
-  SmsService.sendBookingConfirmation({ customer, boughtProductTitles });
-  SmsService.sendReminder({ customer, bookings: models });
+  if (sendBooking) {
+    SmsService.sendBookingConfirmation({ customer, boughtProductTitles });
+    SmsService.sendReminder({ customer, bookings: models });
+  }
 
   await BookingModel.deleteMany({ orderId, shop });
   return await BookingModel.insertMany(models);

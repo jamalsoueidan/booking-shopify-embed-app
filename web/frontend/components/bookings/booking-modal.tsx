@@ -106,7 +106,7 @@ export default ({ show, toggle, info }: BookingModal) => {
               <strong>Tid:</strong> {format(new Date(info.start), 'HH:mm')} -{' '}
               {format(new Date(info.end), 'HH:mm')}
               <br />
-              <strong>Hos:</strong> {info.staff.fullname}
+              <strong>Hos:</strong> {info.staff?.fullname}
               {info.anyStaff ? '(eller kan vælge frit)' : ''}
             </TextContainer>
           </Stack.Item>

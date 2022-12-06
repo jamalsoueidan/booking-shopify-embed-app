@@ -49,7 +49,7 @@ export const SelectDate = ({ fields }: SelectDateProps) => {
   const filter = useCallback(
     (date: DateTime | DateTime[], picked: DateTime[]) => {
       if (!Array.isArray(date)) {
-        if (date.isBefore(new DateTime())) {
+        if (date.isSameOrBefore(new DateTime())) {
           return true;
         }
         return !findSchedule(date.format("YYYY-MM-DD"));
