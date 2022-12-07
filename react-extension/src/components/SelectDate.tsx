@@ -147,7 +147,7 @@ export const SelectDate = ({ fields }: SelectDateProps) => {
           ref={dateInput}
           className="input"
           required
-          disabled={!staff}
+          disabled={!staff || !events}
           placeholder=""
         />
         <SVG

@@ -49,8 +49,6 @@ describe("webhooks order", () => {
       },
     });
 
-    console.log(productUpdated);
-
     const lineItems = body.line_items[0];
     lineItems.properties._data = JSON.stringify({
       timeZone: "Europe/Istanbul",

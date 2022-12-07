@@ -1,9 +1,8 @@
-import widgetController from "@libs/widget/widget.controller";
 import CartModel from "@models/cart.model";
 import mongoose from "mongoose";
 
 interface Staff {
-  staff: string;
+  _id: string;
   fullname: string;
   anyStaff: boolean;
 }
@@ -66,7 +65,7 @@ const modify = async ({ body, shop }: CreateProps) => {
         cartId: body.id,
         start,
         end,
-        staff: new mongoose.Types.ObjectId(staff.staff),
+        staff: new mongoose.Types.ObjectId(staff._id),
         shop,
       });
       //}

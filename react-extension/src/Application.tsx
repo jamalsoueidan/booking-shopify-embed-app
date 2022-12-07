@@ -1,7 +1,8 @@
 import { DateTime } from "@easepick/bundle";
 import styled from "@emotion/styled";
 import { useField, useForm } from "@shopify/react-form";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
+import { useSWRConfig } from "swr";
 import { Bootup } from "./Bootup";
 import { SelectDate } from "./components/SelectDate";
 import { SelectHour } from "./components/SelectHour";
@@ -24,6 +25,8 @@ const ApplicationStyled = styled("div")`
 `;
 
 function App({ config }: AppProps) {
+  const { mutate, cache } = useSWRConfig();
+
   const { fields, reset } = useForm({
     fields: {
       staff: useField<Staff | undefined>({
@@ -44,17 +47,26 @@ function App({ config }: AppProps) {
     },
   });
 
+  const clearCache = useCallback(() => {
+    (cache as any).forEach((_: any, key: string) => {
+      if (key.indexOf("availability-range") !== -1) {
+        mutate(key);
+      }
+    });
+  }, [cache, mutate]);
+
   useEffect(() => {
     const { fetch: originalFetch } = window;
     window.fetch = async (...args) => {
       let [resource, config] = args;
       const response = await originalFetch(resource, config);
       if (resource === "/cart/add") {
+        clearCache();
         reset();
       }
       return response;
     };
-  }, [reset]);
+  }, [reset, clearCache]);
 
   return (
     <AppContext.Provider value={config}>

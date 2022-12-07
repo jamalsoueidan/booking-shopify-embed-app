@@ -9,7 +9,7 @@ export default {
         date: "2022-11-25",
         time: "12:00 - 13:00",
         _data:
-          '{\\"timeZone\\":\\"Europe\\/Istanbul\\",\\"start\\":\\"2022-11-25T09:00:00.000Z\\",\\"end\\":\\"2022-11-25T10:00:00.000Z\\",\\"staff\\":{\\"staff\\":\\"636b75b68f6e30e6f8686c68\\",\\"fullname\\":\\"Fida Soueidan\\",\\"anyStaff\\":false}}',
+          '{\\"timeZone\\":\\"Europe\\/Istanbul\\",\\"start\\":\\"2022-11-25T09:00:00.000Z\\",\\"end\\":\\"2022-11-25T10:00:00.000Z\\",\\"staff\\":{\\"_id\\":\\"636b75b68f6e30e6f8686c68\\",\\"fullname\\":\\"Fida Soueidan\\",\\"anyStaff\\":false}}',
       },
       quantity: 1,
       variant_id: 43997835985213,

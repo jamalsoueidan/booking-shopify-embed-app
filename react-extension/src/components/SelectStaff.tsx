@@ -44,17 +44,13 @@ export const SelectStaff = ({ fields }: SelectStaffProps) => {
           id="staffSelect"
           onChange={selectOnChange}
           required
-          value={
-            fields.staff.value?.anyAvailable
-              ? "Enhver tilgængelig"
-              : fields.staff.value?.staff
-          }
+          value={fields.staff.value?.fullname || ""}
         >
           <option value="">Vælg behandler</option>
           <option value="Enhver tilgængelig">Enhver tilgængelig</option>
           {data?.map((option) => {
             return (
-              <option key={option.staff} value={option.staff}>
+              <option key={option.staff} value={option.fullname}>
                 {option.fullname}
               </option>
             );

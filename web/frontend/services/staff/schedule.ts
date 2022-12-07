@@ -17,6 +17,7 @@ const mutateCache = ({ mutate, userId, cache }: MutateCache) => {
     }
   });
 };
+
 interface UseStaffScheduleListProps {
   userId: string;
   start: string;
