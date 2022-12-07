@@ -64,7 +64,6 @@ const availabilityDay = async ({
     staff: product.staff.staff,
   });
 
-  console.log("testerne");
   let scheduleDates = schedules.reduce<Array<ScheduleDate>>(
     helpers.scheduleReduce(product),
     []
@@ -80,11 +79,11 @@ const availabilityDay = async ({
     start: new Date(date),
     end: new Date(date),
   });
-  console.log("before", scheduleDates[0].hours);
+
   carts.forEach((cart) => {
     scheduleDates = scheduleDates.map(helpers.scheduleCalculateBooking(cart));
   });
-  console.log("after", scheduleDates[0].hours);
+
   return scheduleDates;
 };
 
@@ -188,8 +187,6 @@ const availabilityRangeByAll = async ({
         helpers.scheduleCalculateBooking(book)
       ))
   );
-
-  console.log("after");
 
   const carts = await CartService.getCartsByStaffier({
     shop,

@@ -86,7 +86,6 @@ const scheduleCalculateBooking = (
     return {
       ...schedule,
       hours: schedule.hours.filter((hour) => {
-        console.log(hour, staff);
         if (hour.staff._id.toString() !== staff.toString()) {
           return true;
         }
