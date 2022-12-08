@@ -1,4 +1,4 @@
-import Product, { IProductModel } from "@models/product.model";
+import Product, { IProductModel } from "@models/Product.model";
 import mongoose, { Types } from "mongoose";
 
 const findOne = async (document) => {

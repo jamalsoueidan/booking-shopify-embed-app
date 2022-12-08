@@ -1,5 +1,5 @@
-import ScheduleModel, { IScheduleModel } from "@models/schedule.model";
-import StaffService from "@services/staff.service";
+import ScheduleModel, { IScheduleModel } from "@models/Schedule.model";
+import StaffService from "@services/Staff.service";
 import {
   endOfDay,
   parseISO,

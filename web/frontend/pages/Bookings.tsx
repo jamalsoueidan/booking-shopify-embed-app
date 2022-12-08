@@ -1,11 +1,7 @@
-import BookingModal from '@components/bookings/booking-modal';
-import Calendar from '@components/Calendar';
+import BookingModal from '@components/bookings/BookingModal';
 import StaffSelection from '@components/bookings/staff-selection';
-import FullCalendar, {
-  DatesSetArg,
-  EventClickArg,
-  EventContentArg,
-} from '@fullcalendar/react'; // must go before plugins
+import Calendar from '@components/Calendar';
+import FullCalendar, { DatesSetArg, EventClickArg } from '@fullcalendar/react'; // must go before plugins
 import { useBookings } from '@services/bookings';
 import { useSettingGet } from '@services/setting';
 import { Card, Page } from '@shopify/polaris';

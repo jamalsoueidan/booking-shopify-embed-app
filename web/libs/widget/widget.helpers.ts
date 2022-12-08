@@ -1,5 +1,5 @@
-import { IProductModel } from "@models/product.model";
-import { GetCartsByStaffReturn } from "@services/cart.service";
+import { IProductModel } from "@models/Product.model";
+import { GetCartsByStaffReturn } from "@services/Cart.service";
 import {
   addMinutes,
   format,
@@ -10,11 +10,11 @@ import {
 import {
   GetByStaffAndTagReturn,
   GetByTagReturn,
-} from "../../database/services/schedule.service";
+} from "../../database/services/Schedule.service";
 import {
   GetBookingsByProductAndStaffReturn,
   GetBookingsByProductReturn,
-} from "./../../database/services/booking.service";
+} from "../../database/services/Booking.service";
 
 export interface ScheduleHourStaff {
   _id: string;

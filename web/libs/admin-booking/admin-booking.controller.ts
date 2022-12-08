@@ -1,4 +1,4 @@
-import BookingService from "@services/booking.service";
+import BookingService from "@services/Booking.service";
 
 export enum ControllerMethods {
   get = "get",

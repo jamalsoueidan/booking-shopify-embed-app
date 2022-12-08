@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { ISettingLanguage } from "@models/setting.models";
+import { ISettingLanguage } from "@models/Setting.models";
 import settingController from "../admin-setting.controller";
 
 describe("admin-setting controller", () => {

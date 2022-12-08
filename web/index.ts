@@ -1,4 +1,5 @@
 // @ts-check
+import adminNotificationRoutes from "@libs/admin-notification/admin-notification.routes";
 import CartWebhook from "@libs/webhooks/cart/cart.webhook.js";
 import CustomerWebhook from "@libs/webhooks/customer/customer.webhook.js";
 import { LATEST_API_VERSION, Shopify } from "@shopify/shopify-api";
@@ -11,11 +12,11 @@ import { AppInstallations } from "./app_installations.js";
 import connect from "./database/database.js";
 import { setupGDPRWebHooks } from "./gdpr.js";
 import redirectToAuth from "./helpers/redirect-to-auth.js";
-import adminBookingRoutes from "./libs/admin-booking/admin-booking.routes.js";
-import adminCollectionRoutes from "./libs/admin-collection/admin-collection.routes.js";
+import adminBookingRoutes from "./libs/admin-booking/admin-booking.routes";
+import adminCollectionRoutes from "./libs/admin-collection/admin-collection.routes";
 import adminProductRoutes from "./libs/admin-product/admin-product.routes";
 import adminSettingRoutes from "./libs/admin-setting/admin-setting.routes";
-import adminStaffScheduleRoutes from "./libs/admin-staff-schedule/admin-staff-schedule.routes.js";
+import adminStaffScheduleRoutes from "./libs/admin-staff-schedule/admin-staff-schedule.routes";
 import adminStaffRoutes from "./libs/admin-staff/admin-staff.routes";
 import OrderWebhook from "./libs/webhooks/order/order.webhook.js";
 import widgetRoutes from "./libs/widget/widget.routes";
@@ -161,6 +162,7 @@ export async function createServer(
   app.use(express.json({ limit: "1mb", extended: true } as any));
 
   app.use("/api/widget", widgetRoutes(app));
+  app.use("/api/admin", adminNotificationRoutes(app));
 
   // All endpoints after this point will require an active session
   app.use(

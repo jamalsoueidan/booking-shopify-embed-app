@@ -1,7 +1,7 @@
-import BookingModel, { IBookingModel } from "@models/booking.model";
-import ProductModel, { IProductModel } from "@models/product.model";
-import CustomerService from "@services/customer.service";
-import SmsService from "@services/sms.service";
+import BookingModel, { IBookingModel } from "@models/Booking.model";
+import ProductModel, { IProductModel } from "@models/Product.model";
+import CustomerService from "@services/Customer.service";
+import NotificationService from "@services/Notification.service";
 import { addMinutes } from "date-fns";
 import mongoose from "mongoose";
 
@@ -40,6 +40,8 @@ const modify = async ({
 
       return {
         orderId,
+        lineItemId: lineItem.id,
+        lineItemTotal: lineItems.length,
         productId: lineItem.product_id,
         staff: new mongoose.Types.ObjectId(staffId),
         start: completeDate,
@@ -75,10 +77,15 @@ const modify = async ({
     customerGraphqlApiId: body.customer.admin_graphql_api_id,
   });
 
-  if (sendBooking) {
-    SmsService.sendBookingConfirmation({ customer, boughtProductTitles });
-    SmsService.sendReminder({ customer, bookings: models });
-  }
+  //if (sendBooking) {
+  NotificationService.sendBookingConfirmation({
+    customer,
+    boughtProductTitles,
+    shop,
+    orderId,
+  });
+  NotificationService.sendReminder({ customer, bookings: models, shop });
+  //}
 
   await BookingModel.deleteMany({ orderId, shop });
   return await BookingModel.insertMany(models);

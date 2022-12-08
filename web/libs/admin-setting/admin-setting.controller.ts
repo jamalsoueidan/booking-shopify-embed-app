@@ -1,4 +1,4 @@
-import SettingModel, { ISettingModel } from "@models/setting.models";
+import SettingModel, { ISettingModel } from "@models/Setting.models";
 
 export enum ControllerMethods {
   get = "get",

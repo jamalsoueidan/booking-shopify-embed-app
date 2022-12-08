@@ -1,8 +1,8 @@
-import ProductModel, { IProductModel } from "@models/product.model";
-import ScheduleModel from "@models/schedule.model";
-import ProductService from "@services/product.service";
+import ProductModel, { IProductModel } from "@models/Product.model";
+import ScheduleModel from "@models/Schedule.model";
+import ProductService from "@services/Product.service";
 import mongoose, { Document, Types } from "mongoose";
-import { IStaffModel } from "../../database/models/staff.model";
+import { IStaffModel } from "../../database/models/Staff.model";
 
 export enum ControllerMethods {
   getById = "getById",

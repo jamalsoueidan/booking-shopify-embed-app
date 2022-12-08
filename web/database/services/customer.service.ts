@@ -1,4 +1,4 @@
-import CustomerModel from "@models/customer.model";
+import CustomerModel from "@models/Customer.model";
 import ShopifySessions from "@models/shopify-sessions.model";
 import Shopify from "@shopify/shopify-api";
 

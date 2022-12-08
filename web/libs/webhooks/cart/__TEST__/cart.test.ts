@@ -1,7 +1,7 @@
 import adminProductController from "@libs/admin-product/admin-product.controller";
 import { createProduct, createSchedule, createStaff } from "@libs/jest-helpers";
 import CartWebhook from "@libs/webhooks/cart/cart.webhook";
-import { IProductModel } from "@models/product.model";
+import { IProductModel } from "@models/Product.model";
 import ShopifySessions from "@models/shopify-sessions.model";
 import { addHours, setMilliseconds, setSeconds, startOfDay } from "date-fns";
 import mongoose from "mongoose";

@@ -1,8 +1,8 @@
 import { faker } from "@faker-js/faker";
-import ProductModel from "@models/product.model";
-import ProductService from "@services/product.service";
-import ScheduleService from "@services/schedule.service";
-import StaffService from "@services/staff.service";
+import ProductModel from "@models/Product.model";
+import ProductService from "@services/Product.service";
+import ScheduleService from "@services/Schedule.service";
+import StaffService from "@services/Staff.service";
 import { addHours } from "date-fns";
 
 export const createStaff = async () => {

@@ -1,7 +1,7 @@
-import collectionModel from "@models/collection.model";
+import CollectionModel from "@models/Collection.model";
 
 const findAll = async () => {
-  return await collectionModel.aggregate([
+  return await CollectionModel.aggregate([
     {
       $lookup: {
         from: "Product",
@@ -14,7 +14,7 @@ const findAll = async () => {
 };
 
 const findOne = async (documents) => {
-  return await collectionModel.findOne(documents);
+  return await CollectionModel.findOne(documents);
 };
 
 export default { findAll, findOne };

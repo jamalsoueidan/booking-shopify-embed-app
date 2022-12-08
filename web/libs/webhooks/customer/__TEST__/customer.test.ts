@@ -1,5 +1,5 @@
 import CustomerWebhook from "@libs/webhooks/customer/customer.webhook";
-import { IProductModel } from "@models/product.model";
+import { IProductModel } from "@models/Product.model";
 import ShopifySessions from "@models/shopify-sessions.model";
 import mongoose from "mongoose";
 import body from "./customer.mock";

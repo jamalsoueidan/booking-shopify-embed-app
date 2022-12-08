@@ -88,6 +88,18 @@ interface Booking {
   cancelled: boolean;
   orderId: number;
 }
+
+interface Notification {
+  _id: string;
+  orderId: number;
+  lineItemId: number;
+  message: string;
+  receiver: string;
+  scheduled: Date;
+  shop: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
 interface SchedulesApi extends Api {
   payload: Schedule[];
 }
@@ -98,6 +110,10 @@ interface CollectionsApi extends Api {
 
 interface ProductApi extends Api {
   payload: Product;
+}
+
+interface NotificationsApi extends Api {
+  payload: Notification[];
 }
 
 interface StafferApi extends Api {

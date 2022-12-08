@@ -1,4 +1,4 @@
-import CustomerModel from "@models/customer.model";
+import CustomerModel from "@models/Customer.model";
 import mongoose from "mongoose";
 
 interface CreateReturn {

@@ -1,4 +1,4 @@
-import CartModel, { ICartModel } from "@models/cart.model";
+import CartModel, { ICartModel } from "@models/Cart.model";
 import { endOfDay, startOfDay } from "date-fns";
 
 export interface GetCartsByStaffReturn extends ICartModel {}
