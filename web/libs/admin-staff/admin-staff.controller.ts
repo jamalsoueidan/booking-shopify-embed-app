@@ -1,5 +1,5 @@
-import { IStaffModel } from "@models/Staff.model";
-import StaffService from "@services/Staff.service";
+import { IStaffModel } from "@models/staff.model";
+import StaffService from "@services/staff.service";
 
 export enum ControllerMethods {
   get = "get",

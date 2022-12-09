@@ -1,6 +1,6 @@
-import CollectionModel from "@models/Collection.model";
-import ProductModel, { IProductModel } from "@models/Product.model";
-import CollectionService from "@services/Collection.service";
+import CollectionModel from "@models/collection.model";
+import ProductModel, { IProductModel } from "@models/product.model";
+import CollectionService from "@services/collection.service";
 import { Session } from "@shopify/shopify-api/dist/auth/session";
 import { getCollection } from "./admin-collection.helpers";
 

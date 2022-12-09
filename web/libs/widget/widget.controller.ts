@@ -1,8 +1,8 @@
-import { IProductModel } from "@models/Product.model";
-import BookingService from "@services/Booking.service";
-import CartService from "@services/Cart.service";
-import ProductService from "@services/Product.service";
-import ScheduleService from "@services/Schedule.service";
+import { IProductModel } from "@models/product.model";
+import BookingService from "@services/booking.service";
+import CartService from "@services/cart.service";
+import ProductService from "@services/product.service";
+import ScheduleService from "@services/schedule.service";
 import mongoose from "mongoose";
 import helpers, { ScheduleDate } from "./widget.helpers";
 

@@ -1,6 +1,6 @@
-import ScheduleModel from "@models/Schedule.model";
-import ScheduleService from "@services/Schedule.service";
-import StaffService from "@services/Staff.service";
+import ScheduleModel from "@models/schedule.model";
+import ScheduleService from "@services/schedule.service";
+import StaffService from "@services/staff.service";
 import {
   addHours,
   getHours,

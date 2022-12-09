@@ -1,7 +1,7 @@
 var request = require("request");
-import BookingModel, { IBookingModel } from "@models/Booking.model";
-import CustomerModel, { ICustomerModel } from "@models/Customer.model";
-import NotificationModel from "@models/Notification.model";
+import BookingModel, { IBookingModel } from "@models/booking.model";
+import CustomerModel, { ICustomerModel } from "@models/customer.model";
+import NotificationModel from "@models/notification.model";
 import { format, isBefore, subDays, subMinutes } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
 import mongoose from "mongoose";

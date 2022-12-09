@@ -1,6 +1,6 @@
 import { endOfDay, startOfDay } from "date-fns";
 import mongoose, { ObjectId, Types } from "mongoose";
-import Booking, { IBookingModel } from "../models/Booking.model";
+import Booking, { IBookingModel } from "../models/booking.model";
 
 const find = async (shop) => {
   return await Booking.find({ shop });

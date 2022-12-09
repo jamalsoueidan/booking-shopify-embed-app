@@ -1,4 +1,4 @@
-import StaffModel from "@models/Staff.model";
+import StaffModel from "@models/staff.model";
 
 const create = async (document) => {
   try {

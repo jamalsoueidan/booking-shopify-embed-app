@@ -1,8 +1,8 @@
-import { IProductModel } from "@models/Product.model";
+import { IProductModel } from "@models/product.model";
 import mongoose, { Document } from "mongoose";
 
 import { createProduct, createSchedule, createStaff } from "@libs/jest-helpers";
-import { IStaffModel } from "@models/Staff.model";
+import { IStaffModel } from "@models/staff.model";
 import { addHours, subHours } from "date-fns";
 import productController from "../admin-product.controller";
 

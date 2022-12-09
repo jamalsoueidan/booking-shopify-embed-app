@@ -1,8 +1,6 @@
-import BookingModel, { IBookingModel } from "@models/Booking.model";
-import ProductModel, { IProductModel } from "@models/Product.model";
-import CustomerService from "@services/Customer.service";
-import NotificationService from "@services/Notification.service";
-import { addMinutes } from "date-fns";
+import BookingModel, { IBookingModel } from "@models/booking.model";
+import CustomerService from "@services/customer.service";
+import NotificationService from "@services/notification.service";
 import mongoose from "mongoose";
 
 function onlyUnique(value, index, self) {

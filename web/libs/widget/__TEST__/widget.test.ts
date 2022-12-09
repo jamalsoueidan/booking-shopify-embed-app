@@ -5,9 +5,9 @@ import {
   createSchedule,
   createStaff,
 } from "@libs/jest-helpers";
-import { IProductModel } from "@models/Product.model";
-import { IStaffModel } from "@models/Staff.model";
-import StaffService from "@services/Staff.service";
+import { IProductModel } from "@models/product.model";
+import { IStaffModel } from "@models/staff.model";
+import StaffService from "@services/staff.service";
 import {
   addDays,
   addHours,

@@ -1,17 +1,17 @@
-import { IProductModel } from "@models/Product.model";
-import { GetCartsByStaffReturn } from "@services/Cart.service";
+import { IProductModel } from "@models/product.model";
+import { GetCartsByStaffReturn } from "@services/cart.service";
 import {
   addMinutes,
   format,
   isBefore,
   isWithinInterval,
-  subMinutes
+  subMinutes,
 } from "date-fns";
-import { GetBookingsByStaffReturn } from "../../database/services/Booking.service";
+import { GetBookingsByStaffReturn } from "../../database/services/booking.service";
 import {
   GetByStaffAndTagReturn,
-  GetByTagReturn
-} from "../../database/services/Schedule.service";
+  GetByTagReturn,
+} from "../../database/services/schedule.service";
 
 export interface ScheduleHourStaff {
   _id: string;

@@ -2,7 +2,7 @@ import ShopifySessions from "@models/shopify-sessions.model";
 import { differenceInMinutes } from "date-fns";
 import { createProduct } from "@libs/jest-helpers";
 import OrderWebhook from "@libs/webhooks/order/order.webhook";
-import { IProductModel } from "@models/Product.model";
+import { IProductModel } from "@models/product.model";
 import mongoose from "mongoose";
 import body from "./order.mock";
 

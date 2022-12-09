@@ -1,4 +1,4 @@
-import CollectionModel from "@models/Collection.model";
+import CollectionModel from "@models/collection.model";
 
 const findAll = async () => {
   return await CollectionModel.aggregate([

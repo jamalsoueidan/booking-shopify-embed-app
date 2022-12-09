@@ -1,4 +1,4 @@
-import NotificationService from "@services/Notification.service";
+import NotificationService from "@services/notification.service";
 
 export enum ControllerMethods {
   get = "get",
