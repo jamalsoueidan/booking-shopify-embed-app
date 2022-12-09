@@ -20,7 +20,6 @@ const modify = async ({
   shop,
   sendBooking,
 }: ModifyProps): Promise<any> => {
-  console.log(JSON.stringify(body));
   const orderId = body.id;
   const filter = (lineItem) =>
     lineItem.properties.find((property) => property.name === "_data");
@@ -34,7 +33,7 @@ const modify = async ({
     if (_data) {
       const data: OrderTypes.Data = JSON.parse(_data);
       const staffId = data.staff._id;
-      const anyStaff = data.staff.anyStaff;
+      const anyAvailable = data.staff.anyAvailable;
       const completeDate = new Date(data.start);
 
       boughtProductTitles.push(lineItem.title);
@@ -48,7 +47,7 @@ const modify = async ({
         start: completeDate,
         end: new Date(data.end),
         shop,
-        anyStaff,
+        anyAvailable,
         fulfillmentStatus: lineItem.fulfillment_status,
         customerId: body.customer.id,
       };

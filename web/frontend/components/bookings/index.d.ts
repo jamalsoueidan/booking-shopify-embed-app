@@ -51,7 +51,7 @@ declare module Info {
     customerId: number;
     staff: Staff;
     shop: string;
-    anyStaff: boolean;
+    anyAvailable: boolean;
     cancelled: boolean;
     __v: number;
     customer: Customer;

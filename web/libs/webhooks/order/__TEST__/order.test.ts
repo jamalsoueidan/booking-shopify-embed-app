@@ -36,7 +36,7 @@ describe("webhooks order", () => {
     expect(differenceInMinutes(order1.end, order1.start)).toEqual(45);
 
     const order3 = result[2];
-    expect(order3.anyStaff).toBeTruthy();
+    expect(order3.anyAvailable).toBeTruthy();
   });
 
   it("Should cancel booking when we recieve data from webhook", async () => {

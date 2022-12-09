@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 interface Staff {
   _id: string;
   fullname: string;
-  anyStaff: boolean;
+  anyAvailable: boolean;
 }
 
 interface Data {

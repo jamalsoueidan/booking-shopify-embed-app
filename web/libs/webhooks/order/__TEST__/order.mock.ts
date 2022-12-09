@@ -254,7 +254,7 @@ export default {
         {
           name: "_data",
           value:
-            '{"timeZone":"Europe/Istanbul","start":"2022-11-24T14:00:00.000Z","end":"2022-11-24T15:00:00.000Z","staff":{"staff":"636b75a18f6e30e6f8686c63","fullname":"Sara","anyStaff":true}}',
+            '{"timeZone":"Europe/Istanbul","start":"2022-11-24T14:00:00.000Z","end":"2022-11-24T15:00:00.000Z","staff":{"staff":"636b75a18f6e30e6f8686c63","fullname":"Sara","anyAvailable":true}}',
         },
       ],
       quantity: 1,
@@ -319,7 +319,7 @@ export default {
         {
           name: "_data",
           value:
-            '{"timeZone":"Europe/Istanbul","start":"2022-11-24T11:00:00.000Z","end":"2022-11-24T12:00:00.000Z","staff":{"staff":"636b75a18f6e30e6f8686c63","fullname":"Sara","anyStaff":true}}',
+            '{"timeZone":"Europe/Istanbul","start":"2022-11-24T11:00:00.000Z","end":"2022-11-24T12:00:00.000Z","staff":{"staff":"636b75a18f6e30e6f8686c63","fullname":"Sara","anyAvailable":true}}',
         },
       ],
       quantity: 1,
@@ -384,7 +384,7 @@ export default {
         {
           name: "_data",
           value:
-            '{"timeZone":"Europe/Istanbul","start":"2022-11-16T12:00:00.000Z","end":"2022-11-16T13:00:00.000Z","staff":{"staff":"636b75b68f6e30e6f8686c68","fullname":"Fida Soueidan","anyStaff":true}}',
+            '{"timeZone":"Europe/Istanbul","start":"2022-11-16T12:00:00.000Z","end":"2022-11-16T13:00:00.000Z","staff":{"staff":"636b75b68f6e30e6f8686c68","fullname":"Fida Soueidan","anyAvailable":true}}',
         },
       ],
       quantity: 1,

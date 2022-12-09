@@ -69,7 +69,7 @@ export default () => {
               marginLeft: isMonth ? '5px' : '0px',
             }}>
             {booking.staff?.fullname}
-            {booking.anyStaff ? '(ET)' : ''} - {booking.product.title}
+            {booking.anyAvailable ? '(ET)' : ''} - {booking.product.title}
           </span>
         </div>
       );

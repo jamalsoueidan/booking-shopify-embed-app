@@ -15,9 +15,11 @@ export const SelectStaff = ({ fields }: SelectStaffProps) => {
     (event: ChangeEvent<HTMLSelectElement>) => {
       const staff = fields.staff;
       const selectedIndex = event.target.selectedIndex;
-      if (selectedIndex === 0) {
-        return staff.reset();
-      }
+
+      staff.reset();
+      fields.schedule.reset();
+      fields.hour.reset();
+
       if (selectedIndex === 1) {
         return staff.onChange({
           fullname: "Enhver tilgængelig",
@@ -26,9 +28,9 @@ export const SelectStaff = ({ fields }: SelectStaffProps) => {
         });
       }
 
-      staff.onChange(data[selectedIndex - 2]);
-      fields.schedule.onChange(undefined);
-      fields.hour.onChange(undefined);
+      if (selectedIndex > 1) {
+        staff.onChange(data[selectedIndex - 2]);
+      }
     },
     [fields, data]
   );

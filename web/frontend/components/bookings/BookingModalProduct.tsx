@@ -32,7 +32,7 @@ export default ({ info }: BookingModalChildProps) => {
       <Modal.Section>
         <TextContainer>
           <strong>Hos:</strong> {info.staff?.fullname}
-          {info.anyStaff ? '(eller kan vælge frit)' : ''}
+          {info.anyAvailable ? '(eller kan vælge frit)' : ''}
         </TextContainer>
       </Modal.Section>
 

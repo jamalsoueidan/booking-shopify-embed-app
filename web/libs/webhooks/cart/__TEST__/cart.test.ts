@@ -57,7 +57,7 @@ describe("webhooks order", () => {
       staff: {
         staff: staff1._id.toString(),
         fullname: "Fida Soueidan",
-        anyStaff: false,
+        anyAvailable: false,
       },
     });
 

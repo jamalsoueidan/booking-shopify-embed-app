@@ -11,10 +11,8 @@ export default ({ info }: BookingModalChildProps) => {
   return (
     <>
       <ResourceList
-        resourceName={{ singular: 'message', plural: 'messages' }}
-        items={data}
+        items={data.reverse()}
         loading={data.length === 0}
-        alternateTool={<Button>Send new message</Button>}
         renderItem={(item) => {
           const { _id, message, receiver, createdAt, scheduled } = item;
           const shortcutActions = [

@@ -84,7 +84,7 @@ interface Booking {
   product: Product;
   //for full-calendar
   title: string;
-  anyStaff: boolean;
+  anyAvailable: boolean;
   cancelled: boolean;
   orderId: number;
 }

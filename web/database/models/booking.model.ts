@@ -10,7 +10,7 @@ export interface IBookingModel {
   start: Date;
   end: Date;
   shop: string;
-  anyStaff?: boolean;
+  anyAvailable?: boolean;
   fulfillmentStatus: string;
 }
 
@@ -46,7 +46,7 @@ const BookingSchema = new mongoose.Schema({
     required: true,
     index: true,
   },
-  anyStaff: {
+  anyAvailable: {
     type: Boolean,
     default: false,
   },

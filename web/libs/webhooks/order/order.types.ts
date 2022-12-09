@@ -364,7 +364,7 @@ declare module OrderTypes {
   export interface Staff {
     _id: string;
     fullname: string;
-    anyStaff: boolean;
+    anyAvailable: boolean;
   }
 
   export interface Data {
