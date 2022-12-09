@@ -11,13 +11,19 @@ export interface IBookingModel {
   end: Date;
   shop: string;
   anyStaff?: boolean;
-  cancelled?: boolean;
+  fulfillmentStatus: string;
 }
 
 const BookingSchema = new mongoose.Schema({
   productId: Number,
-  orderId: Number,
-  lineItemId: Number,
+  orderId: {
+    type: Number,
+    inded: true,
+  },
+  lineItemId: {
+    type: Number,
+    inded: true,
+  },
   lineItemTotal: Number,
   customerId: Number,
   staff: {
@@ -44,9 +50,9 @@ const BookingSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  cancelled: {
-    type: Boolean,
-    default: false,
+  fulfillmentStatus: {
+    type: String,
+    default: null,
   },
 });
 

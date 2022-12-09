@@ -24,7 +24,7 @@ export const useNotifications = ({
   );
 
   return {
-    data: data?.payload,
+    data: data?.payload || [],
     isLoading: !error && !data,
   };
 };

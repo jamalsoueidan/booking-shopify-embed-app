@@ -1,88 +1,35 @@
 import { endOfDay, startOfDay } from "date-fns";
-import mongoose from "mongoose";
+import mongoose, { ObjectId, Types } from "mongoose";
 import Booking, { IBookingModel } from "../models/Booking.model";
 
 const find = async (shop) => {
   return await Booking.find({ shop });
 };
 
-export interface GetBookingsByProductReturn
+export interface GetBookingsByStaffReturn
   extends Pick<IBookingModel, "start" | "end"> {
   staff: string;
 }
+export interface GetBookingsByStaffProps
+  extends Pick<IBookingModel, "shop" | "start" | "end"> {
+  staff: Types.ObjectId | string[];
+}
 
-export interface GetBookingsByProductProps
-  extends Omit<IBookingModel, "orderId" | "staff" | "customerId"> {}
-
-const getBookingsByProduct = async ({
-  shop,
-  productId,
-  start,
-  end,
-}: GetBookingsByProductProps): Promise<Array<GetBookingsByProductReturn>> => {
-  return await Booking.aggregate([
-    {
-      $match: {
-        shop,
-        productId,
-        $or: [
-          {
-            start: {
-              $gte: startOfDay(start),
-            },
-          },
-          {
-            end: {
-              $gte: endOfDay(start),
-            },
-          },
-        ],
-      },
-    },
-    {
-      $match: {
-        $or: [
-          {
-            start: {
-              $lt: startOfDay(end),
-            },
-          },
-          {
-            end: {
-              $lt: endOfDay(end),
-            },
-          },
-        ],
-      },
-    },
-    {
-      $project: {
-        _id: 0,
-        shop: 0,
-        productId: 0,
-      },
-    },
-  ]);
-};
-
-export interface GetBookingsByProductAndStaffReturn
-  extends GetBookingsByProductReturn {}
-export interface GetBookingsByProductAndStaffProps
-  extends Omit<IBookingModel, "orderId" | "productId" | "customerId"> {}
-
-const getBookingsByProductAndStaff = async ({
+const getBookingsByStaff = async ({
   shop,
   start,
   end,
   staff,
-}: GetBookingsByProductAndStaffProps): Promise<
-  Array<GetBookingsByProductAndStaffReturn>
-> => {
+}: GetBookingsByStaffProps): Promise<Array<GetBookingsByStaffReturn>> => {
   return await Booking.aggregate([
     {
       $match: {
         shop,
-        staff: staff,
+        staff: Array.isArray(staff)
+          ? {
+              $in: staff,
+            }
+          : staff,
         $or: [
           {
             start: {
@@ -187,7 +134,6 @@ const getBookings = async ({ shop, start, end, staff }: GetBookingsProps) => {
 };
 export default {
   find,
-  getBookingsByProduct,
-  getBookingsByProductAndStaff,
+  getBookingsByStaff,
   getBookings,
 };

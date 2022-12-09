@@ -57,7 +57,7 @@ const availabilityDay = async ({
     end: date,
   });
 
-  const bookings = await BookingService.getBookingsByProductAndStaff({
+  const bookings = await BookingService.getBookingsByStaff({
     shop,
     start: new Date(date),
     end: new Date(date),
@@ -117,7 +117,7 @@ const availabilityRangeByStaff = async ({
     end,
   });
 
-  const bookings = await BookingService.getBookingsByProductAndStaff({
+  const bookings = await BookingService.getBookingsByStaff({
     shop,
     staff: product.staff.staff,
     start: new Date(start),
@@ -172,9 +172,9 @@ const availabilityRangeByAll = async ({
     end: new Date(end),
   });
 
-  const bookings = await BookingService.getBookingsByProduct({
+  const bookings = await BookingService.getBookingsByStaff({
     shop,
-    productId,
+    staff: product.staff.map((s) => s.staff),
     start: new Date(start),
     end: new Date(end),
   });

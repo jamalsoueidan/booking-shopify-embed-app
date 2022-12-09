@@ -19,7 +19,8 @@ const modify = async ({
   body,
   shop,
   sendBooking,
-}: ModifyProps): Promise<Array<IBookingModel>> => {
+}: ModifyProps): Promise<any> => {
+  console.log(JSON.stringify(body));
   const orderId = body.id;
   const filter = (lineItem) =>
     lineItem.properties.find((property) => property.name === "_data");
@@ -28,7 +29,7 @@ const modify = async ({
 
   const boughtProductTitles = [];
 
-  let models = lineItems.map((lineItem) => {
+  let models: IBookingModel[] = lineItems.map((lineItem) => {
     const _data = lineItem.properties.find((p) => p.name === "_data")?.value;
     if (_data) {
       const data: OrderTypes.Data = JSON.parse(_data);
@@ -45,15 +46,16 @@ const modify = async ({
         productId: lineItem.product_id,
         staff: new mongoose.Types.ObjectId(staffId),
         start: completeDate,
-        end: new Date(),
+        end: new Date(data.end),
         shop,
         anyStaff,
+        fulfillmentStatus: lineItem.fulfillment_status,
         customerId: body.customer.id,
-      } as IBookingModel;
+      };
     }
   });
 
-  const query = {
+  /*const query = {
     shop,
     productId: models.map((model) => model.productId).filter(onlyUnique),
   };
@@ -69,7 +71,7 @@ const modify = async ({
       ...model,
       end: addMinutes(model.start, product.duration),
     };
-  });
+  });*/
 
   const customer = await CustomerService.findCustomerAndUpdate({
     shop,
@@ -87,8 +89,21 @@ const modify = async ({
   NotificationService.sendReminder({ customer, bookings: models, shop });
   //}
 
-  await BookingModel.deleteMany({ orderId, shop });
-  return await BookingModel.insertMany(models);
+  const bulkWrite = models.map((m) => ({
+    updateOne: {
+      filter: {
+        orderId: m.orderId,
+        lineItemId: m.lineItemId,
+        productId: m.productId,
+      },
+      update: {
+        $set: m,
+      },
+      upsert: true,
+    },
+  }));
+
+  return await BookingModel.bulkWrite(bulkWrite);
 };
 
 interface CreateProps {

@@ -13,7 +13,7 @@ export default ({ info }: BookingModalChildProps) => {
       <ResourceList
         resourceName={{ singular: 'message', plural: 'messages' }}
         items={data}
-        loading={!data}
+        loading={data.length === 0}
         alternateTool={<Button>Send new message</Button>}
         renderItem={(item) => {
           const { _id, message, receiver, createdAt, scheduled } = item;

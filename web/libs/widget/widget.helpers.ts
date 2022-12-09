@@ -5,16 +5,13 @@ import {
   format,
   isBefore,
   isWithinInterval,
-  subMinutes,
+  subMinutes
 } from "date-fns";
+import { GetBookingsByStaffReturn } from "../../database/services/Booking.service";
 import {
   GetByStaffAndTagReturn,
-  GetByTagReturn,
+  GetByTagReturn
 } from "../../database/services/Schedule.service";
-import {
-  GetBookingsByProductAndStaffReturn,
-  GetBookingsByProductReturn,
-} from "../../database/services/Booking.service";
 
 export interface ScheduleHourStaff {
   _id: string;
@@ -76,10 +73,7 @@ const scheduleReduce =
   };
 
 const scheduleCalculateBooking = (
-  book:
-    | GetBookingsByProductReturn
-    | GetBookingsByProductAndStaffReturn
-    | GetCartsByStaffReturn
+  book: GetBookingsByStaffReturn | GetCartsByStaffReturn
 ): ((schedule: ScheduleDate) => ScheduleDate) => {
   const { start, end, staff } = book;
   return (schedule: ScheduleDate): ScheduleDate => {
