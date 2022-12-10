@@ -145,3 +145,9 @@ interface Setting {
 interface SettingApi {
   payload: Setting;
 }
+
+interface ReturnApi<Payload = any> {
+  success: boolean;
+  error?: string;
+  payload?: Payload;
+}

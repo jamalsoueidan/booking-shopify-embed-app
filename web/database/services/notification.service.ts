@@ -2,9 +2,36 @@ var request = require("request");
 import BookingModel, { IBookingModel } from "@models/booking.model";
 import CustomerModel, { ICustomerModel } from "@models/customer.model";
 import NotificationModel from "@models/notification.model";
+import StaffModel from "@models/staff.model";
 import { format, isBefore, subDays, subMinutes } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
 import mongoose from "mongoose";
+
+interface NoMesageSendLastMinutesProps {
+  shop: string;
+  orderId: number;
+  lineItemId: number;
+  receiver: string;
+}
+
+const noMesageSendLastMinutes = async ({
+  shop,
+  orderId,
+  lineItemId,
+  receiver,
+}: NoMesageSendLastMinutesProps) => {
+  const totalSend = await NotificationModel.find({
+    shop,
+    orderId,
+    lineItemId,
+    receiver,
+    updatedAt: {
+      $gte: subMinutes(new Date(), 15),
+    },
+  }).count();
+
+  return totalSend === 0;
+};
 
 interface GetProps {
   shop: string;
@@ -22,10 +49,11 @@ const get = ({ shop, orderId, lineItemId }: GetProps) => {
 
 interface SendCustomProps extends Omit<SendProps, "receiver"> {
   shop: string;
+  to: "customer" | "staff";
 }
 
 const sendCustom = async (query: SendCustomProps) => {
-  const { shop, orderId, lineItemId, message } = query;
+  const { shop, orderId, lineItemId, message, to } = query;
 
   //TODO: 15 minutes must pass between each message.
   const booking = await BookingModel.findOne({
@@ -35,21 +63,36 @@ const sendCustom = async (query: SendCustomProps) => {
   }).lean();
 
   if (booking) {
-    const customer = await CustomerModel.findOne({
-      customerId: booking.customerId,
-    }).lean();
-    if (customer) {
-      return send({
+    const { phone } =
+      to === "customer"
+        ? await CustomerModel.findOne({
+            customerId: booking.customerId,
+          }).lean()
+        : await StaffModel.findOne({
+            staffId: booking.staff,
+          }).lean();
+
+    if (
+      !(await noMesageSendLastMinutes({
         shop,
-        orderId,
-        lineItemId,
-        message,
-        receiver: customer.phone,
-      });
+        orderId: booking.orderId,
+        lineItemId: booking.lineItemId,
+        receiver: phone,
+      }))
+    ) {
+      throw "after_fifteen_minutes_send_message";
     }
+
+    return send({
+      shop,
+      orderId,
+      lineItemId,
+      message,
+      receiver: phone,
+    });
   }
 
-  throw "Not found";
+  throw "not_found";
 };
 
 interface ResendProps {
@@ -63,15 +106,21 @@ const resend = async ({ shop, id }: ResendProps) => {
     _id: new mongoose.Types.ObjectId(id),
   });
 
-  const checkDate = subMinutes(new Date(), 15);
-
-  if (isBefore(notification.updatedAt, checkDate)) {
+  if (
+    notification &&
+    (await noMesageSendLastMinutes({
+      shop,
+      orderId: notification.orderId,
+      lineItemId: notification.lineItemId,
+      receiver: notification.receiver,
+    }))
+  ) {
     notification.updatedAt = new Date();
     await notification.save();
     return send(notification);
-  } else {
-    throw "You can't send again within 15min";
   }
+
+  throw "after_fifteen_minutes_send_message";
 };
 
 interface SendProps {

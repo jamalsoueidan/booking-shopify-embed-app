@@ -26,6 +26,8 @@ export default function (app) {
     body("lineItemId").notEmpty(),
     body("lineItemId").isDecimal(),
     body("message").notEmpty(),
+    body("to").notEmpty(),
+    body("to").isIn(["customer", "staff"]),
     async (req, res) => {
       handleRoute(req, res, ControllerMethods.sendCustom);
     }

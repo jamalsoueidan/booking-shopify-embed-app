@@ -1,30 +1,47 @@
-import { useNotifications } from '@services/notifications';
-import { Button, ResourceItem, ResourceList, Text } from '@shopify/polaris';
+import FormToast from '@components/FormToast';
+import {
+  useNotifications,
+  useResendNotification,
+} from '@services/notifications';
+import { ResourceItem, ResourceList, Text } from '@shopify/polaris';
 import { format } from 'date-fns';
+import { useState } from 'react';
 
 export default ({ info }: BookingModalChildProps) => {
+  const [response, setResponse] = useState<ReturnApi>();
+
   const { data } = useNotifications({
     orderId: info.orderId,
     lineItemId: info.lineItemId,
   });
 
+  const { resend } = useResendNotification();
+
   return (
     <>
+      {response && (
+        <FormToast
+          message={response.success ? 'Message send' : response.error}
+          error={!response.success}
+        />
+      )}
       <ResourceList
         items={data.reverse()}
         loading={data.length === 0}
         renderItem={(item) => {
-          const { _id, message, receiver, createdAt, scheduled } = item;
+          const { _id: id, message, receiver, createdAt, scheduled } = item;
           const shortcutActions = [
             {
               content: 'Send Again',
-              onAction: () => {},
+              onAction: async () => {
+                setResponse(await resend({ id }));
+              },
             },
           ];
 
           return (
             <ResourceItem
-              id={_id}
+              id={id}
               onClick={() => null}
               shortcutActions={shortcutActions}
               persistActions>
@@ -42,7 +59,7 @@ export default ({ info }: BookingModalChildProps) => {
               )}
               <br />
               <Text variant="bodySm" as="h3">
-                {message}
+                <i>{message}</i>
               </Text>
             </ResourceItem>
           );

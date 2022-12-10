@@ -1,16 +1,43 @@
-import isEmail from '@libs/validators/isEmail';
-import isPhoneNumber from '@libs/validators/isPhoneNumber';
-import { Button, Form, Modal, Stack, TextField } from '@shopify/polaris';
+import FormErrors from '@components/FormErrors';
+import FormToast from '@components/FormToast';
+import useCustomForm from '@hooks/useCustomForm';
+import { useSendCustomNotification } from '@services/notifications';
 import {
-  lengthMoreThan,
-  notEmpty,
-  useField,
-  useForm,
-} from '@shopify/react-form';
+  Button,
+  Form,
+  Modal,
+  Select,
+  Stack,
+  TextField,
+} from '@shopify/polaris';
+import { lengthMoreThan, notEmpty, useField } from '@shopify/react-form';
+import { resetAction } from '@shopify/react-form/build/ts/hooks/field/reducer';
 
 export default ({ info }: BookingModalChildProps) => {
+  const { send } = useSendCustomNotification({
+    orderId: info.orderId,
+    lineItemId: info.lineItemId,
+  });
+
+  const options = [
+    { label: 'Choose receiver', value: '' },
+    {
+      label: 'Customer',
+      value: 'customer',
+    },
+    { label: 'Staff', value: 'staff' },
+  ];
+
   //https://codesandbox.io/s/1wpxz?file=/src/MyForm.tsx:2457-2473
-  const { fields, submit } = useForm({
+  const {
+    submitting,
+    fields,
+    submit,
+    submitErrors,
+    isSubmitted,
+    isValid,
+    reset,
+  } = useCustomForm({
     fields: {
       message: useField({
         value: '',
@@ -21,26 +48,44 @@ export default ({ info }: BookingModalChildProps) => {
       }),
       to: useField({
         value: '',
-        validates: [notEmpty('Email is required'), isEmail('Invalid email')],
+        validates: [notEmpty('to is required')],
       }),
     },
     onSubmit: async (fieldValues) => {
+      const response = await send(fieldValues);
+      reset();
+      if (!response.success) {
+        return {
+          status: 'fail',
+          errors: [{ fields: 'ijooji', message: response.error }],
+        };
+      }
       return { status: 'success' };
     },
   });
 
   return (
     <Form onSubmit={() => null}>
-      <Modal.Section>
-        <TextField
-          label="Meddelse"
-          multiline={4}
-          autoComplete="off"
-          {...fields.message}
+      {isSubmitted && (
+        <FormToast
+          message={isValid ? 'Message send' : 'Error happened'}
+          error={!isValid}
         />
-      </Modal.Section>
+      )}
       <Modal.Section>
-        <Button onClick={submit}>Send message</Button>
+        <Stack vertical>
+          {isSubmitted && !isValid && <FormErrors errors={submitErrors} />}
+          <Select label="To" options={options} {...fields.to} />
+          <TextField
+            label="Meddelse"
+            multiline={4}
+            autoComplete="off"
+            {...fields.message}
+          />
+          <Button onClick={submit} disabled={submitting} loading={submitting}>
+            Send message
+          </Button>
+        </Stack>
       </Modal.Section>
     </Form>
   );
