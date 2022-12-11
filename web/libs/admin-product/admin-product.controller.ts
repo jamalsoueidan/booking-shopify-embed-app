@@ -1,17 +1,52 @@
 import ProductModel, { IProductModel } from "@models/product.model";
 import ScheduleModel from "@models/schedule.model";
-import ProductService from "@services/product.service";
-import mongoose, { Document, Types } from "mongoose";
+import Shopify from "@shopify/shopify-api";
+import { Session } from "@shopify/shopify-api/dist/auth/session";
+import mongoose, { Document } from "mongoose";
 import { IStaffModel } from "../../database/models/staff.model";
 
 export enum ControllerMethods {
   getById = "getById",
+  getOrderFromShopify = "getOrderFromShopify",
   update = "update",
   getStaff = "getStaff",
   getStaffToAdd = "getStaffToAdd",
   addStaff = "addStaff",
   removeStaff = "removeStaff",
 }
+
+interface GetOrderFromShopify {
+  query: {
+    session: Session;
+    id: string;
+  };
+}
+
+interface ClientQueryShopifyOrder {
+  body: {
+    data: {
+      order: {
+        name: string;
+      };
+    };
+  };
+}
+
+const getOrderFromShopify = async ({
+  query: { session, id },
+}: GetOrderFromShopify) => {
+  const client = new Shopify.Clients.Graphql(session.shop, session.accessToken);
+  const data: ClientQueryShopifyOrder = await client.query({
+    data: `query {
+      order(id: "gid://shopify/Order/${id}") {
+        name,
+        note,
+      }
+    }`,
+  });
+
+  return data?.body?.data?.order;
+};
 
 interface Query extends Pick<IProductModel, "shop"> {
   id: string;
@@ -218,6 +253,7 @@ const getStaff = async ({
 
 export default {
   getById,
+  getOrderFromShopify,
   update,
   getStaff,
 };

@@ -2,7 +2,8 @@ var request = require("request");
 import BookingModel, { IBookingModel } from "@models/booking.model";
 import CustomerModel, { ICustomerModel } from "@models/customer.model";
 import NotificationModel from "@models/notification.model";
-import StaffModel from "@models/staff.model";
+import staffModel from "@models/staff.model";
+import StaffModel, { IStaffModel } from "@models/staff.model";
 import { format, isBefore, subDays, subMinutes } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
 import mongoose from "mongoose";
@@ -77,7 +78,7 @@ const sendCustom = async (query: SendCustomProps) => {
         shop,
         orderId: booking.orderId,
         lineItemId: booking.lineItemId,
-        receiver: phone,
+        receiver: phone.replace("+", ""),
       }))
     ) {
       throw "after_fifteen_minutes_send_message";
@@ -89,6 +90,7 @@ const sendCustom = async (query: SendCustomProps) => {
       lineItemId,
       message,
       receiver: phone,
+      isStaff: to === "staff",
     });
   }
 
@@ -112,7 +114,7 @@ const resend = async ({ shop, id }: ResendProps) => {
       shop,
       orderId: notification.orderId,
       lineItemId: notification.lineItemId,
-      receiver: notification.receiver,
+      receiver: notification.receiver.replace("+", ""),
     }))
   ) {
     notification.updatedAt = new Date();
@@ -130,6 +132,7 @@ interface SendProps {
   message: string;
   scheduled?: Date;
   shop: string;
+  isStaff: boolean;
 }
 
 const send = async ({
@@ -139,6 +142,7 @@ const send = async ({
   receiver,
   message,
   scheduled,
+  isStaff,
 }: SendProps) => {
   const notification = new NotificationModel({
     orderId,
@@ -147,6 +151,7 @@ const send = async ({
     receiver,
     scheduled,
     shop,
+    isStaff,
   });
   return notification.save();
   request.post(
@@ -167,43 +172,34 @@ const send = async ({
   );
 };
 
-interface SendBookingConfirmation {
-  customer: ICustomerModel;
-  boughtProductTitles: string[];
-  shop: string;
-  orderId: number;
-}
-
-const sendBookingConfirmation = ({
-  customer,
-  boughtProductTitles,
-  shop,
-  orderId,
-}: SendBookingConfirmation) => {
-  if (!customer.phone) {
-    return;
-  }
-
-  send({
-    orderId,
-    shop,
-    receiver: customer.phone.replace("+", ""),
-    message: `Hej ${
-      customer.firstName
-    }, tak for din reservation af ${boughtProductTitles.join(
-      ", "
-    )} behandling(er) :-)`,
-  });
-};
-
-interface SendReminder {
-  customer: ICustomerModel;
+interface sendBookingConfirmation {
+  receiver: ICustomerModel | IStaffModel;
   bookings: IBookingModel[];
   shop: string;
 }
 
-const sendReminder = ({ customer, bookings, shop }: SendReminder) => {
-  if (!customer.phone) {
+const sendBookingConfirmationCustomer = ({
+  receiver,
+  bookings,
+  shop,
+}: sendBookingConfirmation) => {
+  send({
+    orderId: bookings[0].orderId,
+    shop,
+    receiver: receiver.phone.replace("+", ""),
+    message: `Hej ${receiver.fullname}, tak for din resevations, som indeholder ${bookings.length} behandling(er)`,
+    isStaff: false,
+  });
+};
+
+interface SendReminder {
+  receiver: ICustomerModel | IStaffModel;
+  bookings: IBookingModel[];
+  shop: string;
+}
+
+const sendReminderCustomer = ({ receiver, bookings, shop }: SendReminder) => {
+  if (!receiver.phone) {
     return;
   }
 
@@ -213,21 +209,45 @@ const sendReminder = ({ customer, bookings, shop }: SendReminder) => {
       shop,
       orderId: booking.orderId,
       lineItemId: booking.lineItemId,
-      receiver: customer.phone.replace("+", ""),
-      message: `Hej ${
-        customer.firstName
-      }, Husk din xxx behandling imorgen kl. ${format(
+      receiver: receiver.phone.replace("+", ""),
+      message: `Hej ${receiver.fullname}, Husk din ${
+        booking.title
+      } behandling imorgen kl. ${format(
         utcToZonedTime(new Date(booking.start), "Europe/Paris"),
         "HH:mm"
       )}. Vi ser frem til at se dig!`,
       scheduled: utcToZonedTime(subDays(booking.start, 1), "Europe/Paris"),
+      isStaff: false,
+    });
+  });
+};
+
+const sendReminderStaff = ({ bookings, shop }: SendReminder) => {
+  // TODO: use timezone from settings
+  bookings.forEach(async (booking) => {
+    const staff = await staffModel.findById(booking.staff);
+
+    send({
+      shop,
+      orderId: booking.orderId,
+      lineItemId: booking.lineItemId,
+      receiver: staff.phone.replace("+", ""),
+      message: `Hej ${staff.fullname}, Husk du har en kunde som skal lave ${
+        booking.title
+      } behandling imorgen kl. ${format(
+        utcToZonedTime(new Date(booking.start), "Europe/Paris"),
+        "HH:mm"
+      )}!`,
+      scheduled: utcToZonedTime(subDays(booking.start, 1), "Europe/Paris"),
+      isStaff: true,
     });
   });
 };
 
 export default {
-  sendBookingConfirmation,
-  sendReminder,
+  sendBookingConfirmationCustomer,
+  sendReminderCustomer,
+  sendReminderStaff,
   get,
   sendCustom,
   resend,

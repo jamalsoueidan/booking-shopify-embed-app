@@ -25,6 +25,7 @@ export const expressHandleRoute =
             ...req.params,
             session: {
               ...session,
+              shop: req.query.shop || session.shop,
               accessToken:
                 session?.accessToken || req.headers["x-shopify-access-token"],
             },

@@ -3,10 +3,6 @@ import CustomerService from "@services/customer.service";
 import NotificationService from "@services/notification.service";
 import mongoose from "mongoose";
 
-function onlyUnique(value, index, self) {
-  return self.indexOf(value) === index;
-}
-
 interface ModifyProps {
   body: OrderTypes.Order;
   shop: string;
@@ -24,8 +20,6 @@ const modify = async ({
 
   const lineItems = body.line_items.filter(filter);
 
-  const boughtProductTitles = [];
-
   let models: IBookingModel[] = lineItems.map((lineItem) => {
     const _data = lineItem.properties.find((p) => p.name === "_data")?.value;
     if (_data) {
@@ -33,8 +27,6 @@ const modify = async ({
       const staffId = data.staff._id;
       const anyAvailable = data.staff.anyAvailable;
       const completeDate = new Date(data.start);
-
-      boughtProductTitles.push(lineItem.title);
 
       return {
         orderId,
@@ -48,6 +40,7 @@ const modify = async ({
         anyAvailable,
         fulfillmentStatus: lineItem.fulfillment_status,
         customerId: body.customer.id,
+        title: lineItem.title,
       };
     }
   });
@@ -76,15 +69,24 @@ const modify = async ({
     customerGraphqlApiId: body.customer.admin_graphql_api_id,
   });
 
-  //if (sendBooking) {
-  NotificationService.sendBookingConfirmation({
-    customer,
-    boughtProductTitles,
-    shop,
-    orderId,
-  });
-  NotificationService.sendReminder({ customer, bookings: models, shop });
-  //}
+  if (sendBooking) {
+    NotificationService.sendBookingConfirmationCustomer({
+      receiver: customer,
+      bookings: models,
+      shop,
+    });
+    NotificationService.sendReminderCustomer({
+      receiver: customer,
+      bookings: models,
+      shop,
+    });
+
+    NotificationService.sendReminderStaff({
+      receiver: customer,
+      bookings: models,
+      shop,
+    });
+  }
 
   const bulkWrite = models.map((m) => ({
     updateOne: {
@@ -92,6 +94,7 @@ const modify = async ({
         orderId: m.orderId,
         lineItemId: m.lineItemId,
         productId: m.productId,
+        isEdit: false,
       },
       update: {
         $set: m,
@@ -100,7 +103,7 @@ const modify = async ({
     },
   }));
 
-  return await BookingModel.bulkWrite(bulkWrite);
+  BookingModel.bulkWrite(bulkWrite);
 };
 
 interface CreateProps {
@@ -117,7 +120,7 @@ interface UpdateProps {
 }
 
 const update = async ({ body, shop }: UpdateProps) =>
-  await modify({ body, shop });
+  await modify({ body, shop, sendBooking: true });
 
 interface CancelProps {
   body: OrderTypes.Order;

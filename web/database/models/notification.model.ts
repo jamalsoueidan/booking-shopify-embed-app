@@ -9,6 +9,7 @@ export interface INotificationModel {
   status?: boolean;
   createdAt: Date;
   updatedAt: Date;
+  isStaff: boolean;
   shop: string;
 }
 
@@ -24,6 +25,10 @@ const NotificationSchema = new mongoose.Schema(
       type: String,
       required: true,
       index: true,
+    },
+    isStaff: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" } }

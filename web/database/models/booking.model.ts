@@ -12,6 +12,8 @@ export interface IBookingModel {
   shop: string;
   anyAvailable?: boolean;
   fulfillmentStatus: string;
+  title: string;
+  isEdit?: boolean;
 }
 
 const BookingSchema = new mongoose.Schema({
@@ -54,6 +56,11 @@ const BookingSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
+  isEdit: {
+    type: Boolean,
+    default: false,
+  },
+  title: String,
 });
 
 export default mongoose.model<IBookingModel>(

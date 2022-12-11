@@ -162,7 +162,7 @@ export async function createServer(
   app.use(express.json({ limit: "1mb", extended: true } as any));
 
   app.use("/api/widget", widgetRoutes(app));
-  app.use("/api/admin", adminNotificationRoutes(app));
+  app.use("/api/admin", adminProductRoutes(app));
 
   // All endpoints after this point will require an active session
   app.use(
@@ -172,6 +172,7 @@ export async function createServer(
     })
   );
 
+  app.use("/api/admin", adminNotificationRoutes(app));
   app.use("/api/admin", adminBookingRoutes(app));
   app.use("/api/admin", adminCollectionRoutes(app));
   app.use("/api/admin", adminProductRoutes(app));

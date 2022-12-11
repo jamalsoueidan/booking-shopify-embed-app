@@ -99,6 +99,7 @@ interface Notification {
   shop: string;
   createdAt: Date;
   updatedAt: Date;
+  isStaff: boolean;
 }
 interface SchedulesApi extends Api {
   payload: Schedule[];

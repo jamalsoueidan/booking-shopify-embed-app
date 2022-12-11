@@ -3,7 +3,7 @@ import {
   useNotifications,
   useResendNotification,
 } from '@services/notifications';
-import { ResourceItem, ResourceList, Text } from '@shopify/polaris';
+import { Badge, ResourceItem, ResourceList, Tag, Text } from '@shopify/polaris';
 import { format } from 'date-fns';
 import { useState } from 'react';
 
@@ -29,7 +29,14 @@ export default ({ info }: BookingModalChildProps) => {
         items={data.reverse()}
         loading={data.length === 0}
         renderItem={(item) => {
-          const { _id: id, message, receiver, createdAt, scheduled } = item;
+          const {
+            _id: id,
+            message,
+            receiver,
+            createdAt,
+            scheduled,
+            isStaff,
+          } = item;
           const shortcutActions = [
             {
               content: 'Send Again',
@@ -46,7 +53,10 @@ export default ({ info }: BookingModalChildProps) => {
               shortcutActions={shortcutActions}
               persistActions>
               <Text variant="bodySm" as="p">
-                <b>Phone:</b> {receiver}
+                <b>Phone:</b> {receiver}{' '}
+                <Badge size="small">
+                  {isStaff ? 'Til medarbejder' : 'Til kunde'}
+                </Badge>
               </Text>
               <Text variant="bodySm" as="p">
                 <b>Send:</b> {format(new Date(createdAt), 'yyyy-MM-dd HH:mm')}

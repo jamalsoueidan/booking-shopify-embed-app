@@ -4,6 +4,7 @@ export interface ICustomerModel {
   customerId: number;
   firstName: string;
   lastName: string;
+  fullname: string;
   email: string;
   phone: string;
   shop: string;
@@ -16,6 +17,10 @@ const CustomerSchema = new mongoose.Schema({
   email: String,
   phone: String,
   shop: { type: String, index: true },
+});
+
+CustomerSchema.virtual("fullname").get(function () {
+  return this.firstName + " " + this.lastName;
 });
 
 CustomerSchema.index(

@@ -12,6 +12,10 @@ export default function adminProductRoutes(app) {
     handleRoute(req, res, ControllerMethods.getById);
   });
 
+  router.get("/products/getOrderFromShopify/:id", async (req, res) => {
+    handleRoute(req, res, ControllerMethods.getOrderFromShopify);
+  });
+
   router.put(
     "/products/:id",
     body("_id").isEmpty(),
