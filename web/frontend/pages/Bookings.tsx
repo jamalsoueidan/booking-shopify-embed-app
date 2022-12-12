@@ -36,6 +36,7 @@ export default () => {
 
       const toTimeZone = (fromUTC: Date) =>
         utcToZonedTime(fromUTC, settings.timeZone);
+
       bookings.forEach((d) => {
         api.addEvent({
           ...d,

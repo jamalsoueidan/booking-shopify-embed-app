@@ -114,6 +114,12 @@ function App({ config }: AppProps) {
               hidden
             />
             <input
+              id="timezone"
+              name="properties[Tidszone]"
+              defaultValue={Intl.DateTimeFormat().resolvedOptions().timeZone}
+              hidden
+            />
+            <input
               id="data"
               name="properties[_data]"
               value={JSON.stringify({

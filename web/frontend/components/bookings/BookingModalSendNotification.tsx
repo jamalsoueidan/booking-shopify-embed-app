@@ -11,9 +11,9 @@ import {
   TextField,
 } from '@shopify/polaris';
 import { lengthMoreThan, notEmpty, useField } from '@shopify/react-form';
-import { resetAction } from '@shopify/react-form/build/ts/hooks/field/reducer';
+import { forwardRef, useEffect } from 'react';
 
-export default ({ info }: BookingModalChildProps) => {
+export default ({ info, setPrimaryAction }: BookingModalChildProps) => {
   const { send } = useSendCustomNotification({
     orderId: info.orderId,
     lineItemId: info.lineItemId,
@@ -64,6 +64,15 @@ export default ({ info }: BookingModalChildProps) => {
     },
   });
 
+  useEffect(() => {
+    setPrimaryAction({
+      content: 'Send Message',
+      onAction: submit,
+      disabled: submitting,
+      loading: submitting,
+    });
+  }, [setPrimaryAction]);
+
   return (
     <Form onSubmit={() => null}>
       {isSubmitted && (
@@ -82,9 +91,6 @@ export default ({ info }: BookingModalChildProps) => {
             autoComplete="off"
             {...fields.message}
           />
-          <Button onClick={submit} disabled={submitting} loading={submitting}>
-            Send message
-          </Button>
         </Stack>
       </Modal.Section>
     </Form>

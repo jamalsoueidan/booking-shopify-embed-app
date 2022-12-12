@@ -3,7 +3,7 @@ import {
   useNotifications,
   useResendNotification,
 } from '@services/notifications';
-import { Badge, ResourceItem, ResourceList, Tag, Text } from '@shopify/polaris';
+import { Badge, ResourceItem, ResourceList, Text } from '@shopify/polaris';
 import { format } from 'date-fns';
 import { useState } from 'react';
 

@@ -26,7 +26,6 @@ const modify = async ({
       const data: OrderTypes.Data = JSON.parse(_data);
       const staffId = data.staff._id;
       const anyAvailable = data.staff.anyAvailable;
-      const completeDate = new Date(data.start);
 
       return {
         orderId,
@@ -34,13 +33,14 @@ const modify = async ({
         lineItemTotal: lineItems.length,
         productId: lineItem.product_id,
         staff: new mongoose.Types.ObjectId(staffId),
-        start: completeDate,
-        end: new Date(data.end),
+        start: data.start,
+        end: data.end,
         shop,
         anyAvailable,
         fulfillmentStatus: lineItem.fulfillment_status,
         customerId: body.customer.id,
         title: lineItem.title,
+        timeZone: data.timeZone,
       };
     }
   });

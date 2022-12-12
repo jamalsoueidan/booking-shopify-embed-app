@@ -6,6 +6,7 @@ import CreateDaySchedule from './CreateDaySchedule';
 interface RefMethod {
   submit: () => boolean;
 }
+
 export default ({ info, setInfo }: any) => {
   const ref = useRef<RefMethod>();
   const toggleActive = () => setInfo(null);

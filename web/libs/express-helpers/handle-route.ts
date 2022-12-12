@@ -34,6 +34,11 @@ export const expressHandleRoute =
         }),
       });
     } catch (error) {
-      res.status(500).json({ success: false, error });
+      res
+        .status(500)
+        .json({
+          success: false,
+          error: error instanceof Error ? `${error}` : error,
+        });
     }
   };

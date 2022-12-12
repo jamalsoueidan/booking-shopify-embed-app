@@ -74,19 +74,34 @@ interface Schedule {
   available: boolean;
 }
 
+interface Customer {
+  _id: string;
+  customerId: number;
+  shop: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  phone?: any;
+}
+
 interface Booking {
   _id: string;
   shop: string;
   staff: Staff;
   start: Date;
   end: Date;
-  productId: string;
+  productId: number;
   product: Product;
-  //for full-calendar
   title: string;
   anyAvailable: boolean;
   cancelled: boolean;
   orderId: number;
+  isEdit: boolean;
+  lineItemId: number;
+  lineItemTotal: number;
+  customerId: number;
+  customer: Customer;
+  timeZone: string;
 }
 
 interface Notification {
@@ -121,6 +136,34 @@ interface StafferApi extends Api {
   payload: Array<Staff>;
 }
 
+interface WidgetStaff {
+  tag: string;
+  fullname: string;
+  staff: string;
+  avatar?: string;
+  position?: string;
+}
+
+interface WidgetStaffApi extends Api {
+  payload: Array<WidgetStaff>;
+}
+
+interface WidgetDateHour {
+  start: string;
+  end: string;
+  staff: {
+    _id: string;
+    fullname: string;
+  };
+}
+interface WidgetDateSchedule {
+  date: string;
+  hours: WidgetDateHour[];
+}
+
+interface WidgetDateApi extends Api {
+  payload: Array<WidgetDateSchedule>;
+}
 interface ProductStaffApi extends Api {
   payload: Array<ProductStaff>;
 }
@@ -135,6 +178,10 @@ interface StaffApi extends Api {
 
 interface BookingsApi {
   payload: Array<Booking>;
+}
+
+interface BookingsGetApi {
+  payload: Booking;
 }
 
 interface Setting {

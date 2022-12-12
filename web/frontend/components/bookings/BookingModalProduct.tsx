@@ -1,48 +1,84 @@
-import { Banner, Link, Modal, TextContainer } from '@shopify/polaris';
-import { format } from 'date-fns';
+import FormToast from '@components/FormToast';
+import LoadingSpinner from '@components/LoadingSpinner';
+import { useBookingGet } from '@services/bookings';
+import { Modal } from '@shopify/polaris';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import BookingModalProductEdit from './BookingModalProduct/BookingModalProductEdit';
+import BookingModalProductView from './BookingModalProduct/BookingModalProductView';
 
-export default ({ info }: BookingModalChildProps) => {
-  const url = 'https://testeriphone.myshopify.com/admin/orders/' + info.orderId;
+interface RefMethod {
+  submit: () => boolean;
+}
+
+export default ({
+  info,
+  setPrimaryAction,
+  setSecondaryActions,
+}: BookingModalChildProps) => {
+  const ref = useRef<RefMethod>();
+  const [isEditing, setIsEditing] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const { data: booking } = useBookingGet({ id: info._id });
+
+  const toggle = useCallback(() => setIsEditing((value) => !value), []);
+  const submit = useCallback(() => {
+    ref.current.submit();
+    setIsSubmitted((value) => true);
+    toggle();
+  }, [ref, toggle]);
+
+  useEffect(() => {
+    setSecondaryActions([]);
+    setPrimaryAction(null);
+
+    if (isEditing) {
+      setPrimaryAction({
+        content: 'Ændre dato/tid',
+        onAction: submit,
+      });
+      setSecondaryActions([
+        {
+          content: 'Annullere',
+          onAction: toggle,
+        },
+      ]);
+    } else {
+      setSecondaryActions([
+        {
+          content: 'Ændre dato/tid',
+          onAction: toggle,
+        },
+      ]);
+    }
+  }, [isEditing, setPrimaryAction]);
+
+  if (!booking) {
+    return (
+      <Modal.Section>
+        <LoadingSpinner />
+      </Modal.Section>
+    );
+  }
 
   return (
     <>
-      {info.cancelled && (
-        <Modal.Section>
-          <Banner title="Behandling annulleret" onDismiss={() => {}}>
-            <p>Dette behandling er blevet annulleret.</p>
-          </Banner>
-        </Modal.Section>
+      {isSubmitted && <FormToast message={'Booking updated'} />}
+
+      {isEditing ? (
+        <BookingModalProductEdit
+          info={booking}
+          setPrimaryAction={setPrimaryAction}
+          setSecondaryActions={setSecondaryActions}
+          ref={ref}
+        />
+      ) : (
+        <BookingModalProductView
+          info={booking}
+          setPrimaryAction={setPrimaryAction}
+          setSecondaryActions={setSecondaryActions}
+        />
       )}
-      <Modal.Section>
-        <TextContainer>
-          <strong>Title:</strong>{' '}
-          <Link url={url} external>
-            {info.product.title}
-          </Link>
-        </TextContainer>
-      </Modal.Section>
-
-      <Modal.Section>
-        <TextContainer>
-          <strong>Tid:</strong> {format(new Date(info.start), 'HH:mm')} -{' '}
-          {format(new Date(info.end), 'HH:mm')}
-        </TextContainer>
-      </Modal.Section>
-
-      <Modal.Section>
-        <TextContainer>
-          <strong>Hos:</strong> {info.staff?.fullname}
-          {info.anyAvailable ? '(eller kan vælge frit)' : ''}
-        </TextContainer>
-      </Modal.Section>
-
-      <Modal.Section>
-        <TextContainer>
-          <strong>
-            Dette ordre indeholder {info.lineItemTotal} behandlinger
-          </strong>
-        </TextContainer>
-      </Modal.Section>
     </>
   );
 };

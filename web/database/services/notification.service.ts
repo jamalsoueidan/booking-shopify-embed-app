@@ -209,7 +209,7 @@ const sendReminderCustomer = ({ receiver, bookings, shop }: SendReminder) => {
       shop,
       orderId: booking.orderId,
       lineItemId: booking.lineItemId,
-      receiver: receiver.phone.replace("+", ""),
+      receiver: receiver.phone?.replace("+", ""),
       message: `Hej ${receiver.fullname}, Husk din ${
         booking.title
       } behandling imorgen kl. ${format(
@@ -238,7 +238,10 @@ const sendReminderStaff = ({ bookings, shop }: SendReminder) => {
         utcToZonedTime(new Date(booking.start), "Europe/Paris"),
         "HH:mm"
       )}!`,
-      scheduled: utcToZonedTime(subDays(booking.start, 1), "Europe/Paris"),
+      scheduled: utcToZonedTime(
+        subDays(new Date(booking.start), 1),
+        "Europe/Paris"
+      ),
       isStaff: true,
     });
   });

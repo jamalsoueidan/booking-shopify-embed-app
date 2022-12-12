@@ -13,6 +13,7 @@ export interface IBookingModel {
   anyAvailable?: boolean;
   fulfillmentStatus: string;
   title: string;
+  timeZone: string;
   isEdit?: boolean;
 }
 
@@ -56,6 +57,7 @@ const BookingSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
+  timeZone: String,
   isEdit: {
     type: Boolean,
     default: false,

@@ -1,9 +1,9 @@
 import { endOfDay, startOfDay } from "date-fns";
 import mongoose, { ObjectId, Types } from "mongoose";
-import Booking, { IBookingModel } from "../models/booking.model";
+import BookingModel, { IBookingModel } from "../models/booking.model";
 
 const find = async (shop) => {
-  return await Booking.find({ shop });
+  return await BookingModel.find({ shop });
 };
 
 export interface GetBookingsByStaffReturn
@@ -21,7 +21,7 @@ const getBookingsByStaff = async ({
   end,
   staff,
 }: GetBookingsByStaffProps): Promise<Array<GetBookingsByStaffReturn>> => {
-  return await Booking.aggregate([
+  return await BookingModel.aggregate([
     {
       $match: {
         shop,
@@ -78,7 +78,7 @@ interface GetBookingsProps {
 }
 
 const getBookings = async ({ shop, start, end, staff }: GetBookingsProps) => {
-  return await Booking.aggregate([
+  return await BookingModel.aggregate([
     {
       $match: {
         shop,
@@ -132,8 +132,85 @@ const getBookings = async ({ shop, start, end, staff }: GetBookingsProps) => {
     },
   ]);
 };
+
+interface UpdateProps {
+  filter: { _id: string; shop: string };
+  body: Partial<IBookingModel>;
+}
+
+const update = async ({ filter, body }: UpdateProps) => {
+  const booking = await BookingModel.findOne(filter);
+  if (!booking) {
+    throw "Not found";
+  }
+  booking.staff = body.staff;
+  booking.start = body.start;
+  booking.end = body.end;
+  booking.isEdit = true;
+  return await booking.save();
+};
+
+interface GetByIdProps {
+  id: string;
+  shop: string;
+}
+
+const getById = async ({ shop, id }: GetByIdProps) => {
+  const bookings = await BookingModel.aggregate([
+    {
+      $match: {
+        shop,
+        _id: new mongoose.Types.ObjectId(id),
+      },
+    },
+    {
+      $lookup: {
+        from: "Customer",
+        localField: "customerId",
+        foreignField: "customerId",
+        as: "customer",
+      },
+    },
+    {
+      $unwind: "$customer",
+    },
+    {
+      $lookup: {
+        from: "Staff",
+        localField: "staff",
+        foreignField: "_id",
+        as: "staff",
+      },
+    },
+    {
+      $unwind: {
+        path: "$staff",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: "Product",
+        localField: "productId",
+        foreignField: "productId",
+        as: "product",
+      },
+    },
+    {
+      $unwind: {
+        path: "$product",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+  ]);
+
+  return bookings[0];
+};
+
 export default {
   find,
   getBookingsByStaff,
   getBookings,
+  update,
+  getById,
 };
