@@ -8,7 +8,7 @@ import BookingModalSendNotification from './BookingModalSendNotification';
 interface BookingModalProps {
   show: boolean;
   toggle: any;
-  info: Booking;
+  info: any;
 }
 
 export default ({ show, toggle, info }: BookingModalProps) => {

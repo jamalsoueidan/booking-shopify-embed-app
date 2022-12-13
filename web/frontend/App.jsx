@@ -25,12 +25,6 @@ export default function App() {
   // See documentation for <Routes /> for more info
   const pages = import.meta.globEager('./pages/**/!(*.test.[jt]sx)*.([jt]sx)');
 
-  const test: CustomBook = {
-    test: 'a',
-  };
-
-  console.log(test);
-
   return (
     <PolarisProvider>
       <BrowserRouter>
