@@ -25,12 +25,11 @@ interface ProductUpdateBody
   staff?: ProductStaff[];
 }
 
-interface ProductStaffUpdateBodyReturn {
-  _id: string;
-  tag: string;
+interface ProductStaffUBodyReturn {
   staff: string;
+  tag: string;
 }
 
 interface ProductUpdateBodyReturn extends Omit<Product, "staff"> {
-  staff: ProductStaffUpdateBodyReturn[];
+  staff: ProductStaffUBodyReturn[];
 }
