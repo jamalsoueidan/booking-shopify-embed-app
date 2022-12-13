@@ -15,5 +15,6 @@
       "@webhooks/*": ["libs/webhooks/*"]
     }
   },
+  "include": ["**/*.ts", "**/*.tsx", "../@types"],
   "exclude": ["node_modules", "frontend", "dist"]
 }

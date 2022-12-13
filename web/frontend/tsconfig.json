@@ -25,6 +25,6 @@
       "@libs/*": ["libs/*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx", "App.jsx"],
+  "include": ["**/*.ts", "**/*.tsx", "App.jsx", "../../@types"],
   "exclude": ["node_modules/**", "dist"]
 }

@@ -1,3 +1,3 @@
-interface Book {
+interface CustomBook {
   test: string;
 }
