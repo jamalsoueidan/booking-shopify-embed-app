@@ -27,7 +27,7 @@ export default forwardRef(({ date, close }: CreateDayScheduleProps, ref) => {
   const { data: settings } = useSettingGet();
 
   const { create: createSchedule } = useStaffScheduleCreate({
-    userId: params.id,
+    staff: params.id,
   });
 
   const { fields, submit, validate } = useForm({

@@ -10,7 +10,6 @@ import {
   parseISO,
   setMinutes,
   subHours,
-  subMinutes,
 } from "date-fns";
 
 export enum ControllerMethods {
@@ -22,21 +21,52 @@ export enum ControllerMethods {
   destroyGroup = "destroyGroup",
 }
 
-const get = async ({ query }) => {
+interface GetQuery extends ScheduleQuery {
+  shop: string;
+}
+
+interface GetProps {
+  query: GetQuery;
+}
+
+const get = async ({ query }: GetProps) => {
   const { shop, staff, start, end } = query;
-  return await ScheduleService.getByDateRange({ staff, start, end });
+  return await ScheduleService.getByDateRange({ shop, staff, start, end });
 };
 
-const create = async ({ query, body }) => {
+interface CreateQuery {
+  shop: string;
+  staff: string;
+}
+
+interface CreateProps {
+  query: CreateQuery;
+  body: Schedules;
+}
+
+const create = async ({ query, body }: CreateProps) => {
   const { shop, staff } = query;
 
   return ScheduleService.create({ shop, staff, schedules: body });
 };
 
-const update = async ({ query, body }) => {
+interface UpdateQuery extends ScheduleUpdateOrDestroyQuery {
+  shop: string;
+}
+interface UpdateBody {
+  body: ScheduleBody;
+}
+
+interface UpdateProps {
+  query: UpdateQuery;
+  body: UpdateBody;
+}
+
+const update = async ({ query, body }: UpdateProps) => {
   const { shop, staff, schedule } = query;
 
-  if (await StaffService.findOne(staff, { shop })) {
+  const exists = await StaffService.findOne(staff, { shop });
+  if (exists) {
     return await ScheduleService.findByIdAndUpdate(schedule, {
       groupId: null,
       ...body,
@@ -44,13 +74,32 @@ const update = async ({ query, body }) => {
   }
 };
 
-const destroy = async ({ query }) => {
-  const { shop, staff, schedule } = query;
+interface DestroyQuery extends ScheduleUpdateOrDestroyQuery {
+  shop: string;
+}
 
-  return await ScheduleService.remove({ schedule, shop });
+interface DestroyProps {
+  query: DestroyQuery;
+}
+
+const destroy = ({ query }: DestroyProps) => {
+  const { shop, staff, schedule } = query;
+  return ScheduleService.remove({ schedule, shop });
 };
 
-const updateGroup = async ({ query, body }) => {
+interface UpdateGroupQuery extends ScheduleUpdateOrDestroyQuery {
+  shop: string;
+  groupId: string;
+}
+
+interface UpdateGroupBody extends ScheduleBody {}
+
+interface UpdateGroupProps {
+  query: UpdateGroupQuery;
+  body: UpdateGroupBody;
+}
+
+const updateGroup = async ({ query, body }: UpdateGroupProps) => {
   const { staff, schedule, groupId, shop } = query;
 
   const documents = await ScheduleService.find({
@@ -123,7 +172,16 @@ const updateGroup = async ({ query, body }) => {
   }
 };
 
-const destroyGroup = async ({ query }) => {
+interface DestroyGroupQuery extends ScheduleUpdateOrDestroyQuery {
+  shop: string;
+  groupId: string;
+}
+
+interface DestroyGroupProps {
+  query: DestroyGroupQuery;
+}
+
+const destroyGroup = async ({ query }: DestroyGroupProps) => {
   const { shop, staff, schedule, groupId } = query;
 
   const documents = await ScheduleModel.countDocuments({

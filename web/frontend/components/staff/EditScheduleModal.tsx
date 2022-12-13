@@ -41,25 +41,25 @@ export default ({ info, setInfo }: Props) => {
   const [available, setAvailable] = useState(extendedProps.available || false);
 
   const { isUpdating, update: updateSchedule } = useStaffScheduleUpdate({
-    userId: params.id,
-    scheduleId: extendedProps._id,
+    staff: params.id,
+    schedule: extendedProps._id,
   });
 
   const { isUpdating: isUpdatingAll, update: updateScheduleAll } =
     useStaffScheduleUpdate({
-      userId: params.id,
-      scheduleId: extendedProps._id,
+      staff: params.id,
+      schedule: extendedProps._id,
     });
 
   const { isDestroying, destroy: destroySchedule } = useStaffScheduleDestroy({
-    userId: params.id,
-    scheduleId: extendedProps._id,
+    staff: params.id,
+    schedule: extendedProps._id,
   });
 
   const { isDestroying: isDestroyingAll, destroy: destroyScheduleAll } =
     useStaffScheduleDestroy({
-      userId: params.id,
-      scheduleId: extendedProps._id,
+      staff: params.id,
+      schedule: extendedProps._id,
     });
 
   const handleStart = (value: string) => setStartTime(value);
@@ -77,10 +77,9 @@ export default ({ info, setInfo }: Props) => {
       settings.timeZone
     );
 
-    const body: Omit<Schedule, '_id' | 'staff'> = {
+    const body: ScheduleBody = {
       start: start.toISOString(),
       end: end.toISOString(),
-      available: true,
       tag,
       ...(type === 'all' ? { groupId: extendedProps.groupId } : null),
     };

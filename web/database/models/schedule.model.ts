@@ -1,18 +1,9 @@
-import mongoose, { Types } from "mongoose";
-const { Schema } = mongoose;
+import mongoose, { Document } from "mongoose";
 
-// https://tomanagle.medium.com/strongly-typed-models-with-mongoose-and-typescript-7bc2f7197722
-export interface IScheduleModel {
-  staff: Types.ObjectId;
-  groupId: string;
-  start: Date;
-  end: Date;
-  available: boolean;
-  tag: string;
-}
+export interface IScheduleModel extends Omit<Schedule, "_id">, Document {}
 
-const ScheduleSchema = new Schema({
-  staff: { type: Schema.Types.ObjectId, ref: "Staff", index: true },
+const ScheduleSchema = new mongoose.Schema({
+  staff: { type: mongoose.Schema.Types.ObjectId, ref: "Staff", index: true },
   groupId: String,
   start: {
     type: Date,
@@ -24,12 +15,12 @@ const ScheduleSchema = new Schema({
     required: true,
     index: true,
   },
-  available: {
-    type: Boolean,
-    default: true,
+  tag: {
+    type: String,
+    required: true,
     index: true,
   },
-  tag: {
+  shop: {
     type: String,
     required: true,
     index: true,

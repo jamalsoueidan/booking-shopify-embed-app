@@ -4,13 +4,13 @@ import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
 
 interface MutateCache {
   mutate: (value: string) => void;
-  userId: string;
+  staff: string;
   cache: Map<any, any>;
 }
 
 // https://github.com/vercel/swr/discussions/488
-const mutateCache = ({ mutate, userId, cache }: MutateCache) => {
-  const pattern = new RegExp(`\/api\/admin\/staff\/${userId}/schedules[^  ]+`);
+const mutateCache = ({ mutate, staff, cache }: MutateCache) => {
+  const pattern = new RegExp(`\/api\/admin\/staff\/${staff}/schedules[^  ]+`);
   cache.forEach((_, key) => {
     if (pattern.test(key)) {
       mutate(key);
@@ -18,54 +18,35 @@ const mutateCache = ({ mutate, userId, cache }: MutateCache) => {
   });
 };
 
-interface UseStaffScheduleListProps {
-  userId: string;
-  start: string;
-  end: string;
-}
-
-interface UseStaffScheduleListReturn {
-  data: Schedule[];
-}
-
-const useStaffScheduleList = ({
-  userId,
-  start,
-  end,
-}: UseStaffScheduleListProps): UseStaffScheduleListReturn => {
+const useStaffSchedule = ({ staff, start, end }: ScheduleQuery) => {
   const fetch = useAuthenticatedFetch();
-  const { data } = useSWR<SchedulesApi>(
+  const { data } = useSWR<ApiResponse<Array<Schedule>>>(
     start &&
       end &&
-      `/api/admin/staff/${userId}/schedules?start=${start}&end=${end}`,
+      `/api/admin/staff/${staff}/schedules?start=${start}&end=${end}`,
     (url) => fetch(url).then((r: Response) => r.json())
   );
   return { data: data?.payload || [] };
 };
 
 interface UseStaffScheduleCreateProps {
-  userId: string;
+  staff: string;
 }
 
-interface UseStaffScheduleCreateReturn {
-  isCreating: boolean;
-  create: (body: any) => void;
-}
+type UseStaffScheduleCreateFunction = (body: Schedules) => void;
 
-const useStaffScheduleCreate = ({
-  userId,
-}: UseStaffScheduleCreateProps): UseStaffScheduleCreateReturn => {
+const useStaffScheduleCreate = ({ staff }: UseStaffScheduleCreateProps) => {
   const [isCreating, setIsCreating] = useState<boolean>();
   const { mutate, cache } = useSWRConfig();
   const fetch = useAuthenticatedFetch();
-  const create = useCallback(async (body: any) => {
+  const create: UseStaffScheduleCreateFunction = useCallback(async (body) => {
     setIsCreating(true);
-    await fetch(`/api/admin/staff/${userId}/schedules`, {
+    await fetch(`/api/admin/staff/${staff}/schedules`, {
       method: 'POST',
       body: JSON.stringify(body),
       headers: { 'Content-Type': 'application/json' },
     });
-    mutateCache({ mutate, cache: cache as any, userId });
+    mutateCache({ mutate, cache: cache as any, staff });
     setIsCreating(false);
   }, []);
   return {
@@ -74,30 +55,24 @@ const useStaffScheduleCreate = ({
   };
 };
 
-interface UseStaffScheduleDestroyProps {
-  userId: string;
-  scheduleId: string;
-}
-
 interface UseStaffScheduleDestroyFetchProps extends Pick<Schedule, 'groupId'> {}
 
-interface UseStaffScheduleDestroyReturn {
-  destroy: (body: UseStaffScheduleDestroyFetchProps) => void;
-  isDestroying: boolean;
-}
+type UseStaffScheduleDestroyFetch = (
+  body: UseStaffScheduleDestroyFetchProps
+) => void;
 
 const useStaffScheduleDestroy = ({
-  userId,
-  scheduleId,
-}: UseStaffScheduleDestroyProps): UseStaffScheduleDestroyReturn => {
+  staff,
+  schedule,
+}: ScheduleUpdateOrDestroyQuery) => {
   const [isDestroying, setIsDestroying] = useState<boolean>();
   const fetch = useAuthenticatedFetch();
   const { mutate, cache } = useSWRConfig();
-  const destroy = useCallback(
-    async (body: UseStaffScheduleUpdateFetchProps) => {
+  const destroy: UseStaffScheduleDestroyFetch = useCallback(
+    async (body) => {
       setIsDestroying(true);
       await fetch(
-        `/api/admin/staff/${userId}/schedules/${scheduleId}${
+        `/api/admin/staff/${staff}/schedules/${schedule}${
           body.groupId ? '/group/' + body.groupId : ''
         }`,
         {
@@ -105,7 +80,7 @@ const useStaffScheduleDestroy = ({
           headers: { 'Content-Type': 'application/json' },
         }
       );
-      mutateCache({ mutate, cache: cache as any, userId });
+      mutateCache({ mutate, cache: cache as any, staff });
       setIsDestroying(false);
     },
     [setIsDestroying]
@@ -117,31 +92,20 @@ const useStaffScheduleDestroy = ({
   };
 };
 
-interface UseStaffScheduleUpdateProps {
-  userId: string;
-  scheduleId: string;
-}
-
-interface UseStaffScheduleUpdateFetchProps
-  extends Omit<Schedule, '_id' | 'staff'> {}
-
-interface UseStaffScheduleUpdateReturn {
-  update: (body: UseStaffScheduleUpdateFetchProps) => void;
-  isUpdating: boolean;
-}
+type UseStaffScheduleUpdateFetch = (body: ScheduleBody) => void;
 
 const useStaffScheduleUpdate = ({
-  userId,
-  scheduleId,
-}: UseStaffScheduleUpdateProps): UseStaffScheduleUpdateReturn => {
+  staff,
+  schedule,
+}: ScheduleUpdateOrDestroyQuery) => {
   const [isUpdating, setIsUpdating] = useState<boolean>();
   const { mutate, cache } = useSWRConfig();
   const fetch = useAuthenticatedFetch();
-  const update = useCallback(
-    async (body: UseStaffScheduleUpdateFetchProps) => {
+  const update: UseStaffScheduleUpdateFetch = useCallback(
+    async (body) => {
       setIsUpdating(true);
       await fetch(
-        `/api/admin/staff/${userId}/schedules/${scheduleId}${
+        `/api/admin/staff/${staff}/schedules/${schedule}${
           body.groupId ? '/group/' + body.groupId : ''
         }`,
         {
@@ -150,7 +114,7 @@ const useStaffScheduleUpdate = ({
           headers: { 'Content-Type': 'application/json' },
         }
       );
-      mutateCache({ mutate, cache: cache as any, userId });
+      mutateCache({ mutate, cache: cache as any, staff });
       setIsUpdating(false);
     },
     [setIsUpdating]
@@ -163,7 +127,7 @@ const useStaffScheduleUpdate = ({
 };
 
 export {
-  useStaffScheduleList,
+  useStaffSchedule,
   useStaffScheduleCreate,
   useStaffScheduleDestroy,
   useStaffScheduleUpdate,

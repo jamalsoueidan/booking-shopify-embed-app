@@ -9,42 +9,35 @@ import {
 } from "date-fns";
 import mongoose, { FilterQuery, Types, UpdateQuery } from "mongoose";
 
-export interface SchedulesProp {
-  groupId?: string;
-  staff?: string;
-  start: string;
-  end: string;
-  tag: string;
-}
-
-export interface CreateProps {
-  staff: string;
+export interface CreateProps extends ScheduleCreateBody {
   shop: string;
-  schedules: SchedulesProp[] | SchedulesProp;
 }
 
 const create = async ({ staff, shop, schedules }: CreateProps) => {
-  if (
-    await StaffService.findOne(new mongoose.Types.ObjectId(staff), { shop })
-  ) {
+  const exists = await StaffService.findOne(
+    new mongoose.Types.ObjectId(staff),
+    { shop }
+  );
+  if (exists) {
     const resetSecMil = (value) => {
       return setSeconds(setMilliseconds(parseISO(value), 0), 0).toISOString();
     };
 
     if (Array.isArray(schedules)) {
       const groupId = new Date().getTime();
-      return await ScheduleModel.insertMany(
-        schedules.map((b: SchedulesProp) => {
-          b.groupId = groupId.toString();
-          b.staff = staff;
-          b.start = resetSecMil(b.start);
-          b.end = resetSecMil(b.end);
-          return b;
+      return ScheduleModel.insertMany(
+        schedules.map((b) => {
+          return {
+            groupId: groupId.toString(),
+            staff,
+            start: resetSecMil(b.start),
+            end: resetSecMil(b.end),
+            shop,
+          };
         })
       );
     } else {
-      return await ScheduleModel.create({
-        ...schedules,
+      return ScheduleModel.create({
         staff,
         shop,
         start: resetSecMil(schedules.start),
@@ -85,40 +78,30 @@ const remove = async ({ schedule, shop }) => {
   return await ScheduleModel.deleteOne({ _id: schedule, shop });
 };
 
-const insertMany = async (schedules: UpdateQuery<IScheduleModel>) => {
-  return await ScheduleModel.insertMany(schedules);
-};
-
-const updateMany = async (
-  filter: FilterQuery<IScheduleModel>,
-  schedules: UpdateQuery<IScheduleModel>
-) => {
-  return await ScheduleModel.updateMany(filter, {
-    $set: { ...schedules },
-  });
-};
-
 interface GetByDateRangeProps {
+  shop: string;
   staff: string;
   start: string;
   end: string;
 }
 
-const getByDateRange = async ({ staff, start, end }: GetByDateRangeProps) => {
-  return await ScheduleModel.aggregate([
-    {
-      $match: {
-        staff: new mongoose.Types.ObjectId(staff),
-        available: true,
-        start: {
-          $gte: new Date(`${start}T00:00:00.0Z`),
-        },
-        end: {
-          $lt: new Date(`${end}T23:59:59.0Z`),
-        },
-      },
+const getByDateRange = async ({
+  shop,
+  staff,
+  start,
+  end,
+}: GetByDateRangeProps) => {
+  return await ScheduleModel.find({
+    staff: new mongoose.Types.ObjectId(staff),
+    available: true,
+    start: {
+      $gte: new Date(`${start}T00:00:00.0Z`),
     },
-  ]);
+    end: {
+      $lt: new Date(`${end}T23:59:59.0Z`),
+    },
+    shop,
+  });
 };
 
 interface GetByStaffAndTagProps {
@@ -256,8 +239,6 @@ export default {
   findOne,
   remove,
   findByIdAndUpdate,
-  insertMany,
-  updateMany,
   getByStaffAndTag,
   getByTag,
   getByDateRange,

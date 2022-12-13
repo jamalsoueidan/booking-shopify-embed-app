@@ -6,7 +6,7 @@ import StaffCalendar from '@components/staff/StaffCalendar';
 import { DateClickArg } from '@fullcalendar/interaction';
 import { EventClickArg } from '@fullcalendar/react';
 import { useStaffGet } from '@services/staff';
-import { useStaffScheduleList } from '@services/staff/schedule';
+import { useStaffSchedule } from '@services/staff/schedule';
 import { useNavigate } from '@shopify/app-bridge-react';
 import { Card, Page } from '@shopify/polaris';
 import { useCallback, useState } from 'react';
@@ -18,8 +18,8 @@ export default () => {
   const [rangeDate, setRangeDate] = useState<CalendarDateChangeProps>();
   const { data: staff } = useStaffGet({ userId: params.id });
 
-  const { data: calendar } = useStaffScheduleList({
-    userId: params.id,
+  const { data: calendar } = useStaffSchedule({
+    staff: params.id,
     start: rangeDate?.start,
     end: rangeDate?.end,
   });
