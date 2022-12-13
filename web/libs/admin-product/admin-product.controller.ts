@@ -1,9 +1,8 @@
-import ProductModel, { IProductModel } from "@models/product.model";
+import ProductModel from "@models/product.model";
 import ScheduleModel from "@models/schedule.model";
 import Shopify from "@shopify/shopify-api";
 import { Session } from "@shopify/shopify-api/dist/auth/session";
-import mongoose, { Document } from "mongoose";
-import { IStaffModel } from "../../database/models/staff.model";
+import mongoose from "mongoose";
 
 export enum ControllerMethods {
   getById = "getById",
@@ -48,21 +47,26 @@ const getOrderFromShopify = async ({
   return data?.body?.data?.order;
 };
 
-interface Query extends Pick<IProductModel, "shop"> {
+interface Query {
+  shop: string;
   id: string;
 }
 
-const getById = async ({ query }: { query: Query }) => {
+const getById = async ({
+  query,
+}: {
+  query: Query;
+}): Promise<Product | null> => {
   const { shop, id } = query;
 
   const product = await ProductModel.findOne({
     _id: new mongoose.Types.ObjectId(id),
     shop,
     "staff.0": { $exists: false },
-  }).lean();
+  });
 
   if (product) {
-    return product;
+    return product as any;
   }
 
   const products = await ProductModel.aggregate([
@@ -113,18 +117,13 @@ const getById = async ({ query }: { query: Query }) => {
   return products.length > 0 ? products[0] : null;
 };
 
-interface UpdateStaffBody {
-  _id: string;
-  tag: string;
-}
-interface UpdateBody {
-  staff?: UpdateStaffBody[];
-  duration?: number;
-  buffertime?: number;
-  active?: boolean;
-}
-
-const update = async ({ query, body }: { query: Query; body: UpdateBody }) => {
+const update = async ({
+  query,
+  body,
+}: {
+  query: Query;
+  body: ProductUpdateBody;
+}): Promise<Product> => {
   const { staff, ...properties } = body;
 
   const newStaffier =
@@ -162,16 +161,12 @@ const update = async ({ query, body }: { query: Query; body: UpdateBody }) => {
   ).lean();
 };
 
-interface GetStaffReturn extends IStaffModel, Document {
-  tags: string[];
-}
-
 // @description return all staff that don't belong yet to the product
 const getStaff = async ({
   query,
 }: {
   query: Query;
-}): Promise<Array<GetStaffReturn>> => {
+}): Promise<Array<ProductAddStaff>> => {
   const { shop, id } = query;
 
   return await ScheduleModel.aggregate([

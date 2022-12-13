@@ -101,7 +101,7 @@ describe("admin-product controller", () => {
 
     let pickStaff = staffToAdd[0];
 
-    let updatedProduct: IProductModel;
+    let updatedProduct: Product;
 
     updatedProduct = await productController.update({
       query,

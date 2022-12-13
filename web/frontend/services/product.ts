@@ -6,16 +6,12 @@ interface UseCollectionProductGetProps {
   productId: string;
 }
 
-interface UseCollectionProductGetReturn {
-  data: Product;
-}
-
 const useCollectionProductGet = ({
   productId,
-}: UseCollectionProductGetProps): UseCollectionProductGetReturn => {
+}: UseCollectionProductGetProps) => {
   const fetch = useAuthenticatedFetch();
 
-  const { data } = useSWR<ProductApi>(
+  const { data } = useSWR<ApiResponse<Product>>(
     `/api/admin/products/${productId}`,
     (apiURL: string) => fetch(apiURL).then((r: Response) => r.json())
   );
@@ -29,23 +25,26 @@ interface UseCollectionProductUpdateProps {
   productId: string;
 }
 
-type UseCollectionProductUpdateBody = Partial<Omit<Product, '_id'>>;
-interface UseCollectionProductUpdateReturn {
-  update: (body: UseCollectionProductUpdateBody) => void;
-}
+type UseCollectionProductUpdateFetch = (
+  body: ProductUpdateBody
+) => Promise<ProductUpdateBodyReturn>;
 
 const useCollectionProductUpdate = ({
   productId,
-}: UseCollectionProductUpdateProps): UseCollectionProductUpdateReturn => {
+}: UseCollectionProductUpdateProps) => {
   const { mutate } = useSWRConfig();
   const fetch = useAuthenticatedFetch();
-  const update = useCallback(async (body: UseCollectionProductUpdateBody) => {
-    await fetch(`/api/admin/products/${productId}`, {
-      method: 'PUT',
-      body: JSON.stringify(body),
-      headers: { 'Content-Type': 'application/json' },
-    });
+  const update: UseCollectionProductUpdateFetch = useCallback(async (body) => {
+    const response: ProductUpdateBodyReturn = await fetch(
+      `/api/admin/products/${productId}`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(body),
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
     mutate(`/api/admin/products/${productId}`);
+    return response;
   }, []);
 
   return {
@@ -53,4 +52,27 @@ const useCollectionProductUpdate = ({
   };
 };
 
-export { useCollectionProductGet, useCollectionProductUpdate };
+interface UseCollectionProductStaffListProps {
+  productId: string;
+}
+
+const useCollectionProductStaff = ({
+  productId,
+}: UseCollectionProductStaffListProps) => {
+  const fetch = useAuthenticatedFetch();
+
+  const { data } = useSWR<ApiResponse<Array<ProductAddStaff>>>(
+    `/api/admin/products/${productId}/staff`,
+    (apiURL: string) => fetch(apiURL).then((r: Response) => r.json())
+  );
+
+  return {
+    data: data?.payload,
+  };
+};
+
+export {
+  useCollectionProductGet,
+  useCollectionProductUpdate,
+  useCollectionProductStaff,
+};

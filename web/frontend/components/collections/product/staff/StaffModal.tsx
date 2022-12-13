@@ -1,7 +1,6 @@
-import TagOptions from '@components/TagOptions';
 import usePositions from '@components/usePositions';
 import useTagOptions from '@components/useTagOptions';
-import { useCollectionProductStaff } from '@services/product/staff';
+import { useCollectionProductStaff } from '@services/product';
 import { Modal, OptionList, Spinner } from '@shopify/polaris';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -17,12 +16,13 @@ export default ({ productId, show, close }: StaffModalProps) => {
   const { t } = useTranslation('collections', {
     keyPrefix: 'product.staff.modal',
   });
+
   const { data } = useCollectionProductStaff({ productId });
   const { value, fields, addItem, removeItems } = useContext(FormContext);
-  const [selected, setSelected] = useState<Array<StaffTag>>([]);
+  const [selected, setSelected] = useState<Array<ProductStaff>>([]);
 
   const toggle = useCallback(
-    (value: StaffTag) => {
+    (value: ProductStaff) => {
       // first we remove the selected Staff
       const newSelected = selected.filter((s) => s._id !== value._id);
       // then if tag is NOT null, we the selected staff
@@ -92,9 +92,9 @@ export default ({ productId, show, close }: StaffModalProps) => {
 };
 
 interface ChoiceStaffProps {
-  staff: ProductStaffToAdd;
-  selected: Array<StaffTag>;
-  toggle: (value: StaffTag) => void;
+  staff: ProductAddStaff;
+  selected: Array<ProductStaff>;
+  toggle: (value: ProductStaff) => void;
 }
 
 const ChoiceStaff = ({ staff, selected, toggle }: ChoiceStaffProps) => {

@@ -8,7 +8,7 @@ import StaffModal from './staff/StaffModal';
 
 interface StaffCardProps {
   product: Product;
-  form: DynamicList<StaffTag>;
+  form: DynamicList<ProductStaff>;
 }
 
 export default ({ product, form }: StaffCardProps) => {

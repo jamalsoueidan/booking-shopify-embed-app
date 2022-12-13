@@ -1,6 +1,7 @@
 /// <reference path="../@types/index.d.ts" />
 /// <reference path="../@types/settings.d.ts" />
 /// <reference path="../@types/staff.d.ts" />
+/// <reference path="../@types/product.d.ts" />
 
 declare module '*';
 interface Response {
@@ -10,25 +11,6 @@ interface Response {
 interface Api {
   error: string;
   success: boolean;
-}
-
-interface StaffTag {
-  _id: string;
-  tag: string;
-  fullname: string;
-  avatar?: string;
-  position?: string;
-}
-
-interface Product {
-  _id: string;
-  productId: string;
-  collectionId: string;
-  title: string;
-  staff: Array<StaffTag>;
-  buffertime: number;
-  duration: number;
-  active: boolean;
 }
 
 interface Collection {
@@ -44,17 +26,6 @@ interface Resource {
 interface Resources {
   id?: string;
   selection: Resource[];
-}
-
-interface ProductStaff {
-  _id: string;
-  staff: string;
-  tags: string;
-  fullname: string;
-}
-
-interface ProductStaffToAdd extends Staff {
-  tags: string[];
 }
 
 interface Schedule {
@@ -117,10 +88,6 @@ interface CollectionsApi extends Api {
   payload: Array<Collection>;
 }
 
-interface ProductApi extends Api {
-  payload: Product;
-}
-
 interface NotificationsApi extends Api {
   payload: Notification[];
 }
@@ -152,13 +119,6 @@ interface WidgetDateSchedule {
 
 interface WidgetDateApi extends Api {
   payload: Array<WidgetDateSchedule>;
-}
-interface ProductStaffApi extends Api {
-  payload: Array<ProductStaff>;
-}
-
-interface ProductStaffToAddApi extends Api {
-  payload: Array<ProductStaffToAdd>;
 }
 
 interface BookingsApi {

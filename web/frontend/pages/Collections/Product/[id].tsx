@@ -45,9 +45,9 @@ export default () => {
       }),
     },
     dynamicLists: {
-      staff: useDynamicList<StaffTag>(
+      staff: useDynamicList<ProductStaff>(
         product?.staff || [],
-        (staff: StaffTag) => staff
+        (staff: ProductStaff) => staff
       ),
     },
     onSubmit: async (fieldValues) => {
@@ -86,7 +86,7 @@ export default () => {
               active={fields.active}
               staffLength={product.staff.length}></ProductActivate>
             <br />
-            <ProductStaff product={product} form={staff}></ProductStaff>
+            <ProductStaff product={product as any} form={staff}></ProductStaff>
             <br />
             <ProductOptionsCard fields={fields}></ProductOptionsCard>
           </Layout>

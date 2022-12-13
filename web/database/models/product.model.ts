@@ -1,20 +1,12 @@
-import mongoose, { LeanDocument, Schema, Types } from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
 
-// https://tomanagle.medium.com/strongly-typed-models-with-mongoose-and-typescript-7bc2f7197722
-
-interface IProductStaffModel {
+interface Staff {
   staff: string;
   tag: string;
 }
-export interface IProductModel {
-  shop: string;
-  collectionId: number;
-  productId: number;
-  title: string;
-  staff: Array<IProductStaffModel>;
-  duration: number;
-  buffertime: number;
-  active: boolean;
+
+export interface IProductModel extends Omit<Product, "_id"|"staff">, Document {
+  staff: Staff[];
 }
 
 const ProductSchema = new Schema({
