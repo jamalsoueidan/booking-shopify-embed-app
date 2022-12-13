@@ -15,8 +15,12 @@ import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ModalConfirm from '../modals/ModalConfirm.js';
 
-export default ({ collection }: { collection: Collection }) => {
-  const [modalConfirm, setModalConfirm] = useState<any>();
+interface CollectionListProps {
+  collection: CollectionAggreate;
+}
+
+export default ({ collection }: CollectionListProps) => {
+  const [modalConfirm, setModalConfirm] = useState<JSX.Element>();
   const { destroy } = useCollectionDestroy({ collectionId: collection._id });
   const { t } = useTranslation('collections');
 

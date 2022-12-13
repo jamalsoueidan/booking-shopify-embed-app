@@ -1,13 +1,6 @@
 import mongoose, { Document, Schema } from "mongoose";
 
-interface Staff {
-  staff: string;
-  tag: string;
-}
-
-export interface IProductModel extends Omit<Product, "_id"|"staff">, Document {
-  staff: Staff[];
-}
+export interface IProductModel extends Omit<Product, "_id">, Document {}
 
 const ProductSchema = new Schema({
   shop: {

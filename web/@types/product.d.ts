@@ -1,7 +1,7 @@
-interface ProductStaff extends Partial<Staff> {
+interface ProductStaff {
+  staff: string;
   tag: string;
 }
-
 interface Product {
   _id: string;
   productId: number;
@@ -10,8 +10,17 @@ interface Product {
   collectionId: number;
   duration: number;
   shop: string;
-  staff: ProductStaff[];
   title: string;
+  staff: ProductStaff[];
+}
+
+// api/admin/products/:id
+interface ProductStaffAggreate extends Partial<Staff> {
+  tag: string;
+}
+
+interface ProductAggreate extends Omit<Product, "staff"> {
+  staff: ProductStaffAggreate[];
 }
 
 // api/admin/products/:id/staff
@@ -22,14 +31,5 @@ interface ProductAddStaff extends Staff {
 // PUT api/admin/products/6383820e2817210cda196c4d
 interface ProductUpdateBody
   extends Partial<Pick<Product, "duration" | "buffertime" | "active">> {
-  staff?: ProductStaff[];
-}
-
-interface ProductStaffUBodyReturn {
-  staff: string;
-  tag: string;
-}
-
-interface ProductUpdateBodyReturn extends Omit<Product, "staff"> {
-  staff: ProductStaffUBodyReturn[];
+  staff?: ProductStaffAggreate[];
 }

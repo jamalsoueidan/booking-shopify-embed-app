@@ -45,9 +45,9 @@ export default () => {
       }),
     },
     dynamicLists: {
-      staff: useDynamicList<ProductStaff>(
+      staff: useDynamicList<ProductStaffAggreate>(
         product?.staff || [],
-        (staff: ProductStaff) => staff
+        (staff: ProductStaffAggreate) => staff
       ),
     },
     onSubmit: async (fieldValues) => {

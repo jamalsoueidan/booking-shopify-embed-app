@@ -19,10 +19,10 @@ export default ({ productId, show, close }: StaffModalProps) => {
 
   const { data } = useCollectionProductStaff({ productId });
   const { value, fields, addItem, removeItems } = useContext(FormContext);
-  const [selected, setSelected] = useState<Array<ProductStaff>>([]);
+  const [selected, setSelected] = useState<Array<ProductStaffAggreate>>([]);
 
   const toggle = useCallback(
-    (value: ProductStaff) => {
+    (value: ProductStaffAggreate) => {
       // first we remove the selected Staff
       const newSelected = selected.filter((s) => s._id !== value._id);
       // then if tag is NOT null, we the selected staff
@@ -93,8 +93,8 @@ export default ({ productId, show, close }: StaffModalProps) => {
 
 interface ChoiceStaffProps {
   staff: ProductAddStaff;
-  selected: Array<ProductStaff>;
-  toggle: (value: ProductStaff) => void;
+  selected: Array<ProductStaffAggreate>;
+  toggle: (value: ProductStaffAggreate) => void;
 }
 
 const ChoiceStaff = ({ staff, selected, toggle }: ChoiceStaffProps) => {

@@ -11,8 +11,8 @@ export default () => {
   const { t } = useTranslation('collections');
 
   const handleSelection = async (resources: Resources) => {
-    const ids = resources.selection.map((s) => s.id);
-    await create(ids);
+    const selections = resources.selection.map((s) => s.id);
+    await create({ selections });
     setOpen(false);
   };
 

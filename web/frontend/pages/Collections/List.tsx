@@ -1,5 +1,5 @@
 import AddNewCollection from '@components/collections/AddNewCollection';
-import CollectionsList from '@components/collections/Collections-List';
+import CollectionsList from '@components/collections/CollectionsList';
 import LoadingPage from '@components/LoadingPage';
 import { useCollectionList } from '@services/collection';
 import { Page } from '@shopify/polaris';
@@ -16,7 +16,7 @@ export default () => {
     return <LoadingPage />;
   }
 
-  const collection = data.map((collection: Collection) => (
+  const collection = data.map((collection) => (
     <CollectionsList
       key={collection._id}
       collection={collection}></CollectionsList>

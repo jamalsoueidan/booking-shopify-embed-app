@@ -11,7 +11,7 @@ const useCollectionProductGet = ({
 }: UseCollectionProductGetProps) => {
   const fetch = useAuthenticatedFetch();
 
-  const { data } = useSWR<ApiResponse<Product>>(
+  const { data } = useSWR<ApiResponse<ProductAggreate>>(
     `/api/admin/products/${productId}`,
     (apiURL: string) => fetch(apiURL).then((r: Response) => r.json())
   );
@@ -27,7 +27,7 @@ interface UseCollectionProductUpdateProps {
 
 type UseCollectionProductUpdateFetch = (
   body: ProductUpdateBody
-) => Promise<ProductUpdateBodyReturn>;
+) => Promise<Product>;
 
 const useCollectionProductUpdate = ({
   productId,
@@ -35,14 +35,11 @@ const useCollectionProductUpdate = ({
   const { mutate } = useSWRConfig();
   const fetch = useAuthenticatedFetch();
   const update: UseCollectionProductUpdateFetch = useCallback(async (body) => {
-    const response: ProductUpdateBodyReturn = await fetch(
-      `/api/admin/products/${productId}`,
-      {
-        method: 'PUT',
-        body: JSON.stringify(body),
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
+    const response: Product = await fetch(`/api/admin/products/${productId}`, {
+      method: 'PUT',
+      body: JSON.stringify(body),
+      headers: { 'Content-Type': 'application/json' },
+    });
     mutate(`/api/admin/products/${productId}`);
     return response;
   }, []);

@@ -1,13 +1,8 @@
-import mongoose from "mongoose";
-const { Schema } = mongoose;
+import mongoose, { Document } from "mongoose";
 
-export interface ICollectionModel {
-  shop: string;
-  title: string;
-  collectionId: number;
-}
+export interface ICollectionModel extends Omit<Collection, "_id">, Document {}
 
-const CollectionSchema = new Schema({
+const CollectionSchema = new mongoose.Schema({
   shop: {
     type: String,
     required: true,

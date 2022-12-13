@@ -15,16 +15,12 @@ interface CreateQuery {
   shop: string;
 }
 
-interface CreateBody {
-  selections: string[];
-}
-
 const create = async ({
   query,
   body,
 }: {
   query: CreateQuery;
-  body: CreateBody;
+  body: CollectionBodyCreate;
 }) => {
   const { session, shop } = query;
 
@@ -103,8 +99,6 @@ const remove = async ({ query }: { query: DeleteQuery }) => {
   }
 };
 
-const get = async () => {
-  return await CollectionService.findAll();
-};
+const get = () => CollectionService.findAll();
 
 export default { create, get, remove };

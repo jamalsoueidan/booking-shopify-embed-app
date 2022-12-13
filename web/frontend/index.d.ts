@@ -2,6 +2,7 @@
 /// <reference path="../@types/settings.d.ts" />
 /// <reference path="../@types/staff.d.ts" />
 /// <reference path="../@types/product.d.ts" />
+/// <reference path="../@types/collection.d.ts" />
 
 declare module '*';
 interface Response {
@@ -11,13 +12,6 @@ interface Response {
 interface Api {
   error: string;
   success: boolean;
-}
-
-interface Collection {
-  _id: string;
-  collectionId: string;
-  title: string;
-  products: Array<Product>;
 }
 
 interface Resource {
