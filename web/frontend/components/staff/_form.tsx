@@ -3,7 +3,6 @@ import usePositions from '@components/usePositions';
 import useSave from '@hooks/useSave';
 import isEmail from '@libs/validators/isEmail';
 import isPhoneNumber from '@libs/validators/isPhoneNumber';
-import { UpdateOrCreateProps } from '@services/staff';
 import {
   BreadcrumbsProps,
   Card,
@@ -24,7 +23,7 @@ import {
 import { useTranslation } from 'react-i18next';
 
 interface StaffFormProps {
-  action: (body: UpdateOrCreateProps) => void;
+  action: (body: StaffBodyUpdate) => void;
   breadcrumbs?: BreadcrumbsProps['breadcrumbs'];
   titleMetadata?: React.ReactNode;
   data?: Staff;

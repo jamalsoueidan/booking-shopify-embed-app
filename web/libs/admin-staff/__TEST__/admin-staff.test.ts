@@ -48,7 +48,7 @@ describe("Admin-staff controller", () => {
 
     const updateStaff = await staffController.update({
       query: {
-        staff: staff[0]._id.toString(),
+        id: staff[0]._id.toString(),
       },
       body,
     });
@@ -67,7 +67,7 @@ describe("Admin-staff controller", () => {
     const oneStaff = await staffController.getById({
       query: {
         ...query,
-        staff: staff[0]._id.toString(),
+        id: staff[0]._id.toString(),
       },
     });
     expect(oneStaff._id).toEqual(staff[0]._id);

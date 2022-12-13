@@ -1,10 +1,8 @@
 import mongoose, { Document } from "mongoose";
 
-const { Schema } = mongoose;
-
 export interface ISettingModel extends Omit<Setting, "_id">, Document {}
 
-const SettingSchema = new Schema({
+const SettingSchema = new mongoose.Schema({
   shop: {
     type: String,
     required: true,

@@ -1,15 +1,7 @@
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 const { Schema } = mongoose;
 
-export interface IStaffModel {
-  shop: string;
-  fullname: string;
-  email: string;
-  phone: string;
-  avatar: string;
-  position: string;
-  active: boolean;
-}
+export interface IStaffModel extends Omit<Staff, "_id">, Document {}
 
 const StaffSchema = new Schema({
   shop: {

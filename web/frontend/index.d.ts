@@ -1,5 +1,6 @@
 /// <reference path="../@types/index.d.ts" />
 /// <reference path="../@types/settings.d.ts" />
+/// <reference path="../@types/staff.d.ts" />
 
 declare module '*';
 interface Response {
@@ -43,17 +44,6 @@ interface Resource {
 interface Resources {
   id?: string;
   selection: Resource[];
-}
-
-interface Staff {
-  _id: string;
-  shop: string;
-  fullname: string;
-  email: string;
-  phone: string;
-  active: boolean;
-  avatar: string;
-  position: string;
 }
 
 interface ProductStaff {
@@ -135,10 +125,6 @@ interface NotificationsApi extends Api {
   payload: Notification[];
 }
 
-interface StafferApi extends Api {
-  payload: Array<Staff>;
-}
-
 interface WidgetStaff {
   tag: string;
   fullname: string;
@@ -173,10 +159,6 @@ interface ProductStaffApi extends Api {
 
 interface ProductStaffToAddApi extends Api {
   payload: Array<ProductStaffToAdd>;
-}
-
-interface StaffApi extends Api {
-  payload: Staff;
 }
 
 interface BookingsApi {

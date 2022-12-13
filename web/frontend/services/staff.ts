@@ -1,36 +1,26 @@
 import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 
-interface UseStaffListReturn {
-  data: Staff[];
-}
-
-const useStaffList = (): UseStaffListReturn => {
+const useStaffList = () => {
   const fetch = useAuthenticatedFetch();
 
-  const { data } = useSWR<StafferApi>('/api/admin/staff', (apiURL: string) =>
-    fetch(apiURL).then((r: Response) => r.json())
+  const { data } = useSWR<ApiResponse<Array<Staff>>>(
+    '/api/admin/staff',
+    (apiURL: string) => fetch(apiURL).then((r: Response) => r.json())
   );
 
   return { data: data?.payload };
 };
 
-export interface UpdateOrCreateProps extends Omit<Staff, '_id' | 'shop'> {}
-
 interface UseStaffGetProps {
   userId: string;
 }
 
-interface UseStaffGetReturn {
-  data: Staff;
-  update?: (body: UpdateOrCreateProps) => void;
-}
-
-const useStaffGet = ({ userId }: UseStaffGetProps): UseStaffGetReturn => {
+const useStaffGet = ({ userId }: UseStaffGetProps) => {
   const fetch = useAuthenticatedFetch();
 
-  const { data } = useSWR<StaffApi>(
+  const { data } = useSWR<ApiResponse<Staff>>(
     `/api/admin/staff/${userId}`,
     (apiURL: string) => fetch(apiURL).then((r: Response) => r.json())
   );
@@ -40,22 +30,20 @@ const useStaffGet = ({ userId }: UseStaffGetProps): UseStaffGetReturn => {
   };
 };
 
-interface UseStaffCreateReturn {
-  create: (body: UpdateOrCreateProps) => Promise<Staff>;
-}
+type UseStaffCreateFetch = (body: StaffBodyUpdate) => Promise<Staff>;
 
-const useStaffCreate = (): UseStaffCreateReturn => {
+const useStaffCreate = () => {
   const { mutate } = useSWRConfig();
   const fetch = useAuthenticatedFetch();
 
-  const create = useCallback(async (body: UpdateOrCreateProps) => {
-    const { payload } = await fetch('/api/admin/staff', {
+  const create: UseStaffCreateFetch = useCallback(async (body) => {
+    const response: Staff = await fetch('/api/admin/staff', {
       method: 'POST',
       body: JSON.stringify(body),
       headers: { 'Content-Type': 'application/json' },
     }).then((r: Response) => r.json());
     await mutate(`/api/admin/staff`);
-    return payload;
+    return response;
   }, []);
 
   return {
@@ -66,25 +54,23 @@ const useStaffCreate = (): UseStaffCreateReturn => {
 interface UseStaffUpdateProps {
   userId: string;
 }
-interface UseStaffUpdateReturn {
-  update: (body: UpdateOrCreateProps) => void;
-}
 
-const useStaffUpdate = ({
-  userId,
-}: UseStaffUpdateProps): UseStaffUpdateReturn => {
+type UseStaffUpdateFetch = (body: StaffBodyUpdate) => Promise<Staff>;
+
+const useStaffUpdate = ({ userId }: UseStaffUpdateProps) => {
   const { mutate } = useSWRConfig();
   const fetch = useAuthenticatedFetch();
 
-  const update = useCallback(
-    async (body: UpdateOrCreateProps) => {
-      await fetch('/api/admin/staff/' + userId, {
+  const update: UseStaffUpdateFetch = useCallback(
+    async (body) => {
+      const response: Staff = await fetch('/api/admin/staff/' + userId, {
         method: 'PUT',
         body: JSON.stringify(body),
         headers: { 'Content-Type': 'application/json' },
       });
       await mutate(`/api/admin/staff`);
       await mutate(`/api/admin/staff/${userId}`);
+      return response;
     },
     [userId]
   );

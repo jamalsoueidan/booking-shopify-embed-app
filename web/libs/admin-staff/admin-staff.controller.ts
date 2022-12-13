@@ -8,49 +8,53 @@ export enum ControllerMethods {
   update = "update",
 }
 
-interface GetQuery extends Pick<IStaffModel, "shop"> {}
+interface GetQuery {
+  shop: string;
+}
 
-const get = async ({ query }: { query: GetQuery }) => {
+const get = ({ query }: { query: GetQuery }) => {
   const shop = query.shop;
-  return await StaffService.find(shop);
+  return StaffService.find(shop);
 };
 
-interface CreateQuery extends Pick<IStaffModel, "shop"> {}
-interface CreateBody extends Partial<IStaffModel> {}
+interface CreateQuery {
+  shop: string;
+}
 
 const create = async ({
   query,
   body,
 }: {
   query: CreateQuery;
-  body: CreateBody;
+  body: StaffBodyUpdate;
 }) => {
   const shop = query.shop;
   return await StaffService.create({ shop, ...body });
 };
 
-interface GetByIdQuery extends Pick<IStaffModel, "shop"> {
-  staff: string;
+interface GetByIdQuery {
+  shop: string;
+  id: string;
 }
 
 const getById = async ({ query }: { query: GetByIdQuery }) => {
-  const { shop, staff } = query;
-  return await StaffService.findOne(staff, { shop });
+  const { shop, id } = query;
+  return await StaffService.findOne(id, { shop });
 };
 
 interface UpdateParams {
-  staff: string;
+  id: string;
 }
 
 const update = async ({
   body,
   query,
 }: {
-  body: Partial<IStaffModel>;
+  body: StaffBodyUpdate;
   query: UpdateParams;
 }) => {
-  const staff = query.staff;
-  return await StaffService.findByIdAndUpdate(staff, body);
+  const id = query.id;
+  return await StaffService.findByIdAndUpdate(id, body);
 };
 
 export default { get, getById, update, create };

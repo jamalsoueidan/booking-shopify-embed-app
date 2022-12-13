@@ -17,8 +17,8 @@ const findOne = async (_id, document) => {
   return await StaffModel.findOne({ _id, ...document });
 };
 
-const findByIdAndUpdate = async (staffId, document) => {
-  return await StaffModel.findByIdAndUpdate(staffId, document, {
+const findByIdAndUpdate = (staffId, document) => {
+  return StaffModel.findByIdAndUpdate(staffId, document, {
     new: true,
   });
 };

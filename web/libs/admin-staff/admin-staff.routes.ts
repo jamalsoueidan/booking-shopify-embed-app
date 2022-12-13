@@ -17,16 +17,16 @@ export default function adminSettingRoutes(app) {
   });
 
   router.get(
-    "/staff/:staff",
+    "/staff/:id",
     checkSchema({
-      staff: { notEmpty: true },
+      id: { notEmpty: true },
     }),
     async (req, res) => {
       handleRoute(req, res, ControllerMethods.getById);
     }
   );
 
-  router.put("/staff/:staff", async (req, res) => {
+  router.put("/staff/:id", async (req, res) => {
     handleRoute(req, res, ControllerMethods.update);
   });
 
