@@ -1,3 +1,5 @@
+/// <reference path="../common/index.d.ts" />
+
 declare module '*';
 interface Response {
   json: () => {};

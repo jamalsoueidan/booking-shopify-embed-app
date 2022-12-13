@@ -1,0 +1,3 @@
+interface TestBook {
+  test: string;
+}

@@ -163,12 +163,6 @@ export async function createServer(
 
   app.use("/api/widget", widgetRoutes(app));
 
-  const test: CustomBook = {
-    test: "a",
-  };
-
-  console.log(test);
-
   // All endpoints after this point will require an active session
   app.use(
     "/api/*",

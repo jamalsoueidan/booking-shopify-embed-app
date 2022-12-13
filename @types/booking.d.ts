@@ -1,3 +1,0 @@
-interface CustomBook {
-  test: string;
-}
