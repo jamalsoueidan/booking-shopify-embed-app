@@ -32,7 +32,7 @@ export default () => {
   } = useForm({
     fields: {
       buffertime: useField({
-        value: product?.buffertime.toString(),
+        value: product?.buffertime,
         validates: [],
       }),
       duration: useField({
@@ -52,7 +52,7 @@ export default () => {
     },
     onSubmit: async (fieldValues) => {
       await update({
-        buffertime: parseInt(fieldValues.buffertime),
+        buffertime: fieldValues.buffertime,
         duration: fieldValues.duration,
         active: fieldValues.active,
         staff: staff.value,

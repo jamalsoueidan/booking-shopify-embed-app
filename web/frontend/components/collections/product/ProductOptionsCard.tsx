@@ -10,10 +10,14 @@ import {
   Text,
 } from '@shopify/polaris';
 import { ClockMajor } from '@shopify/polaris-icons';
+import { FieldDictionary } from '@shopify/react-form';
 import { useTranslation } from 'react-i18next';
-import { ProductFormFields } from './FormFields';
 
-export default ({ fields }: { fields: ProductFormFields }) => {
+export default ({
+  fields,
+}: {
+  fields: FieldDictionary<Pick<Product, 'buffertime' | 'duration'>>;
+}) => {
   const { t } = useTranslation('collections', { keyPrefix: 'product.options' });
 
   const options = [
@@ -70,7 +74,10 @@ export default ({ fields }: { fields: ProductFormFields }) => {
               label={selectLabel}
               options={options}
               helpText={t('buffertime.help')}
-              {...fields.buffertime}
+              value={fields.buffertime.value.toString()}
+              onChange={(value: string) =>
+                fields.buffertime.onChange(parseInt(value))
+              }
             />
           </FormLayout>
         </Card.Section>

@@ -1,8 +1,8 @@
-import { Layout, SettingToggle, Text } from '@shopify/polaris';
-import { useTranslation, Trans } from 'react-i18next';
-import { ProductFormFields } from './FormFields';
+import { Layout, SettingToggle } from '@shopify/polaris';
+import { FieldDictionary } from '@shopify/react-form';
+import { useTranslation } from 'react-i18next';
 
-interface FormFields extends Pick<ProductFormFields, 'active'> {
+interface FormFields extends FieldDictionary<Pick<Product, 'active'>> {
   staffLength: number;
 }
 
