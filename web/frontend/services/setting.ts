@@ -8,32 +8,40 @@ interface UseSettingGetReturn {
 
 const useSettingGet = (): UseSettingGetReturn => {
   const fetch = useAuthenticatedFetch();
-  const { data } = useSWR<SettingApi>(`/api/admin/setting`, (url: string) =>
-    fetch(url).then((res: Response) => res.json())
+  const { data } = useSWR<ApiResponse<Setting>>(
+    `/api/admin/setting`,
+    (url: string) => fetch(url).then((res: Response) => res.json())
   );
 
   return {
-    data: data?.payload || { timeZone: 'Europe/Paris', language: 'en' },
+    data: data?.payload || {
+      _id: '',
+      shop: '',
+      timeZone: 'Europe/Paris',
+      language: 'en',
+      status: true,
+    },
   };
 };
 
-interface SettingBody extends Setting {}
+type UseSettingUpdateFetch = (body: SettingBodyUpdate) => Promise<Setting>;
 
 interface UseSettingUpdateReturn {
-  update: (body: SettingBody) => void;
+  update: UseSettingUpdateFetch;
 }
 
 const useSettingUpdate = (): UseSettingUpdateReturn => {
   const fetch = useAuthenticatedFetch();
   const { mutate } = useSWRConfig();
 
-  const update = useCallback(async (body: SettingBody) => {
-    await fetch(`/api/admin/setting`, {
+  const update: UseSettingUpdateFetch = useCallback(async (body) => {
+    const response: Setting = await fetch(`/api/admin/setting`, {
       method: 'PUT',
       body: JSON.stringify(body),
       headers: { 'Content-Type': 'application/json' },
     }).then((res: Response) => res.json());
     await mutate(`/api/admin/setting`);
+    return response;
   }, []);
 
   return {

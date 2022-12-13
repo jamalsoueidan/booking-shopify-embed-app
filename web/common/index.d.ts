@@ -1,3 +1,0 @@
-interface TestBook {
-  test: string;
-}

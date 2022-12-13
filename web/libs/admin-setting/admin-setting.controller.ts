@@ -5,15 +5,15 @@ export enum ControllerMethods {
   create = "create",
 }
 
-interface GetQuery extends Pick<ISettingModel, "shop"> {}
+interface GetQuery extends Pick<Setting, "shop"> {}
 
-const get = async ({ query }: { query: GetQuery }) => {
+const get = async ({ query }: { query: GetQuery }): Promise<Setting> => {
   const shop = query.shop;
   return await SettingModel.findOne({ shop });
 };
 
-interface CreateQuery extends Pick<ISettingModel, "shop"> {}
-interface CreateBody extends Partial<ISettingModel> {}
+interface CreateQuery extends Pick<Setting, "shop"> {}
+interface CreateBody extends SettingBodyUpdate {}
 
 const create = async ({
   query,
@@ -21,7 +21,7 @@ const create = async ({
 }: {
   query: CreateQuery;
   body: CreateBody;
-}) => {
+}): Promise<Setting> => {
   const shop = query.shop;
 
   return await SettingModel.findOneAndUpdate({ shop }, body, {

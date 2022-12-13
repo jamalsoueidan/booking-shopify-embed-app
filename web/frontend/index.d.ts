@@ -1,4 +1,5 @@
-/// <reference path="../common/index.d.ts" />
+/// <reference path="../@types/index.d.ts" />
+/// <reference path="../@types/settings.d.ts" />
 
 declare module '*';
 interface Response {
@@ -184,16 +185,6 @@ interface BookingsApi {
 
 interface BookingsGetApi {
   payload: Booking;
-}
-
-interface Setting {
-  language: string;
-  timeZone: string;
-  status?: boolean;
-}
-
-interface SettingApi {
-  payload: Setting;
 }
 
 interface ReturnApi<Payload = any> {

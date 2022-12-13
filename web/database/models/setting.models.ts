@@ -1,16 +1,8 @@
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
+
 const { Schema } = mongoose;
 
-export enum ISettingLanguage {
-  en = "en",
-  da = "da",
-}
-export interface ISettingModel {
-  shop: string;
-  timeZone: string;
-  language: ISettingLanguage;
-  status: boolean;
-}
+export interface ISettingModel extends Omit<Setting, "_id">, Document {}
 
 const SettingSchema = new Schema({
   shop: {
