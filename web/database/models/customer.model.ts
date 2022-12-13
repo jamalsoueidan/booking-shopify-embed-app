@@ -1,14 +1,6 @@
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 
-export interface ICustomerModel {
-  customerId: number;
-  firstName: string;
-  lastName: string;
-  fullname: string;
-  email: string;
-  phone: string;
-  shop: string;
-}
+export interface ICustomerModel extends Omit<Customer, "_id">, Document {}
 
 const CustomerSchema = new mongoose.Schema({
   customerId: { type: Number, required: true, index: true },

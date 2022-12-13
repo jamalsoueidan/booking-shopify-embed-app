@@ -9,14 +9,14 @@ export default ({ info }: BookingModalChildProps) => {
 
   return (
     <>
-      {info.cancelled && (
+      {info.fulfillmentStatus && (
         <Modal.Section>
           <Banner title="Behandling annulleret">
             <p>Dette behandling er blevet annulleret.</p>
           </Banner>
         </Modal.Section>
       )}
-      {info.isEdit && !info.cancelled && (
+      {info.isEdit && !info.fulfillmentStatus && (
         <Modal.Section>
           <Banner title="Behandling har skiftet dato">
             <p>Dette behandling er blevet ændre tidligere.</p>

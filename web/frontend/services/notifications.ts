@@ -1,23 +1,13 @@
-import useSWR, { useSWRConfig } from 'swr';
 import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
 import { useCallback } from 'react';
-
-interface useNotificationsProps {
-  orderId: number;
-  lineItemId: number;
-}
-
-interface useNotificationsReturn {
-  data: Notification[];
-  isLoading: boolean;
-}
+import useSWR from 'swr';
 
 export const useNotifications = ({
   orderId,
   lineItemId,
-}: useNotificationsProps): useNotificationsReturn => {
+}: NotificationQuery) => {
   const fetch = useAuthenticatedFetch();
-  const { data, error } = useSWR<NotificationsApi>(
+  const { data, error } = useSWR<ApiResponse<Array<Notification>>>(
     orderId && lineItemId
       ? `/api/admin/notifications?orderId=${orderId}&lineItemId=${lineItemId}`
       : null,
@@ -30,28 +20,14 @@ export const useNotifications = ({
   };
 };
 
-interface UseSendCustomNoticationProps {
-  orderId: number;
-  lineItemId: number;
-}
-
-interface UseSendCustomNotificationBody {
-  to: 'customer' | 'staff';
-  message: string;
-}
-
 type UseSendCustomerNotificaionCreate = (
-  body: UseSendCustomNotificationBody
-) => Promise<ReturnApi>;
-
-interface UseSendCustomNotificationReturn {
-  send: UseSendCustomerNotificaionCreate;
-}
+  body: NotificationBody
+) => Promise<ApiResponse<Notification>>;
 
 export const useSendCustomNotification = ({
   orderId,
   lineItemId,
-}: UseSendCustomNoticationProps): UseSendCustomNotificationReturn => {
+}: NotificationQuery) => {
   const fetch = useAuthenticatedFetch();
   const send: UseSendCustomerNotificaionCreate = useCallback(async (body) => {
     return await fetch(`/api/admin/notifications`, {
@@ -72,13 +48,9 @@ interface UseResendNotificationBody {
 
 type UseResendNotificaionCreate = ({
   id,
-}: UseResendNotificationBody) => Promise<ReturnApi>;
+}: UseResendNotificationBody) => Promise<ApiResponse<Notification>>;
 
-interface UseResendNotificationReturn {
-  resend: UseResendNotificaionCreate;
-}
-
-export const useResendNotification = (): UseResendNotificationReturn => {
+export const useResendNotification = () => {
   const fetch = useAuthenticatedFetch();
   const resend: UseResendNotificaionCreate = useCallback(async ({ id }) => {
     return await fetch(`/api/admin/notifications/${id}`, {

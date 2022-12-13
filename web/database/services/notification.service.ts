@@ -2,9 +2,12 @@ var request = require("request");
 import BookingModel, { IBookingModel } from "@models/booking.model";
 import CustomerModel, { ICustomerModel } from "@models/customer.model";
 import NotificationModel from "@models/notification.model";
-import staffModel from "@models/staff.model";
-import StaffModel, { IStaffModel } from "@models/staff.model";
-import { format, isBefore, subDays, subMinutes } from "date-fns";
+import {
+  default as staffModel,
+  default as StaffModel,
+  IStaffModel,
+} from "@models/staff.model";
+import { format, subDays, subMinutes } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
 import mongoose from "mongoose";
 
@@ -34,10 +37,8 @@ const noMesageSendLastMinutes = async ({
   return totalSend === 0;
 };
 
-interface GetProps {
+interface GetProps extends NotificationQuery {
   shop: string;
-  orderId: number;
-  lineItemId: number;
 }
 
 const get = ({ shop, orderId, lineItemId }: GetProps) => {
@@ -48,9 +49,8 @@ const get = ({ shop, orderId, lineItemId }: GetProps) => {
   }).sort({ createdAt: 1 });
 };
 
-interface SendCustomProps extends Omit<SendProps, "receiver"> {
+interface SendCustomProps extends NotificationQuery, NotificationBody {
   shop: string;
-  to: "customer" | "staff";
 }
 
 const sendCustom = async (query: SendCustomProps) => {

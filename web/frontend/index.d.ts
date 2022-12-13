@@ -3,15 +3,13 @@
 /// <reference path="../@types/staff.d.ts" />
 /// <reference path="../@types/product.d.ts" />
 /// <reference path="../@types/collection.d.ts" />
+/// <reference path="../@types/customer.d.ts" />
+/// <reference path="../@types/booking.d.ts" />
+/// <reference path="../@types/notification.d.ts" />
 
 declare module '*';
 interface Response {
   json: () => {};
-}
-
-interface Api {
-  error: string;
-  success: boolean;
 }
 
 interface Resource {
@@ -32,58 +30,8 @@ interface Schedule {
   available: boolean;
 }
 
-interface Customer {
-  _id: string;
-  customerId: number;
-  shop: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  phone?: any;
-}
-
-interface Booking {
-  _id: string;
-  shop: string;
-  staff: Staff;
-  start: Date;
-  end: Date;
-  productId: number;
-  product: Product;
-  title: string;
-  anyAvailable: boolean;
-  cancelled: boolean;
-  orderId: number;
-  isEdit: boolean;
-  lineItemId: number;
-  lineItemTotal: number;
-  customerId: number;
-  customer: Customer;
-  timeZone: string;
-}
-
-interface Notification {
-  _id: string;
-  orderId: number;
-  lineItemId: number;
-  message: string;
-  receiver: string;
-  scheduled: Date;
-  shop: string;
-  createdAt: Date;
-  updatedAt: Date;
-  isStaff: boolean;
-}
 interface SchedulesApi extends Api {
   payload: Schedule[];
-}
-
-interface CollectionsApi extends Api {
-  payload: Array<Collection>;
-}
-
-interface NotificationsApi extends Api {
-  payload: Notification[];
 }
 
 interface WidgetStaff {
@@ -113,18 +61,4 @@ interface WidgetDateSchedule {
 
 interface WidgetDateApi extends Api {
   payload: Array<WidgetDateSchedule>;
-}
-
-interface BookingsApi {
-  payload: Array<Booking>;
-}
-
-interface BookingsGetApi {
-  payload: Booking;
-}
-
-interface ReturnApi<Payload = any> {
-  success: boolean;
-  error?: string;
-  payload?: Payload;
 }

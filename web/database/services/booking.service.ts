@@ -1,27 +1,24 @@
 import { endOfDay, startOfDay } from "date-fns";
-import mongoose, { ObjectId, Types } from "mongoose";
-import BookingModel, { IBookingModel } from "../models/booking.model";
+import mongoose, { Types } from "mongoose";
+import BookingModel from "../models/booking.model";
 
 const find = async (shop) => {
   return await BookingModel.find({ shop });
 };
 
-export interface GetBookingsByStaffReturn
-  extends Pick<IBookingModel, "start" | "end"> {
-  staff: string;
-}
 export interface GetBookingsByStaffProps
-  extends Pick<IBookingModel, "shop" | "start" | "end"> {
+  extends Pick<BookingQuery, "start" | "end"> {
+  shop: string;
   staff: Types.ObjectId | string[];
 }
 
-const getBookingsByStaff = async ({
+const getBookingsByStaff = ({
   shop,
   start,
   end,
   staff,
-}: GetBookingsByStaffProps): Promise<Array<GetBookingsByStaffReturn>> => {
-  return await BookingModel.aggregate([
+}: GetBookingsByStaffProps) => {
+  return BookingModel.aggregate<BookingAggreate>([
     {
       $match: {
         shop,
@@ -70,15 +67,12 @@ const getBookingsByStaff = async ({
   ]);
 };
 
-interface GetBookingsProps {
+interface GetBookingsProps extends BookingQuery {
   shop: string;
-  start: string;
-  end: string;
-  staff: string;
 }
 
-const getBookings = async ({ shop, start, end, staff }: GetBookingsProps) => {
-  return await BookingModel.aggregate([
+const getBookings = ({ shop, start, end, staff }: GetBookingsProps) => {
+  return BookingModel.aggregate<BookingAggreate>([
     {
       $match: {
         shop,
@@ -135,7 +129,7 @@ const getBookings = async ({ shop, start, end, staff }: GetBookingsProps) => {
 
 interface UpdateProps {
   filter: { _id: string; shop: string };
-  body: Partial<IBookingModel>;
+  body: BookingBodyUpdate;
 }
 
 const update = async ({ filter, body }: UpdateProps) => {
@@ -144,8 +138,8 @@ const update = async ({ filter, body }: UpdateProps) => {
     throw "Not found";
   }
   booking.staff = body.staff;
-  booking.start = body.start;
-  booking.end = body.end;
+  booking.start = body.start as any;
+  booking.end = body.end as any;
   booking.isEdit = true;
   return await booking.save();
 };
@@ -155,7 +149,10 @@ interface GetByIdProps {
   shop: string;
 }
 
-const getById = async ({ shop, id }: GetByIdProps) => {
+const getById = async ({
+  shop,
+  id,
+}: GetByIdProps): Promise<BookingAggreate | null> => {
   const bookings = await BookingModel.aggregate([
     {
       $match: {
@@ -204,7 +201,7 @@ const getById = async ({ shop, id }: GetByIdProps) => {
     },
   ]);
 
-  return bookings[0];
+  return bookings.length > 0 ? bookings[0] : null;
 };
 
 export default {

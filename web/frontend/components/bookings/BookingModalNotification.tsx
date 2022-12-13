@@ -8,7 +8,7 @@ import { format } from 'date-fns';
 import { useState } from 'react';
 
 export default ({ info }: BookingModalChildProps) => {
-  const [response, setResponse] = useState<ReturnApi>();
+  const [response, setResponse] = useState<ApiResponse<Notification>>();
 
   const { data } = useNotifications({
     orderId: info.orderId,

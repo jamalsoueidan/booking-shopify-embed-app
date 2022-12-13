@@ -1,5 +1,5 @@
 interface ApiResponse<T> {
-  status: "success" | "error";
+  success: boolean;
   error?: string;
   payload?: T;
 }

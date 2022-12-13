@@ -2,24 +2,9 @@ import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
 import { useCallback } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 
-interface useBookingsProps {
-  start: string;
-  end: string;
-  staff: string;
-}
-
-interface useBookingsReturn {
-  data: Booking[];
-  isLoading: boolean;
-}
-
-export const useBookings = ({
-  start,
-  end,
-  staff,
-}: useBookingsProps): useBookingsReturn => {
+export const useBookings = ({ start, end, staff }: BookingQuery) => {
   const fetch = useAuthenticatedFetch();
-  const { data, error } = useSWR<BookingsApi>(
+  const { data, error } = useSWR<ApiResponse<Array<BookingAggreate>>>(
     start && end
       ? `/api/admin/bookings?start=${start}&end=${end}${
           staff ? '&staff=' + staff : ''
@@ -38,22 +23,13 @@ interface UseBookingUpdateProps {
   id: string;
 }
 
-type UseBookingUpdateFunc = (body: {
-  start: string;
-  end: string;
-  staff: string;
-}) => void;
-interface UseBookingUpdateReturn {
-  update: UseBookingUpdateFunc;
-}
+type UseBookingUpdateFetch = (body: BookingBodyUpdate) => void;
 
-export const useBookingUpdate = ({
-  id,
-}: UseBookingUpdateProps): UseBookingUpdateReturn => {
+export const useBookingUpdate = ({ id }: UseBookingUpdateProps) => {
   const fetch = useAuthenticatedFetch();
   const { mutate } = useSWRConfig();
 
-  const update: UseBookingUpdateFunc = useCallback(
+  const update: UseBookingUpdateFetch = useCallback(
     async (body) => {
       await fetch('/api/admin/bookings/' + id, {
         method: 'PUT',
@@ -73,16 +49,11 @@ export const useBookingUpdate = ({
 interface UseBookingGetProps {
   id: string;
 }
-interface UseBookingGetReturn {
-  data: Booking;
-}
 
-export const useBookingGet = ({
-  id,
-}: UseBookingGetProps): UseBookingGetReturn => {
+export const useBookingGet = ({ id }: UseBookingGetProps) => {
   const fetch = useAuthenticatedFetch();
 
-  const { data } = useSWR<BookingsGetApi>(
+  const { data } = useSWR<ApiResponse<BookingAggreate>>(
     `/api/admin/bookings/${id}`,
     (apiURL: string) => fetch(apiURL).then((r: Response) => r.json())
   );

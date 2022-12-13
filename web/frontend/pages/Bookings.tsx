@@ -42,8 +42,8 @@ export default () => {
           ...d,
           start: toTimeZone(new Date(d.start)),
           end: toTimeZone(new Date(d.end)),
-          backgroundColor: d.cancelled ? '#c9c9c9' : '#378006',
-          color: d.cancelled ? '#c9c9c9' : '#378006',
+          backgroundColor: d.fulfillmentStatus ? '#c9c9c9' : '#378006',
+          color: d.fulfillmentStatus ? '#c9c9c9' : '#378006',
         });
       });
     }
@@ -53,7 +53,7 @@ export default () => {
     (arg: any) => {
       const api = calendarRef.current.getApi();
       const isMonth = api.view.type === 'dayGridMonth';
-      const booking: Booking = arg.event.extendedProps;
+      const booking: BookingAggreate = arg.event.extendedProps;
 
       const hour = <i>{format(arg.event.start, 'HH:mm')}</i>;
       const extendHour = (

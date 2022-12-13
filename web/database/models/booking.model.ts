@@ -1,21 +1,6 @@
-import mongoose, { Types } from "mongoose";
+import mongoose, { Document } from "mongoose";
 
-export interface IBookingModel {
-  productId: number;
-  orderId: number;
-  lineItemId: number;
-  lineItemTotal: number;
-  customerId: number;
-  staff: Types.ObjectId;
-  start: Date;
-  end: Date;
-  shop: string;
-  anyAvailable?: boolean;
-  fulfillmentStatus: string;
-  title: string;
-  timeZone: string;
-  isEdit?: boolean;
-}
+export interface IBookingModel extends Omit<Booking, "_id">, Document {}
 
 const BookingSchema = new mongoose.Schema({
   productId: Number,

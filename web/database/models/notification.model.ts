@@ -1,17 +1,8 @@
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 
-export interface INotificationModel {
-  orderId: number;
-  lineItemId?: number;
-  message: string;
-  receiver: string;
-  scheduled: Date;
-  status?: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-  isStaff: boolean;
-  shop: string;
-}
+export interface INotificationModel
+  extends Omit<Notification, "_id">,
+    Document {}
 
 const NotificationSchema = new mongoose.Schema(
   {
