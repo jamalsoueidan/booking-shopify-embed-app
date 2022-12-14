@@ -1,7 +1,11 @@
 import CartModel, { ICartModel } from "@models/cart.model";
 import { endOfDay, startOfDay } from "date-fns";
 
-export interface GetCartsByStaffReturn extends ICartModel {}
+export interface GetCartsByStaffReturn {
+  start: Date;
+  end: Date;
+  staff: string;
+}
 
 export interface GetCartsByStaffProps extends Omit<ICartModel, "createdAt"> {}
 

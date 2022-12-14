@@ -13,11 +13,11 @@ interface ScheduleBody extends Omit<Schedule, "shop" | "_id" | "staff"> {
   end: string;
 }
 
-type Schedules = ScheduleBody[] | ScheduleBody;
+type ScheduleOrSchedules = ScheduleBody[] | ScheduleBody;
 
 interface ScheduleCreateBody {
   staff: string;
-  schedules: Schedules;
+  schedules: ScheduleOrSchedules;
 }
 
 interface ScheduleQuery {

@@ -27,7 +27,7 @@ const modify = async ({
       const staffId = data.staff._id;
       const anyAvailable = data.staff.anyAvailable;
 
-      return {
+      return new BookingModel({
         orderId,
         lineItemId: lineItem.id,
         lineItemTotal: lineItems.length,
@@ -41,7 +41,7 @@ const modify = async ({
         customerId: body.customer.id,
         title: lineItem.title,
         timeZone: data.timeZone,
-      };
+      });
     }
   });
 

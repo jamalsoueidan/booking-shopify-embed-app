@@ -1,7 +1,7 @@
 import usePositions from '@components/usePositions';
 import useTagOptions from '@components/useTagOptions';
 import { useCollectionProductStaff } from '@services/product';
-import { Modal, OptionList, Spinner } from '@shopify/polaris';
+import { Modal, OptionList, Spinner, Text } from '@shopify/polaris';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import FormContext from './FormContext';
@@ -79,6 +79,13 @@ export default ({ productId, show, close }: StaffModalProps) => {
           onAction: close,
         },
       ]}>
+      {data?.length === 0 && (
+        <Modal.Section>
+          <Text variant="bodyLg" as="p">
+            Ingen medarbejder har registeret arbejdstimer
+          </Text>
+        </Modal.Section>
+      )}
       {!choices && (
         <Modal.Section>
           <div style={{ textAlign: 'center' }}>

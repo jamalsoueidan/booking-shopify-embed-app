@@ -33,7 +33,7 @@ interface UseStaffScheduleCreateProps {
   staff: string;
 }
 
-type UseStaffScheduleCreateFunction = (body: Schedules) => void;
+type UseStaffScheduleCreateFunction = (body: ScheduleOrSchedules) => void;
 
 const useStaffScheduleCreate = ({ staff }: UseStaffScheduleCreateProps) => {
   const [isCreating, setIsCreating] = useState<boolean>();

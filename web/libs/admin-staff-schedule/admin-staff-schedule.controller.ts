@@ -41,7 +41,7 @@ interface CreateQuery {
 
 interface CreateProps {
   query: CreateQuery;
-  body: Schedules;
+  body: ScheduleOrSchedules;
 }
 
 const create = async ({ query, body }: CreateProps) => {

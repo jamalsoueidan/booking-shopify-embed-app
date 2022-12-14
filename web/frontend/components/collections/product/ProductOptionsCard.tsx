@@ -74,7 +74,7 @@ export default ({
               label={selectLabel}
               options={options}
               helpText={t('buffertime.help')}
-              value={fields.buffertime.value.toString()}
+              value={fields.buffertime.value?.toString()}
               onChange={(value: string) =>
                 fields.buffertime.onChange(parseInt(value))
               }

@@ -7,7 +7,6 @@ import {
   isWithinInterval,
   subMinutes,
 } from "date-fns";
-import { GetBookingsByStaffReturn } from "../../database/services/booking.service";
 import {
   GetByStaffAndTagReturn,
   GetByTagReturn,
@@ -73,7 +72,7 @@ const scheduleReduce =
   };
 
 const scheduleCalculateBooking = (
-  book: GetBookingsByStaffReturn | GetCartsByStaffReturn
+  book: GetCartsByStaffReturn
 ): ((schedule: ScheduleDate) => ScheduleDate) => {
   const { start, end, staff } = book;
   return (schedule: ScheduleDate): ScheduleDate => {

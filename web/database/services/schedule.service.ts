@@ -7,17 +7,22 @@ import {
   setSeconds,
   startOfDay,
 } from "date-fns";
-import mongoose, { FilterQuery, Types, UpdateQuery } from "mongoose";
+import mongoose, { Types } from "mongoose";
 
 export interface CreateProps extends ScheduleCreateBody {
   shop: string;
 }
 
-const create = async ({ staff, shop, schedules }: CreateProps) => {
+const create = async ({
+  staff,
+  shop,
+  schedules,
+}: CreateProps): Promise<IScheduleModel | IScheduleModel[]> => {
   const exists = await StaffService.findOne(
     new mongoose.Types.ObjectId(staff),
     { shop }
   );
+
   if (exists) {
     const resetSecMil = (value) => {
       return setSeconds(setMilliseconds(parseISO(value), 0), 0).toISOString();
@@ -33,6 +38,7 @@ const create = async ({ staff, shop, schedules }: CreateProps) => {
             start: resetSecMil(b.start),
             end: resetSecMil(b.end),
             shop,
+            tag: b.tag,
           };
         })
       );
@@ -42,6 +48,7 @@ const create = async ({ staff, shop, schedules }: CreateProps) => {
         shop,
         start: resetSecMil(schedules.start),
         end: resetSecMil(schedules.end),
+        tag: schedules.tag,
       });
     }
   }
@@ -93,7 +100,6 @@ const getByDateRange = async ({
 }: GetByDateRangeProps) => {
   return await ScheduleModel.find({
     staff: new mongoose.Types.ObjectId(staff),
-    available: true,
     start: {
       $gte: new Date(`${start}T00:00:00.0Z`),
     },

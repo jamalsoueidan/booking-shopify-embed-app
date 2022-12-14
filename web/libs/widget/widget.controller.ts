@@ -70,7 +70,13 @@ const availabilityDay = async ({
   );
 
   bookings.forEach((book) => {
-    scheduleDates = scheduleDates.map(helpers.scheduleCalculateBooking(book));
+    scheduleDates = scheduleDates.map(
+      helpers.scheduleCalculateBooking({
+        end: book.end,
+        start: book.start,
+        staff: book.staff._id,
+      })
+    );
   });
 
   const carts = await CartService.getCartsByStaff({
@@ -126,12 +132,15 @@ const availabilityRangeByStaff = async ({
 
   let scheduleDates = schedules.reduce(helpers.scheduleReduce(product), []);
 
-  bookings.forEach(
-    (book) =>
-      (scheduleDates = scheduleDates.map(
-        helpers.scheduleCalculateBooking(book)
-      ))
-  );
+  bookings.forEach((book) => {
+    scheduleDates = scheduleDates.map(
+      helpers.scheduleCalculateBooking({
+        end: book.end,
+        start: book.start,
+        staff: book.staff._id,
+      })
+    );
+  });
 
   const carts = await CartService.getCartsByStaff({
     shop,
@@ -181,12 +190,15 @@ const availabilityRangeByAll = async ({
 
   let scheduleDates = schedules.reduce(helpers.scheduleReduce(product), []);
 
-  bookings.forEach(
-    (book) =>
-      (scheduleDates = scheduleDates.map(
-        helpers.scheduleCalculateBooking(book)
-      ))
-  );
+  bookings.forEach((book) => {
+    scheduleDates = scheduleDates.map(
+      helpers.scheduleCalculateBooking({
+        end: book.end,
+        start: book.start,
+        staff: book.staff._id,
+      })
+    );
+  });
 
   const carts = await CartService.getCartsByStaffier({
     shop,
