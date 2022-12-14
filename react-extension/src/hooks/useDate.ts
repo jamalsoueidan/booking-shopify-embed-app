@@ -23,7 +23,7 @@ export const useDate = ({ date }: UseDateProps): UseDateReturn => {
       `${api}/api/widget/availability-range?shop=${shop}&productId=${productId}&start=${date.format(
         "YYYY-MM-DD"
       )}&end=${end.format("YYYY-MM-DD")}${
-        staff?.staff ? `&staffId=${staff.staff}` : ""
+        staff?.staff ? `&staff=${staff.staff}` : ""
       }`,
     (url: string) => fetch(url).then((r) => r.json())
   );

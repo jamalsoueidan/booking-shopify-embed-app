@@ -3,6 +3,7 @@ import ScheduleModel from "@models/schedule.model";
 import Shopify from "@shopify/shopify-api";
 import { Session } from "@shopify/shopify-api/dist/auth/session";
 import mongoose from "mongoose";
+import startOfDay from "date-fns/startOfDay";
 
 export enum ControllerMethods {
   getById = "getById",
@@ -162,14 +163,17 @@ const update = async ({
 };
 
 // @description return all staff that don't belong yet to the product
-const getStaff = async ({
-  query,
-}: {
-  query: Query;
-}): Promise<Array<ProductAddStaff>> => {
-  const { shop, id } = query;
+const getStaff = ({ query }: { query: Query }) => {
+  const { shop } = query;
 
-  return await ScheduleModel.aggregate([
+  return ScheduleModel.aggregate<ProductAddStaff>([
+    /*{
+      $match: {
+        start: {
+          $gte: startOfDay(new Date()),
+        },
+      },
+    },*/
     {
       $group: {
         _id: {

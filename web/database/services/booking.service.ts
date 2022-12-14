@@ -12,7 +12,7 @@ export interface GetBookingsByStaffProps
   staff: Types.ObjectId | string[];
 }
 
-const getBookingsByStaff = ({
+const getBookingsForWidget = ({
   shop,
   start,
   end,
@@ -30,12 +30,12 @@ const getBookingsByStaff = ({
         $or: [
           {
             start: {
-              $gte: startOfDay(start),
+              $gte: new Date(`${start}T00:00:00.0Z`),
             },
           },
           {
             end: {
-              $gte: endOfDay(start),
+              $gte: new Date(`${start}T00:00:00.0Z`),
             },
           },
         ],
@@ -46,12 +46,12 @@ const getBookingsByStaff = ({
         $or: [
           {
             start: {
-              $lt: endOfDay(end),
+              $lt: new Date(`${end}T00:00:00.0Z`),
             },
           },
           {
             end: {
-              $lt: endOfDay(end),
+              $lt: new Date(`${end}T00:00:00.0Z`),
             },
           },
         ],
@@ -141,6 +141,7 @@ const update = async ({ filter, body }: UpdateProps) => {
   booking.start = body.start as any;
   booking.end = body.end as any;
   booking.isEdit = true;
+  // TODO: Send notification to customer and staff about new changes to this booking, delete schedule from sms.dk
   return await booking.save();
 };
 
@@ -206,7 +207,7 @@ const getById = async ({
 
 export default {
   find,
-  getBookingsByStaff,
+  getBookingsForWidget,
   getBookings,
   update,
   getById,

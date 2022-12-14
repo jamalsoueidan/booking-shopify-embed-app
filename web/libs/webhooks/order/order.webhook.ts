@@ -20,19 +20,19 @@ const modify = async ({
 
   const lineItems = body.line_items.filter(filter);
 
-  let models: IBookingModel[] = lineItems.map((lineItem) => {
+  let models: Omit<Booking, "_id">[] = lineItems.map((lineItem) => {
     const _data = lineItem.properties.find((p) => p.name === "_data")?.value;
     if (_data) {
       const data: OrderTypes.Data = JSON.parse(_data);
       const staffId = data.staff._id;
       const anyAvailable = data.staff.anyAvailable;
 
-      return new BookingModel({
+      return {
         orderId,
         lineItemId: lineItem.id,
         lineItemTotal: lineItems.length,
         productId: lineItem.product_id,
-        staff: new mongoose.Types.ObjectId(staffId),
+        staff: staffId,
         start: data.start,
         end: data.end,
         shop,
@@ -41,7 +41,7 @@ const modify = async ({
         customerId: body.customer.id,
         title: lineItem.title,
         timeZone: data.timeZone,
-      });
+      };
     }
   });
 

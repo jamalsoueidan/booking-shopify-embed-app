@@ -1,12 +1,6 @@
 import ScheduleModel, { IScheduleModel } from "@models/schedule.model";
 import StaffService from "@services/staff.service";
-import {
-  endOfDay,
-  parseISO,
-  setMilliseconds,
-  setSeconds,
-  startOfDay,
-} from "date-fns";
+import { parseISO, setMilliseconds, setSeconds } from "date-fns";
 import mongoose, { Types } from "mongoose";
 
 export interface CreateProps extends ScheduleCreateBody {
@@ -135,7 +129,6 @@ const getByStaffAndTag = async ({
       $match: {
         tag: tag,
         staff: staff,
-        available: true,
         start: {
           $gte: new Date(`${start}T00:00:00.0Z`),
         },
@@ -178,8 +171,8 @@ const getByStaffAndTag = async ({
 interface GetByTagProps {
   tag: string[];
   staffier: string[];
-  start: Date;
-  end: Date;
+  start: string;
+  end: string;
 }
 
 export interface GetByTagReturn extends GetByStaffAndTagReturn {}
@@ -199,12 +192,11 @@ const getByTag = async ({
         staff: {
           $in: staffier,
         },
-        available: true,
         start: {
-          $gte: startOfDay(start),
+          $gte: new Date(`${start}T00:00:00.0Z`),
         },
         end: {
-          $lt: endOfDay(end),
+          $lt: new Date(`${end}T23:59:59.0Z`),
         },
       },
     },

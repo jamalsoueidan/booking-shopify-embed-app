@@ -39,10 +39,11 @@ export default function widgetRoutes(app) {
       productId: { notEmpty: true },
     }),
     async (req, res) => {
-      const { staffId } = req.query;
-      const methodName = staffId
+      const { staff } = req.query;
+      const methodName = staff
         ? ControllerMethods.availabilityRangeByStaff
         : ControllerMethods.availabilityRangeByAll;
+
       handleRoute(req, res, methodName);
     }
   );

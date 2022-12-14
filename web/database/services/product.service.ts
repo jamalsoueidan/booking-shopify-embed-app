@@ -48,17 +48,10 @@ const getProductWithSelectedStaffId = async ({
   }
 };
 
-interface GetAllStaffReturn {
-  _id: Types.ObjectId;
-  fullname: string;
-  tag: string;
-  staff: Types.ObjectId;
-}
-
 const getAllStaff = async ({
   shop,
   productId,
-}: Partial<IProductModel>): Promise<Array<GetAllStaffReturn>> => {
+}: Partial<IProductModel>): Promise<Array<WidgetStaff>> => {
   return await Product.aggregate([
     {
       $match: {

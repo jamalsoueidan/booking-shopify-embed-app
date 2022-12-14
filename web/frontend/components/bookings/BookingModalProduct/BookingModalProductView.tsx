@@ -19,7 +19,7 @@ export default ({ info }: BookingModalChildProps) => {
       {info.isEdit && !info.fulfillmentStatus && (
         <Modal.Section>
           <Banner title="Behandling har skiftet dato">
-            <p>Dette behandling er blevet ændre tidligere.</p>
+            <p>Dette behandlingtid er blevet ændret.</p>
           </Banner>
         </Modal.Section>
       )}
