@@ -104,18 +104,18 @@ const getByDateRange = async ({
   });
 };
 
-interface GetByStaffAndTagProps {
-  tag: string;
-  staff: Types.ObjectId;
-  start: string;
-  end: string;
-}
-
 export interface GetByStaffAndTagReturn extends Omit<IScheduleModel, "staff"> {
   staff: {
     _id: string;
     fullname: string;
   };
+}
+
+interface GetByStaffAndTagProps {
+  tag: string[];
+  staff: Types.ObjectId[];
+  start: string;
+  end: string;
 }
 
 const getByStaffAndTag = async ({
@@ -127,70 +127,11 @@ const getByStaffAndTag = async ({
   return await ScheduleModel.aggregate([
     {
       $match: {
-        tag: tag,
-        staff: staff,
-        start: {
-          $gte: new Date(`${start}T00:00:00.0Z`),
-        },
-        end: {
-          $lt: new Date(`${end}T23:59:59.0Z`),
-        },
-      },
-    },
-    {
-      $lookup: {
-        from: "Staff",
-        localField: "staff",
-        foreignField: "_id",
-        as: "staff",
-      },
-    },
-    {
-      $unwind: {
-        path: "$staff",
-      },
-    },
-    {
-      $match: {
-        "staff.active": true,
-      },
-    },
-    {
-      $project: {
-        "staff.email": 0,
-        "staff.active": 0,
-        "staff.shop": 0,
-        "staff.phone": 0,
-        "staff.position": 0,
-        "staff.__v": 0,
-      },
-    },
-  ]);
-};
-
-interface GetByTagProps {
-  tag: string[];
-  staffier: string[];
-  start: string;
-  end: string;
-}
-
-export interface GetByTagReturn extends GetByStaffAndTagReturn {}
-
-const getByTag = async ({
-  tag,
-  staffier,
-  start,
-  end,
-}: GetByTagProps): Promise<Array<GetByTagReturn>> => {
-  return await ScheduleModel.aggregate([
-    {
-      $match: {
         tag: {
           $in: tag,
         },
         staff: {
-          $in: staffier,
+          $in: staff,
         },
         start: {
           $gte: new Date(`${start}T00:00:00.0Z`),
@@ -238,6 +179,5 @@ export default {
   remove,
   findByIdAndUpdate,
   getByStaffAndTag,
-  getByTag,
   getByDateRange,
 };

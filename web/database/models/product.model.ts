@@ -1,6 +1,12 @@
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Types, Document, Schema } from "mongoose";
 
-export interface IProductModel extends Omit<Product, "_id">, Document {}
+interface ProductStaff {
+  staff: Types.ObjectId;
+  tag: string;
+}
+export interface IProductModel
+  extends Omit<Product<ProductStaff>, "_id">,
+    Document {}
 
 const ProductSchema = new Schema({
   shop: {

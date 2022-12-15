@@ -1,29 +1,28 @@
-import Product, { IProductModel } from "@models/product.model";
-import mongoose, { Types } from "mongoose";
+import ProductModel, { IProductModel } from "@models/product.model";
+import mongoose from "mongoose";
 
-const findOne = async (document) => {
-  return await Product.findOne(document).lean();
-};
+export interface GetProductReturn extends IProductModel {}
 
-export interface GetProductWithSelectedStaffReturn
-  extends Omit<IProductModel, "staff"> {
-  staff: {
-    tag: string;
-    staff: Types.ObjectId;
-  };
+export interface GetProductProps {
+  shop: string;
+  productId: number;
+  staff?: string;
 }
 
-export interface GetProductWithSelectedStaffProps
-  extends Pick<IProductModel, "shop" | "productId"> {
-  staff: Types.ObjectId;
-}
-
-const getProductWithSelectedStaffId = async ({
+const getProduct = async ({
   shop,
   productId,
   staff,
-}: GetProductWithSelectedStaffProps): Promise<GetProductWithSelectedStaffReturn> => {
-  const products = await Product.aggregate([
+}: GetProductProps): Promise<GetProductReturn> => {
+  if (!staff) {
+    return ProductModel.findOne({
+      shop,
+      productId,
+      active: true,
+    });
+  }
+
+  const products = await ProductModel.aggregate([
     {
       $match: {
         shop,
@@ -42,7 +41,11 @@ const getProductWithSelectedStaffId = async ({
   ]);
 
   if (products.length > 0) {
-    return products[0];
+    const product = products[0];
+    return {
+      ...product,
+      staff: [product.staff],
+    };
   } else {
     return null;
   }
@@ -52,7 +55,7 @@ const getAllStaff = async ({
   shop,
   productId,
 }: Partial<IProductModel>): Promise<Array<WidgetStaff>> => {
-  return await Product.aggregate([
+  return await ProductModel.aggregate([
     {
       $match: {
         productId,
@@ -120,14 +123,14 @@ interface AddStaff {
 
 const addStaff = async ({ id, shop, staff, tag }: AddStaff) => {
   // check staff already exist
-  const product = await Product.findOne({
+  const product = await ProductModel.findOne({
     _id: new mongoose.Types.ObjectId(id),
     shop,
     staff: { $elemMatch: { staff, tag } },
   });
 
   if (!product) {
-    return await Product.findByIdAndUpdate(
+    return await ProductModel.findByIdAndUpdate(
       {
         shop,
         _id: new mongoose.Types.ObjectId(id),
@@ -147,8 +150,7 @@ const addStaff = async ({ id, shop, staff, tag }: AddStaff) => {
 };
 
 export default {
-  findOne,
-  getProductWithSelectedStaffId,
+  getProduct,
   getAllStaff,
   addStaff,
 };

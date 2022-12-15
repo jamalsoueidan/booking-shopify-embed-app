@@ -2,14 +2,11 @@ import BookingService from "@services/booking.service";
 import CartService from "@services/cart.service";
 import ProductService from "@services/product.service";
 import ScheduleService from "@services/schedule.service";
-import mongoose from "mongoose";
 import helpers from "./widget.helpers";
 
 export enum ControllerMethods {
   staff = "staff",
-  availabilityDay = "availabilityDay",
-  availabilityRangeByStaff = "availabilityRangeByStaff",
-  availabilityRangeByAll = "availabilityRangeByAll",
+  availability = "availability",
 }
 
 export interface AvailabilityReturn extends WidgetSchedule {}
@@ -30,86 +27,27 @@ const staff = ({
   });
 };
 
-interface AvailabilityRangeByStaffQuery extends WidgetDateQuery {
+interface AvailabilityQuery extends Omit<WidgetDateQuery, "staff"> {
+  staff?: string;
   shop: string;
 }
 
-const availabilityRangeByStaff = async ({
+const availability = async ({
   query,
 }: {
-  query: AvailabilityRangeByStaffQuery;
+  query: AvailabilityQuery;
 }): Promise<Array<WidgetSchedule>> => {
   const { staff, start, end, shop, productId } = query;
 
-  const product = await ProductService.getProductWithSelectedStaffId({
+  const product = await ProductService.getProduct({
     shop,
     productId: +productId,
-    staff: new mongoose.Types.ObjectId(staff),
+    staff,
   });
-
-  if (!product) {
-    throw "no staff or product";
-  }
 
   const schedules = await ScheduleService.getByStaffAndTag({
-    tag: product.staff.tag,
-    staff: product.staff.staff,
-    start,
-    end,
-  });
-
-  const bookings = await BookingService.getBookingsForWidget({
-    shop,
-    staff: product.staff.staff,
-    start: new Date(start),
-    end: new Date(end),
-  });
-
-  let scheduleDates = schedules.reduce(helpers.scheduleReduce(product), []);
-
-  bookings.forEach((book) => {
-    scheduleDates = scheduleDates.map(
-      helpers.scheduleCalculateBooking({
-        end: book.end,
-        start: book.start,
-        staff: book.staff._id,
-      })
-    );
-  });
-
-  const carts = await CartService.getCartsByStaff({
-    shop,
-    staff: product.staff.staff,
-    start: new Date(start),
-    end: new Date(end),
-  });
-
-  carts.forEach((cart) => {
-    scheduleDates = scheduleDates.map(helpers.scheduleCalculateBooking(cart));
-  });
-
-  return scheduleDates;
-};
-
-interface AvailabilityRangeByAllQuery extends Omit<WidgetDateQuery, "staff"> {
-  shop: string;
-}
-
-const availabilityRangeByAll = async ({
-  query,
-}: {
-  query: AvailabilityRangeByAllQuery;
-}): Promise<Array<WidgetSchedule>> => {
-  const { start, end, shop, productId } = query;
-  const product = await ProductService.findOne({
-    shop,
-    productId,
-    active: true,
-  });
-
-  const schedules = await ScheduleService.getByTag({
     tag: product.staff.map((s) => s.tag),
-    staffier: product.staff.map((s) => s.staff),
+    staff: product.staff.map((s) => s.staff),
     start,
     end,
   });
@@ -121,34 +59,17 @@ const availabilityRangeByAll = async ({
     end: new Date(end),
   });
 
-  let scheduleDates = schedules.reduce(helpers.scheduleReduce(product), []);
-
-  bookings.forEach((book) => {
-    scheduleDates = scheduleDates.map(
-      helpers.scheduleCalculateBooking({
-        end: book.end,
-        start: book.start,
-        staff: book.staff._id,
-      })
-    );
-  });
-
-  const carts = await CartService.getCartsByStaffier({
+  const carts = await CartService.getCartsByStaff({
     shop,
-    staffier: product.staff.map((s) => s.staff),
+    staff: product.staff.map((s) => s.staff),
     start: new Date(start),
     end: new Date(end),
   });
 
-  carts.forEach((cart) => {
-    scheduleDates = scheduleDates.map(helpers.scheduleCalculateBooking(cart));
-  });
-
-  return scheduleDates;
+  return helpers.calculate({ schedules, bookings, carts, product });
 };
 
 export default {
   staff,
-  availabilityRangeByAll,
-  availabilityRangeByStaff,
+  availability,
 };

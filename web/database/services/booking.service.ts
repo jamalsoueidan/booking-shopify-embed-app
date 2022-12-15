@@ -1,4 +1,3 @@
-import { endOfDay, startOfDay } from "date-fns";
 import mongoose, { Types } from "mongoose";
 import BookingModel from "../models/booking.model";
 
@@ -9,7 +8,7 @@ const find = async (shop) => {
 export interface GetBookingsByStaffProps
   extends Pick<BookingQuery, "start" | "end"> {
   shop: string;
-  staff: Types.ObjectId | string[];
+  staff: Types.ObjectId[];
 }
 
 const getBookingsForWidget = ({
@@ -22,20 +21,18 @@ const getBookingsForWidget = ({
     {
       $match: {
         shop,
-        staff: Array.isArray(staff)
-          ? {
-              $in: staff,
-            }
-          : staff,
+        staff: {
+          $in: staff,
+        },
         $or: [
           {
             start: {
-              $gte: new Date(`${start}T00:00:00.0Z`),
+              $gte: start,
             },
           },
           {
             end: {
-              $gte: new Date(`${start}T00:00:00.0Z`),
+              $gte: start,
             },
           },
         ],
@@ -46,12 +43,12 @@ const getBookingsForWidget = ({
         $or: [
           {
             start: {
-              $lt: new Date(`${end}T00:00:00.0Z`),
+              $lt: end,
             },
           },
           {
             end: {
-              $lt: new Date(`${end}T00:00:00.0Z`),
+              $lt: end,
             },
           },
         ],

@@ -7,10 +7,7 @@ import {
   isWithinInterval,
   subMinutes,
 } from "date-fns";
-import {
-  GetByStaffAndTagReturn,
-  GetByTagReturn,
-} from "../../database/services/schedule.service";
+import { GetByStaffAndTagReturn } from "../../database/services/schedule.service";
 
 interface ScheduleReduceProduct
   extends Pick<IProductModel, "duration" | "buffertime"> {}
@@ -19,7 +16,7 @@ const scheduleReduce =
   (product: ScheduleReduceProduct) =>
   (
     previous: Array<WidgetSchedule>,
-    current: GetByStaffAndTagReturn | GetByTagReturn
+    current: GetByStaffAndTagReturn
   ): Array<WidgetSchedule> => {
     const scheduleEnd = new Date(current.end);
     const duration = product.duration || 60;
@@ -91,4 +88,24 @@ const scheduleCalculateBooking = (
   };
 };
 
-export default { scheduleCalculateBooking, scheduleReduce };
+const calculate = ({ schedules, bookings, carts, product }) => {
+  let scheduleDates = schedules.reduce(scheduleReduce(product), []);
+
+  bookings.forEach((book) => {
+    scheduleDates = scheduleDates.map(
+      scheduleCalculateBooking({
+        end: book.end,
+        start: book.start,
+        staff: book.staff._id,
+      })
+    );
+  });
+
+  carts.forEach((cart) => {
+    scheduleDates = scheduleDates.map(scheduleCalculateBooking(cart));
+  });
+
+  return scheduleDates;
+};
+
+export default { scheduleCalculateBooking, scheduleReduce, calculate };
