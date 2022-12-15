@@ -1,4 +1,3 @@
-import { endOfDay, startOfDay } from "date-fns";
 import mongoose, { Types } from "mongoose";
 import BookingModel from "../models/booking.model";
 
@@ -9,10 +8,10 @@ const find = async (shop) => {
 export interface GetBookingsByStaffProps
   extends Pick<BookingQuery, "start" | "end"> {
   shop: string;
-  staff: Types.ObjectId | string[];
+  staff: Types.ObjectId[];
 }
 
-const getBookingsByStaff = ({
+const getBookingsForWidget = ({
   shop,
   start,
   end,
@@ -22,20 +21,18 @@ const getBookingsByStaff = ({
     {
       $match: {
         shop,
-        staff: Array.isArray(staff)
-          ? {
-              $in: staff,
-            }
-          : staff,
+        staff: {
+          $in: staff,
+        },
         $or: [
           {
             start: {
-              $gte: startOfDay(start),
+              $gte: start,
             },
           },
           {
             end: {
-              $gte: endOfDay(start),
+              $gte: start,
             },
           },
         ],
@@ -46,12 +43,12 @@ const getBookingsByStaff = ({
         $or: [
           {
             start: {
-              $lt: endOfDay(end),
+              $lt: end,
             },
           },
           {
             end: {
-              $lt: endOfDay(end),
+              $lt: end,
             },
           },
         ],
@@ -141,6 +138,7 @@ const update = async ({ filter, body }: UpdateProps) => {
   booking.start = body.start as any;
   booking.end = body.end as any;
   booking.isEdit = true;
+  // TODO: Send notification to customer and staff about new changes to this booking, delete schedule from sms.dk
   return await booking.save();
 };
 
@@ -206,7 +204,7 @@ const getById = async ({
 
 export default {
   find,
-  getBookingsByStaff,
+  getBookingsForWidget,
   getBookings,
   update,
   getById,

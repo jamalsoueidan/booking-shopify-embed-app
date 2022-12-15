@@ -1,21 +1,10 @@
 import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
-import { format } from 'date-fns';
 import useSWR from 'swr';
 
-interface UseWidgetStaffReturn {
-  data: Array<WidgetStaff>;
-}
-
-interface UseWidgetStaffProps {
-  productId: number;
-}
-
-export const useWidgetStaff = ({
-  productId,
-}: UseWidgetStaffProps): UseWidgetStaffReturn => {
+export const useWidgetStaff = ({ productId }: WidgetStaffQuery) => {
   const fetch = useAuthenticatedFetch();
 
-  const { data } = useSWR<WidgetStaffApi>(
+  const { data } = useSWR<ApiResponse<Array<WidgetStaff>>>(
     `/api/widget/staff?productId=${productId}`,
     (apiURL: string) => fetch(apiURL).then((r: Response) => r.json())
   );
@@ -23,31 +12,19 @@ export const useWidgetStaff = ({
   return { data: data?.payload };
 };
 
-interface UseWidgetDateReturn {
-  data: Array<WidgetDateSchedule>;
-}
-
-interface UseWidgetDateProps {
-  staff: string;
-  productId: number;
-  start: Date;
-  end: Date;
-}
-
 export const useWidgetDate = ({
   staff,
   productId,
   start,
   end,
-}: UseWidgetDateProps): UseWidgetDateReturn => {
+}: WidgetDateQuery) => {
   const fetch = useAuthenticatedFetch();
-  const { data } = useSWR<WidgetDateApi>(
+  const { data } = useSWR<ApiResponse<Array<WidgetSchedule>>>(
     staff &&
       productId &&
-      `/api/widget/availability-range?productId=${productId}&start=${format(
-        start,
-        'yyyy-MM-dd'
-      )}&end=${format(end, 'yyyy-MM-dd')}${staff ? `&staffId=${staff}` : ''}`,
+      `/api/widget/availability-range?productId=${productId}&start=${start}&end=${end}${
+        staff ? `&staff=${staff}` : ''
+      }`,
     (url: string) => fetch(url).then((r: Response) => r.json())
   );
 

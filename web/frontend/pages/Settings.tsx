@@ -27,11 +27,11 @@ export default () => {
   const languageOptions = [
     {
       label: t('store_settings.language.options.english'),
-      value: SettingLanguage.en,
+      value: 'en',
     },
     {
       label: t('store_settings.language.options.danish'),
-      value: SettingLanguage.da,
+      value: 'da',
     },
   ];
 

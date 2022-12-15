@@ -1,5 +1,6 @@
 import CartModel, { ICartModel } from "@models/cart.model";
 import { endOfDay, startOfDay } from "date-fns";
+import { Types } from "mongoose";
 
 export interface GetCartsByStaffReturn {
   start: Date;
@@ -7,60 +8,14 @@ export interface GetCartsByStaffReturn {
   staff: string;
 }
 
-export interface GetCartsByStaffProps extends Omit<ICartModel, "createdAt"> {}
+export interface GetCartsByStaffierProps
+  extends Omit<ICartModel, "createdAt" | "staff"> {
+  staff: Types.ObjectId[];
+}
 
 const getCartsByStaff = async ({
   shop,
   staff,
-  start,
-  end,
-}: GetCartsByStaffProps): Promise<Array<GetCartsByStaffReturn>> => {
-  return await CartModel.aggregate([
-    {
-      $match: {
-        shop,
-        staff,
-        $or: [
-          {
-            start: {
-              $gte: startOfDay(start),
-            },
-          },
-          {
-            end: {
-              $gte: endOfDay(start),
-            },
-          },
-        ],
-      },
-    },
-    {
-      $match: {
-        $or: [
-          {
-            start: {
-              $lt: startOfDay(end),
-            },
-          },
-          {
-            end: {
-              $lt: endOfDay(end),
-            },
-          },
-        ],
-      },
-    },
-  ]);
-};
-
-export interface GetCartsByStaffierProps
-  extends Omit<ICartModel, "createdAt" | "staff"> {
-  staffier: string[];
-}
-
-const getCartsByStaffier = async ({
-  shop,
-  staffier,
   start,
   end,
 }: GetCartsByStaffierProps): Promise<Array<GetCartsByStaffReturn>> => {
@@ -69,17 +24,17 @@ const getCartsByStaffier = async ({
       $match: {
         shop,
         staff: {
-          $in: staffier,
+          $in: staff,
         },
         $or: [
           {
             start: {
-              $gte: startOfDay(start),
+              $gte: start,
             },
           },
           {
             end: {
-              $gte: endOfDay(start),
+              $gte: start,
             },
           },
         ],
@@ -90,12 +45,12 @@ const getCartsByStaffier = async ({
         $or: [
           {
             start: {
-              $lt: startOfDay(end),
+              $lt: end,
             },
           },
           {
             end: {
-              $lt: endOfDay(end),
+              $lt: end,
             },
           },
         ],
@@ -104,4 +59,4 @@ const getCartsByStaffier = async ({
   ]);
 };
 
-export default { getCartsByStaff, getCartsByStaffier };
+export default { getCartsByStaff };

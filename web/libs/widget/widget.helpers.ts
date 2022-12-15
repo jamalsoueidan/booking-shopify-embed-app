@@ -7,26 +7,7 @@ import {
   isWithinInterval,
   subMinutes,
 } from "date-fns";
-import {
-  GetByStaffAndTagReturn,
-  GetByTagReturn,
-} from "../../database/services/schedule.service";
-
-export interface ScheduleHourStaff {
-  _id: string;
-  fullname: string;
-}
-
-export interface ScheduleHour {
-  start: Date;
-  end: Date;
-  staff: ScheduleHourStaff;
-}
-
-export interface ScheduleDate {
-  date: string;
-  hours: ScheduleHour[];
-}
+import { GetByStaffAndTagReturn } from "../../database/services/schedule.service";
 
 interface ScheduleReduceProduct
   extends Pick<IProductModel, "duration" | "buffertime"> {}
@@ -34,9 +15,9 @@ interface ScheduleReduceProduct
 const scheduleReduce =
   (product: ScheduleReduceProduct) =>
   (
-    previous: Array<ScheduleDate>,
-    current: GetByStaffAndTagReturn | GetByTagReturn
-  ): Array<ScheduleDate> => {
+    previous: Array<WidgetSchedule>,
+    current: GetByStaffAndTagReturn
+  ): Array<WidgetSchedule> => {
     const scheduleEnd = new Date(current.end);
     const duration = product.duration || 60;
     const buffertime = product.buffertime || 0;
@@ -57,7 +38,7 @@ const scheduleReduce =
     ) {
       end = addMinutes(start, duration + buffertime);
       hours.push({
-        start: start,
+        start: start.toISOString(),
         end,
         staff: current.staff,
       });
@@ -73,9 +54,9 @@ const scheduleReduce =
 
 const scheduleCalculateBooking = (
   book: GetCartsByStaffReturn
-): ((schedule: ScheduleDate) => ScheduleDate) => {
+): ((schedule: WidgetSchedule) => WidgetSchedule) => {
   const { start, end, staff } = book;
-  return (schedule: ScheduleDate): ScheduleDate => {
+  return (schedule: WidgetSchedule): WidgetSchedule => {
     return {
       ...schedule,
       hours: schedule.hours.filter((hour) => {
@@ -83,11 +64,21 @@ const scheduleCalculateBooking = (
           return true;
         }
 
-        if (isWithinInterval(addMinutes(start, 1), hour)) {
+        if (
+          isWithinInterval(addMinutes(start, 1), {
+            start: new Date(hour.start),
+            end: new Date(hour.end),
+          })
+        ) {
           return false;
         }
 
-        if (isWithinInterval(subMinutes(end, 1), hour)) {
+        if (
+          isWithinInterval(subMinutes(end, 1), {
+            start: new Date(hour.start),
+            end: new Date(hour.end),
+          })
+        ) {
           return false;
         }
 
@@ -97,4 +88,24 @@ const scheduleCalculateBooking = (
   };
 };
 
-export default { scheduleCalculateBooking, scheduleReduce };
+const calculate = ({ schedules, bookings, carts, product }) => {
+  let scheduleDates = schedules.reduce(scheduleReduce(product), []);
+
+  bookings.forEach((book) => {
+    scheduleDates = scheduleDates.map(
+      scheduleCalculateBooking({
+        end: book.end,
+        start: book.start,
+        staff: book.staff._id,
+      })
+    );
+  });
+
+  carts.forEach((cart) => {
+    scheduleDates = scheduleDates.map(scheduleCalculateBooking(cart));
+  });
+
+  return scheduleDates;
+};
+
+export default { scheduleCalculateBooking, scheduleReduce, calculate };

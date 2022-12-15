@@ -174,7 +174,7 @@ const send = async ({
 
 interface sendBookingConfirmation {
   receiver: ICustomerModel | IStaffModel;
-  bookings: IBookingModel[];
+  bookings: Omit<Booking, "_id">[];
   shop: string;
 }
 
@@ -194,7 +194,7 @@ const sendBookingConfirmationCustomer = ({
 
 interface SendReminder {
   receiver: ICustomerModel | IStaffModel;
-  bookings: IBookingModel[];
+  bookings: Omit<Booking, "_id">[];
   shop: string;
 }
 

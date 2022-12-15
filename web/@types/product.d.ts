@@ -2,7 +2,7 @@ interface ProductStaff {
   staff: string;
   tag: string;
 }
-interface Product {
+interface Product<T = ProductStaff> {
   _id: string;
   productId: number;
   active: boolean;
@@ -11,7 +11,7 @@ interface Product {
   duration: number;
   shop: string;
   title: string;
-  staff: ProductStaff[];
+  staff: T[];
 }
 
 // api/admin/products/:id

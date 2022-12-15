@@ -1,161 +1,55 @@
-import Product, { IProductModel } from "@models/product.model";
-import mongoose, { Types } from "mongoose";
+import ProductModel, { IProductModel } from "@models/product.model";
+import mongoose from "mongoose";
 
-const findOne = async (document) => {
-  return await Product.findOne(document).lean();
-};
-
-export interface GetProductWithSelectedStaffReturn
-  extends Omit<IProductModel, "staff"> {
-  staff: {
-    tag: string;
-    staff: Types.ObjectId;
-  };
-}
-
-export interface GetProductWithSelectedStaffProps
-  extends Pick<IProductModel, "shop" | "productId"> {
-  staff: Types.ObjectId;
-}
-
-const getProductWithSelectedStaffId = async ({
-  shop,
-  productId,
-  staff,
-}: GetProductWithSelectedStaffProps): Promise<GetProductWithSelectedStaffReturn> => {
-  const products = await Product.aggregate([
-    {
-      $match: {
-        shop,
-        productId,
-        active: true,
-      },
-    },
-    {
-      $unwind: "$staff",
-    },
-    {
-      $match: {
-        "staff.staff": new mongoose.Types.ObjectId(staff),
-      },
-    },
-  ]);
-
-  if (products.length > 0) {
-    return products[0];
-  } else {
-    return null;
-  }
-};
-
-interface GetAllStaffReturn {
-  _id: Types.ObjectId;
-  fullname: string;
-  tag: string;
-  staff: Types.ObjectId;
-}
-
-const getAllStaff = async ({
-  shop,
-  productId,
-}: Partial<IProductModel>): Promise<Array<GetAllStaffReturn>> => {
-  return await Product.aggregate([
-    {
-      $match: {
-        productId,
-        shop,
-        active: true,
-      },
-    },
-    {
-      $unwind: { path: "$staff" },
-    },
-    {
-      $lookup: {
-        from: "Staff",
-        localField: "staff.staff",
-        foreignField: "_id",
-        as: "staff.staff",
-      },
-    },
-    {
-      $unwind: {
-        path: "$staff.staff",
-      },
-    },
-    {
-      $addFields: {
-        "staff.staff.tag": "$staff.tag",
-        "staff.staff.staff": "$staff.staff._id",
-        "staff.staff._id": "$staff._id",
-      },
-    },
-    {
-      $addFields: {
-        "_id.staff": "$staff.staff",
-      },
-    },
-    {
-      $replaceRoot: {
-        newRoot: "$_id",
-      },
-    },
-    {
-      $replaceRoot: {
-        newRoot: "$staff",
-      },
-    },
-    { $match: { active: true } },
-    {
-      $project: {
-        shop: 0,
-        email: 0,
-        active: 0,
-        phone: 0,
-        __v: 0,
-      },
-    },
-  ]);
-};
-
-interface AddStaff {
-  id: string;
+interface UpdateQuery {
   shop: string;
-  staff: string;
-  tag: string;
+  id: string;
 }
 
-const addStaff = async ({ id, shop, staff, tag }: AddStaff) => {
-  // check staff already exist
-  const product = await Product.findOne({
-    _id: new mongoose.Types.ObjectId(id),
-    shop,
-    staff: { $elemMatch: { staff, tag } },
-  });
+const update = async ({
+  query,
+  body,
+}: {
+  query: UpdateQuery;
+  body: ProductUpdateBody;
+}): Promise<Product> => {
+  const { staff, ...properties } = body;
 
-  if (!product) {
-    return await Product.findByIdAndUpdate(
-      {
-        shop,
-        _id: new mongoose.Types.ObjectId(id),
-      },
-      {
-        $push: {
-          staff: { staff, tag },
-        },
-        active: true,
-      },
-      {
-        new: true,
-      }
-    );
+  const newStaffier =
+    staff?.map((s) => {
+      return {
+        staff: s._id,
+        tag: s.tag,
+      };
+    }) || [];
+
+  // turn active ON=true first time customer add staff to product
+  const product = await ProductModel.findById(
+    new mongoose.Types.ObjectId(query.id)
+  ).lean();
+
+  let active = properties.active;
+  if (product.staff.length === 0 && newStaffier.length > 0) {
+    active = true;
   }
-  return product;
+  if (newStaffier.length === 0) {
+    active = false;
+  }
+
+  return await ProductModel.findOneAndUpdate(
+    {
+      _id: new mongoose.Types.ObjectId(query.id),
+      shop: query.shop,
+    },
+    {
+      $set: { ...properties, staff: newStaffier, active },
+    },
+    {
+      new: true,
+    }
+  ).lean();
 };
 
 export default {
-  findOne,
-  getProductWithSelectedStaffId,
-  getAllStaff,
-  addStaff,
+  update,
 };
