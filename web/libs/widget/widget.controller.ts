@@ -1,6 +1,6 @@
 import BookingService from "@services/booking.service";
 import CartService from "@services/cart.service";
-import ProductService from "@services/product.service";
+import WidgetService from "@services/widget.service";
 import ScheduleService from "@services/schedule.service";
 import helpers from "./widget.helpers";
 
@@ -21,7 +21,7 @@ const staff = ({
   query: StaffQuery;
 }): Promise<Array<WidgetStaff>> => {
   const { productId, shop } = query;
-  return ProductService.getAllStaff({
+  return WidgetService.getStaff({
     shop,
     productId: +productId,
   });
@@ -39,7 +39,7 @@ const availability = async ({
 }): Promise<Array<WidgetSchedule>> => {
   const { staff, start, end, shop, productId } = query;
 
-  const product = await ProductService.getProduct({
+  const product = await WidgetService.getProduct({
     shop,
     productId: +productId,
     staff,

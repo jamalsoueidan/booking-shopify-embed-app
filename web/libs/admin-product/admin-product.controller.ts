@@ -1,9 +1,9 @@
 import ProductModel from "@models/product.model";
 import ScheduleModel from "@models/schedule.model";
+import ProductService from "@services/product.service";
 import Shopify from "@shopify/shopify-api";
 import { Session } from "@shopify/shopify-api/dist/auth/session";
 import mongoose from "mongoose";
-import startOfDay from "date-fns/startOfDay";
 
 export enum ControllerMethods {
   getById = "getById",
@@ -118,48 +118,14 @@ const getById = async ({
   return products.length > 0 ? products[0] : null;
 };
 
-const update = async ({
+const update = ({
   query,
   body,
 }: {
   query: Query;
   body: ProductUpdateBody;
 }): Promise<Product> => {
-  const { staff, ...properties } = body;
-
-  const newStaffier =
-    staff?.map((s) => {
-      return {
-        staff: s._id,
-        tag: s.tag,
-      };
-    }) || [];
-
-  // turn active ON=true first time customer add staff to product
-  const product = await ProductModel.findById(
-    new mongoose.Types.ObjectId(query.id)
-  ).lean();
-
-  let active = properties.active;
-  if (product.staff.length === 0 && newStaffier.length > 0) {
-    active = true;
-  }
-  if (newStaffier.length === 0) {
-    active = false;
-  }
-
-  return await ProductModel.findOneAndUpdate(
-    {
-      _id: new mongoose.Types.ObjectId(query.id),
-      shop: query.shop,
-    },
-    {
-      $set: { ...properties, staff: newStaffier, active },
-    },
-    {
-      new: true,
-    }
-  ).lean();
+  return ProductService.update({ query, body });
 };
 
 // @description return all staff that don't belong yet to the product

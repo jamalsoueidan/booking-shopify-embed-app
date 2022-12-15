@@ -1,156 +1,55 @@
 import ProductModel, { IProductModel } from "@models/product.model";
 import mongoose from "mongoose";
 
-export interface GetProductReturn extends IProductModel {}
-
-export interface GetProductProps {
+interface UpdateQuery {
   shop: string;
-  productId: number;
-  staff?: string;
-}
-
-const getProduct = async ({
-  shop,
-  productId,
-  staff,
-}: GetProductProps): Promise<GetProductReturn> => {
-  if (!staff) {
-    return ProductModel.findOne({
-      shop,
-      productId,
-      active: true,
-    });
-  }
-
-  const products = await ProductModel.aggregate([
-    {
-      $match: {
-        shop,
-        productId,
-        active: true,
-      },
-    },
-    {
-      $unwind: "$staff",
-    },
-    {
-      $match: {
-        "staff.staff": new mongoose.Types.ObjectId(staff),
-      },
-    },
-  ]);
-
-  if (products.length > 0) {
-    const product = products[0];
-    return {
-      ...product,
-      staff: [product.staff],
-    };
-  } else {
-    return null;
-  }
-};
-
-const getAllStaff = async ({
-  shop,
-  productId,
-}: Partial<IProductModel>): Promise<Array<WidgetStaff>> => {
-  return await ProductModel.aggregate([
-    {
-      $match: {
-        productId,
-        shop,
-        active: true,
-      },
-    },
-    {
-      $unwind: { path: "$staff" },
-    },
-    {
-      $lookup: {
-        from: "Staff",
-        localField: "staff.staff",
-        foreignField: "_id",
-        as: "staff.staff",
-      },
-    },
-    {
-      $unwind: {
-        path: "$staff.staff",
-      },
-    },
-    {
-      $addFields: {
-        "staff.staff.tag": "$staff.tag",
-        "staff.staff.staff": "$staff.staff._id",
-        "staff.staff._id": "$staff._id",
-      },
-    },
-    {
-      $addFields: {
-        "_id.staff": "$staff.staff",
-      },
-    },
-    {
-      $replaceRoot: {
-        newRoot: "$_id",
-      },
-    },
-    {
-      $replaceRoot: {
-        newRoot: "$staff",
-      },
-    },
-    { $match: { active: true } },
-    {
-      $project: {
-        shop: 0,
-        email: 0,
-        active: 0,
-        phone: 0,
-        __v: 0,
-      },
-    },
-  ]);
-};
-
-interface AddStaff {
   id: string;
-  shop: string;
-  staff: string;
-  tag: string;
 }
 
-const addStaff = async ({ id, shop, staff, tag }: AddStaff) => {
-  // check staff already exist
-  const product = await ProductModel.findOne({
-    _id: new mongoose.Types.ObjectId(id),
-    shop,
-    staff: { $elemMatch: { staff, tag } },
-  });
+const update = async ({
+  query,
+  body,
+}: {
+  query: UpdateQuery;
+  body: ProductUpdateBody;
+}): Promise<Product> => {
+  const { staff, ...properties } = body;
 
-  if (!product) {
-    return await ProductModel.findByIdAndUpdate(
-      {
-        shop,
-        _id: new mongoose.Types.ObjectId(id),
-      },
-      {
-        $push: {
-          staff: { staff, tag },
-        },
-        active: true,
-      },
-      {
-        new: true,
-      }
-    );
+  const newStaffier =
+    staff?.map((s) => {
+      return {
+        staff: s._id,
+        tag: s.tag,
+      };
+    }) || [];
+
+  // turn active ON=true first time customer add staff to product
+  const product = await ProductModel.findById(
+    new mongoose.Types.ObjectId(query.id)
+  ).lean();
+
+  let active = properties.active;
+  if (product.staff.length === 0 && newStaffier.length > 0) {
+    active = true;
   }
-  return product;
+  if (newStaffier.length === 0) {
+    active = false;
+  }
+
+  return await ProductModel.findOneAndUpdate(
+    {
+      _id: new mongoose.Types.ObjectId(query.id),
+      shop: query.shop,
+    },
+    {
+      $set: { ...properties, staff: newStaffier, active },
+    },
+    {
+      new: true,
+    }
+  ).lean();
 };
 
 export default {
-  getProduct,
-  getAllStaff,
-  addStaff,
+  update,
 };
