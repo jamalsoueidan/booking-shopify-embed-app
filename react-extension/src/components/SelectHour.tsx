@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import FormContext from "../contexts/FormContext";
-import { getTime } from "../libs/getTime";
+import { useDate } from "../hooks/useDats";
 
 const SVG = styled.svg`
   position: absolute;
@@ -23,6 +23,7 @@ interface SelectHourProps extends FieldProps {}
 
 export const SelectHour = ({ fields }: SelectHourProps) => {
   const { schedule } = useContext(FormContext);
+  const { toHour } = useDate();
   const [hours, setHours] = useState<Array<WidgetHour>>([]);
 
   useEffect(() => {
@@ -77,7 +78,7 @@ export const SelectHour = ({ fields }: SelectHourProps) => {
           {hours?.map((option) => {
             return (
               <option key={option.start} value={fields.hour.value?.start}>
-                {getTime(option)}
+                {toHour(option.start)} - {toHour(option.end)}
               </option>
             );
           })}

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSettings } from "./hooks/useSetting";
 import { useStaff } from "./hooks/useStaff";
 
 interface BootupProps extends FieldProps {
@@ -7,18 +8,19 @@ interface BootupProps extends FieldProps {
 
 export const Bootup = ({ fields, children }: BootupProps) => {
   const [submit, setSubmit] = useState<HTMLButtonElement>();
-  const { data } = useStaff();
+  const { data: staff } = useStaff();
+  const { data: settings } = useSettings();
 
   // on first render, assign submit
   useEffect(() => {
     const submit = document.querySelector<HTMLButtonElement>(
       "button[type=submit]"
     );
-    if (submit && data && data.length > 0) {
+    if (submit && staff && staff.length > 0) {
       setSubmit(submit);
       submit.disabled = true;
     }
-  }, [data]);
+  }, [staff]);
 
   useEffect(() => {
     if (!submit) return;
@@ -30,7 +32,7 @@ export const Bootup = ({ fields, children }: BootupProps) => {
     }
   }, [submit, fields]);
 
-  if (data && data.length > 0) {
+  if (staff && staff.length > 0 && settings?.status) {
     return children;
   }
 
