@@ -1,22 +1,28 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
 
 const useSettingGet = () => {
   const fetch = useAuthenticatedFetch();
-  const { data } = useSWR<ApiResponse<Setting>>(
+  const { data: setting } = useSWR<ApiResponse<Setting>>(
     `/api/admin/setting`,
     (url: string) => fetch(url).then((res: Response) => res.json())
   );
 
+  const data = useMemo(() => {
+    return (
+      setting?.payload || {
+        _id: '',
+        shop: '',
+        timeZone: 'Europe/Paris',
+        language: 'en',
+        status: true,
+      }
+    );
+  }, [setting]);
+
   return {
-    data: data?.payload || {
-      _id: '',
-      shop: '',
-      timeZone: 'Europe/Paris',
-      language: 'en',
-      status: true,
-    },
+    data,
   };
 };
 

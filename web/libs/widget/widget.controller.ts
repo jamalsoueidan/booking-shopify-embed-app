@@ -3,10 +3,12 @@ import CartService from "@services/cart.service";
 import WidgetService from "@services/widget.service";
 import ScheduleService from "@services/schedule.service";
 import helpers from "./widget.helpers";
+import SettingModels from "@models/setting.models";
 
 export enum ControllerMethods {
   staff = "staff",
   availability = "availability",
+  settings = "settings",
 }
 
 export interface AvailabilityReturn extends WidgetSchedule {}
@@ -69,7 +71,12 @@ const availability = async ({
   return helpers.calculate({ schedules, bookings, carts, product });
 };
 
+const settings = () => {
+  return SettingModels.findOne({}, "language status timeZone");
+};
+
 export default {
   staff,
   availability,
+  settings,
 };

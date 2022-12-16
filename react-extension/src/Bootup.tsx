@@ -14,7 +14,7 @@ export const Bootup = ({ fields, children }: BootupProps) => {
     const submit = document.querySelector<HTMLButtonElement>(
       "button[type=submit]"
     );
-    if (submit && data?.length > 0) {
+    if (submit && data && data.length > 0) {
       setSubmit(submit);
       submit.disabled = true;
     }
@@ -30,7 +30,7 @@ export const Bootup = ({ fields, children }: BootupProps) => {
     }
   }, [submit, fields]);
 
-  if (data?.length > 0) {
+  if (data && data.length > 0) {
     return children;
   }
 

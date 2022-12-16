@@ -28,7 +28,7 @@ export const SelectStaff = ({ fields }: SelectStaffProps) => {
         });
       }
 
-      if (selectedIndex > 1) {
+      if (selectedIndex > 1 && data) {
         staff.onChange(data[selectedIndex - 2]);
       }
     },

@@ -1,5 +1,5 @@
 import useTagOptions from '@components/useTagOptions';
-import { useSettingGet } from '@services/setting';
+import { useDate } from '@hooks/useDate';
 import { useStaffScheduleCreate } from '@services/staff/schedule';
 import {
   Card,
@@ -11,7 +11,6 @@ import {
 } from '@shopify/polaris';
 import { useField, useForm } from '@shopify/react-form';
 import { format } from 'date-fns';
-import { zonedTimeToUtc } from 'date-fns-tz';
 import da from 'date-fns/locale/da';
 import { forwardRef, useImperativeHandle } from 'react';
 import { useParams } from 'react-router-dom';
@@ -24,7 +23,7 @@ interface CreateDayScheduleProps {
 export default forwardRef(({ date, close }: CreateDayScheduleProps, ref) => {
   const { options } = useTagOptions();
   const params = useParams();
-  const { data: settings } = useSettingGet();
+  const { toUtc } = useDate();
 
   const { create: createSchedule } = useStaffScheduleCreate({
     staff: params.id,
@@ -50,14 +49,8 @@ export default forwardRef(({ date, close }: CreateDayScheduleProps, ref) => {
       }),
     },
     onSubmit: async (fieldValues) => {
-      const start = zonedTimeToUtc(
-        `${date} ${fieldValues.startTime}`,
-        settings.timeZone
-      );
-      const end = zonedTimeToUtc(
-        `${date} ${fieldValues.endTime}`,
-        settings.timeZone
-      );
+      const start = toUtc(`${date} ${fieldValues.startTime}`);
+      const end = toUtc(`${date} ${fieldValues.endTime}`);
 
       const body = {
         start: start.toISOString(),

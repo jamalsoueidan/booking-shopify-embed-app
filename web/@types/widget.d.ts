@@ -15,9 +15,10 @@ interface WidgetStaff {
   staff: string;
   avatar?: string;
   position?: string;
+  anyAvailable?: boolean;
 }
 
-interface WidgetHours {
+interface WidgetHour {
   start: string;
   end: string;
   staff: {
@@ -28,5 +29,5 @@ interface WidgetHours {
 
 interface WidgetSchedule {
   date: string;
-  hours: WidgetHours[];
+  hours: WidgetHour[];
 }

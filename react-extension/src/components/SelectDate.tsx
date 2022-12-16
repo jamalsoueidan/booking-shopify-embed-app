@@ -9,7 +9,7 @@ import {
   useState,
 } from "react";
 import FormContext from "../contexts/FormContext";
-import { useDate } from "../hooks/useDate";
+import { useAvailability } from "../hooks/useAvailability";
 
 const SVG = styled.svg`
   width: 1em;
@@ -36,7 +36,7 @@ export const SelectDate = ({ fields }: SelectDateProps) => {
 
   const dateInput = createRef<HTMLInputElement>();
   const datePicker = useRef<easepick.Core>();
-  const { data: events } = useDate({ date });
+  const { data: events } = useAvailability({ date });
 
   const findSchedule = useCallback(
     (date: string) =>

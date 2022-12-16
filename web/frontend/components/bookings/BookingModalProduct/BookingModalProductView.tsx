@@ -1,3 +1,4 @@
+import { useDate } from '@hooks/useDate';
 import { Banner, Link, Modal, TextContainer } from '@shopify/polaris';
 import { differenceInHours, format, formatRelative } from 'date-fns';
 import da from 'date-fns/locale/da';
@@ -6,6 +7,8 @@ export default ({ info }: BookingModalChildProps) => {
   const orderUrl = 'https://' + info.shop + '/admin/orders/' + info.orderId;
   const productUrl =
     'https://' + info.shop + '/admin/products/' + info.productId;
+
+  const { toTimeZone } = useDate();
 
   return (
     <>
@@ -44,12 +47,12 @@ export default ({ info }: BookingModalChildProps) => {
       <Modal.Section>
         <TextContainer>
           <strong>Dato:</strong>{' '}
-          {format(new Date(info.start), 'd. MMM yyyy', {
+          {format(toTimeZone(info.start), 'd. MMM yyyy', {
             locale: da,
           })}{' '}
           <i>
             (
-            {formatRelative(new Date(info.start), new Date(), {
+            {formatRelative(toTimeZone(info.start), new Date(), {
               locale: da,
             })}
             )
@@ -59,8 +62,8 @@ export default ({ info }: BookingModalChildProps) => {
 
       <Modal.Section>
         <TextContainer>
-          <strong>Tidspunkt:</strong> {format(new Date(info.start), 'HH:mm')} -{' '}
-          {format(new Date(info.end), 'HH:mm')} (
+          <strong>Tidspunkt:</strong> {format(toTimeZone(info.start), 'HH:mm')}{' '}
+          - {format(toTimeZone(info.end), 'HH:mm')} (
           <i>
             {differenceInHours(new Date(info.end), new Date(info.start))} time)
           </i>

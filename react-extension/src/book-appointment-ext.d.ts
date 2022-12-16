@@ -1,3 +1,9 @@
+/// <reference path="../../web/@types/index.d.ts" />
+/// <reference path="../../web/@types/settings.d.ts" />
+/// <reference path="../../web/@types/staff.d.ts" />
+/// <reference path="../../web/@types/schedule.d.ts" />
+/// <reference path="../../web/@types/widget.d.ts" />
+
 declare module "react-to-webcomponent";
 
 interface ApplicationContext {
@@ -7,38 +13,19 @@ interface ApplicationContext {
 }
 
 interface FormContext {
-  staff?: Staff;
-  schedule?: Schedule;
-  hour?: Hour;
+  staff?: WidgetStaff;
+  schedule?: WidgetSchedule;
+  hour?: WidgetHour;
 }
 
 interface AppProps {
   config: Config;
 }
 
-interface Staff {
-  fullname: string;
-  staff: string;
-  anyAvailable?: boolean;
-}
-
-interface Hour {
-  start: string;
-  end: string;
-  staff: {
-    _id: string;
-    fullname: string;
-  };
-}
-interface Schedule {
-  date: string;
-  hours: Hour[];
-}
-
 interface CustomForm {
-  staff: Field<Staff | undefined>;
-  schedule: Field<Schedule | undefined>;
-  hour: Field<Hour | undefined>;
+  staff: Field<WidgetStaff | undefined>;
+  schedule: Field<WidgetSchedule | undefined>;
+  hour: Field<WidgetHour | undefined>;
 }
 
 interface FieldProps {

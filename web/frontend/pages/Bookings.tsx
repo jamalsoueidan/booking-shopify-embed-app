@@ -2,10 +2,11 @@ import BookingModal from '@components/bookings/BookingModal';
 import StaffSelection from '@components/bookings/staff-selection';
 import Calendar from '@components/Calendar';
 import FullCalendar, { DatesSetArg, EventClickArg } from '@fullcalendar/react'; // must go before plugins
+import { useDate } from '@hooks/useDate';
 import { useBookings } from '@services/bookings';
 import { useSettingGet } from '@services/setting';
 import { Card, Page } from '@shopify/polaris';
-import { format, utcToZonedTime } from 'date-fns-tz';
+import { format } from 'date-fns-tz';
 import { createRef, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -17,6 +18,7 @@ export default () => {
 
   const { t } = useTranslation('bookings');
   const { data: settings } = useSettingGet();
+  const { toTimeZone } = useDate();
   const calendarRef = createRef<FullCalendar>();
 
   const { data: bookings, isLoading } = useBookings({ start, end, staff });
@@ -33,9 +35,6 @@ export default () => {
       removeEvents.forEach((event) => {
         event.remove();
       });
-
-      const toTimeZone = (fromUTC: Date) =>
-        utcToZonedTime(fromUTC, settings.timeZone);
 
       bookings.forEach((d) => {
         api.addEvent({

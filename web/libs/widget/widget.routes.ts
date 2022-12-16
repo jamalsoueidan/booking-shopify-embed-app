@@ -13,7 +13,7 @@ export default function widgetRoutes(app) {
   });
 
   router.get(
-    "/availability-range",
+    "/availability",
     checkSchema({
       start: { notEmpty: true },
       end: { notEmpty: true },
@@ -23,6 +23,10 @@ export default function widgetRoutes(app) {
       handleRoute(req, res, ControllerMethods.availability);
     }
   );
+
+  router.get("/settings", async (req, res) => {
+    handleRoute(req, res, ControllerMethods.settings);
+  });
 
   return router;
 }

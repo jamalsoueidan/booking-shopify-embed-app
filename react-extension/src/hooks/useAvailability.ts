@@ -8,19 +8,15 @@ interface UseDateProps {
   date: DateTime;
 }
 
-interface UseDateReturn {
-  data: Schedule[];
-}
-
-export const useDate = ({ date }: UseDateProps): UseDateReturn => {
+export const useAvailability = ({ date }: UseDateProps) => {
   const { api, productId, shop } = useContext(AppContext);
   const { staff } = useContext(FormContext);
   const end = new DateTime(
     new Date(date.getFullYear(), date.getMonth() + 1, 0)
   );
-  const { data } = useSWR(
+  const { data } = useSWR<ApiResponse<Array<WidgetSchedule>>>(
     staff &&
-      `${api}/api/widget/availability-range?shop=${shop}&productId=${productId}&start=${date.format(
+      `${api}/api/widget/availability?shop=${shop}&productId=${productId}&start=${date.format(
         "YYYY-MM-DD"
       )}&end=${end.format("YYYY-MM-DD")}${
         staff?.staff ? `&staff=${staff.staff}` : ""

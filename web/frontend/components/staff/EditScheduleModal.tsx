@@ -16,6 +16,7 @@ import {
   useStaffScheduleUpdate,
 } from '@services/staff/schedule';
 import useTagOptions from '@components/useTagOptions';
+import { useDate } from '@hooks/useDate';
 
 interface Props {
   info: any;
@@ -26,9 +27,7 @@ export default ({ info, setInfo }: Props) => {
   const { options } = useTagOptions();
   const params = useParams();
   const toggleActive = () => setInfo(null);
-  const { data: settings } = useSettingGet();
-  const toTimeZone = (fromUTC: Date) =>
-    utcToZonedTime(fromUTC, settings.timeZone);
+  const { toTimeZone, toUtc } = useDate();
 
   const extendedProps = info.event._def.extendedProps;
   const [startTime, setStartTime] = useState<string>(
@@ -68,14 +67,8 @@ export default ({ info, setInfo }: Props) => {
   const handleEnd = (value: string) => setEndTime(value);
 
   const updateDate = async (type: 'all' | null) => {
-    const start = zonedTimeToUtc(
-      `${extendedProps.start.substr(0, 10)} ${startTime}`,
-      settings.timeZone
-    );
-    const end = zonedTimeToUtc(
-      `${extendedProps.end.substr(0, 10)} ${endTime}`,
-      settings.timeZone
-    );
+    const start = toUtc(`${extendedProps.start.substr(0, 10)} ${startTime}`);
+    const end = toUtc(`${extendedProps.end.substr(0, 10)} ${endTime}`);
 
     const body: ScheduleBody = {
       start: start.toISOString(),

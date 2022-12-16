@@ -58,11 +58,14 @@ export const createNewStaffAndAddToProductWithSchedule = async ({
 }) => {
   const staff = await createStaff();
 
-  const updateProduct = await ProductService.addStaff({
-    id: product._id.toString(),
-    shop: global.shop,
-    staff: staff._id.toString(),
-    tag,
+  const updateProduct = await ProductService.update({
+    query: {
+      shop: global.shop,
+      id: product._id,
+    },
+    body: {
+      staff: [{ staff: staff._id.toString(), tag }],
+    },
   });
 
   const schedule = await createSchedule({

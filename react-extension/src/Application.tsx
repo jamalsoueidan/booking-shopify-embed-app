@@ -29,15 +29,15 @@ function App({ config }: AppProps) {
 
   const { fields, reset } = useForm({
     fields: {
-      staff: useField<Staff | undefined>({
+      staff: useField<WidgetStaff | undefined>({
         value: undefined,
         validates: [],
       }),
-      schedule: useField<Schedule | undefined>({
+      schedule: useField<WidgetSchedule | undefined>({
         value: undefined,
         validates: [],
       }),
-      hour: useField<Hour | undefined>({
+      hour: useField<WidgetHour | undefined>({
         value: undefined,
         validates: [],
       }),

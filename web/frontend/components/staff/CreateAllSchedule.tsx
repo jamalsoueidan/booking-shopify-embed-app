@@ -1,6 +1,6 @@
 import useTagOptions from '@components/useTagOptions';
+import { useDate } from '@hooks/useDate';
 import isSelectedDays from '@libs/validators/isSelectedDays';
-import { useSettingGet } from '@services/setting';
 import { useStaffScheduleCreate } from '@services/staff/schedule';
 import {
   Columns,
@@ -19,7 +19,6 @@ import {
   getYear,
   subDays,
 } from 'date-fns';
-import { zonedTimeToUtc } from 'date-fns-tz';
 import { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { SelectDays } from './SelectDays';
@@ -42,7 +41,7 @@ export default forwardRef(({ date, close }: CreateDayScheduleProps, ref) => {
     end: endOfMonth(new Date(date)),
   });
 
-  const { data: settings } = useSettingGet();
+  const { toUtc } = useDate();
 
   const { create } = useStaffScheduleCreate({
     staff: params.id,
@@ -77,12 +76,8 @@ export default forwardRef(({ date, close }: CreateDayScheduleProps, ref) => {
         fieldValues.days.includes(format(r, 'EEEE').toLowerCase())
       );
 
-      const getZonedTime = (date: Date, time: string) => {
-        return zonedTimeToUtc(
-          `${format(date, 'yyyy-MM-dd')} ${time}:00`,
-          settings.timeZone
-        ).toISOString();
-      };
+      const getZonedTime = (date: Date, time: string) =>
+        toUtc(`${format(date, 'yyyy-MM-dd')} ${time}:00`).toISOString();
 
       const body = daysToFilterFor.map((date) => {
         return {

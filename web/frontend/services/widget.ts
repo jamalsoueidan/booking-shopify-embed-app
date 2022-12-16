@@ -22,7 +22,7 @@ export const useWidgetDate = ({
   const { data } = useSWR<ApiResponse<Array<WidgetSchedule>>>(
     staff &&
       productId &&
-      `/api/widget/availability-range?productId=${productId}&start=${start}&end=${end}${
+      `/api/widget/availability?productId=${productId}&start=${start}&end=${end}${
         staff ? `&staff=${staff}` : ''
       }`,
     (url: string) => fetch(url).then((r: Response) => r.json())

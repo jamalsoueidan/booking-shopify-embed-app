@@ -23,11 +23,11 @@ interface SelectHourProps extends FieldProps {}
 
 export const SelectHour = ({ fields }: SelectHourProps) => {
   const { schedule } = useContext(FormContext);
-  const [hours, setHours] = useState<Array<Hour>>([]);
+  const [hours, setHours] = useState<Array<WidgetHour>>([]);
 
   useEffect(() => {
     if (schedule) {
-      const hours: Hour[] = schedule.hours.reduce((hours: Hour[], current) => {
+      const hours = schedule.hours.reduce((hours: WidgetHour[], current) => {
         const notFound = !hours.find(
           (h) => h.start === current.start && h.end === current.end
         );

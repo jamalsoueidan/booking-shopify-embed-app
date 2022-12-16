@@ -6,9 +6,8 @@ import FullCalendar, {
   EventClickArg,
   EventContentArg,
 } from '@fullcalendar/react';
-import { useSettingGet } from '@services/setting';
+import { useDate } from '@hooks/useDate';
 import { format } from 'date-fns';
-import { utcToZonedTime } from 'date-fns-tz';
 import { createRef, useCallback, useEffect } from 'react';
 
 interface StaffCalendarProps {
@@ -20,9 +19,7 @@ interface StaffCalendarProps {
 
 export default ({ create, edit, events, onChangeDate }: StaffCalendarProps) => {
   const calendarRef = createRef<FullCalendar>();
-  const {
-    data: { timeZone },
-  } = useSettingGet();
+  const { toTimeZone } = useDate();
   const { select: selectTag } = useTagOptions();
 
   const dateChanged = useCallback(
@@ -33,13 +30,6 @@ export default ({ create, edit, events, onChangeDate }: StaffCalendarProps) => {
       });
     },
     [onChangeDate]
-  );
-
-  const toTimeZone = useCallback(
-    (fromUTC: Date) => {
-      return utcToZonedTime(fromUTC, timeZone);
-    },
-    [timeZone]
   );
 
   useEffect(() => {
@@ -53,8 +43,8 @@ export default ({ create, edit, events, onChangeDate }: StaffCalendarProps) => {
       events.forEach((extendedProps) => {
         api.addEvent({
           extendedProps,
-          start: toTimeZone(new Date(extendedProps.start)),
-          end: toTimeZone(new Date(extendedProps.end)),
+          start: toTimeZone(extendedProps.start),
+          end: toTimeZone(extendedProps.end),
           backgroundColor: extendedProps.tag,
           color: extendedProps.tag,
         });

@@ -120,7 +120,7 @@ interface UpdateProps {
 }
 
 const update = async ({ body, shop }: UpdateProps) =>
-  await modify({ body, shop, sendBooking: true });
+  await modify({ body, shop });
 
 interface CancelProps {
   body: OrderTypes.Order;
