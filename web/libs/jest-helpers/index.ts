@@ -64,7 +64,7 @@ export const createNewStaffAndAddToProductWithSchedule = async ({
       id: product._id,
     },
     body: {
-      staff: [{ staff: staff._id.toString(), tag }],
+      staff: [{ _id: staff._id, tag }],
     },
   });
 
