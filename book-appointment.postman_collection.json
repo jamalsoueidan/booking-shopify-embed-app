@@ -103,7 +103,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"webhook\" : {\n\t\t\"address\": \"https://c5d12a778f9c.eu.ngrok.io\"\n\t}\n}",
+							"raw": "{\n\t\"webhook\" : {\n\t\t\"address\": \"https://0bd2a57d24d6.eu.ngrok.io/api/webhooks\"\n\t}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -111,7 +111,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://{{shop}}/admin/api/2022-04/webhooks/1218105573693.json",
+							"raw": "https://{{shop}}/admin/api/2022-04/webhooks/1195701174589.json",
 							"protocol": "https",
 							"host": [
 								"{{shop}}"
@@ -121,7 +121,7 @@
 								"api",
 								"2022-04",
 								"webhooks",
-								"1218105573693.json"
+								"1195701174589.json"
 							]
 						}
 					},
@@ -173,7 +173,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "[{\n    \"start\": \"2022-10-23T10:30:00Z\", \n    \"end\": \"2022-10-23T19:30:00Z\", \n    \"tag\": \"purple\"\n},{\n    \"start\": \"2022-10-23T10:30:00Z\", \n    \"end\": \"2022-10-23T19:30:00Z\", \n    \"tag\": \"black\"\n}]",
+											"raw": "{\"start\":\"2022-12-15T08:00:00.000Z\",\"end\":\"2022-12-12T15:00:00.000Z\",\"tag\":\"#235284\"}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -181,7 +181,7 @@
 											}
 										},
 										"url": {
-											"raw": "{{url}}/api/admin/staff/635321e4c8af73a745d192dd/schedules?shop={{shop}}",
+											"raw": "{{url}}/api/admin/staff/63835ea7eead8d1319828518/schedules?shop={{shop}}",
 											"host": [
 												"{{url}}"
 											],
@@ -189,7 +189,7 @@
 												"api",
 												"admin",
 												"staff",
-												"635321e4c8af73a745d192dd",
+												"63835ea7eead8d1319828518",
 												"schedules"
 											],
 											"query": [
@@ -583,7 +583,7 @@
 											}
 										],
 										"url": {
-											"raw": "{{url}}/api/admin/products/637cdf8a2817210cda179fa2?shop={{shop}}",
+											"raw": "{{url}}/api/admin/products/6398a7ed5d43cbe8335e317b?shop={{shop}}",
 											"host": [
 												"{{url}}"
 											],
@@ -591,7 +591,40 @@
 												"api",
 												"admin",
 												"products",
-												"637cdf8a2817210cda179fa2"
+												"6398a7ed5d43cbe8335e317b"
+											],
+											"query": [
+												{
+													"key": "shop",
+													"value": "{{shop}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get product from shopify",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Shopify-Access-Token",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{url}}/api/admin/products/getOrderFromShopify/5226781344061?shop={{shop}}",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"admin",
+												"products",
+												"getOrderFromShopify",
+												"5226781344061"
 											],
 											"query": [
 												{
@@ -618,7 +651,7 @@
 											}
 										},
 										"url": {
-											"raw": "{{url}}/api/admin/products/637cdf8a2817210cda179fa2?shop={{shop}}",
+											"raw": "{{url}}/api/admin/products/6398a7ed5d43cbe8335e317b?shop={{shop}}",
 											"host": [
 												"{{url}}"
 											],
@@ -626,7 +659,7 @@
 												"api",
 												"admin",
 												"products",
-												"637cdf8a2817210cda179fa2"
+												"6398a7ed5d43cbe8335e317b"
 											],
 											"query": [
 												{
@@ -867,7 +900,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"orderId\": 5226781344061,\n    \"lineItemId\": 13699077734717,\n    \"message\": \"hej med dig\"\n}",
+									"raw": "{\n    \"orderId\": 5226781344061,\n    \"lineItemId\": 13699077734717,\n    \"message\": \"hej med dig\",\n    \"to\": \"staff\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -909,7 +942,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/api/admin/notifications/639224f6899931f68c599e42?shop={{shop}}",
+									"raw": "{{url}}/api/admin/notifications/63923728ec490713b0442248?shop={{shop}}",
 									"host": [
 										"{{url}}"
 									],
@@ -917,7 +950,7 @@
 										"api",
 										"admin",
 										"notifications",
-										"639224f6899931f68c599e42"
+										"63923728ec490713b0442248"
 									],
 									"query": [
 										{
@@ -973,7 +1006,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{url}}/api/admin/bookings?shop={{shop}}&start=2022-11-01&end=2022-11-29",
+									"raw": "{{url}}/api/admin/bookings?shop={{shop}}&start=2022-11-01&end=2023-01-01&staff=63835ea7eead8d1319828518",
 									"host": [
 										"{{url}}"
 									],
@@ -993,7 +1026,72 @@
 										},
 										{
 											"key": "end",
-											"value": "2022-11-29"
+											"value": "2023-01-01"
+										},
+										{
+											"key": "staff",
+											"value": "63835ea7eead8d1319828518"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "bookings by id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/admin/bookings/63962f70f7552b863ffb83b6?shop={{shop}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"bookings",
+										"63962f70f7552b863ffb83b6"
+									],
+									"query": [
+										{
+											"key": "shop",
+											"value": "{{shop}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "booking update by id",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"start\": \"2022-12-07T08:15:00.000Z\",\n    \"end\": \"2022-12-07T09:15:00.000Z\",\n    \"staff\": \"63835ea7eead8d1319828518\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/admin/bookings/63962f70f7552b863ffb83b6?shop={{shop}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"bookings",
+										"63962f70f7552b863ffb83b6"
+									],
+									"query": [
+										{
+											"key": "shop",
+											"value": "{{shop}}"
 										}
 									]
 								}
@@ -1016,7 +1114,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/widget/staff?shop={{shop}}&productId=4394058448984",
+							"raw": "{{url}}/api/widget/staff?shop={{shop}}&productId=7961951273277",
 							"host": [
 								"{{url}}"
 							],
@@ -1032,7 +1130,7 @@
 								},
 								{
 									"key": "productId",
-									"value": "4394058448984"
+									"value": "7961951273277"
 								}
 							]
 						}
@@ -1122,49 +1220,12 @@
 					"response": []
 				},
 				{
-					"name": "widget availability day for staff",
+					"name": "widget availability (staff)",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/widget/availability-day?shop={{shop}}&date=2022-12-08&staffId=63835ea7eead8d1319828518&productId=8006173360445",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"widget",
-								"availability-day"
-							],
-							"query": [
-								{
-									"key": "shop",
-									"value": "{{shop}}"
-								},
-								{
-									"key": "date",
-									"value": "2022-12-08"
-								},
-								{
-									"key": "staffId",
-									"value": "63835ea7eead8d1319828518"
-								},
-								{
-									"key": "productId",
-									"value": "8006173360445"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "widget availability range date for staff",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/api/widget/availability-range?shop={{shop}}&start=2022-12-08&end=2022-12-08&staffId=63835ea7eead8d1319828518&productId=8006173360445",
+							"raw": "{{url}}/api/widget/availability-range?shop={{shop}}&start=2022-12-02&end=2023-12-08&staff=63835ea7eead8d1319828518&productId=7961951273277",
 							"host": [
 								"{{url}}"
 							],
@@ -1180,19 +1241,19 @@
 								},
 								{
 									"key": "start",
-									"value": "2022-12-08"
+									"value": "2022-12-02"
 								},
 								{
 									"key": "end",
-									"value": "2022-12-08"
+									"value": "2023-12-08"
 								},
 								{
-									"key": "staffId",
+									"key": "staff",
 									"value": "63835ea7eead8d1319828518"
 								},
 								{
 									"key": "productId",
-									"value": "8006173360445"
+									"value": "7961951273277"
 								}
 							]
 						}
@@ -1200,12 +1261,12 @@
 					"response": []
 				},
 				{
-					"name": "widget availability any available",
+					"name": "widget availability (any)",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/widget/availability-range?shop={{shop}}&start=2022-12-08&end=2022-12-08&staffId=63835ea7eead8d1319828518&productId=8006173360445",
+							"raw": "{{url}}/api/widget/availability-range?shop={{shop}}&start=2022-12-02&end=2023-12-08&productId=7961951273277",
 							"host": [
 								"{{url}}"
 							],
@@ -1221,19 +1282,40 @@
 								},
 								{
 									"key": "start",
-									"value": "2022-12-08"
+									"value": "2022-12-02"
 								},
 								{
 									"key": "end",
-									"value": "2022-12-08"
-								},
-								{
-									"key": "staffId",
-									"value": "63835ea7eead8d1319828518"
+									"value": "2023-12-08"
 								},
 								{
 									"key": "productId",
-									"value": "8006173360445"
+									"value": "7961951273277"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "settings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/widget/settings?shop={{shop}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"widget",
+								"settings"
+							],
+							"query": [
+								{
+									"key": "shop",
+									"value": "{{shop}}"
 								}
 							]
 						}
