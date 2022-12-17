@@ -15,7 +15,7 @@ import {
   useStaffScheduleDestroy,
   useStaffScheduleUpdate,
 } from '@services/staff/schedule';
-import useTagOptions from '@components/useTagOptions';
+import useTagOptions from '@hooks/useTagOptions';
 import { useDate } from '@hooks/useDate';
 
 interface Props {

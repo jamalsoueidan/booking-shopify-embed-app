@@ -1,4 +1,5 @@
 import { useDate } from '@hooks/useDate';
+import useFulfillment, { FulfillmentStatus } from '@hooks/useFulfillment';
 import { Banner, Link, Modal, TextContainer } from '@shopify/polaris';
 import { differenceInHours, format, formatRelative } from 'date-fns';
 import da from 'date-fns/locale/da';
@@ -12,17 +13,40 @@ export default ({ info }: BookingModalChildProps) => {
 
   return (
     <>
-      {info.fulfillmentStatus && (
+      {info.fulfillmentStatus === FulfillmentStatus.CANCELLED && (
         <Modal.Section>
           <Banner title="Behandling annulleret">
             <p>Dette behandling er blevet annulleret.</p>
           </Banner>
         </Modal.Section>
       )}
-      {info.isEdit && !info.fulfillmentStatus && (
+      {info.fulfillmentStatus === FulfillmentStatus.REFUNDED && (
         <Modal.Section>
-          <Banner title="Behandling har skiftet dato">
-            <p>Dette behandlingtid er blevet ændret.</p>
+          <Banner title="Behandling refunderet" status="critical">
+            <p>Dette behandling er blevet refunderet.</p>
+          </Banner>
+        </Modal.Section>
+      )}
+      {info.isEdit &&
+        info.fulfillmentStatus !== FulfillmentStatus.CANCELLED &&
+        info.fulfillmentStatus !== FulfillmentStatus.REFUNDED && (
+          <Modal.Section>
+            <Banner title="Behandling har skiftet dato" status="info">
+              <p>Dette behandlingtid er blevet ændret.</p>
+            </Banner>
+          </Modal.Section>
+        )}
+      {info.fulfillmentStatus === FulfillmentStatus.FULFILLED && (
+        <Modal.Section>
+          <Banner title="Behandling er gennemført" status="success">
+            <p>Dette behandling er blevet gennemført.</p>
+          </Banner>
+        </Modal.Section>
+      )}
+      {!info.fulfillmentStatus && (
+        <Modal.Section>
+          <Banner title="Behandling ikke gennemført" status="warning">
+            <p>Dette behandling er stadig ikke gennemført.</p>
           </Banner>
         </Modal.Section>
       )}

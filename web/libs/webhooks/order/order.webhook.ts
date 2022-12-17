@@ -91,23 +91,26 @@ const modify = async ({
     });
   }
 
-  const bulkWrite = models.map((m) => ({
-    updateOne: {
-      filter: {
-        orderId: m.orderId,
-        lineItemId: m.lineItemId,
-        productId: m.productId,
-        isEdit: false,
-        fulfillmentStatus: { $ne: "cancelled" },
+  const cancelled = models.every((m) => m.fulfillmentStatus === "refunded");
+  if (cancelled) {
+    return cancel({ body, shop });
+  } else {
+    const bulkWrite = models.map((m) => ({
+      updateOne: {
+        filter: {
+          orderId: m.orderId,
+          lineItemId: m.lineItemId,
+          productId: m.productId,
+          isEdit: false,
+        },
+        update: {
+          $set: m,
+        },
+        upsert: true,
       },
-      update: {
-        $set: m,
-      },
-      upsert: true,
-    },
-  }));
-
-  return BookingModel.bulkWrite(bulkWrite);
+    }));
+    return BookingModel.bulkWrite(bulkWrite);
+  }
 };
 
 interface CreateProps {

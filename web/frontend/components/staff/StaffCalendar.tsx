@@ -1,5 +1,5 @@
 import Calendar from '@components/Calendar';
-import useTagOptions from '@components/useTagOptions';
+import useTagOptions from '@hooks/useTagOptions';
 import { DateClickArg } from '@fullcalendar/interaction';
 import FullCalendar, {
   DatesSetArg,

@@ -10,7 +10,7 @@ interface Booking {
   end: Date;
   shop: string;
   anyAvailable?: boolean;
-  fulfillmentStatus: string;
+  fulfillmentStatus: FulfillmentStatus;
   title: string;
   timeZone: string;
   isEdit?: boolean;

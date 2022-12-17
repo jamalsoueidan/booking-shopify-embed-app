@@ -1,6 +1,6 @@
 import LoadingPage from '@components/LoadingPage';
 import Metadata from '@components/staff/Metadata';
-import usePositions from '@components/usePositions';
+import usePositions from '@hooks/usePositions';
 import { useStaffList } from '@services/staff';
 import { useNavigate } from '@shopify/app-bridge-react';
 import {

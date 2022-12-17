@@ -1,5 +1,5 @@
-import usePositions from '@components/usePositions';
-import useTagOptions from '@components/useTagOptions';
+import usePositions from '@hooks/usePositions';
+import useTagOptions from '@hooks/useTagOptions';
 import { useCollectionProductStaff } from '@services/product';
 import { Modal, OptionList, Spinner, Text } from '@shopify/polaris';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';

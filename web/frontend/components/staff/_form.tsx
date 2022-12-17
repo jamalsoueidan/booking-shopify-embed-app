@@ -1,5 +1,5 @@
 import FormStatus from '@components/FormStatus';
-import usePositions from '@components/usePositions';
+import usePositions from '@hooks/usePositions';
 import useSave from '@hooks/useSave';
 import isEmail from '@libs/validators/isEmail';
 import isPhoneNumber from '@libs/validators/isPhoneNumber';

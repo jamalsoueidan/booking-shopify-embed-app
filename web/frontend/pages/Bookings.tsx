@@ -3,9 +3,10 @@ import StaffSelection from '@components/bookings/staff-selection';
 import Calendar from '@components/Calendar';
 import FullCalendar, { DatesSetArg, EventClickArg } from '@fullcalendar/react'; // must go before plugins
 import { useDate } from '@hooks/useDate';
+import useFulfillment from '@hooks/useFulfillment';
 import { useBookings } from '@services/bookings';
 import { useSettingGet } from '@services/setting';
-import { Card, Page } from '@shopify/polaris';
+import { Badge, Card, Page, Text } from '@shopify/polaris';
 import { format } from 'date-fns-tz';
 import { createRef, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -17,8 +18,10 @@ export default () => {
   const [staff, setStaff] = useState(null);
 
   const { t } = useTranslation('bookings');
+  const { getColor } = useFulfillment();
   const { data: settings } = useSettingGet();
   const { toTimeZone } = useDate();
+  const { options } = useFulfillment();
   const calendarRef = createRef<FullCalendar>();
 
   const { data: bookings, isLoading } = useBookings({ start, end, staff });
@@ -41,8 +44,9 @@ export default () => {
           ...d,
           start: toTimeZone(new Date(d.start)),
           end: toTimeZone(new Date(d.end)),
-          backgroundColor: d.fulfillmentStatus ? '#c9c9c9' : '#378006',
-          color: d.fulfillmentStatus ? '#c9c9c9' : '#378006',
+          backgroundColor: getColor(d.fulfillmentStatus),
+          color: getColor(d.fulfillmentStatus),
+          textColor: '#202223',
         });
       });
     }
@@ -53,24 +57,26 @@ export default () => {
       const api = calendarRef.current.getApi();
       const isMonth = api.view.type === 'dayGridMonth';
       const booking: BookingAggreate = arg.event.extendedProps;
-
-      const hour = <i>{format(arg.event.start, 'HH:mm')}</i>;
       const extendHour = (
         <i>
-          {format(arg.event.start, 'HH:mm')} - {format(arg.event.end, 'HH:mm')}
+          {format(arg.event.start, 'HH:mm')} - {format(arg.event.end, 'HH:mm')}{' '}
         </i>
       );
       return (
         <div style={{ cursor: 'pointer' }}>
-          <span>{isMonth ? hour : extendHour}</span>
-          <span
+          <div>{extendHour}</div>
+          <div
             style={{
-              display: !isMonth ? 'block' : '',
-              marginLeft: isMonth ? '5px' : '0px',
+              overflow: 'hidden',
             }}>
-            {booking.staff?.fullname}
-            {booking.anyAvailable ? '(ET)' : ''} - {booking.product.title}
-          </span>
+            {booking.staff?.fullname} - {booking.anyAvailable ? '(ET)' : ''}
+          </div>
+          <div
+            style={{
+              overflow: 'hidden',
+            }}>
+            {booking.product.title}
+          </div>
         </div>
       );
     },
@@ -93,7 +99,19 @@ export default () => {
     <Page fullWidth title={t('title')}>
       {bookingModal}
       <Card sectioned>
-        <Card.Section>
+        <Card.Section
+          title={
+            <>
+              {options.map((o) => (
+                <Badge status={o.status} progress="complete">
+                  {o.label
+                    ? o.label.charAt(0).toUpperCase() + o.label.slice(1)
+                    : 'In progress'}
+                </Badge>
+              ))}
+              <br />
+            </>
+          }>
           <StaffSelection
             isLoading={isLoading}
             staff={staff}

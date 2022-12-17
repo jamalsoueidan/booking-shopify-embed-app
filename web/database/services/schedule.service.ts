@@ -1,3 +1,4 @@
+import { beginningOfDay, closeOfDay } from "@helpers/date";
 import ScheduleModel, { IScheduleModel } from "@models/schedule.model";
 import StaffService from "@services/staff.service";
 import { parseISO, setMilliseconds, setSeconds } from "date-fns";
@@ -92,13 +93,14 @@ const getByDateRange = async ({
   start,
   end,
 }: GetByDateRangeProps) => {
+  console.log(new Date(start), start);
   return await ScheduleModel.find({
     staff: new mongoose.Types.ObjectId(staff),
     start: {
-      $gte: new Date(`${start}T00:00:00.0Z`),
+      $gte: beginningOfDay(start),
     },
     end: {
-      $lt: new Date(`${end}T23:59:59.0Z`),
+      $lt: closeOfDay(end),
     },
     shop,
   });
@@ -124,6 +126,7 @@ const getByStaffAndTag = async ({
   start,
   end,
 }: GetByStaffAndTagProps): Promise<Array<GetByStaffAndTagReturn>> => {
+  console.log(new Date(start), start);
   return await ScheduleModel.aggregate([
     {
       $match: {
@@ -134,10 +137,10 @@ const getByStaffAndTag = async ({
           $in: staff,
         },
         start: {
-          $gte: new Date(`${start}T00:00:00.0Z`),
+          $gte: beginningOfDay(start),
         },
         end: {
-          $lt: new Date(`${end}T23:59:59.0Z`),
+          $lt: closeOfDay(end),
         },
       },
     },

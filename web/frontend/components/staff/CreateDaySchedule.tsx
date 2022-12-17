@@ -1,4 +1,4 @@
-import useTagOptions from '@components/useTagOptions';
+import useTagOptions from '@hooks/useTagOptions';
 import { useDate } from '@hooks/useDate';
 import { useStaffScheduleCreate } from '@services/staff/schedule';
 import {
