@@ -1,3 +1,5 @@
+import { beginningOfDay, closeOfDay } from "@helpers/date";
+import { GetBookingsProps } from "@libs/admin-booking/admin-booking.types";
 import mongoose, { Types } from "mongoose";
 import BookingModel from "../models/booking.model";
 
@@ -64,20 +66,16 @@ const getBookingsForWidget = ({
   ]);
 };
 
-interface GetBookingsProps extends BookingQuery {
-  shop: string;
-}
-
 const getBookings = ({ shop, start, end, staff }: GetBookingsProps) => {
   return BookingModel.aggregate<BookingAggreate>([
     {
       $match: {
         shop,
         start: {
-          $gte: new Date(`${start}T00:00:00.0Z`),
+          $gte: beginningOfDay(start),
         },
         end: {
-          $lt: new Date(`${end}T23:59:59.0Z`),
+          $lt: closeOfDay(end),
         },
         ...(staff && { staff: new mongoose.Types.ObjectId(staff) }),
       },

@@ -3,7 +3,10 @@ import settingController from "../admin-setting.controller";
 
 describe("admin-setting controller", () => {
   beforeAll(() => mongoose.connect(global.__MONGO_URI__));
-  afterAll(() => mongoose.disconnect());
+  afterAll(async () => {
+    await mongoose.connection.db.dropDatabase();
+    return mongoose.connection.close();
+  });
 
   it("Should create or update a setting", async () => {
     const query = {
@@ -11,11 +14,11 @@ describe("admin-setting controller", () => {
     };
 
     const body = {
-      language: SettingLanguage.en,
+      language: "en",
     };
 
     const createSetting = await settingController.create({ query, body });
-    expect(createSetting.language).toEqual(SettingLanguage.en);
+    expect(createSetting.language).toEqual(body.language);
   });
 
   it("Should find setting", async () => {
@@ -24,6 +27,6 @@ describe("admin-setting controller", () => {
     };
 
     const findSetting = await settingController.get({ query });
-    expect(findSetting.language).toEqual(SettingLanguage.en);
+    expect(findSetting.language).toEqual("en");
   });
 });

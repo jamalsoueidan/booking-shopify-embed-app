@@ -1,0 +1,682 @@
+export default {
+  id: 5226401497405,
+  admin_graphql_api_id: "gid://shopify/Order/5226401497405",
+  app_id: 580111,
+  browser_ip: "178.247.158.191",
+  buyer_accepts_marketing: false,
+  cancel_reason: null,
+  cancelled_at: null,
+  cart_token: "2291d4d706f03fec1f06b3c31a5 a59bc",
+  checkout_id: 36474269040957,
+  checkout_token: "4cfec77c7e483982566b8846efb368c9",
+  client_details: {
+    accept_language: "en-DK",
+    browser_height: null,
+    browser_ip: "178.247.158.191",
+    browser_width: null,
+    session_hash: null,
+    user_agent:
+      "Mozi lla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
+  },
+  closed_at: null,
+  confirmed: true,
+  contact_email: "iojads@asd.dk",
+  created_at: "2022-12-06T22:56:43+03:00",
+  currency: "DKK",
+  current_subtotal_price: "75.00",
+  current_subtotal_price_set: {
+    shop_money: {
+      amount: "75.00",
+      currency_code: "DKK",
+    },
+    presentment_money: {
+      amount: "75.00",
+      currency_code: "DKK",
+    },
+  },
+  current_total_discounts: "425.00",
+  current_total_discounts_set: {
+    shop_money: {
+      amount: "425.00",
+      currency_code: "DKK",
+    },
+    presentment_money: {
+      amount: "425.00",
+      currency_code: "DKK",
+    },
+  },
+  current_total_duties_set: null,
+  current_total_price: "75.00",
+  current_total_price_set: {
+    shop_money: {
+      amount: "75.00",
+      currency_code: "DKK",
+    },
+    presentment_money: {
+      amount: "75.00",
+      currency_code: "DKK",
+    },
+  },
+  current_total_tax: "0.00",
+  current_total_tax_set: {
+    shop_money: {
+      amount: "0.00",
+      currency_code: "DKK",
+    },
+    presentment_money: {
+      amount: "0.00",
+      currency_code: "DKK",
+    },
+  },
+  customer_locale: "en-DK",
+  device_id: null,
+  discount_codes: [],
+  email: "iojads@asd.dk",
+  estimated_taxes: false,
+  financial_status: "partially_refunded",
+  fulfillment_status: null,
+  gateway: "bogus",
+  landing_site: "/",
+  landing_site_ref: null,
+  location_id: null,
+  merchant_of_record_app_id: null,
+  name: "#1021",
+  note: "1",
+  note_attributes: [],
+  number: 21,
+  order_number: 1021,
+  order_status_url:
+    "https://testeriphone.myshopify.com/66323153213/orders/9b11f3c3a19976f93b54bf2364be84a1/authenticate?k ey=5f9e1845e57e1aad905c1af558259db7",
+  original_total_duties_set: null,
+  payment_gateway_names: ["bogus"],
+  phone: null,
+  presentment_currency: "DKK",
+  processed_at: "2022-12-06T22:56:42+03:00",
+  processing_method: "direct",
+  reference: "78b3cbab212a4 7ddf924fb11665508f8",
+  referring_site: "",
+  source_identifier: "78b3cbab212a47ddf924fb11665508f8",
+  source_name: "web",
+  source_url: null,
+  subtotal_price: "150.00",
+  subtotal_price_set: {
+    shop_money: {
+      amount: "150.00",
+      currency_code: "DKK",
+    },
+    presentment_money: {
+      amount: "150.00",
+      currency_code: "DKK",
+    },
+  },
+  tags: "",
+  tax_lines: [],
+  taxes_included: true,
+  test: true,
+  token: "9b11f3c3a19976f93b54bf2364be84a1",
+  total_discounts: "850.00",
+  total_discounts_set: {
+    shop_money: {
+      amount: "850.00",
+      currency_code: "DKK",
+    },
+    presentment_money: {
+      amount: "850.00",
+      currency_code: "DKK",
+    },
+  },
+  total_line_items_price: "1000.00",
+  total_line_items_price_set: {
+    shop_money: {
+      amount: "1000.00",
+      currency_code: "DKK",
+    },
+    presentment_money: {
+      amount: "1000.00",
+      currency_code: "DKK",
+    },
+  },
+  total_outstanding: "0.00",
+  total_price: "150.00",
+  total_price_set: {
+    shop_money: {
+      amount: "150.00",
+      currency_code: "DKK",
+    },
+    presentment_money: {
+      amount: "150.00",
+      currency_code: "DKK",
+    },
+  },
+  total_shipping_price_set: {
+    shop_money: {
+      amount: "0.00",
+      currency_code: "DKK",
+    },
+    presentment_money: {
+      amount: "0.00",
+      currency_code: "DKK",
+    },
+  },
+  total_tax: "0.00",
+  total_tax_set: {
+    shop_money: {
+      amount: "0.00",
+      currency_code: "DKK",
+    },
+    presentment_money: {
+      amount: "0.00",
+      "currency_ code": "DKK",
+    },
+  },
+  total_tip_received: "0.00",
+  total_weight: 0,
+  updated_at: "2022-12-17T02:18:30+03:00",
+  user_id: null,
+  billing_address: {
+    first_name: "first name",
+    phone: null,
+    province: null,
+    country: "Denmark",
+    last_name: "iojasd",
+    company: null,
+    latitude: 56.158596,
+    longitude: 10.130378,
+    name: "first name iojasd",
+    country_code: "DK",
+    province_code: null,
+  },
+  customer: {
+    id: 6730161357117,
+    email: "iojads@asd.dk",
+    accepts_marketing: false,
+    created_at: "2022-12-06T22:56:43+03:00",
+    updated_at: "2022-12-06T22:56:44+03:00",
+    first_name: "first name",
+    last_name: "iojasd",
+    state: "disabled",
+    note: null,
+    verified_email: true,
+    multipass_identifier: null,
+    tax_exempt: false,
+    tags: "",
+    currency: "DKK",
+    phone: null,
+    accepts_marketing_updated_at: "2022-12-06T22:56:43+03:00",
+    marketing_opt_in_level: null,
+    tax_exemptions: [],
+    email_marketing_consent: {
+      state: "not_subscribed",
+      opt_in_level: "single_opt_in",
+      consent_updated_at: null,
+    },
+    sms_marketing_consent: null,
+    admin_graphql_api_id: "gid://shopify/Customer/6730161357117",
+    default_address: {
+      id: 9017874022717,
+      customer_id: 6730161357117,
+      first_name: "first name",
+      last_name: "iojasd",
+      company: null,
+      province: null,
+      country: "Denmark",
+      phone: null,
+      name: "first name iojasd",
+      province_code: null,
+      country_code: "DK",
+      country_name: "Denmark",
+      default: true,
+    },
+  },
+  discount_applications: [
+    {
+      target_type: "line_item",
+      type: "automatic",
+      value: "85.0",
+      value_type: "percentage",
+      allocation_method: "across",
+      target_selection: "all",
+      title: "Forudbetalingsfaktura 15%",
+    },
+  ],
+  fulfillments: [
+    {
+      id: 4642792997181,
+      admin_graphql_api_id: "gid://shopify/Fulfillment/4642792997181",
+      created_at: "2022-12-17T02:12:56+03:00",
+      location_id: 71688618301,
+      name: "#1021.1",
+      order_id: 5226401497405,
+      origin_address: {},
+      receipt: {},
+      service: "manual",
+      shipment_status: null,
+      status: "cancelled",
+      tracking_company: null,
+      tracking_number: null,
+      tracking_numbers: [],
+      tracking_url: null,
+      tracking_urls: [],
+      updated_at: "2022-12-17T02:18:30+03:00",
+      line_items: [
+        {
+          id: 13698399207741,
+          admin_graphql_api_id: "gid://shopify/LineItem/13698399207741",
+          fulfillable_quantity: 1,
+          fulfillment_service: "manual",
+          fulfillment_status: null,
+          gift_card: false,
+          grams: 0,
+          name: "Brudekonsultation",
+          price: "500.00",
+          price_set: {
+            shop_money: {
+              amount: "500.00",
+              currency_code: "DKK",
+            },
+            presentment_money: {
+              amount: "500.00",
+              currency_code: "DKK",
+            },
+          },
+          product_exists: true,
+          product_id: 8006173360445,
+          properties: [
+            {
+              name: "Medarbejder",
+              value: "Enhver tilgC&ngelig",
+            },
+            {
+              name: "Dato",
+              value: "07. dec. 2022",
+            },
+            {
+              name: "Tid",
+              value: "11:15 - 12:15",
+            },
+            {
+              name: "_data",
+              value:
+                '{"start":"2022-12-07T08:15:00.000Z","end":"2022-12-07T09:15:00.000Z","staff":{"_id":"63835ea7eead8d1319828518","fullname":"sara souei","avatar":"https://encrypted-tbn0.gstatic.com/images?q=t bn:ANd9GcR-V-L3LM3amOt_N_OOkG1GLRkb5r6HnW8QoA&usqp=CAU","position":"2","anyAvailable":true},"timeZone":"Europe/Istanbul"}',
+            },
+          ],
+          quantity: 1,
+          requires_shipping: false,
+          sku: "",
+          taxable: true,
+          title: "Brudekonsultation",
+          total_discount: "0.00",
+          total_discount_set: {
+            shop_money: {
+              amount: "0.00",
+              currency_code: "DKK",
+            },
+            presentment_money: {
+              amount: "0.00",
+              currency_code: "DKK",
+            },
+          },
+          variant_id: 44151825563965,
+          variant_inventory_management: null,
+          variant_title: null,
+          vendor: "tester iphone",
+          tax_lines: [],
+          duties: [],
+          discount_allocations: [
+            {
+              amount: "425.00",
+              amount_set: {
+                shop_money: {
+                  amount: "425.00",
+                  currency_code: "DKK",
+                },
+                presentment_money: {
+                  amount: "425.00",
+                  currency_code: "DKK",
+                },
+              },
+              discount_application_index: 0,
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  line_items: [
+    {
+      id: 13698399174973,
+      admin_graphql_api_id: "gid://shopify/LineItem/13698399174973",
+      fulfillable_quantity: 0,
+      fulfillment_service: "manual",
+      fulfillment_status: null,
+      gift_card: false,
+      grams: 0,
+      name: "Brudekonsultation",
+      price: "500.00",
+      price_set: {
+        shop_money: {
+          amount: "500.00",
+          currency_code: "DKK",
+        },
+        presentment_money: {
+          amount: "500.00",
+          currency_code: "DKK",
+        },
+      },
+      product_exists: true,
+      product_id: 8006173360445,
+      properties: [
+        {
+          name: "Medarbejder",
+          value: "sara souei",
+        },
+        {
+          name: "Dato",
+          value: "07. dec. 2022",
+        },
+        {
+          name: "Tid",
+          value: "11:00 - 12:00",
+        },
+        {
+          name: "_data",
+          value:
+            '{"start":"2022-12-07T08:00:00.000Z","end":"2022-12-07T09:00:00.000Z","staff":{"_id":"63835ea7eead8d1319828518","fullname":"sara souei","avatar":"https://encrypted-tbn0.gstatic.com/images?q=t bn:ANd9GcR-V-L3LM3amOt_N_OOkG1GLRkb5r6HnW8QoA&usqp=CAU","position":"2"},"timeZone":"Europe/Istanbul"}',
+        },
+      ],
+      quantity: 1,
+      requires_shipping: false,
+      sku: "",
+      taxable: true,
+      title: "Brudekonsultation",
+      total_discount: "0.00",
+      total_discount_set: {
+        shop_money: {
+          amount: "0.00",
+          currency_code: "DKK",
+        },
+        presentment_money: {
+          amount: "0.00",
+          currency_code: "DKK",
+        },
+      },
+      variant_id: 44151825563965,
+      variant_inventory_management: null,
+      variant_title: null,
+      vendor: "testeriphone",
+      tax_lines: [],
+      duties: [],
+      discount_allocations: [
+        {
+          amount: "425.00",
+          amount_set: {
+            shop_money: {
+              amount: "425.00",
+              currency_code: "DKK",
+            },
+            presentment_money: {
+              amount: "425.00",
+              currency_code: "DKK",
+            },
+          },
+          discount_application_index: 0,
+        },
+      ],
+    },
+    {
+      id: 13698399207741,
+      admin_graphql_api_id: "gid://shopify/LineItem/13698399207741",
+      fulfillable_quantity: 1,
+      fulfillment_service: "manual",
+      fulfillment_status: null,
+      gift_card: false,
+      grams: 0,
+      name: "Brudekonsultation",
+      price: "500.00",
+      price_set: {
+        shop_money: {
+          amount: "500.00",
+          currency_code: "DKK",
+        },
+        presentment_money: {
+          amount: "500.00",
+          currency_code: "DKK",
+        },
+      },
+      product_exists: true,
+      product_id: 8006173360445,
+      properties: [
+        {
+          name: "Medarbejder",
+          value: "Enhver tilgC&ngelig",
+        },
+        {
+          name: "Dato",
+          value: "07. dec. 2022",
+        },
+        {
+          name: "Tid",
+          value: "11:15 - 12:15",
+        },
+        {
+          name: "_data",
+          value:
+            '{"start":"2022-12-07T08:15:00.000Z","end":"2022-12-07T09:15:00.000Z","staff":{"_id":"63835ea7eead8d1319828518","fullname":"sara souei","avatar":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-V-L3LM3amOt_N_OOkG1GLRkb5r6HnW8QoA&usqp=CAU","position":"2","anyAvailable":true},"timeZone":"Europe/Istanbul"}',
+        },
+      ],
+      quantity: 1,
+      requires_shipping: false,
+      sku: "",
+      taxable: true,
+      title: "Brudekonsultation",
+      total_discount: "0.00",
+      total_discount_set: {
+        shop_money: {
+          amount: "0.00",
+          currency_code: "DKK",
+        },
+        presentment_money: {
+          amount: "0.00",
+          currency_code: "DKK",
+        },
+      },
+      variant_id: 44151825563965,
+      variant_inventory_management: null,
+      variant_title: null,
+      vendor: "testeriphone",
+      tax_lines: [],
+      duties: [],
+      discount_allocations: [
+        {
+          amount: "425.00",
+          amount_set: {
+            shop_money: {
+              amount: "425.00",
+              currency_code: "DKK",
+            },
+            presentment_money: {
+              amount: " 425.00",
+              currency_code: "DKK",
+            },
+          },
+          discount_application_index: 0,
+        },
+      ],
+    },
+  ],
+  payment_details: {
+    credit_card_bin: "1",
+    avs_result_code: null,
+    cvv_result_code: null,
+    credit_card_company: "Bogus",
+  },
+  payment_terms: null,
+  refunds: [
+    {
+      id: 940134203709,
+      admin_graphql_api_id: "gid://shopify/Refund/940134203709",
+      created_at: "2022-12-17T02:15:43+03:00",
+      note: "testerne",
+      order_id: 5226401497405,
+      processed_at: "2022-12-17T02:15:43+03:00",
+      restock: true,
+      total_duties_set: {
+        shop_money: {
+          amount: "0.00",
+          currency_code: "DKK",
+        },
+        presentment_money: {
+          amount: "0.00",
+          currency_code: "DKK",
+        },
+      },
+      user_id: 86335914301,
+      order_adjustments: [],
+      transactions: [
+        {
+          id: 6396210872637,
+          admin_graphql_api_id: "gid: //shopify/OrderTransaction/6396210872637",
+          amount: "75.00",
+          authorization: null,
+          created_at: "2022-12-17T02:15:42+03:00",
+          currency: "DKK",
+          device_id: null,
+          error_code: null,
+          gateway: "bogus",
+          kind: "refund",
+          location_id: null,
+          message: "Bogus Gateway: Forced success",
+          order_id: 5226401497405,
+          parent_id: 6388975468861,
+          processed_at: "2022-12-17T02:15:42+03:00",
+          receipt: {
+            paid_amount: "75.00",
+          },
+          source_name: "1830279",
+          status: "success",
+          test: true,
+          user_id: 86335914301,
+          payment_details: {
+            credit_card_bin: "1",
+            avs_result_code: null,
+            cvv_result_code: null,
+            credit_card_company: "Bogus",
+          },
+        },
+      ],
+      refund_line_items: [
+        {
+          id: 548662214973,
+          line_item_id: 13698399174973,
+          location_id: 71688618301,
+          quantity: 1,
+          restock_type: "cancel",
+          subtotal: 75,
+          subtotal_set: {
+            shop_money: {
+              amount: "75.00",
+              "currency_code ": "DKK",
+            },
+            presentment_money: {
+              amount: "75.00",
+              currency_code: "DKK",
+            },
+          },
+          total_tax: 0,
+          total_tax_set: {
+            shop_money: {
+              amount: "0.00",
+              currency_code: "DKK",
+            },
+            presentment_money: {
+              amount: "0.00",
+              currency_code: "DKK",
+            },
+          },
+          line_item: {
+            id: 13698399174973,
+            admin_graphql_api_id: "gid://shopify/LineItem/13698399174973",
+            fulfillable_quantity: 0,
+            fulfillment_service: "manual",
+            fulfillment_status: null,
+            gift_card: false,
+            grams: 0,
+            name: "Brudekonsultation",
+            price: "500.00",
+            price_set: {
+              shop_money: {
+                amount: "500.00",
+                currency_code: "DKK",
+              },
+              presentment_money: {
+                amount: "500.00",
+                currency_code: "DKK",
+              },
+            },
+            product_exists: true,
+            product_id: 8006173360445,
+            properties: [
+              {
+                name: "Medarbejder",
+                value: "sara souei",
+              },
+              {
+                name: "Dato",
+                value: "07. dec. 2022",
+              },
+              {
+                name: "Tid",
+                value: "11:00 - 12:00",
+              },
+              {
+                name: "_data",
+                value:
+                  '{"start":"2022-12-07T08:00:00.000Z","end":"2022-12-07T09:00:00.000Z","staff":{"_id":"63835ea7eead8d1319828518","fullname":"sara souei","avatar":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-V-L3LM3amOt_N_OOkG1GLRkb5r6HnW8QoA&usqp=CAU","position":"2"},"timeZone":"Europe/Istanbul"}',
+              },
+            ],
+            quantity: 1,
+            requires_shipping: false,
+            sku: "",
+            taxable: true,
+            title: "Brudekonsultation",
+            total_discount: "0.00",
+            total_discount_set: {
+              shop_money: {
+                amount: "0.00",
+                currency_code: "DKK",
+              },
+              presentment_money: {
+                amount: "0.00",
+                currency_code: "DKK",
+              },
+            },
+            variant_id: 44151825563965,
+            variant_inventory_management: null,
+            variant_title: null,
+            vendor: "testeriphone",
+            tax_lines: [],
+            duties: [],
+            discount_allocations: [
+              {
+                amount: "425.00",
+                amount_set: {
+                  shop_money: {
+                    amount: "425.00",
+                    currency_code: "DKK",
+                  },
+                  presentment_money: {
+                    amount: "425.00",
+                    currency_code: "DKK",
+                  },
+                },
+                discount_application_index: 0,
+              },
+            ],
+          },
+        },
+      ],
+      duties: [],
+    },
+  ],
+  shipping_lines: [],
+};

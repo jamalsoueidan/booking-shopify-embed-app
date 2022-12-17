@@ -72,7 +72,7 @@ const modify = async ({ body, shop }: CreateProps) => {
     }
   }
 
-  await CartModel.insertMany(models);
+  return CartModel.insertMany(models);
 };
 
 export default { modify };

@@ -1,4 +1,5 @@
 import BookingService from "@services/booking.service";
+import { GetBookingsProps } from "./admin-booking.types";
 
 export enum ControllerMethods {
   get = "get",
@@ -6,8 +7,12 @@ export enum ControllerMethods {
   update = "update",
 }
 
-const get = async ({ query }) => {
-  return await BookingService.getBookings(query);
+interface GetQuery {
+  query: GetBookingsProps;
+}
+
+const get = ({ query }: GetQuery) => {
+  return BookingService.getBookings(query);
 };
 
 const getById = async ({ query, body }) => {

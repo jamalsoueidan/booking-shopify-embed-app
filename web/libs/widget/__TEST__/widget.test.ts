@@ -1,26 +1,12 @@
-import adminProductController from "@libs/admin-product/admin-product.controller";
 import {
   createNewStaffAndAddToProductWithSchedule,
   createProduct,
-  createSchedule,
-  createStaff,
 } from "@libs/jest-helpers";
 import { IProductModel } from "@models/product.model";
 import { IStaffModel } from "@models/staff.model";
-import StaffService from "@services/staff.service";
-import {
-  addDays,
-  addHours,
-  format,
-  setHours,
-  setMilliseconds,
-  setMinutes,
-  setSeconds,
-} from "date-fns";
 import mongoose, { Document } from "mongoose";
 
 import { faker } from "@faker-js/faker";
-import widgetController from "../widget.controller";
 
 const productId = faker.random.numeric(10);
 

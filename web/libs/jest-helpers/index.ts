@@ -11,6 +11,8 @@ export const createStaff = async () => {
     fullname: faker.name.fullName(),
     email: faker.internet.email(),
     phone: "+4531317411",
+    avatar: "http://",
+    position: "2",
   });
 };
 

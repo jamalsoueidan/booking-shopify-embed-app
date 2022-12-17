@@ -28,7 +28,7 @@ describe("admin-product controller", () => {
 
     const query = {
       shop: global.shop,
-      id: product._id.toString(),
+      id: product._id,
     };
 
     const findProduct = await productController.getById({ query });
@@ -41,7 +41,7 @@ describe("admin-product controller", () => {
 
     const query = {
       shop: global.shop,
-      id: product._id.toString(),
+      id: product._id,
     };
 
     const duration = 50;

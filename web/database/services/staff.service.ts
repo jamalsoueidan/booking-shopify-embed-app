@@ -13,8 +13,8 @@ const find = async (shop) => {
   return await StaffModel.find({ shop });
 };
 
-const findOne = async (_id, document) => {
-  return await StaffModel.findOne({ _id, ...document });
+const findOne = (_id, document) => {
+  return StaffModel.findOne({ _id, ...document });
 };
 
 const findByIdAndUpdate = (staffId, document) => {

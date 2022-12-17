@@ -39,13 +39,13 @@ describe("webhooks order", () => {
       staff: staff1._id.toString(),
     });
 
-    const productUpdated = await adminProductController.update({
+    await adminProductController.update({
       query: {
-        id: product["_id"].toString(),
+        id: product._id,
         shop: global.shop,
       },
       body: {
-        staff: [{ tag, _id: staff1._id.toString() }],
+        staff: [{ tag, _id: staff1._id }],
       },
     });
 
@@ -55,13 +55,13 @@ describe("webhooks order", () => {
       start: addHours(setSeconds(setMilliseconds(date, 0), 0), 6).toISOString(),
       end: addHours(setSeconds(setMilliseconds(date, 0), 0), 7).toISOString(),
       staff: {
-        staff: staff1._id.toString(),
+        staff: staff1._id,
         fullname: "Fida Soueidan",
         anyAvailable: false,
       },
     });
 
     const response = await CartWebhook.modify({ body, shop: global.shop });
-    expect(response[0].upsertedCount).toEqual(1);
+    expect(response.length).toEqual(1);
   });
 });

@@ -186,7 +186,7 @@ const sendBookingConfirmationCustomer = ({
   send({
     orderId: bookings[0].orderId,
     shop,
-    receiver: receiver.phone.replace("+", ""),
+    receiver: receiver.phone?.replace("+", ""),
     message: `Hej ${receiver.fullname}, tak for din resevations, som indeholder ${bookings.length} behandling(er)`,
     isStaff: false,
   });
@@ -231,8 +231,8 @@ const sendReminderStaff = ({ bookings, shop }: SendReminder) => {
       shop,
       orderId: booking.orderId,
       lineItemId: booking.lineItemId,
-      receiver: staff.phone.replace("+", ""),
-      message: `Hej ${staff.fullname}, Husk du har en kunde som skal lave ${
+      receiver: staff?.phone?.replace("+", ""),
+      message: `Hej ${staff?.fullname}, Husk du har en kunde som skal lave ${
         booking.title
       } behandling imorgen kl. ${format(
         utcToZonedTime(new Date(booking.start), "Europe/Paris"),

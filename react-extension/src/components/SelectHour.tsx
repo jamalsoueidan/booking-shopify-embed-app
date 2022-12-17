@@ -19,6 +19,19 @@ const SVG = styled.svg`
   top: 15px !important;
 `;
 
+const sortByDate = function (a: any, b: any) {
+  var dateA = new Date(a.start);
+  var dateB = new Date(b.start);
+
+  if (dateA < dateB) {
+    return -1;
+  }
+  if (dateA > dateB) {
+    return 1;
+  }
+  return 0;
+};
+
 interface SelectHourProps extends FieldProps {}
 
 export const SelectHour = ({ fields }: SelectHourProps) => {
@@ -75,7 +88,7 @@ export const SelectHour = ({ fields }: SelectHourProps) => {
           required
         >
           <option value="">Vælg tid</option>
-          {hours?.map((option) => {
+          {hours?.sort(sortByDate).map((option) => {
             return (
               <option key={option.start} value={fields.hour.value?.start}>
                 {toHour(option.start)} - {toHour(option.end)}

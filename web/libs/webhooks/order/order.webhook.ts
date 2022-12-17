@@ -1,7 +1,6 @@
-import BookingModel, { IBookingModel } from "@models/booking.model";
+import BookingModel from "@models/booking.model";
 import CustomerService from "@services/customer.service";
 import NotificationService from "@services/notification.service";
-import mongoose from "mongoose";
 
 interface ModifyProps {
   body: OrderTypes.Order;
@@ -25,7 +24,11 @@ const modify = async ({
     if (_data) {
       const data: OrderTypes.Data = JSON.parse(_data);
       const staffId = data.staff._id;
-      const anyAvailable = data.staff.anyAvailable;
+      const anyAvailable = data.staff.anyAvailable || false;
+
+      const refund = !!body.refunds?.find((r) =>
+        r.refund_line_items.find((l) => l.line_item_id === lineItem.id)
+      );
 
       return {
         orderId,
@@ -33,11 +36,11 @@ const modify = async ({
         lineItemTotal: lineItems.length,
         productId: lineItem.product_id,
         staff: staffId,
-        start: data.start,
-        end: data.end,
+        start: new Date(data.start),
+        end: new Date(data.end),
         shop,
         anyAvailable,
-        fulfillmentStatus: lineItem.fulfillment_status,
+        fulfillmentStatus: refund ? "refunded" : lineItem.fulfillment_status,
         customerId: body.customer.id,
         title: lineItem.title,
         timeZone: data.timeZone,
@@ -95,6 +98,7 @@ const modify = async ({
         lineItemId: m.lineItemId,
         productId: m.productId,
         isEdit: false,
+        fulfillmentStatus: { $ne: "cancelled" },
       },
       update: {
         $set: m,
@@ -103,7 +107,7 @@ const modify = async ({
     },
   }));
 
-  BookingModel.bulkWrite(bulkWrite);
+  return BookingModel.bulkWrite(bulkWrite);
 };
 
 interface CreateProps {
@@ -111,16 +115,18 @@ interface CreateProps {
   shop: string;
 }
 
-const create = async ({ body, shop }: CreateProps) =>
-  await modify({ body, shop, sendBooking: true });
+const create = ({ body, shop }: CreateProps) => {
+  return modify({ body, shop, sendBooking: true });
+};
 
 interface UpdateProps {
   body: OrderTypes.Order;
   shop: string;
 }
 
-const update = async ({ body, shop }: UpdateProps) =>
-  await modify({ body, shop });
+const update = ({ body, shop }: UpdateProps) => {
+  return modify({ body, shop });
+};
 
 interface CancelProps {
   body: OrderTypes.Order;
@@ -130,7 +136,7 @@ interface CancelProps {
 const cancel = async ({ body, shop }: CancelProps) => {
   return await BookingModel.updateMany(
     { orderId: body.id, shop },
-    { cancelled: true }
+    { fulfillmentStatus: "cancelled" }
   );
 };
 

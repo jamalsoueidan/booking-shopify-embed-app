@@ -11,6 +11,7 @@ const BookingSchema = new mongoose.Schema({
   lineItemId: {
     type: Number,
     inded: true,
+    unique: true,
   },
   lineItemTotal: Number,
   customerId: Number,

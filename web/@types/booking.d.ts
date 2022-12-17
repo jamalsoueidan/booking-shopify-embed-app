@@ -27,4 +27,6 @@ interface BookingBodyUpdate extends Pick<Booking, "staff" | "isEdit"> {
   end: string;
 }
 
-interface BookingQuery extends Pick<Booking, "staff" | "start" | "end"> {}
+interface BookingQuery
+  extends Pick<Booking, "start" | "end">,
+    Partial<Pick<Booking, "staff">> {}

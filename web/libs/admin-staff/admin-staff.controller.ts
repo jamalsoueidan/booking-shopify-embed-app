@@ -21,7 +21,7 @@ interface CreateQuery {
   shop: string;
 }
 
-const create = async ({
+const create = ({
   query,
   body,
 }: {
@@ -29,7 +29,7 @@ const create = async ({
   body: StaffBodyUpdate;
 }) => {
   const shop = query.shop;
-  return await StaffService.create({ shop, ...body });
+  return StaffService.create({ shop, ...body });
 };
 
 interface GetByIdQuery {
@@ -37,16 +37,16 @@ interface GetByIdQuery {
   id: string;
 }
 
-const getById = async ({ query }: { query: GetByIdQuery }) => {
+const getById = ({ query }: { query: GetByIdQuery }) => {
   const { shop, id } = query;
-  return await StaffService.findOne(id, { shop });
+  return StaffService.findOne(id, { shop });
 };
 
 interface UpdateParams {
   id: string;
 }
 
-const update = async ({
+const update = ({
   body,
   query,
 }: {
@@ -54,7 +54,7 @@ const update = async ({
   query: UpdateParams;
 }) => {
   const id = query.id;
-  return await StaffService.findByIdAndUpdate(id, body);
+  return StaffService.findByIdAndUpdate(id, body);
 };
 
 export default { get, getById, update, create };
