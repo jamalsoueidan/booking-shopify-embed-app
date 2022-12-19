@@ -1,7 +1,7 @@
 import AddNewCollection from '@components/collections/AddNewCollection';
 import CollectionsList from '@components/collections/CollectionsList';
 import LoadingPage from '@components/LoadingPage';
-import { useCollectionList } from '@services/collection';
+import { useCollection } from '@services';
 import { Page } from '@shopify/polaris';
 import { useState } from 'react';
 import { useTranslation } from '@hooks';
@@ -9,7 +9,7 @@ import { useTranslation } from '@hooks';
 export default () => {
   const [open, setOpen] = useState(false);
 
-  const { data } = useCollectionList();
+  const { data } = useCollection();
   const { t } = useTranslation('collections');
 
   if (!data) {

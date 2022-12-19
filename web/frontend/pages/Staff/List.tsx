@@ -1,7 +1,7 @@
 import LoadingPage from '@components/LoadingPage';
 import Metadata from '@components/staff/Metadata';
 import { usePositions } from '@hooks';
-import { useStaffList } from '@services/staff';
+import { useStaff } from '@services';
 import { useNavigate } from '@shopify/app-bridge-react';
 import {
   Avatar,
@@ -14,7 +14,7 @@ import {
 
 export default () => {
   const navigate = useNavigate();
-  const { data } = useStaffList();
+  const { data } = useStaff();
   const { select } = usePositions();
 
   if (!data) {

@@ -1,4 +1,4 @@
-import { useCollectionDestroy } from '@services/collection';
+import { useCollectionDestroy } from '@services';
 import {
   Avatar,
   Button,

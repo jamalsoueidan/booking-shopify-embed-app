@@ -2,7 +2,7 @@ import { useDate, useTagOptions } from '@hooks';
 import {
   useStaffScheduleDestroy,
   useStaffScheduleUpdate,
-} from '@services/staff/schedule';
+} from '@services';
 import {
   Button,
   Checkbox,

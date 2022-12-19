@@ -1,5 +1,5 @@
 import { useDate, useTagOptions } from '@hooks';
-import { useStaffScheduleCreate } from '@services/staff/schedule';
+import { useStaffScheduleCreate } from '@services';
 import {
   Card,
   Columns,

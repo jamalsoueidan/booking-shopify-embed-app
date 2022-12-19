@@ -1,10 +1,10 @@
 import LoadingPage from '@components/LoadingPage';
-import { useCollectionList } from '@services/collection';
+import { useCollection } from '@services';
 import { useNavigate } from '@shopify/app-bridge-react';
 
 export default () => {
   const navigate = useNavigate();
-  const { data } = useCollectionList();
+  const { data } = useCollection();
 
   if (!data) {
     return <LoadingPage />;

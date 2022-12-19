@@ -1,6 +1,6 @@
 import { useDate, useTagOptions } from '@hooks';
 import isSelectedDays from '@libs/validators/isSelectedDays';
-import { useStaffScheduleCreate } from '@services/staff/schedule';
+import { useStaffScheduleCreate } from '@services';
 import {
   Columns,
   DatePicker,

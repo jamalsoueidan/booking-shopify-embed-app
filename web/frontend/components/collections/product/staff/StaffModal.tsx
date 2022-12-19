@@ -1,5 +1,5 @@
 import { useTagOptions, usePositions, useTranslation } from '@hooks';
-import { useCollectionProductStaff } from '@services/product';
+import { useCollectionProductStaff } from '@services';
 import { Modal, OptionList, Spinner, Text } from '@shopify/polaris';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import FormContext from './FormContext';

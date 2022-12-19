@@ -1,9 +1,9 @@
 import LoadingPage from '@components/LoadingPage';
-import { useStaffList } from '@services/staff';
+import { useStaff } from '@services';
 import { useNavigate } from '@shopify/app-bridge-react';
 
 export default () => {
-  const { data } = useStaffList();
+  const { data } = useStaff();
 
   const navigate = useNavigate();
 

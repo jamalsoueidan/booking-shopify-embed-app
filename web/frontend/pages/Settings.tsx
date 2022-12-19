@@ -1,7 +1,7 @@
 import FormStatus from '@components/FormStatus';
 import LoadingPage from '@components/LoadingPage';
 import { useTranslation, useSave } from '@hooks';
-import { useSettingGet, useSettingUpdate } from '@services/setting';
+import { useSetting, useSettingUpdate } from '@services';
 import {
   Card,
   Form,
@@ -18,7 +18,7 @@ import { useField, useForm } from '@shopify/react-form';
 import TimezoneSelect from 'react-timezone-select';
 
 export default () => {
-  const { data } = useSettingGet();
+  const { data } = useSetting();
   const { update } = useSettingUpdate();
 
   const { t } = useTranslation('settings');

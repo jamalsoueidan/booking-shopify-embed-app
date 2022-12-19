@@ -1,4 +1,4 @@
-import { useCollectionCreate, useCollectionList } from '@services/collection';
+import { useCollectionCreate, useCollection } from '@services';
 import { ResourcePicker, useNavigate } from '@shopify/app-bridge-react';
 import { Card, EmptyState, Page } from '@shopify/polaris';
 import { useState } from 'react';
@@ -16,7 +16,7 @@ export default () => {
     setOpen(false);
   };
 
-  const { data } = useCollectionList();
+  const { data } = useCollection();
 
   if (data?.length > 0) {
     navigate('/Collections/List');

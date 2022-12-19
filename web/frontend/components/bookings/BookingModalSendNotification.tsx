@@ -1,7 +1,7 @@
 import FormErrors from '@components/FormErrors';
 import FormToast from '@components/FormToast';
 import { useCustomForm } from '@hooks';
-import { useSendCustomNotification } from '@services/notifications';
+import { useSendCustomNotification } from '@services';
 import { Form, Modal, Select, Stack, TextField } from '@shopify/polaris';
 import { lengthMoreThan, notEmpty, useField } from '@shopify/react-form';
 import { useEffect } from 'react';

@@ -19,6 +19,7 @@
     "paths": {
       "*": ["node_modules/*"],
       "@services/*": ["services/*"],
+      "@services": ["services"],
       "@pages/*": ["pages/*"],
       "@components/*": ["components/*"],
       "@hooks/*": ["hooks/*"],

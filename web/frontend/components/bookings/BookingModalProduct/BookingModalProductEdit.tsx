@@ -1,8 +1,7 @@
 import FormErrors from '@components/FormErrors';
 import LoadingSpinner from '@components/LoadingSpinner';
 import { useDate, useCustomForm } from '@hooks';
-import { useBookingUpdate } from '@services/bookings';
-import { useWidgetDate, useWidgetStaff } from '@services/widget';
+import { useWidgetDate, useWidgetStaff, useBookingUpdate } from '@services';
 import {
   DatePicker,
   Form,

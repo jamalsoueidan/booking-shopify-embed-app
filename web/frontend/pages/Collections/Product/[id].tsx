@@ -8,7 +8,7 @@ import { useSave } from '@hooks';
 import {
   useCollectionProductGet,
   useCollectionProductUpdate,
-} from '@services/product';
+} from '@services';
 import { Form, Layout, Page, PageActions } from '@shopify/polaris';
 import { useDynamicList, useField, useForm } from '@shopify/react-form';
 import { useParams } from 'react-router-dom';

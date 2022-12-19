@@ -4,13 +4,13 @@ import listPlugin from '@fullcalendar/list';
 import FullCalendar, { CalendarOptions } from '@fullcalendar/react'; // must go before plugins
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import { useSettingGet } from '@services/setting';
+import { useSetting } from '@services';
 import { forwardRef } from 'react';
 import { useTranslation } from '@hooks';
 
 export default forwardRef((props: CalendarOptions, ref: any) => {
   const { t } = useTranslation('common', { keyPrefix: 'calendar' });
-  const { data: settings } = useSettingGet();
+  const { data: settings } = useSetting();
 
   return (
     <FullCalendar

@@ -2,7 +2,7 @@ import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
 import { useCallback } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 
-const useStaffList = () => {
+export const useStaff = () => {
   const fetch = useAuthenticatedFetch();
 
   const { data } = useSWR<ApiResponse<Array<Staff>>>(
@@ -17,7 +17,7 @@ interface UseStaffGetProps {
   userId: string;
 }
 
-const useStaffGet = ({ userId }: UseStaffGetProps) => {
+export const useStaffGet = ({ userId }: UseStaffGetProps) => {
   const fetch = useAuthenticatedFetch();
 
   const { data } = useSWR<ApiResponse<Staff>>(
@@ -32,7 +32,7 @@ const useStaffGet = ({ userId }: UseStaffGetProps) => {
 
 type UseStaffCreateFetch = (body: StaffBodyUpdate) => Promise<Staff>;
 
-const useStaffCreate = () => {
+export const useStaffCreate = () => {
   const { mutate } = useSWRConfig();
   const fetch = useAuthenticatedFetch();
 
@@ -57,7 +57,7 @@ interface UseStaffUpdateProps {
 
 type UseStaffUpdateFetch = (body: StaffBodyUpdate) => Promise<Staff>;
 
-const useStaffUpdate = ({ userId }: UseStaffUpdateProps) => {
+export const useStaffUpdate = ({ userId }: UseStaffUpdateProps) => {
   const { mutate } = useSWRConfig();
   const fetch = useAuthenticatedFetch();
 
@@ -79,5 +79,3 @@ const useStaffUpdate = ({ userId }: UseStaffUpdateProps) => {
     update,
   };
 };
-
-export { useStaffList, useStaffGet, useStaffCreate, useStaffUpdate };

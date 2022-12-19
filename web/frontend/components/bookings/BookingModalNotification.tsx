@@ -1,8 +1,5 @@
 import FormToast from '@components/FormToast';
-import {
-  useNotifications,
-  useResendNotification,
-} from '@services/notifications';
+import { useNotification, useResendNotification } from '@services';
 import { Badge, ResourceItem, ResourceList, Text } from '@shopify/polaris';
 import { format } from 'date-fns';
 import { useState } from 'react';
@@ -10,7 +7,7 @@ import { useState } from 'react';
 export default ({ info }: BookingModalChildProps) => {
   const [response, setResponse] = useState<ApiResponse<Notification>>();
 
-  const { data } = useNotifications({
+  const { data } = useNotification({
     orderId: info.orderId,
     lineItemId: info.lineItemId,
   });

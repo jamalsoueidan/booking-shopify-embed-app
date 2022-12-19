@@ -2,10 +2,7 @@ import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
 import { useCallback } from 'react';
 import useSWR from 'swr';
 
-export const useNotifications = ({
-  orderId,
-  lineItemId,
-}: NotificationQuery) => {
+export const useNotification = ({ orderId, lineItemId }: NotificationQuery) => {
   const fetch = useAuthenticatedFetch();
   const { data, error } = useSWR<ApiResponse<Array<Notification>>>(
     orderId && lineItemId

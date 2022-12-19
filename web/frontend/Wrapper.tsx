@@ -1,5 +1,5 @@
 import LoadingPage from '@components/LoadingPage';
-import { useSettingGet } from '@services/setting';
+import { useSetting } from '@services';
 import { NavigationMenu } from '@shopify/app-bridge-react';
 import { Frame } from '@shopify/polaris';
 import { I18nContext, useI18n, I18nManager } from '@shopify/react-i18n';
@@ -7,7 +7,7 @@ import { useContext, useEffect } from 'react';
 import en from './translations/en.json';
 
 export default ({ children }: { children: JSX.Element }) => {
-  const { data } = useSettingGet();
+  const { data } = useSetting();
 
   const i18nManager = useContext<I18nManager>(I18nContext);
 

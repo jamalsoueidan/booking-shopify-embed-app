@@ -1,5 +1,5 @@
 import { ResourcePicker } from '@shopify/app-bridge-react';
-import { useCollectionCreate } from '@services/collection';
+import { useCollectionCreate } from '@services';
 
 interface Props {
   open: boolean;

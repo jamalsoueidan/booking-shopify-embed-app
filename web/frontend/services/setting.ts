@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
 
-const useSettingGet = () => {
+export const useSetting = () => {
   const fetch = useAuthenticatedFetch();
   const { data: setting } = useSWR<ApiResponse<Setting>>(
     `/api/admin/setting`,
@@ -28,7 +28,7 @@ const useSettingGet = () => {
 
 type UseSettingUpdateFetch = (body: SettingBodyUpdate) => Promise<Setting>;
 
-const useSettingUpdate = () => {
+export const useSettingUpdate = () => {
   const fetch = useAuthenticatedFetch();
   const { mutate } = useSWRConfig();
 
@@ -46,5 +46,3 @@ const useSettingUpdate = () => {
     update,
   };
 };
-
-export { useSettingUpdate, useSettingGet };

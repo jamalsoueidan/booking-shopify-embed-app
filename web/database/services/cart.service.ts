@@ -1,5 +1,4 @@
 import CartModel, { ICartModel } from "@models/cart.model";
-import { endOfDay, startOfDay } from "date-fns";
 import { Types } from "mongoose";
 
 export interface GetCartsByStaffReturn {

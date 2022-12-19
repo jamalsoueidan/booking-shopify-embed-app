@@ -3,8 +3,7 @@ import BookingModal from '@components/bookings/BookingModal';
 import StaffSelection from '@components/bookings/staff-selection';
 import FullCalendar, { DatesSetArg, EventClickArg } from '@fullcalendar/react'; // must go before plugins
 import { useDate, useFulfillment } from '@hooks';
-import { useBookings } from '@services/bookings';
-import { useSettingGet } from '@services/setting';
+import { useSetting, useBookings } from '@services';
 import { Badge, Card, Page } from '@shopify/polaris';
 import { format } from 'date-fns-tz';
 import { createRef, useCallback, useEffect, useState } from 'react';
@@ -17,10 +16,9 @@ export default () => {
   const [staff, setStaff] = useState(null);
 
   const { t } = useTranslation('bookings');
-  const { getColor } = useFulfillment();
-  const { data: settings } = useSettingGet();
+  const { getColor, options } = useFulfillment();
+  const { data: settings } = useSetting();
   const { toTimeZone } = useDate();
-  const { options } = useFulfillment();
   const calendarRef = createRef<FullCalendar>();
 
   const { data: bookings, isLoading } = useBookings({ start, end, staff });

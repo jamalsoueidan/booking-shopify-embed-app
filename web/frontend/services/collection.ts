@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
 
-const useCollectionList = () => {
+export const useCollection = () => {
   const fetch = useAuthenticatedFetch();
   const { data } = useSWR<ApiResponse<Array<CollectionAggreate>>>(
     '/api/admin/collections',
@@ -16,7 +16,7 @@ const useCollectionList = () => {
 
 type UseCollectionCreateFetch = ({ selections }: CollectionBodyCreate) => void;
 
-const useCollectionCreate = () => {
+export const useCollectionCreate = () => {
   const fetch = useAuthenticatedFetch();
   const { mutate } = useSWRConfig();
 
@@ -43,7 +43,9 @@ interface UseCollectionDestroyProps {
 
 type UseCollectionDestroyFetch = () => void;
 
-const useCollectionDestroy = ({ collectionId }: UseCollectionDestroyProps) => {
+export const useCollectionDestroy = ({
+  collectionId,
+}: UseCollectionDestroyProps) => {
   const fetch = useAuthenticatedFetch();
   const { mutate } = useSWRConfig();
 
@@ -59,5 +61,3 @@ const useCollectionDestroy = ({ collectionId }: UseCollectionDestroyProps) => {
     destroy,
   };
 };
-
-export { useCollectionList, useCollectionCreate, useCollectionDestroy };

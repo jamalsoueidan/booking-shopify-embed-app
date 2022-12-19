@@ -6,7 +6,7 @@ interface UseCollectionProductGetProps {
   productId: string;
 }
 
-const useCollectionProductGet = ({
+export const useCollectionProductGet = ({
   productId,
 }: UseCollectionProductGetProps) => {
   const fetch = useAuthenticatedFetch();
@@ -29,7 +29,7 @@ type UseCollectionProductUpdateFetch = (
   body: ProductUpdateBody
 ) => Promise<Product>;
 
-const useCollectionProductUpdate = ({
+export const useCollectionProductUpdate = ({
   productId,
 }: UseCollectionProductUpdateProps) => {
   const { mutate } = useSWRConfig();
@@ -53,7 +53,7 @@ interface UseCollectionProductStaffListProps {
   productId: string;
 }
 
-const useCollectionProductStaff = ({
+export const useCollectionProductStaff = ({
   productId,
 }: UseCollectionProductStaffListProps) => {
   const fetch = useAuthenticatedFetch();
@@ -68,8 +68,3 @@ const useCollectionProductStaff = ({
   };
 };
 
-export {
-  useCollectionProductGet,
-  useCollectionProductUpdate,
-  useCollectionProductStaff,
-};

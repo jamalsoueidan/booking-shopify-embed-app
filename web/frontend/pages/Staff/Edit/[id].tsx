@@ -1,6 +1,6 @@
 import Metadata from '@components/staff/Metadata';
 import { StaffForm } from '@components/staff/_form';
-import { useStaffGet, useStaffUpdate } from '@services/staff';
+import { useStaffGet, useStaffUpdate } from '@services';
 import { useNavigate } from '@shopify/app-bridge-react';
 import { useParams } from 'react-router-dom';
 

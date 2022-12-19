@@ -1,9 +1,9 @@
-import { useSettingGet } from '@services/setting';
+import { useSetting } from '@services';
 import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import { useCallback } from 'react';
 
 export const useDate = () => {
-  const { data } = useSettingGet();
+  const { data } = useSetting();
 
   const toTimeZone = useCallback(
     (fromUTC: Date) => utcToZonedTime(fromUTC, data.timeZone),

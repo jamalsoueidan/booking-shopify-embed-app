@@ -1,5 +1,5 @@
 import { StaffForm } from '@components/staff/_form';
-import { useStaffCreate } from '@services/staff';
+import { useStaffCreate } from '@services';
 import { useNavigate } from '@shopify/app-bridge-react';
 
 export default () => {

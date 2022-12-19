@@ -18,7 +18,7 @@ const mutateCache = ({ mutate, staff, cache }: MutateCache) => {
   });
 };
 
-const useStaffSchedule = ({ staff, start, end }: ScheduleQuery) => {
+export const useStaffSchedule = ({ staff, start, end }: ScheduleQuery) => {
   const fetch = useAuthenticatedFetch();
   const { data } = useSWR<ApiResponse<Array<Schedule>>>(
     start &&
@@ -35,7 +35,9 @@ interface UseStaffScheduleCreateProps {
 
 type UseStaffScheduleCreateFunction = (body: ScheduleOrSchedules) => void;
 
-const useStaffScheduleCreate = ({ staff }: UseStaffScheduleCreateProps) => {
+export const useStaffScheduleCreate = ({
+  staff,
+}: UseStaffScheduleCreateProps) => {
   const [isCreating, setIsCreating] = useState<boolean>();
   const { mutate, cache } = useSWRConfig();
   const fetch = useAuthenticatedFetch();
@@ -61,7 +63,7 @@ type UseStaffScheduleDestroyFetch = (
   body: UseStaffScheduleDestroyFetchProps
 ) => void;
 
-const useStaffScheduleDestroy = ({
+export const useStaffScheduleDestroy = ({
   staff,
   schedule,
 }: ScheduleUpdateOrDestroyQuery) => {
@@ -94,7 +96,7 @@ const useStaffScheduleDestroy = ({
 
 type UseStaffScheduleUpdateFetch = (body: ScheduleBody) => void;
 
-const useStaffScheduleUpdate = ({
+export const useStaffScheduleUpdate = ({
   staff,
   schedule,
 }: ScheduleUpdateOrDestroyQuery) => {
@@ -124,11 +126,4 @@ const useStaffScheduleUpdate = ({
     update,
     isUpdating,
   };
-};
-
-export {
-  useStaffSchedule,
-  useStaffScheduleCreate,
-  useStaffScheduleDestroy,
-  useStaffScheduleUpdate,
 };

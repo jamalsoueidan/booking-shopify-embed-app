@@ -1,4 +1,4 @@
-import { useStaffList } from '@services/staff';
+import { useStaff } from '@services';
 import { Avatar, Button, Stack } from '@shopify/polaris';
 import { useTranslation } from '@hooks';
 
@@ -8,7 +8,7 @@ interface Props {
   onSelect: (value: string) => void;
 }
 export default ({ staff, onSelect, isLoading }: Props) => {
-  const { data } = useStaffList();
+  const { data } = useStaff();
   const { t } = useTranslation('bookings');
   if (!data) {
     return <></>;

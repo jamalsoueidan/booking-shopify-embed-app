@@ -1,7 +1,6 @@
 import FormToast from '@components/FormToast';
 import LoadingSpinner from '@components/LoadingSpinner';
-import { useBookingGet } from '@services/bookings';
-import { useWidgetStaff } from '@services/widget';
+import { useBookingGet } from '@services';
 import { Modal } from '@shopify/polaris';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import BookingModalProductEdit from './BookingModalProduct/BookingModalProductEdit';
