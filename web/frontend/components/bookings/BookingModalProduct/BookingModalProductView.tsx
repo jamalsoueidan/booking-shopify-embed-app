@@ -1,5 +1,4 @@
-import { useDate } from '@hooks/useDate';
-import useFulfillment, { FulfillmentStatus } from '@hooks/useFulfillment';
+import { FulfillmentStatus, useDate } from '@hooks';
 import { Banner, Link, Modal, TextContainer } from '@shopify/polaris';
 import { differenceInHours, format, formatRelative } from 'date-fns';
 import da from 'date-fns/locale/da';

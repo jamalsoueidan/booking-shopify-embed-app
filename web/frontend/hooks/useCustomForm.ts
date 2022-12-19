@@ -12,7 +12,7 @@ interface CustomForm<T extends FieldBag> extends Form<T> {
   isValid: boolean;
 }
 
-export default <T extends FieldBag>(
+export const useCustomForm = <T extends FieldBag>(
   form: FormWithoutDynamicListsInput<T>
 ): CustomForm<T> => {
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);

@@ -1,9 +1,7 @@
-import usePositions from '@hooks/usePositions';
-import useTagOptions from '@hooks/useTagOptions';
+import { useTagOptions, usePositions, useTranslation } from '@hooks';
 import { useCollectionProductStaff } from '@services/product';
 import { Modal, OptionList, Spinner, Text } from '@shopify/polaris';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import FormContext from './FormContext';
 
 interface StaffModalProps {

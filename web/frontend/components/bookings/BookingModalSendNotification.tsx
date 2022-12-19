@@ -1,17 +1,10 @@
 import FormErrors from '@components/FormErrors';
 import FormToast from '@components/FormToast';
-import useCustomForm from '@hooks/useCustomForm';
+import { useCustomForm } from '@hooks';
 import { useSendCustomNotification } from '@services/notifications';
-import {
-  Button,
-  Form,
-  Modal,
-  Select,
-  Stack,
-  TextField,
-} from '@shopify/polaris';
+import { Form, Modal, Select, Stack, TextField } from '@shopify/polaris';
 import { lengthMoreThan, notEmpty, useField } from '@shopify/react-form';
-import { forwardRef, useEffect } from 'react';
+import { useEffect } from 'react';
 
 export default ({ info, setPrimaryAction }: BookingModalChildProps) => {
   const { send } = useSendCustomNotification({

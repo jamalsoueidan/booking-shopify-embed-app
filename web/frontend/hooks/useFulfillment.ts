@@ -17,7 +17,7 @@ interface UseFulfillmentOptions {
   status: 'critical' | 'success' | 'attention';
 }
 
-export default () => {
+export const useFulfillment = () => {
   const options: UseFulfillmentOptions[] = useMemo(
     () => [
       { label: FulfillmentStatus.CANCELLED, color: '#E4E5E7', status: null },

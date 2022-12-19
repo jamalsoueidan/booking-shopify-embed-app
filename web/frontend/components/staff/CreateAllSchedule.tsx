@@ -1,5 +1,4 @@
-import useTagOptions from '@hooks/useTagOptions';
-import { useDate } from '@hooks/useDate';
+import { useDate, useTagOptions } from '@hooks';
 import isSelectedDays from '@libs/validators/isSelectedDays';
 import { useStaffScheduleCreate } from '@services/staff/schedule';
 import {

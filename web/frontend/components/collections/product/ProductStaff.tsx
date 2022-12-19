@@ -1,7 +1,7 @@
 import { Card, Layout } from '@shopify/polaris';
 import { DynamicList } from '@shopify/react-form/build/ts/hooks/list/dynamiclist';
 import { useCallback, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@hooks';
 import FormContext from './staff/FormContext';
 import StaffList from './staff/StaffList';
 import StaffModal from './staff/StaffModal';

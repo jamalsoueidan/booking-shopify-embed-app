@@ -22,9 +22,15 @@
       "@pages/*": ["pages/*"],
       "@components/*": ["components/*"],
       "@hooks/*": ["hooks/*"],
+      "@hooks": ["hooks"],
       "@libs/*": ["libs/*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "providers/PolarisProvider.jsx",
+    "providers/PolarisProvider.jsx"
+  ],
   "exclude": ["node_modules/**", "dist"]
 }

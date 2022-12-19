@@ -4,7 +4,7 @@ import LoadingPage from '@components/LoadingPage';
 import { useCollectionList } from '@services/collection';
 import { Page } from '@shopify/polaris';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@hooks';
 
 export default () => {
   const [open, setOpen] = useState(false);

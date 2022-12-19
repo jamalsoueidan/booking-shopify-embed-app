@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@hooks';
 
 interface UseTagOptionsReturn {
   options: UseTagOptions[];
@@ -12,7 +12,7 @@ interface UseTagOptions {
   value: string;
 }
 
-export default (): UseTagOptionsReturn => {
+export const usePositions = (): UseTagOptionsReturn => {
   const { t } = useTranslation('positions');
 
   const options: UseTagOptions[] = useMemo(

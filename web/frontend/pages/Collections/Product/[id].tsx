@@ -4,7 +4,7 @@ import ProductOptionsCard from '@components/collections/product/ProductOptionsCa
 import ProductStaff from '@components/collections/product/ProductStaff';
 import FormStatus from '@components/FormStatus';
 import LoadingPage from '@components/LoadingPage';
-import useSave from '@hooks/useSave';
+import { useSave } from '@hooks';
 import {
   useCollectionProductGet,
   useCollectionProductUpdate,

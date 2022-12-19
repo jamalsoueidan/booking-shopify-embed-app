@@ -33,6 +33,10 @@ export default ({
     setSecondaryActions([]);
     setPrimaryAction(null);
 
+    if (!booking) {
+      return;
+    }
+
     if (isEditing) {
       setPrimaryAction({
         content: 'Ændre dato/tid',
@@ -45,14 +49,16 @@ export default ({
         },
       ]);
     } else {
-      setSecondaryActions([
-        {
-          content: 'Ændre dato/tid',
-          onAction: toggle,
-        },
-      ]);
+      if (!booking.fulfillmentStatus) {
+        setSecondaryActions([
+          {
+            content: 'Ændre dato/tid',
+            onAction: toggle,
+          },
+        ]);
+      }
     }
-  }, [isEditing, setPrimaryAction]);
+  }, [isEditing, setPrimaryAction, booking]);
 
   if (!booking) {
     return (

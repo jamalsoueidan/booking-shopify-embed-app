@@ -1,7 +1,7 @@
 import { ContextualSaveBar } from '@shopify/polaris';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@hooks';
 
-export default ({ submitting, dirty, submit, reset }: any) => {
+export const useSave = ({ submitting, dirty, submit, reset }: any) => {
   const { t } = useTranslation('common');
 
   const primaryAction = {

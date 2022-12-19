@@ -11,7 +11,7 @@ import {
 } from '@shopify/polaris';
 import { ClockMajor } from '@shopify/polaris-icons';
 import { FieldDictionary } from '@shopify/react-form';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@hooks';
 
 export default ({
   fields,

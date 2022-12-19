@@ -1,6 +1,6 @@
 import FormStatus from '@components/FormStatus';
 import LoadingPage from '@components/LoadingPage';
-import useSave from '@hooks/useSave';
+import { useTranslation, useSave } from '@hooks';
 import { useSettingGet, useSettingUpdate } from '@services/setting';
 import {
   Card,
@@ -15,7 +15,6 @@ import {
   Text,
 } from '@shopify/polaris';
 import { useField, useForm } from '@shopify/react-form';
-import { useTranslation } from 'react-i18next';
 import TimezoneSelect from 'react-timezone-select';
 
 export default () => {

@@ -1,6 +1,5 @@
 import FormStatus from '@components/FormStatus';
-import usePositions from '@hooks/usePositions';
-import useSave from '@hooks/useSave';
+import { useSave, usePositions } from '@hooks';
 import isEmail from '@libs/validators/isEmail';
 import isPhoneNumber from '@libs/validators/isPhoneNumber';
 import {
@@ -20,7 +19,7 @@ import {
   useField,
   useForm,
 } from '@shopify/react-form';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@hooks';
 
 interface StaffFormProps {
   action: (body: StaffBodyUpdate) => void;

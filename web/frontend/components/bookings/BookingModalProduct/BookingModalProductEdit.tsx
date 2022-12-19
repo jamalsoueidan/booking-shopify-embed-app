@@ -1,7 +1,6 @@
 import FormErrors from '@components/FormErrors';
 import LoadingSpinner from '@components/LoadingSpinner';
-import useCustomForm from '@hooks/useCustomForm';
-import { useDate } from '@hooks/useDate';
+import { useDate, useCustomForm } from '@hooks';
 import { useBookingUpdate } from '@services/bookings';
 import { useWidgetDate, useWidgetStaff } from '@services/widget';
 import {
@@ -76,7 +75,7 @@ export default forwardRef(({ info }: BookingModalChildProps, ref) => {
           validates: [notEmpty('time is required')],
         }),
       },
-      onSubmit: async (fieldValues) => {
+      onSubmit: async (fieldValues: any) => {
         const schedule = dateOptions?.find(
           (s) => s.date === format(fieldValues.date, 'yyyy-MM-dd')
         );

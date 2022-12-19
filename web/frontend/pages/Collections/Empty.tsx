@@ -2,7 +2,7 @@ import { useCollectionCreate, useCollectionList } from '@services/collection';
 import { ResourcePicker, useNavigate } from '@shopify/app-bridge-react';
 import { Card, EmptyState, Page } from '@shopify/polaris';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@hooks';
 
 export default () => {
   const [open, setOpen] = useState(false);

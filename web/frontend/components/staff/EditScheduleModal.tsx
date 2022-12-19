@@ -1,3 +1,8 @@
+import { useDate, useTagOptions } from '@hooks';
+import {
+  useStaffScheduleDestroy,
+  useStaffScheduleUpdate,
+} from '@services/staff/schedule';
 import {
   Button,
   Checkbox,
@@ -7,16 +12,8 @@ import {
   TextField,
 } from '@shopify/polaris';
 import { format } from 'date-fns';
-import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useSettingGet } from '@services/setting';
-import {
-  useStaffScheduleDestroy,
-  useStaffScheduleUpdate,
-} from '@services/staff/schedule';
-import useTagOptions from '@hooks/useTagOptions';
-import { useDate } from '@hooks/useDate';
 
 interface Props {
   info: any;

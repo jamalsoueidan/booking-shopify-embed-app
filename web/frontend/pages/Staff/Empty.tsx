@@ -1,6 +1,6 @@
 import { useNavigate } from '@shopify/app-bridge-react';
 import { Card, EmptyState, Page } from '@shopify/polaris';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@hooks';
 
 export default ({}) => {
   const navigate = useNavigate();

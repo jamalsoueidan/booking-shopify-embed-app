@@ -6,7 +6,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { useSettingGet } from '@services/setting';
 import { forwardRef } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@hooks';
 
 export default forwardRef((props: CalendarOptions, ref: any) => {
   const { t } = useTranslation('common', { keyPrefix: 'calendar' });

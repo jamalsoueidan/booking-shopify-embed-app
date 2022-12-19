@@ -12,7 +12,7 @@ import {
 } from '@shopify/polaris';
 import { CancelMinor, TickMinor } from '@shopify/polaris-icons';
 import { useCallback, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@hooks';
 import ModalConfirm from '../modals/ModalConfirm.js';
 
 interface CollectionListProps {
@@ -67,8 +67,7 @@ export default ({ collection }: CollectionListProps) => {
                   </Text>
                   <Text variant="bodySm" as="p">
                     {t('staff', {
-                      count: item.staff.length,
-                      context: item.staff.length,
+                      count: item.staff,
                     })}
                   </Text>
                 </ResourceItem>

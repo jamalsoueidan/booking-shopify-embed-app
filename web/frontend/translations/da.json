@@ -44,8 +44,10 @@
 			"status_deactive": "Dette product kan IKKE books online"
 		},
 		"remove_collection": "Fjern",
-		"staff": "{{count}} medarbejder tilføjet",
-		"staff_0": "Tillføje medarbejder til dette produkt",
+		"staff": {
+			"one": "Tillføje medarbejder til dette produkt",
+			"other": "{{count}} medarbejder tilføjet"
+		},
 		"title": "Kategorier"
 	},
 	"common": {

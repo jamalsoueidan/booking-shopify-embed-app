@@ -1,15 +1,14 @@
+import Calendar from '@components/Calendar';
 import BookingModal from '@components/bookings/BookingModal';
 import StaffSelection from '@components/bookings/staff-selection';
-import Calendar from '@components/Calendar';
 import FullCalendar, { DatesSetArg, EventClickArg } from '@fullcalendar/react'; // must go before plugins
-import { useDate } from '@hooks/useDate';
-import useFulfillment from '@hooks/useFulfillment';
+import { useDate, useFulfillment } from '@hooks';
 import { useBookings } from '@services/bookings';
 import { useSettingGet } from '@services/setting';
-import { Badge, Card, Page, Text } from '@shopify/polaris';
+import { Badge, Card, Page } from '@shopify/polaris';
 import { format } from 'date-fns-tz';
 import { createRef, useCallback, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@hooks';
 
 export default () => {
   const [info, setInfo] = useState(null);
@@ -103,7 +102,7 @@ export default () => {
           title={
             <>
               {options.map((o) => (
-                <Badge status={o.status} progress="complete">
+                <Badge key={o.label} status={o.status} progress="complete">
                   {o.label
                     ? o.label.charAt(0).toUpperCase() + o.label.slice(1)
                     : 'In progress'}

@@ -44,8 +44,10 @@
 			"status_deactive": "This product can NOT be booked online"
 		},
 		"remove_collection": "Remove",
-		"staff": "{{count}} staff added",
-		"staff_0": "Add staff to this product",
+		"staff": {
+			"one": "Add staff to this product",
+			"other": "{{count}} staff added"
+		},
 		"title": "Categories"
 	},
 	"common": {

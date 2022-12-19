@@ -1,6 +1,6 @@
 import { useStaffList } from '@services/staff';
 import { Avatar, Button, Stack } from '@shopify/polaris';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@hooks';
 
 interface Props {
   staff: string;
