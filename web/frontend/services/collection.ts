@@ -1,12 +1,12 @@
+import { useFetch } from '@hooks';
 import { useCallback } from 'react';
-import useSWR, { useSWRConfig } from 'swr';
-import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
+import { useQuery } from 'react-query';
 
 export const useCollection = () => {
-  const fetch = useAuthenticatedFetch();
-  const { data } = useSWR<ApiResponse<Array<CollectionAggreate>>>(
-    '/api/admin/collections',
-    (apiURL: string) => fetch(apiURL).then((r: Response) => r.json())
+  const { get } = useFetch();
+  const { data } = useQuery<ApiResponse<Array<CollectionAggreate>>>(
+    ['collections'],
+    () => get('/api/admin/collections')
   );
 
   return {
@@ -17,19 +17,15 @@ export const useCollection = () => {
 type UseCollectionCreateFetch = ({ selections }: CollectionBodyCreate) => void;
 
 export const useCollectionCreate = () => {
-  const fetch = useAuthenticatedFetch();
-  const { mutate } = useSWRConfig();
+  const { post, mutate } = useFetch();
 
   const create: UseCollectionCreateFetch = useCallback(
     async ({ selections }) => {
-      await fetch('/api/admin/collections', {
-        method: 'POST',
-        body: JSON.stringify({ selections }),
-        headers: { 'Content-Type': 'application/json' },
-      });
-      mutate('/api/admin/collections');
+      const response = await post('/api/admin/collections', { selections });
+      mutate(['collections']);
+      return response;
     },
-    []
+    [mutate, post]
   );
 
   return {
@@ -46,16 +42,12 @@ type UseCollectionDestroyFetch = () => void;
 export const useCollectionDestroy = ({
   collectionId,
 }: UseCollectionDestroyProps) => {
-  const fetch = useAuthenticatedFetch();
-  const { mutate } = useSWRConfig();
+  const fetch = useFetch();
 
   const destroy: UseCollectionDestroyFetch = useCallback(async () => {
-    await fetch(`/api/admin/collections/${collectionId}`, {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-    });
-    await mutate('/api/admin/collections');
-  }, []);
+    await fetch.destroy(`/api/admin/collections/${collectionId}`);
+    fetch.mutate(['collections']);
+  }, [fetch]);
 
   return {
     destroy,

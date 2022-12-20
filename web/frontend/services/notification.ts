@@ -1,19 +1,23 @@
-import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
+import { useFetch } from '@hooks';
 import { useCallback } from 'react';
-import useSWR from 'swr';
+import { useQuery } from 'react-query';
 
 export const useNotification = ({ orderId, lineItemId }: NotificationQuery) => {
-  const fetch = useAuthenticatedFetch();
-  const { data, error } = useSWR<ApiResponse<Array<Notification>>>(
-    orderId && lineItemId
-      ? `/api/admin/notifications?orderId=${orderId}&lineItemId=${lineItemId}`
-      : null,
-    (apiURL: string) => fetch(apiURL).then((r: Response) => r.json())
-  );
+  const { get } = useFetch();
+  const enabled = orderId !== null && lineItemId !== null;
+
+  const { data, isLoading } = useQuery<ApiResponse<Array<Notification>>>({
+    queryKey: ['notification', orderId, lineItemId],
+    queryFn: () =>
+      get(
+        `/api/admin/notifications?orderId=${orderId}&lineItemId=${lineItemId}`
+      ),
+    enabled,
+  });
 
   return {
     data: data?.payload || [],
-    isLoading: !error && !data,
+    isLoading: isLoading,
   };
 };
 
@@ -25,14 +29,12 @@ export const useSendCustomNotification = ({
   orderId,
   lineItemId,
 }: NotificationQuery) => {
-  const fetch = useAuthenticatedFetch();
-  const send: UseSendCustomerNotificaionCreate = useCallback(async (body) => {
-    return await fetch(`/api/admin/notifications`, {
-      method: 'POST',
-      body: JSON.stringify({ ...body, orderId, lineItemId }),
-      headers: { 'Content-Type': 'application/json' },
-    }).then((res: Response) => res.json());
-  }, []);
+  const { post } = useFetch();
+  const send: UseSendCustomerNotificaionCreate = useCallback(
+    (body) =>
+      post(`/api/admin/notifications`, { ...body, orderId, lineItemId }),
+    [post]
+  );
 
   return {
     send,
@@ -48,13 +50,11 @@ type UseResendNotificaionCreate = ({
 }: UseResendNotificationBody) => Promise<ApiResponse<Notification>>;
 
 export const useResendNotification = () => {
-  const fetch = useAuthenticatedFetch();
-  const resend: UseResendNotificaionCreate = useCallback(async ({ id }) => {
-    return await fetch(`/api/admin/notifications/${id}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-    }).then((res: Response) => res.json());
-  }, []);
+  const { post } = useFetch();
+  const resend: UseResendNotificaionCreate = useCallback(
+    ({ id }) => post(`/api/admin/notifications/${id}`),
+    [post]
+  );
 
   return {
     resend,

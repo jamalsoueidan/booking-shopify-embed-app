@@ -1,7 +1,6 @@
 import { Banner, Toast } from '@shopify/polaris';
 import { FormError } from '@shopify/react-form';
 import { useCallback, useEffect, useState } from 'react';
-import { useTimeout } from 'usehooks-ts';
 
 interface FormStatusProps {
   errors: FormError[];

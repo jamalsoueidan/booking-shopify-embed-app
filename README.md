@@ -118,7 +118,7 @@ Frontend
 - [Vite](https://vitejs.dev/) builds the [React](https://reactjs.org/) frontend.
 - [React Router](https://reactrouter.com/) is used for routing. We wrap this with file-based routing.
 - [Date-fns](https://date-fns.org/) Date manipulation.
-- [useSWR](https://swr.vercel.app/) React Hooks for Data Fetching
+- [ReactQuery](https://react-query-v3.tanstack.com/overview) React Hooks for Data Fetching
 - [TypeScript](https://www.typescriptlang.org) TypeScript is JavaScript with syntax for types.
 - [Fullcalendar-react](https://github.com/fullcalendar/fullcalendar-react) Fullcalendar for appointments
 - [App Bridge React](https://shopify.dev/apps/tools/app-bridge/getting-started/using-react) adds authentication to API requests in the frontend and renders components outside of the App’s iFrame.

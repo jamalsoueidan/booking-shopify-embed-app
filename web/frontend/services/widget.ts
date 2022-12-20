@@ -1,12 +1,12 @@
-import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
-import useSWR from 'swr';
+import { useFetch } from '@hooks';
+import { useQuery } from 'react-query';
 
 export const useWidgetStaff = ({ productId }: WidgetStaffQuery) => {
-  const fetch = useAuthenticatedFetch();
+  const { get } = useFetch();
 
-  const { data } = useSWR<ApiResponse<Array<WidgetStaff>>>(
-    `/api/widget/staff?productId=${productId}`,
-    (apiURL: string) => fetch(apiURL).then((r: Response) => r.json())
+  const { data } = useQuery<ApiResponse<Array<WidgetStaff>>>(
+    ['widget', 'staff', productId],
+    () => get(`/api/widget/staff?productId=${productId}`)
   );
 
   return { data: data?.payload };
@@ -18,15 +18,17 @@ export const useWidgetDate = ({
   start,
   end,
 }: WidgetDateQuery) => {
-  const fetch = useAuthenticatedFetch();
-  const { data } = useSWR<ApiResponse<Array<WidgetSchedule>>>(
-    staff &&
-      productId &&
-      `/api/widget/availability?productId=${productId}&start=${start}&end=${end}${
-        staff ? `&staff=${staff}` : ''
-      }`,
-    (url: string) => fetch(url).then((r: Response) => r.json())
-  );
+  const { get } = useFetch();
+  const { data } = useQuery<ApiResponse<Array<WidgetSchedule>>>({
+    queryKey: ['widget', 'availability', staff, productId],
+    queryFn: () =>
+      get(
+        `/api/widget/availability?productId=${productId}&start=${start}&end=${end}${
+          staff ? `&staff=${staff}` : ''
+        }`
+      ),
+    enabled: staff !== undefined && productId !== undefined,
+  });
 
   return { data: data?.payload };
 };

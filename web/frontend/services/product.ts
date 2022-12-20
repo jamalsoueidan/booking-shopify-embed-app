@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
-import useSWR, { useSWRConfig } from 'swr';
-import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
+import { useFetch } from '@hooks';
+import { useQuery } from 'react-query';
 
 interface UseCollectionProductGetProps {
   productId: string;
@@ -9,11 +9,11 @@ interface UseCollectionProductGetProps {
 export const useCollectionProductGet = ({
   productId,
 }: UseCollectionProductGetProps) => {
-  const fetch = useAuthenticatedFetch();
+  const { get } = useFetch();
 
-  const { data } = useSWR<ApiResponse<ProductAggreate>>(
-    `/api/admin/products/${productId}`,
-    (apiURL: string) => fetch(apiURL).then((r: Response) => r.json())
+  const { data } = useQuery<ApiResponse<ProductAggreate>>(
+    [`products`, productId],
+    () => get(`/api/admin/products/${productId}`)
   );
 
   return {
@@ -32,17 +32,18 @@ type UseCollectionProductUpdateFetch = (
 export const useCollectionProductUpdate = ({
   productId,
 }: UseCollectionProductUpdateProps) => {
-  const { mutate } = useSWRConfig();
-  const fetch = useAuthenticatedFetch();
-  const update: UseCollectionProductUpdateFetch = useCallback(async (body) => {
-    const response: Product = await fetch(`/api/admin/products/${productId}`, {
-      method: 'PUT',
-      body: JSON.stringify(body),
-      headers: { 'Content-Type': 'application/json' },
-    });
-    mutate(`/api/admin/products/${productId}`);
-    return response;
-  }, []);
+  const { put, mutate } = useFetch();
+  const update: UseCollectionProductUpdateFetch = useCallback(
+    async (body) => {
+      const response: Product = await put(
+        `/api/admin/products/${productId}`,
+        body
+      );
+      mutate(['products', productId]);
+      return response;
+    },
+    [put, mutate]
+  );
 
   return {
     update,
@@ -56,15 +57,14 @@ interface UseCollectionProductStaffListProps {
 export const useCollectionProductStaff = ({
   productId,
 }: UseCollectionProductStaffListProps) => {
-  const fetch = useAuthenticatedFetch();
+  const { get } = useFetch();
 
-  const { data } = useSWR<ApiResponse<Array<ProductAddStaff>>>(
-    `/api/admin/products/${productId}/staff`,
-    (apiURL: string) => fetch(apiURL).then((r: Response) => r.json())
+  const { data } = useQuery<ApiResponse<Array<ProductAddStaff>>>(
+    [`products`, productId, 'staff'],
+    () => get(`/api/admin/products/${productId}/staff`)
   );
 
   return {
     data: data?.payload,
   };
 };
-

@@ -1,21 +1,24 @@
-import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
+import { useFetch } from '@hooks';
 import { useCallback } from 'react';
-import useSWR, { useSWRConfig } from 'swr';
+import { useQuery } from 'react-query';
 
 export const useBookings = ({ start, end, staff }: BookingQuery) => {
-  const fetch = useAuthenticatedFetch();
-  const { data, error } = useSWR<ApiResponse<Array<BookingAggreate>>>(
-    start && end
-      ? `/api/admin/bookings?start=${start}&end=${end}${
+  const { get } = useFetch();
+  const enabled = start !== null && end !== null;
+  const { data, isLoading } = useQuery<ApiResponse<Array<BookingAggreate>>>({
+    queryKey: ['bookings', { start, end, staff }],
+    queryFn: () =>
+      get(
+        `/api/admin/bookings?start=${start}&end=${end}${
           staff ? '&staff=' + staff : ''
         }`
-      : null,
-    (apiURL: string) => fetch(apiURL).then((r: Response) => r.json())
-  );
+      ),
+    enabled,
+  });
 
   return {
     data: data?.payload,
-    isLoading: !error && !data,
+    isLoading,
   };
 };
 
@@ -26,19 +29,14 @@ interface UseBookingUpdateProps {
 type UseBookingUpdateFetch = (body: BookingBodyUpdate) => void;
 
 export const useBookingUpdate = ({ id }: UseBookingUpdateProps) => {
-  const fetch = useAuthenticatedFetch();
-  const { mutate } = useSWRConfig();
+  const { put, mutate } = useFetch();
 
   const update: UseBookingUpdateFetch = useCallback(
     async (body) => {
-      await fetch('/api/admin/bookings/' + id, {
-        method: 'PUT',
-        body: JSON.stringify(body),
-        headers: { 'Content-Type': 'application/json' },
-      });
-      mutate('/api/admin/bookings/' + id);
+      await put('/api/admin/bookings/' + id, body);
+      mutate(['booking', id]);
     },
-    [id]
+    [put, mutate]
   );
 
   return {
@@ -51,11 +49,10 @@ interface UseBookingGetProps {
 }
 
 export const useBookingGet = ({ id }: UseBookingGetProps) => {
-  const fetch = useAuthenticatedFetch();
+  const { get } = useFetch();
 
-  const { data } = useSWR<ApiResponse<BookingAggreate>>(
-    `/api/admin/bookings/${id}`,
-    (apiURL: string) => fetch(apiURL).then((r: Response) => r.json())
+  const { data } = useQuery<ApiResponse<BookingAggreate>>(['booking', id], () =>
+    get(`/api/admin/bookings/${id}`)
   );
 
   return {

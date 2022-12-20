@@ -1,27 +1,32 @@
 import FormToast from '@components/FormToast';
+import { useToast } from '@hooks';
 import { useNotification, useResendNotification } from '@services';
 import { Badge, ResourceItem, ResourceList, Text } from '@shopify/polaris';
 import { format } from 'date-fns';
-import { useState } from 'react';
+import { useCallback } from 'react';
 
 export default ({ info }: BookingModalChildProps) => {
-  const [response, setResponse] = useState<ApiResponse<Notification>>();
-
   const { data } = useNotification({
     orderId: info.orderId,
     lineItemId: info.lineItemId,
   });
 
   const { resend } = useResendNotification();
+  const { show } = useToast();
+
+  const wrapResend = useCallback(
+    async (id: string) => {
+      const response = await resend({ id });
+      show({
+        message: response.success ? 'Message send' : response.error,
+        isError: !response.success,
+      });
+    },
+    [resend]
+  );
 
   return (
     <>
-      {response && (
-        <FormToast
-          message={response.success ? 'Message send' : response.error}
-          error={!response.success}
-        />
-      )}
       <ResourceList
         items={data.reverse()}
         loading={data.length === 0}
@@ -34,20 +39,17 @@ export default ({ info }: BookingModalChildProps) => {
             scheduled,
             isStaff,
           } = item;
-          const shortcutActions = [
-            {
-              content: 'Send Again',
-              onAction: async () => {
-                setResponse(await resend({ id }));
-              },
-            },
-          ];
 
           return (
             <ResourceItem
               id={id}
               onClick={() => null}
-              shortcutActions={shortcutActions}
+              shortcutActions={[
+                {
+                  content: 'Send Again',
+                  onAction: () => wrapResend(id),
+                },
+              ]}
               persistActions>
               <Text variant="bodySm" as="p">
                 <b>Phone:</b> {receiver}{' '}

@@ -1,12 +1,11 @@
 import { useCallback, useMemo } from 'react';
-import useSWR, { useSWRConfig } from 'swr';
-import { useAuthenticatedFetch } from '@hooks/useAuthenticatedFetch';
+import { useFetch } from '@hooks';
+import { useQuery } from 'react-query';
 
 export const useSetting = () => {
-  const fetch = useAuthenticatedFetch();
-  const { data: setting } = useSWR<ApiResponse<Setting>>(
-    `/api/admin/setting`,
-    (url: string) => fetch(url).then((res: Response) => res.json())
+  const { get } = useFetch();
+  const { data: setting } = useQuery<ApiResponse<Setting>>(['settings'], () =>
+    get(`/api/admin/setting`)
   );
 
   const data = useMemo(() => {
@@ -29,18 +28,16 @@ export const useSetting = () => {
 type UseSettingUpdateFetch = (body: SettingBodyUpdate) => Promise<Setting>;
 
 export const useSettingUpdate = () => {
-  const fetch = useAuthenticatedFetch();
-  const { mutate } = useSWRConfig();
+  const { put, mutate } = useFetch();
 
-  const update: UseSettingUpdateFetch = useCallback(async (body) => {
-    const response: Setting = await fetch(`/api/admin/setting`, {
-      method: 'PUT',
-      body: JSON.stringify(body),
-      headers: { 'Content-Type': 'application/json' },
-    }).then((res: Response) => res.json());
-    await mutate(`/api/admin/setting`);
-    return response;
-  }, []);
+  const update: UseSettingUpdateFetch = useCallback(
+    async (body) => {
+      const response: Setting = await put(`/api/admin/setting`, body);
+      mutate(['setting']);
+      return response;
+    },
+    [put, mutate]
+  );
 
   return {
     update,
