@@ -50,16 +50,20 @@ export default ({ productId, show, close }: StaffModalProps) => {
     setSelected(() => [...value]);
   }, [value]);
 
-  const choices = data
-    ?.sort((a, b) => (a.fullname > b.fullname ? 1 : -1))
-    .map((staff) => (
-      <ChoiceStaff
-        key={staff._id}
-        staff={staff}
-        toggle={toggle}
-        selected={selected}
-      />
-    ));
+  const choices = useCallback(
+    () =>
+      data
+        ?.sort((a, b) => (a.fullname > b.fullname ? 1 : -1))
+        .map((staff) => (
+          <ChoiceStaff
+            key={staff._id}
+            staff={staff}
+            toggle={toggle}
+            selected={selected}
+          />
+        )),
+    [data]
+  );
 
   return (
     <Modal
@@ -77,21 +81,23 @@ export default ({ productId, show, close }: StaffModalProps) => {
           onAction: close,
         },
       ]}>
-      {data?.length === 0 && (
-        <Modal.Section>
-          <Text variant="bodyLg" as="p">
-            Ingen medarbejder har registeret arbejdstimer
-          </Text>
-        </Modal.Section>
-      )}
-      {!choices && (
-        <Modal.Section>
-          <div style={{ textAlign: 'center' }}>
-            <Spinner accessibilityLabel="Spinner example" size="large" />
-          </div>
-        </Modal.Section>
-      )}
-      {choices?.map((c) => c)}
+      <>
+        {data?.length === 0 && (
+          <Modal.Section>
+            <Text variant="bodyLg" as="p">
+              Ingen medarbejder har registeret arbejdstimer
+            </Text>
+          </Modal.Section>
+        )}
+        {!choices && (
+          <Modal.Section>
+            <div style={{ textAlign: 'center' }}>
+              <Spinner accessibilityLabel="Spinner example" size="large" />
+            </div>
+          </Modal.Section>
+        )}
+        {choices}
+      </>
     </Modal>
   );
 };

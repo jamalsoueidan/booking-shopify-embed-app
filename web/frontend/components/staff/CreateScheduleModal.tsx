@@ -9,7 +9,7 @@ interface RefMethod {
 
 export default ({ info, setInfo }: any) => {
   const ref = useRef<RefMethod>();
-  const toggleActive = () => setInfo(null);
+  const toggleActive = useCallback(() => setInfo(null), []);
   const [loading, setLoading] = useState<boolean>(false);
   const [selected, setSelected] = useState(0);
 
