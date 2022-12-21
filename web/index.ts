@@ -133,7 +133,12 @@ export async function createServer(
 ) {
   const app = express();
 
-  app.use(cors());
+  app.use(
+    cors({
+      origin: ["/.myshopify.com.com$/"],
+      credentials: true,
+    })
+  );
   app.set("use-online-tokens", USE_ONLINE_TOKENS);
   app.use(cookieParser(Shopify.Context.API_SECRET_KEY));
 
