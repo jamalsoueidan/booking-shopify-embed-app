@@ -15,7 +15,8 @@ export default ({ product, form }: StaffCardProps) => {
   const [showModal, setShowModal] = useState(false);
   const { t } = useTranslation('collections', { keyPrefix: 'product.staff' });
 
-  const action = useCallback(() => setShowModal(() => true), []);
+  const show = useCallback(() => setShowModal(() => true), []);
+  const hide = useCallback(() => setShowModal(() => false), []);
 
   return (
     <FormContext.Provider value={form}>
@@ -24,11 +25,11 @@ export default ({ product, form }: StaffCardProps) => {
         title={t('title')}
         description={t('description')}>
         <Card>
-          <StaffList action={action}></StaffList>
+          <StaffList action={show}></StaffList>
           <StaffModal
             productId={product._id}
             show={showModal}
-            close={() => setShowModal(() => false)}></StaffModal>
+            close={hide}></StaffModal>
         </Card>
       </Layout.AnnotatedSection>
     </FormContext.Provider>

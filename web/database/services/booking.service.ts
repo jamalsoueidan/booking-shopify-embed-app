@@ -80,45 +80,7 @@ const getBookings = ({ shop, start, end, staff }: GetBookingsProps) => {
         ...(staff && { staff: new mongoose.Types.ObjectId(staff) }),
       },
     },
-    {
-      $lookup: {
-        from: "Customer",
-        localField: "customerId",
-        foreignField: "customerId",
-        as: "customer",
-      },
-    },
-    {
-      $unwind: "$customer",
-    },
-    {
-      $lookup: {
-        from: "Staff",
-        localField: "staff",
-        foreignField: "_id",
-        as: "staff",
-      },
-    },
-    {
-      $unwind: {
-        path: "$staff",
-        preserveNullAndEmptyArrays: true,
-      },
-    },
-    {
-      $lookup: {
-        from: "Product",
-        localField: "productId",
-        foreignField: "productId",
-        as: "product",
-      },
-    },
-    {
-      $unwind: {
-        path: "$product",
-        preserveNullAndEmptyArrays: true,
-      },
-    },
+    ...lookupCustomerStaffProduct,
   ]);
 };
 
@@ -156,49 +118,53 @@ const getById = async ({
         _id: new mongoose.Types.ObjectId(id),
       },
     },
-    {
-      $lookup: {
-        from: "Customer",
-        localField: "customerId",
-        foreignField: "customerId",
-        as: "customer",
-      },
-    },
-    {
-      $unwind: "$customer",
-    },
-    {
-      $lookup: {
-        from: "Staff",
-        localField: "staff",
-        foreignField: "_id",
-        as: "staff",
-      },
-    },
-    {
-      $unwind: {
-        path: "$staff",
-        preserveNullAndEmptyArrays: true,
-      },
-    },
-    {
-      $lookup: {
-        from: "Product",
-        localField: "productId",
-        foreignField: "productId",
-        as: "product",
-      },
-    },
-    {
-      $unwind: {
-        path: "$product",
-        preserveNullAndEmptyArrays: true,
-      },
-    },
+    ...lookupCustomerStaffProduct,
   ]);
 
   return bookings.length > 0 ? bookings[0] : null;
 };
+
+const lookupCustomerStaffProduct = [
+  {
+    $lookup: {
+      from: "Customer",
+      localField: "customerId",
+      foreignField: "customerId",
+      as: "customer",
+    },
+  },
+  {
+    $unwind: "$customer",
+  },
+  {
+    $lookup: {
+      from: "Staff",
+      localField: "staff",
+      foreignField: "_id",
+      as: "staff",
+    },
+  },
+  {
+    $unwind: {
+      path: "$staff",
+      preserveNullAndEmptyArrays: true,
+    },
+  },
+  {
+    $lookup: {
+      from: "Product",
+      localField: "productId",
+      foreignField: "productId",
+      as: "product",
+    },
+  },
+  {
+    $unwind: {
+      path: "$product",
+      preserveNullAndEmptyArrays: true,
+    },
+  },
+];
 
 export default {
   find,
