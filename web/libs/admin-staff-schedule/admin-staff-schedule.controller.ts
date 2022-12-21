@@ -117,37 +117,31 @@ const updateGroup = async ({ query, body }: UpdateGroupProps) => {
       let end = new Date(d.end.setHours(getHours(endDateTime)));
 
       // startDateTime is before 30 oct
-      if (
+      const beforeAdd =
         isBefore(startDateTime, new Date(d.start.getFullYear(), 9, 30)) &&
-        isAfter(start, new Date(d.start.getFullYear(), 9, 30)) // 9 is for october
-      ) {
-        start = addHours(start, 1);
-        end = addHours(end, 1);
-      }
-      // startDateTime is after 30 oct, and current is before subs
-      else if (
-        isAfter(startDateTime, new Date(d.start.getFullYear(), 9, 30)) && // 9 is for october
-        isBefore(start, new Date(d.start.getFullYear(), 9, 30))
-      ) {
-        start = subHours(start, 1);
-        end = subHours(end, 1);
-      }
-      // startDateTime is before 27 march, and current is after
-      else if (
-        isBefore(startDateTime, new Date(d.start.getFullYear(), 2, 27)) &&
-        isAfter(start, new Date(d.start.getFullYear(), 2, 27)) // 2 is for march
-      ) {
-        start = subHours(start, 1);
-        end = subHours(end, 1);
-      }
+        isAfter(start, new Date(d.start.getFullYear(), 9, 30)); // 9 is for october
+
       // startDateTime is after 27 march, and current is before
-      else if (
+      const afterAdd =
         isAfter(startDateTime, new Date(d.start.getFullYear(), 2, 27)) &&
-        isBefore(start, new Date(d.start.getFullYear(), 2, 27))
-        // 2 is for march
-      ) {
+        isBefore(start, new Date(d.start.getFullYear(), 2, 27)); // 2 is for march
+
+      // startDateTime is after 30 oct, and current is before subs
+      const afterSubs =
+        isAfter(startDateTime, new Date(d.start.getFullYear(), 9, 30)) && // 9 is for october
+        isBefore(start, new Date(d.start.getFullYear(), 9, 30));
+
+      // startDateTime is before 27 march, and current is after
+      const beforeSubs =
+        isBefore(startDateTime, new Date(d.start.getFullYear(), 2, 27)) &&
+        isAfter(start, new Date(d.start.getFullYear(), 2, 27)); // 2 is for march
+
+      if (beforeAdd || afterAdd) {
         start = addHours(start, 1);
         end = addHours(end, 1);
+      } else if (afterSubs || beforeSubs) {
+        start = subHours(start, 1);
+        end = subHours(end, 1);
       }
 
       start = setMinutes(start, getMinutes(startDateTime));
@@ -168,7 +162,7 @@ const updateGroup = async ({ query, body }: UpdateGroupProps) => {
 
     return await ScheduleModel.bulkWrite(bulk);
   } else {
-    throw "Groupid doesn't exist";
+    throw new Error("Groupid doesn't exist");
   }
 };
 

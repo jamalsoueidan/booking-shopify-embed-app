@@ -71,7 +71,7 @@ export const StaffForm = ({
       }),
     },
     onSubmit: async (fieldValues) => {
-      await action(fieldValues);
+      action(fieldValues);
       return { status: 'success' };
     },
   });

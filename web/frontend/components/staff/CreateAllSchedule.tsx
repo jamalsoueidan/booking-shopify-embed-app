@@ -1,11 +1,7 @@
 import { useDate, useTagOptions } from '@hooks';
 import isSelectedDays from '@libs/validators/isSelectedDays';
 import { useStaffScheduleCreate } from '@services';
-import {
-  DatePicker,
-  Layout,
-  Modal
-} from '@shopify/polaris';
+import { DatePicker, Layout, Modal } from '@shopify/polaris';
 import { useField, useForm } from '@shopify/react-form';
 import {
   eachDayOfInterval,
@@ -84,7 +80,7 @@ export default forwardRef(({ date, close }: CreateDayScheduleProps, ref) => {
           tag: fieldValues.tag,
         };
       });
-      await create(body);
+      create(body);
       close(null);
 
       return { status: 'success' };

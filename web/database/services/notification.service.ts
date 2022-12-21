@@ -1,4 +1,4 @@
-var request = require("request");
+let request = require("request");
 import BookingModel from "@models/booking.model";
 import CustomerModel, { ICustomerModel } from "@models/customer.model";
 import NotificationModel from "@models/notification.model";

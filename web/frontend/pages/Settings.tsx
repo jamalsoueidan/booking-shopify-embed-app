@@ -15,7 +15,8 @@ import {
   Text,
 } from '@shopify/polaris';
 import { useField, useForm } from '@shopify/react-form';
-import TimezoneSelect from 'react-timezone-select';
+import { useCallback } from 'react';
+import TimezoneSelect, { ITimezoneOption } from 'react-timezone-select';
 
 export default () => {
   const { data } = useSetting();
@@ -63,6 +64,11 @@ export default () => {
     submitting,
   });
 
+  const onChangeTimezone = useCallback(
+    ({ value }: ITimezoneOption) => fields.timeZone.onChange(value),
+    [fields.timeZone.onChange]
+  );
+
   if (!data) {
     return <LoadingPage />;
   }
@@ -86,9 +92,7 @@ export default () => {
                         value: fields.timeZone.value,
                         label: fields.timeZone.value,
                       }}
-                      onChange={(timezone) =>
-                        fields.timeZone.onChange(timezone.value)
-                      }
+                      onChange={onChangeTimezone}
                     />
                   </div>
                 </Stack>

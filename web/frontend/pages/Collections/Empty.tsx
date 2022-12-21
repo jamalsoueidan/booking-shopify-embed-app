@@ -1,8 +1,8 @@
-import { useCollectionCreate, useCollection } from '@services';
+import { useTranslation } from '@hooks';
+import { useCollection, useCollectionCreate } from '@services';
 import { ResourcePicker, useNavigate } from '@shopify/app-bridge-react';
 import { Card, EmptyState, Page } from '@shopify/polaris';
-import { useState } from 'react';
-import { useTranslation } from '@hooks';
+import { useCallback, useMemo, useState } from 'react';
 
 export default () => {
   const [open, setOpen] = useState(false);
@@ -10,11 +10,24 @@ export default () => {
   const { create } = useCollectionCreate();
   const { t } = useTranslation('collections');
 
-  const handleSelection = async (resources: Resources) => {
-    const selections = resources.selection.map((s) => s.id);
-    await create({ selections });
-    setOpen(false);
-  };
+  const handleSelection = useCallback(
+    (resources: Resources) => {
+      const selections = resources.selection.map((s) => s.id);
+      create({ selections });
+      setOpen(false);
+    },
+    [create, setOpen]
+  );
+
+  const onCancel = useCallback(() => setOpen(false), []);
+
+  const action = useMemo(
+    () => ({
+      content: t('empty.choose_collections'),
+      onAction: () => setOpen(true),
+    }),
+    []
+  );
 
   const { data } = useCollection();
 
@@ -28,17 +41,14 @@ export default () => {
       <ResourcePicker
         resourceType="Collection"
         open={open}
-        onSelection={(resources) => handleSelection(resources)}
-        onCancel={() => setOpen(false)}
+        onSelection={handleSelection}
+        onCancel={onCancel}
       />
       <Card sectioned>
         <EmptyState
           image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
           heading={t('empty.title')}
-          action={{
-            content: t('empty.choose_collections'),
-            onAction: () => setOpen(true),
-          }}>
+          action={action}>
           <p>{t('empty.text')} 🚀</p>
         </EmptyState>
       </Card>

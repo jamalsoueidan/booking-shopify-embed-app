@@ -23,9 +23,7 @@ export default ({ collection }: CollectionListProps) => {
   const { t } = useTranslation('collections');
 
   const setActive = useCallback(async (shouldDestroy: boolean) => {
-    if (shouldDestroy) {
-      await destroy();
-    }
+    shouldDestroy && destroy();
     setModalConfirm(null);
   }, []);
 
@@ -35,6 +33,29 @@ export default ({ collection }: CollectionListProps) => {
     );
   }, []);
 
+  const renderItem = useCallback((item: Product) => {
+    const { _id, title, active } = item;
+
+    const status = active ? 'success' : 'critical';
+    const icon = active ? TickMinor : CancelMinor;
+
+    return (
+      <ResourceItem
+        id={_id}
+        url={'/Collections/Product/' + _id}
+        media={<Icon source={icon} color={status} />}
+        verticalAlignment="center">
+        <Text variant="headingSm" as="h6">
+          {title}
+        </Text>
+        <Text variant="bodySm" as="p">
+          {t('staff', {
+            count: item.staff,
+          })}
+        </Text>
+      </ResourceItem>
+    );
+  }, []);
   return (
     <>
       {modalConfirm}
@@ -46,32 +67,7 @@ export default ({ collection }: CollectionListProps) => {
           </Button>
         </Text>
         <Card>
-          <ResourceList
-            items={collection.products}
-            renderItem={(item) => {
-              const { _id, title, active } = item;
-
-              const status = active ? 'success' : 'critical';
-              const icon = active ? TickMinor : CancelMinor;
-
-              return (
-                <ResourceItem
-                  id={_id}
-                  url={'/Collections/Product/' + _id}
-                  media={<Icon source={icon} color={status} />}
-                  verticalAlignment="center">
-                  <Text variant="headingSm" as="h6">
-                    {title}
-                  </Text>
-                  <Text variant="bodySm" as="p">
-                    {t('staff', {
-                      count: item.staff,
-                    })}
-                  </Text>
-                </ResourceItem>
-              );
-            }}
-          />
+          <ResourceList items={collection.products} renderItem={renderItem} />
         </Card>
       </TextContainer>
       <br />

@@ -81,7 +81,7 @@ export default forwardRef(({ info }: BookingModalChildProps, ref) => {
 
         const hour = schedule.hours.find((h) => h.start === fieldValues.time);
 
-        await update({
+        update({
           start: hour.start,
           end: hour.end,
           staff: hour.staff._id,
@@ -113,6 +113,8 @@ export default forwardRef(({ info }: BookingModalChildProps, ref) => {
     (date: Range) => fields.date.onChange(date.start),
     []
   );
+
+  const empty = useCallback(() => null, []);
 
   const disableSpecificDates = useMemo(() => {
     const dayIntervals = eachDayOfInterval({
@@ -186,8 +188,6 @@ export default forwardRef(({ info }: BookingModalChildProps, ref) => {
       </Modal.Section>
     );
   }
-
-  const empty = useCallback(() => null, []);
 
   return (
     <Form onSubmit={empty}>
