@@ -1,9 +1,9 @@
 import { StaffForm } from '@components/staff/_form';
 import { useStaffCreate } from '@services';
 import { useNavigate } from '@shopify/app-bridge-react';
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 
-export default useMemo(() => {
+export default () => {
   const navigate = useNavigate();
   const { create } = useStaffCreate();
 
@@ -20,4 +20,4 @@ export default useMemo(() => {
       action={submit}
       breadcrumbs={[{ content: 'Staff', url: '/Staff' }]}></StaffForm>
   );
-}, []);
+};
