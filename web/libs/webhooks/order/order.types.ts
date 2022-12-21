@@ -17,7 +17,7 @@ declare namespace OrderTypes {
   export interface ClientDetails {
     accept_language: string;
     browser_height?: any;
-    browser_ip: string;
+    browser_ip?: string;
     browser_width?: any;
     session_hash?: any;
     user_agent: string;
@@ -341,7 +341,7 @@ declare namespace OrderTypes {
     id: number;
     admin_graphql_api_id: string;
     app_id: number;
-    browser_ip: string;
+    browser_ip?: string;
     buyer_accepts_marketing: boolean;
     cancel_reason?: any;
     cancelled_at?: any;
