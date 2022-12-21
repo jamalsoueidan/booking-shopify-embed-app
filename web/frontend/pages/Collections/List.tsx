@@ -1,10 +1,10 @@
+import LoadingPage from '@components/LoadingPage';
 import AddNewCollection from '@components/collections/AddNewCollection';
 import CollectionsList from '@components/collections/CollectionsList';
-import LoadingPage from '@components/LoadingPage';
+import { useTranslation } from '@hooks';
 import { useCollection } from '@services';
 import { Page } from '@shopify/polaris';
-import { useState } from 'react';
-import { useTranslation } from '@hooks';
+import { useMemo, useState } from 'react';
 
 export default () => {
   const [open, setOpen] = useState(false);
@@ -16,11 +16,15 @@ export default () => {
     return <LoadingPage />;
   }
 
-  const collection = data.map((collection) => (
-    <CollectionsList
-      key={collection._id}
-      collection={collection}></CollectionsList>
-  ));
+  const collection = useMemo(
+    () =>
+      data.map((collection) => (
+        <CollectionsList
+          key={collection._id}
+          collection={collection}></CollectionsList>
+      )),
+    [data]
+  );
 
   return (
     <Page

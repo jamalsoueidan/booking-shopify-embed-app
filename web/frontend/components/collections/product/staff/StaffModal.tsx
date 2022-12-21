@@ -50,7 +50,7 @@ export default ({ productId, show, close }: StaffModalProps) => {
     setSelected(() => [...value]);
   }, [value]);
 
-  const choices = useCallback(
+  const choices = useMemo(
     () =>
       data
         ?.sort((a, b) => (a.fullname > b.fullname ? 1 : -1))

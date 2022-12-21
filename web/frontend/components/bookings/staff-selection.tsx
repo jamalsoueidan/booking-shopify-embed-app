@@ -11,30 +11,33 @@ interface Props {
 export default ({ staff, onSelect, isLoading }: Props) => {
   const { data } = useStaff();
   const { t } = useTranslation('bookings');
-  if (!data) {
-    return <></>;
-  }
 
   const onClick = useCallback(() => {
     onSelect(null);
   }, [onSelect]);
 
-  const buttons = useMemo(() => {
-    data.map((s) => {
-      const onClickUser = useCallback(() => onSelect(s._id), [onSelect]);
-      return (
-        <Button
-          size="large"
-          key={s._id}
-          onClick={onClickUser}
-          pressed={staff === s._id}
-          loading={staff === s._id ? isLoading : false}
-          icon={<Avatar size="medium" name={s.fullname} source={s.avatar} />}>
-          {s.fullname}
-        </Button>
-      );
-    });
-  }, [data]);
+  const buttons = useMemo(
+    () =>
+      data?.map((s) => {
+        const onClickUser = () => onSelect(s._id);
+        return (
+          <Button
+            size="large"
+            key={s._id}
+            onClick={onClickUser}
+            pressed={staff === s._id}
+            loading={staff === s._id ? isLoading : false}
+            icon={<Avatar size="medium" name={s.fullname} source={s.avatar} />}>
+            {s.fullname}
+          </Button>
+        );
+      }),
+    [data]
+  );
+
+  if (!data) {
+    return <></>;
+  }
 
   return (
     <Stack>
