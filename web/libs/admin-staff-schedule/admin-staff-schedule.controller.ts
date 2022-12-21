@@ -83,7 +83,7 @@ interface DestroyProps {
 }
 
 const destroy = ({ query }: DestroyProps) => {
-  const { shop, staff, schedule } = query;
+  const { shop, schedule } = query;
   return ScheduleService.remove({ schedule, shop });
 };
 
@@ -188,7 +188,7 @@ const destroyGroup = async ({ query }: DestroyGroupProps) => {
   if (documents > 0) {
     return await ScheduleModel.deleteMany({ groupId, shop });
   } else {
-    throw "Groupid doesn't exist";
+    throw new Error("Groupid doesn't exist");
   }
 };
 

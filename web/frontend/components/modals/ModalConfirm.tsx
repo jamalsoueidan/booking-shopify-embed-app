@@ -1,5 +1,5 @@
 import { Modal } from '@shopify/polaris';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 interface ModalConfirmProps {
   active: boolean;
@@ -25,11 +25,13 @@ export default ({ active, setActive }: ModalConfirmProps) => {
     []
   );
 
+  const onClose = useCallback(() => setActive(false), []);
+
   return (
     <Modal
       small
       open={active}
-      onClose={() => setActive(false)}
+      onClose={onClose}
       title="Remove product"
       primaryAction={primaryAction}
       secondaryActions={secondaryActions}>
