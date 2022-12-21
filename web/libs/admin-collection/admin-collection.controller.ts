@@ -32,6 +32,7 @@ const create = async ({
   const getGid = (value: string): number =>
     parseInt(value.substring(value.lastIndexOf("/") + 1));
 
+  //TODO: What about the products that are removed from the collections, they needs to be removed also or moved?
   const collectionBulkWrite = collections.map((c) => {
     return {
       updateOne: {

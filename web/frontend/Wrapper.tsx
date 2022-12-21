@@ -1,10 +1,11 @@
 import { useSetting } from '@services';
 import { NavigationMenu } from '@shopify/app-bridge-react';
 import { I18nContext, useI18n, I18nManager } from '@shopify/react-i18n';
-import { useContext, useEffect } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import en from './translations/en.json';
 import { Frame, Loading } from '@shopify/polaris';
 import { Query, useIsFetching } from 'react-query';
+import { NavigationLink } from '@shopify/app-bridge-react/components/NavigationMenu/NavigationMenu';
 
 export default ({ children }: { children: JSX.Element }) => {
   const { data } = useSetting();
@@ -31,6 +32,12 @@ export default ({ children }: { children: JSX.Element }) => {
     i18nManager.update({ locale: data.language });
   }, [data]);
 
+  const matcher = useCallback(
+    (link: NavigationLink, location: Location) =>
+      location.pathname.toLowerCase().indexOf(link.destination) !== -1,
+    []
+  );
+
   return (
     <>
       <NavigationMenu
@@ -52,9 +59,7 @@ export default ({ children }: { children: JSX.Element }) => {
             label: i18n.translate('tabs.settings'),
           },
         ]}
-        matcher={(link, location) =>
-          location.pathname.toLowerCase().indexOf(link.destination) !== -1
-        }
+        matcher={matcher}
       />
       <Frame>
         {isFetching > 0 && <Loading></Loading>}

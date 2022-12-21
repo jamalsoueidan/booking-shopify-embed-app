@@ -9,7 +9,7 @@ import {
   TextField,
 } from '@shopify/polaris';
 import { format } from 'date-fns';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 interface Props {
@@ -92,18 +92,23 @@ export default ({ info, setInfo }: Props) => {
 
   const formatDate = format(new Date(extendedProps.start), 'MM/dd/yyyy');
 
+  const secondaryActions = useMemo(
+    () => [
+      {
+        content: 'Luk',
+        onAction: toggleActive,
+      },
+    ],
+    []
+  );
+
   return (
     <Modal
       small
       open={true}
       onClose={toggleActive}
       title="Edit availability"
-      secondaryActions={[
-        {
-          content: 'Luk',
-          onAction: toggleActive,
-        },
-      ]}>
+      secondaryActions={secondaryActions}>
       <Modal.Section>{formatDate}</Modal.Section>
       <Modal.Section>
         <Layout>

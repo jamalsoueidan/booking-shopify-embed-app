@@ -187,8 +187,10 @@ export default forwardRef(({ info }: BookingModalChildProps, ref) => {
     );
   }
 
+  const empty = useCallback(() => null, []);
+
   return (
-    <Form onSubmit={() => null}>
+    <Form onSubmit={empty}>
       <Modal.Section>
         <FormLayout>
           {isSubmitted && !isValid && <FormErrors errors={submitErrors} />}

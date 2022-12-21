@@ -4,7 +4,7 @@ import { useCustomForm } from '@hooks';
 import { useSendCustomNotification } from '@services';
 import { Form, Modal, Select, Stack, TextField } from '@shopify/polaris';
 import { lengthMoreThan, notEmpty, useField } from '@shopify/react-form';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 export default ({ info, setPrimaryAction }: BookingModalChildProps) => {
   const { send } = useSendCustomNotification({
@@ -66,8 +66,10 @@ export default ({ info, setPrimaryAction }: BookingModalChildProps) => {
     });
   }, [setPrimaryAction]);
 
+  const empty = useCallback(() => null, []);
+
   return (
-    <Form onSubmit={() => null}>
+    <Form onSubmit={empty}>
       {isSubmitted && (
         <FormToast
           message={isValid ? 'Message send' : 'Error happened'}
