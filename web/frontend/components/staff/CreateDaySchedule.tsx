@@ -1,18 +1,12 @@
 import { useDate, useTagOptions } from '@hooks';
 import { useStaffScheduleCreate } from '@services';
-import {
-  Card,
-  Columns,
-  Layout,
-  Modal,
-  Select,
-  TextField,
-} from '@shopify/polaris';
+import { Card, Layout, Modal } from '@shopify/polaris';
 import { useField, useForm } from '@shopify/react-form';
 import { format } from 'date-fns';
 import da from 'date-fns/locale/da';
 import { forwardRef, useImperativeHandle } from 'react';
 import { useParams } from 'react-router-dom';
+import { CreateScheduleForm } from './_createScheduleForm';
 
 interface CreateDayScheduleProps {
   date: string;
@@ -58,7 +52,7 @@ export default forwardRef(({ date, close }: CreateDayScheduleProps, ref) => {
         tag: fieldValues.tag,
       };
 
-      await createSchedule(body);
+      createSchedule(body);
       close(null);
       return { status: 'success' };
     },
@@ -83,29 +77,7 @@ export default forwardRef(({ date, close }: CreateDayScheduleProps, ref) => {
             </Card.Section>
           </Card>
         </Layout.Section>
-        <Layout.Section>
-          <Columns
-            columns={{
-              xs: '3fr 3fr',
-              md: '3fr 3fr',
-            }}>
-            <TextField
-              label="Tid fra"
-              type="time"
-              autoComplete="off"
-              {...fields.startTime}
-            />
-            <TextField
-              label="Tid til"
-              type="time"
-              autoComplete="off"
-              {...fields.endTime}
-            />
-          </Columns>
-        </Layout.Section>
-        <Layout.Section>
-          <Select label="Tag" options={options} {...fields.tag} />
-        </Layout.Section>
+        <CreateScheduleForm fields={fields} options={options} />
       </Layout>
     </Modal.Section>
   );

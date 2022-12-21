@@ -5,7 +5,7 @@ import CustomerWebhook from "@libs/webhooks/customer/customer.webhook.js";
 import { LATEST_API_VERSION, Shopify } from "@shopify/shopify-api";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import express from "express";
+import express, { Request } from "express";
 import { readFileSync } from "fs";
 import { join } from "path";
 import { AppInstallations } from "./app_installations.js";
@@ -180,8 +180,8 @@ export async function createServer(
   app.use("/api/admin", adminStaffScheduleRoutes(app));
   app.use("/api/admin", adminSettingRoutes(app));
 
-  app.use((req, res, next) => {
-    const shop = Shopify.Utils.sanitizeShop(req.query.shop as any);
+  app.use((req: Request<{}, {}, {}, { shop: string }>, res, next) => {
+    const shop = Shopify.Utils.sanitizeShop(req.query.shop);
     if (Shopify.Context.IS_EMBEDDED_APP && shop) {
       res.setHeader(
         "Content-Security-Policy",
@@ -206,7 +206,7 @@ export async function createServer(
     app.use(serveStatic(PROD_INDEX_PATH, { index: false }));
   }
 
-  app.use("/*", async (req, res, next) => {
+  app.use("/*", async (req, res) => {
     if (typeof req.query.shop !== "string") {
       res.status(500);
       return res.send("No shop provided");

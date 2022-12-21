@@ -2,12 +2,9 @@ import { useDate, useTagOptions } from '@hooks';
 import isSelectedDays from '@libs/validators/isSelectedDays';
 import { useStaffScheduleCreate } from '@services';
 import {
-  Columns,
   DatePicker,
   Layout,
-  Modal,
-  Select,
-  TextField,
+  Modal
 } from '@shopify/polaris';
 import { useField, useForm } from '@shopify/react-form';
 import {
@@ -21,6 +18,7 @@ import {
 import { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { SelectDays } from './SelectDays';
+import { CreateScheduleForm } from './_createScheduleForm';
 
 interface CreateDayScheduleProps {
   date: string;
@@ -123,29 +121,7 @@ export default forwardRef(({ date, close }: CreateDayScheduleProps, ref) => {
             disableDatesBefore={subDays(new Date(), 1)}
           />
         </Layout.Section>
-        <Layout.Section>
-          <Columns
-            columns={{
-              xs: '3fr 3fr',
-              md: '3fr 3fr',
-            }}>
-            <TextField
-              label="Tid fra"
-              type="time"
-              autoComplete="off"
-              {...fields.startTime}
-            />
-            <TextField
-              label="Tid til"
-              type="time"
-              autoComplete="off"
-              {...fields.endTime}
-            />
-          </Columns>
-        </Layout.Section>
-        <Layout.Section>
-          <Select label="Tag" options={options} {...fields.tag} />
-        </Layout.Section>
+        <CreateScheduleForm fields={fields} options={options} />
       </Layout>
     </Modal.Section>
   );

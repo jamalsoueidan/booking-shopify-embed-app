@@ -12,6 +12,7 @@ import {
 import { ClockMajor } from '@shopify/polaris-icons';
 import { FieldDictionary } from '@shopify/react-form';
 import { useTranslation } from '@hooks';
+import { useCallback } from 'react';
 
 export default ({
   fields,
@@ -39,6 +40,16 @@ export default ({
     </Stack>
   );
 
+  const onChangeSelect = useCallback(
+    (value: string) => fields.buffertime.onChange(parseInt(value)),
+    [fields.buffertime.onChange]
+  );
+
+  const onChange = useCallback(
+    (value: number) => () => fields.duration.onChange(value),
+    [fields.duration.onChange]
+  );
+
   return (
     <Layout.AnnotatedSection
       id="settings"
@@ -53,17 +64,17 @@ export default ({
             <ButtonGroup segmented>
               <Button
                 pressed={fields.duration.value === 30}
-                onClick={() => fields.duration.onChange(30)}>
+                onClick={onChange(30)}>
                 30 min
               </Button>
               <Button
                 pressed={fields.duration.value === 45}
-                onClick={() => fields.duration.onChange(45)}>
+                onClick={onChange(45)}>
                 45 min
               </Button>
               <Button
                 pressed={fields.duration.value === 60}
-                onClick={() => fields.duration.onChange(60)}>
+                onClick={onChange(60)}>
                 60 min
               </Button>
             </ButtonGroup>
@@ -75,9 +86,7 @@ export default ({
               options={options}
               helpText={t('buffertime.help')}
               value={fields.buffertime.value?.toString()}
-              onChange={(value: string) =>
-                fields.buffertime.onChange(parseInt(value))
-              }
+              onChange={onChangeSelect}
             />
           </FormLayout>
         </Card.Section>

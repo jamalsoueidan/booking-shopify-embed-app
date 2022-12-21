@@ -2,7 +2,6 @@ export default {
   id: 5226401497405,
   admin_graphql_api_id: "gid://shopify/Order/5226401497405",
   app_id: 580111,
-  browser_ip: "178.247.158.191",
   buyer_accepts_marketing: false,
   cancel_reason: null,
   cancelled_at: null,
@@ -12,7 +11,6 @@ export default {
   client_details: {
     accept_language: "en-DK",
     browser_height: null,
-    browser_ip: "178.247.158.191",
     browser_width: null,
     session_hash: null,
     user_agent:

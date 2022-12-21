@@ -17,7 +17,7 @@ describe("Admin-staff controller", () => {
       fullname: "jamasdeidan",
       email: "test@test.com",
       phone: "+4531317428",
-      avatar: "http://test.dk/test.png",
+      avatar: "https://test.dk/test.png",
       position: "1",
     };
 

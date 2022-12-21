@@ -85,6 +85,10 @@ export default ({ create, edit, events, onChangeDate }: StaffCalendarProps) => {
     [calendarRef]
   );
 
+  const validRange = useCallback((start: Date) => {
+    return { start };
+  }, []);
+
   return (
     <Calendar
       ref={calendarRef}
@@ -97,9 +101,7 @@ export default ({ create, edit, events, onChangeDate }: StaffCalendarProps) => {
       }}
       dateClick={create}
       eventClick={edit}
-      validRange={(nowDate) => {
-        return { start: nowDate };
-      }}
+      validRange={validRange}
     />
   );
 };
