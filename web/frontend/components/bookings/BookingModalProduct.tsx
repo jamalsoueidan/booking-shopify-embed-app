@@ -24,7 +24,7 @@ export default ({
   const toggle = useCallback(() => setIsEditing((value) => !value), []);
   const submit = useCallback(() => {
     ref.current.submit();
-    setIsSubmitted((value) => true);
+    setIsSubmitted(() => true);
     toggle();
   }, [ref, toggle]);
 

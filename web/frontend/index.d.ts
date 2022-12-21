@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/triple-slash-reference */
 /// <reference path="../@types/index.d.ts" />
 /// <reference path="../@types/settings.d.ts" />
 /// <reference path="../@types/staff.d.ts" />
@@ -11,7 +12,7 @@
 
 declare module '*';
 interface Response {
-  json: () => {};
+  json: () => void;
 }
 
 interface Resource {

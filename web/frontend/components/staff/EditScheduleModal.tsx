@@ -1,8 +1,5 @@
 import { useDate, useTagOptions } from '@hooks';
-import {
-  useStaffScheduleDestroy,
-  useStaffScheduleUpdate,
-} from '@services';
+import { useStaffScheduleDestroy, useStaffScheduleUpdate } from '@services';
 import {
   Button,
   Checkbox,
@@ -12,7 +9,7 @@ import {
   TextField,
 } from '@shopify/polaris';
 import { format } from 'date-fns';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 interface Props {
@@ -63,37 +60,35 @@ export default ({ info, setInfo }: Props) => {
   const handleAvailable = (newChecked: boolean) => setAvailable(newChecked);
   const handleEnd = (value: string) => setEndTime(value);
 
-  const updateDate = async (type: 'all' | null) => {
-    const start = toUtc(`${extendedProps.start.substr(0, 10)} ${startTime}`);
-    const end = toUtc(`${extendedProps.end.substr(0, 10)} ${endTime}`);
+  const updateDate = useCallback(
+    async (type: 'all' | null) => {
+      const start = toUtc(`${extendedProps.start.substr(0, 10)} ${startTime}`);
+      const end = toUtc(`${extendedProps.end.substr(0, 10)} ${endTime}`);
 
-    const body: ScheduleBody = {
-      start: start.toISOString(),
-      end: end.toISOString(),
-      tag,
-      ...(type === 'all' ? { groupId: extendedProps.groupId } : null),
-    };
+      const body: ScheduleBody = {
+        start: start.toISOString(),
+        end: end.toISOString(),
+        tag,
+        ...(type === 'all' ? { groupId: extendedProps.groupId } : null),
+      };
 
-    if (type == 'all') {
-      await updateScheduleAll(body);
-    } else {
-      await updateSchedule(body);
-    }
-    setInfo(null);
-  };
+      type == 'all' ? updateScheduleAll(body) : updateSchedule(body);
+      setInfo(null);
+    },
+    [toUtc, updateSchedule, updateScheduleAll, setInfo]
+  );
 
-  const deleteDate = async (type: 'all' | null) => {
-    const body = {
-      ...(type === 'all' ? { groupId: extendedProps.groupId } : null),
-    };
+  const deleteDate = useCallback(
+    (type: 'all' | null) => {
+      const body = {
+        ...(type === 'all' ? { groupId: extendedProps.groupId } : null),
+      };
 
-    if (type == 'all') {
-      await destroyScheduleAll(body);
-    } else {
-      await destroySchedule(body);
-    }
-    setInfo(null);
-  };
+      type == 'all' ? destroyScheduleAll(body) : destroySchedule(body);
+      setInfo(null);
+    },
+    [destroyScheduleAll, destroySchedule, setInfo]
+  );
 
   const formatDate = format(new Date(extendedProps.start), 'MM/dd/yyyy');
 

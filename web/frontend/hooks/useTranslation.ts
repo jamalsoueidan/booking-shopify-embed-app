@@ -23,7 +23,7 @@ export const useTranslation = (
       }
       tKey += `.${key}`;
 
-      let tOptions = {} as any;
+      const tOptions = {} as any;
       if (secondOptions?.count) {
         tOptions.count = secondOptions?.count.length;
       }

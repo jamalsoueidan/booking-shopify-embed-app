@@ -21,8 +21,8 @@ const proxyOptions = {
   changeOrigin: false,
   secure: true,
   ws: false,
-  configure: (proxy, _options) => {
-    proxy.on('error', (err, _req, _res) => {
+  configure: (proxy) => {
+    proxy.on('error', (err) => {
       console.log('proxy error', err);
     });
   },

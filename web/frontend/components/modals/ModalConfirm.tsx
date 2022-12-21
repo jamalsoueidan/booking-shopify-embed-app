@@ -1,10 +1,10 @@
 import { Modal } from '@shopify/polaris';
-import { useCallback } from 'react';
 
 interface ModalConfirmProps {
   active: boolean;
-  setActive: (value: boolean) => {};
+  setActive: (value: boolean) => void;
 }
+
 export default ({ active, setActive }: ModalConfirmProps) => {
   return (
     <Modal

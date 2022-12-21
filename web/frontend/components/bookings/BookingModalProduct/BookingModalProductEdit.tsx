@@ -23,8 +23,8 @@ import {
 } from 'react';
 
 const sortByDate = function (a: any, b: any) {
-  var dateA = new Date(a.value);
-  var dateB = new Date(b.value);
+  const dateA = new Date(a.value);
+  const dateB = new Date(b.value);
 
   if (dateA < dateB) {
     return -1;

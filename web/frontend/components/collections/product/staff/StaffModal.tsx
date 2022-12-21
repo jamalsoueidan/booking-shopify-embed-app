@@ -91,7 +91,7 @@ export default ({ productId, show, close }: StaffModalProps) => {
           </div>
         </Modal.Section>
       )}
-      {choices?.map((c, index) => c)}
+      {choices?.map((c) => c)}
     </Modal>
   );
 };
@@ -119,6 +119,7 @@ const ChoiceStaff = ({ staff, selected, toggle }: ChoiceStaffProps) => {
 
   const handleChange = useCallback(
     (value: string[]) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { tags, ...spreadStaff } = staff;
       toggle({ ...spreadStaff, tag: value[0] });
     },

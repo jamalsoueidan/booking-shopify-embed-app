@@ -24,13 +24,15 @@ export default ({ info }: BookingModalChildProps) => {
     [resend]
   );
 
+  const empty = useCallback(() => null, []);
+
   const renderItem = useCallback((item: Notification) => {
     const { _id: id, message, receiver, createdAt, scheduled, isStaff } = item;
 
     return (
       <ResourceItem
         id={id}
-        onClick={() => null}
+        onClick={empty}
         shortcutActions={[
           {
             content: 'Send Again',

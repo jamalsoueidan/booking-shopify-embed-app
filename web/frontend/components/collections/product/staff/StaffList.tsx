@@ -7,7 +7,7 @@ import {
   ResourceList,
   Text,
 } from '@shopify/polaris';
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
 import FormContext from './FormContext';
 
 interface StaffListProps {
@@ -20,27 +20,29 @@ export default ({ action }: StaffListProps) => {
   const { select: selectPosition } = usePositions();
   const { value } = useContext(FormContext);
 
+  const renderItem = useCallback((item: ProductStaffAggreate) => {
+    const { _id, fullname, avatar, position } = item;
+
+    const media = (
+      <Avatar customer size="medium" name={fullname} source={avatar} />
+    );
+
+    return (
+      <ResourceItem id={_id} media={media} name={fullname} onClick={action}>
+        <Text variant="bodyMd" fontWeight="bold" as="h3">
+          {fullname}, {selectPosition(position)}
+        </Text>
+        <div>{selectTag(item.tag)}</div>
+      </ResourceItem>
+    );
+  }, []);
+
   return (
     <ResourceList
       emptyState={<StaffEmptyState action={action}></StaffEmptyState>}
       items={value.sort((a, b) => (a.fullname > b.fullname ? 1 : -1))}
       alternateTool={<Button onClick={action}>{t('browse')}</Button>}
-      renderItem={(item, _, index) => {
-        const { _id, fullname, avatar, position } = item;
-
-        const media = (
-          <Avatar customer size="medium" name={fullname} source={avatar} />
-        );
-
-        return (
-          <ResourceItem id={_id} media={media} name={fullname} onClick={action}>
-            <Text variant="bodyMd" fontWeight="bold" as="h3">
-              {fullname}, {selectPosition(position)}
-            </Text>
-            <div>{selectTag(item.tag)}</div>
-          </ResourceItem>
-        );
-      }}
+      renderItem={renderItem}
     />
   );
 };

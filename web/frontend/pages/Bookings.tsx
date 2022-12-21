@@ -50,8 +50,6 @@ export default () => {
 
   const eventContent = useCallback(
     (arg: any) => {
-      const api = calendarRef.current.getApi();
-      const isMonth = api.view.type === 'dayGridMonth';
       const booking: BookingAggreate = arg.event.extendedProps;
       const extendHour = (
         <i>

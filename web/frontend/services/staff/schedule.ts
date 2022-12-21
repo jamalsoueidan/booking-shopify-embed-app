@@ -38,11 +38,7 @@ export const useStaffScheduleCreate = ({
   };
 };
 
-interface UseStaffScheduleDestroyFetchProps extends Pick<Schedule, 'groupId'> {}
-
-type UseStaffScheduleDestroyFetch = (
-  body: UseStaffScheduleDestroyFetchProps
-) => void;
+type UseStaffScheduleDestroyFetch = (body: Pick<Schedule, 'groupId'>) => void;
 
 export const useStaffScheduleDestroy = ({
   staff,
