@@ -41,17 +41,15 @@ export default ({ staff, onSelect, isLoading }: Props) => {
 
   return (
     <Stack>
-      <>
-        <Button
-          icon={<Avatar size="medium" />}
-          size="large"
-          onClick={onClick}
-          pressed={staff === null}
-          loading={staff === null ? isLoading : false}>
-          {t('all')}
-        </Button>
-        {buttons}
-      </>
+      <Button
+        icon={<Avatar size="medium" />}
+        size="large"
+        onClick={onClick}
+        pressed={staff === null}
+        loading={staff === null ? isLoading : false}>
+        {t('all')}
+      </Button>
+      {buttons}
     </Stack>
   );
 };
