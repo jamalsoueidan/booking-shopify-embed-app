@@ -1,8 +1,6 @@
-import { InlineError, Stack, Tag } from '@shopify/polaris';
+import { Autocomplete, InlineError, Stack, Tag } from '@shopify/polaris';
 import { Field } from '@shopify/react-form';
 import { useCallback, useMemo, useState } from 'react';
-
-import { Autocomplete } from '@shopify/polaris';
 
 interface ComboxListDaysProps {
   days: Field<string[]>;

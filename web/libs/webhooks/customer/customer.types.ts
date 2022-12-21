@@ -1,4 +1,4 @@
-declare module Customer {
+declare namespace Customer {
   export interface Address {
     id: number;
     customer_id: number;

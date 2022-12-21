@@ -20,8 +20,8 @@ const SVG = styled.svg`
 `;
 
 const sortByDate = function (a: any, b: any) {
-  var dateA = new Date(a.start);
-  var dateB = new Date(b.start);
+  const dateA = new Date(a.start);
+  const dateB = new Date(b.start);
 
   if (dateA < dateB) {
     return -1;

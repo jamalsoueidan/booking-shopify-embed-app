@@ -1,5 +1,5 @@
 var request = require("request");
-import BookingModel, { IBookingModel } from "@models/booking.model";
+import BookingModel from "@models/booking.model";
 import CustomerModel, { ICustomerModel } from "@models/customer.model";
 import NotificationModel from "@models/notification.model";
 import {
@@ -81,7 +81,7 @@ const sendCustom = async (query: SendCustomProps) => {
         receiver: phone.replace("+", ""),
       }))
     ) {
-      throw "after_fifteen_minutes_send_message";
+      throw new Error("after_fifteen_minutes_send_message");
     }
 
     return send({
@@ -94,7 +94,7 @@ const sendCustom = async (query: SendCustomProps) => {
     });
   }
 
-  throw "not_found";
+  throw new Error("not_found");
 };
 
 interface ResendProps {
@@ -122,7 +122,7 @@ const resend = async ({ shop, id }: ResendProps) => {
     return send(notification);
   }
 
-  throw "after_fifteen_minutes_send_message";
+  throw new Error("after_fifteen_minutes_send_message");
 };
 
 interface SendProps {
@@ -172,7 +172,7 @@ const send = async ({
   );
 };
 
-interface sendBookingConfirmation {
+interface SendBookingConfirmation {
   receiver: ICustomerModel | IStaffModel;
   bookings: Omit<Booking, "_id">[];
   shop: string;
@@ -182,7 +182,7 @@ const sendBookingConfirmationCustomer = ({
   receiver,
   bookings,
   shop,
-}: sendBookingConfirmation) => {
+}: SendBookingConfirmation) => {
   send({
     orderId: bookings[0].orderId,
     shop,

@@ -15,9 +15,9 @@ export default ({ show, toggle, info }: BookingModalProps) => {
   const [primaryAction, setPrimaryAction] = useState<ComplexAction>();
   const [secondaryActions, setSecondaryActions] = useState<ComplexAction[]>();
 
-  const close = () => {
+  const close = useCallback(() => {
     toggle(null);
-  };
+  }, []);
 
   const [selected, setSelected] = useState(0);
 

@@ -75,12 +75,10 @@ const create = async ({
     collections: await CollectionModel.bulkWrite(collectionBulkWrite),
     products: await ProductModel.bulkWrite(productsBulkWrite),
   };
-
-  return {};
 };
 
 interface DeleteQuery {
-  shop: String;
+  shop: string;
   id: string;
 }
 

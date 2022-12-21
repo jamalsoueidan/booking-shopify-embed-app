@@ -1,7 +1,7 @@
 import FormErrors from '@components/FormErrors';
 import LoadingSpinner from '@components/LoadingSpinner';
-import { useDate, useCustomForm } from '@hooks';
-import { useWidgetDate, useWidgetStaff, useBookingUpdate } from '@services';
+import { useCustomForm, useDate } from '@hooks';
+import { useBookingUpdate, useWidgetDate, useWidgetStaff } from '@services';
 import {
   DatePicker,
   Form,
@@ -138,9 +138,9 @@ export default forwardRef(({ info }: BookingModalChildProps, ref) => {
 
     const hours = schedule?.hours.map((t) => ({
       label:
-        format(toTimeZone(t.start as any), 'HH:mm') +
+        format(toTimeZone(t.start), 'HH:mm') +
         ' - ' +
-        format(toTimeZone(t.end as any), 'HH:mm'),
+        format(toTimeZone(t.end), 'HH:mm'),
       value: t.start,
     }));
 

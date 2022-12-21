@@ -130,7 +130,7 @@ interface UpdateProps {
 const update = async ({ filter, body }: UpdateProps) => {
   const booking = await BookingModel.findOne(filter);
   if (!booking) {
-    throw "Not found";
+    throw new Error("Not found");
   }
   booking.staff = body.staff;
   booking.start = body.start as any;

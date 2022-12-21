@@ -1,4 +1,4 @@
-import { useTagOptions, usePositions } from '@hooks';
+import { usePositions, useTagOptions, useTranslation } from '@hooks';
 import {
   Avatar,
   Button,
@@ -8,7 +8,6 @@ import {
   Text,
 } from '@shopify/polaris';
 import { useContext } from 'react';
-import { useTranslation } from '@hooks';
 import FormContext from './FormContext';
 
 interface StaffListProps {

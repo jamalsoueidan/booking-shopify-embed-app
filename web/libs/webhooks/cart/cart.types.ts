@@ -1,4 +1,4 @@
-declare module CartTypes {
+declare namespace CartTypes {
   export interface Properties {
     staff?: string;
     date?: string;

@@ -117,7 +117,6 @@ export default function applyAuthMiddleware(
         case e instanceof Shopify.Errors.SessionNotFound:
           // This is likely because the OAuth session cookie expired before the merchant approved the request
           return redirectToAuth(req, res, app);
-          break;
         default:
           res.status(500);
           res.send(e.message);

@@ -1,6 +1,5 @@
-import { useCallback } from 'react';
-import { useMemo } from 'react';
 import { useTranslation } from '@hooks';
+import { useCallback, useMemo } from 'react';
 
 interface UseTagOptionsReturn {
   options: UseTagOptions[];

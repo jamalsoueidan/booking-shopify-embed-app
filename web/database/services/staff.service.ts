@@ -1,16 +1,12 @@
 import StaffModel from "@models/staff.model";
 
-const create = async (document) => {
-  try {
-    const newStaff = new StaffModel(document);
-    return await newStaff.save();
-  } catch (e) {
-    throw e;
-  }
+const create = (document) => {
+  const newStaff = new StaffModel(document);
+  return newStaff.save();
 };
 
-const find = async (shop) => {
-  return await StaffModel.find({ shop });
+const find = (shop) => {
+  return StaffModel.find({ shop });
 };
 
 const findOne = (_id, document) => {

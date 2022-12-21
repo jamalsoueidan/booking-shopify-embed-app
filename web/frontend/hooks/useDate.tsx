@@ -6,7 +6,7 @@ export const useDate = () => {
   const { data } = useSetting();
 
   const toTimeZone = useCallback(
-    (fromUTC: Date) => utcToZonedTime(fromUTC, data.timeZone),
+    (fromUTC: string | Date) => utcToZonedTime(fromUTC, data.timeZone),
     [data.timeZone]
   );
 

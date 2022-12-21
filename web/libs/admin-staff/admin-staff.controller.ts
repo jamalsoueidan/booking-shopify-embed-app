@@ -1,4 +1,3 @@
-import { IStaffModel } from "@models/staff.model";
 import StaffService from "@services/staff.service";
 
 export enum ControllerMethods {

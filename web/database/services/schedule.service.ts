@@ -49,7 +49,7 @@ const create = async ({
   }
 };
 
-const find = async (document) => {
+const find = (document) => {
   const conditions = {
     ...(document.staff && { staff: document.staff }),
     ...(document.groupId && { groupId: document.groupId }),
@@ -59,11 +59,7 @@ const find = async (document) => {
       }),
   };
 
-  try {
-    return await ScheduleModel.find(conditions);
-  } catch (e) {
-    throw e;
-  }
+  return ScheduleModel.find(conditions);
 };
 
 const findOne = async (filter) => {

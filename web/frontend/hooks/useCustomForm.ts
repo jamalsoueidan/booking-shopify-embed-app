@@ -1,11 +1,10 @@
-import { useEffect } from 'react';
 import {
   FieldBag,
   Form,
   FormWithoutDynamicListsInput,
   useForm,
 } from '@shopify/react-form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface CustomForm<T extends FieldBag> extends Form<T> {
   isSubmitted: boolean;

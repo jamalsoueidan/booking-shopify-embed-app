@@ -11,8 +11,8 @@ export default ({ errors }: FormErrorsProps) => {
       <Banner status="critical">
         <p>Errors</p>
         <ul>
-          {errors.map(({ message }, i) => (
-            <li key={i}>{message}</li>
+          {errors.map(({ message }) => (
+            <li key={message}>{message}</li>
           ))}
         </ul>
       </Banner>

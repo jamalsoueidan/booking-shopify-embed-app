@@ -1,4 +1,4 @@
-import ProductModel, { IProductModel } from "@models/product.model";
+import ProductModel from "@models/product.model";
 import mongoose from "mongoose";
 
 interface UpdateQuery {

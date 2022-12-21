@@ -35,7 +35,7 @@ function useRoutes(pages) {
     .map((key) => {
       let path = key
         .replace('./pages', '')
-        .replace(/\.(t|j)sx?$/, '')
+        .replace(/\.([tj])sx?$/, '')
         /**
          * Replace /index with /
          */

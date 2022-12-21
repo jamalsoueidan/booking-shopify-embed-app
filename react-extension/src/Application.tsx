@@ -1,7 +1,7 @@
 import { DateTime } from "@easepick/bundle";
 import styled from "@emotion/styled";
 import { useField, useForm } from "@shopify/react-form";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useSWRConfig } from "swr";
 import { Bootup } from "./Bootup";
 import { SelectDate } from "./components/SelectDate";
@@ -68,15 +68,18 @@ function App({ config }: AppProps) {
     };
   }, [reset, clearCache]);
 
+  const formContext = useMemo(
+    () => ({
+      staff: fields.staff.value,
+      schedule: fields.schedule.value,
+      hour: fields.hour.value,
+    }),
+    [fields.staff.value, fields.hour.value, fields.schedule.value]
+  );
+
   return (
     <AppContext.Provider value={config}>
-      <FormContext.Provider
-        value={{
-          staff: fields.staff.value,
-          schedule: fields.schedule.value,
-          hour: fields.hour.value,
-        }}
-      >
+      <FormContext.Provider value={formContext}>
         <Bootup fields={fields}>
           <ApplicationStyled>
             <div className="customer">

@@ -1,10 +1,9 @@
+import { useTranslation } from '@hooks';
 import { useCollectionDestroy } from '@services';
 import {
-  Avatar,
   Button,
   Card,
   Icon,
-  List,
   ResourceItem,
   ResourceList,
   Text,
@@ -12,7 +11,6 @@ import {
 } from '@shopify/polaris';
 import { CancelMinor, TickMinor } from '@shopify/polaris-icons';
 import { useCallback, useState } from 'react';
-import { useTranslation } from '@hooks';
 import ModalConfirm from '../modals/ModalConfirm.js';
 
 interface CollectionListProps {

@@ -1,4 +1,4 @@
-declare module OrderTypes {
+declare namespace OrderTypes {
   export interface Staff {
     _id: string;
     fullname: string;
@@ -424,7 +424,7 @@ declare module OrderTypes {
   }
 }
 
-declare module Refund {
+declare namespace Refund {
   export interface ShopMoney {
     amount: string;
     currency_code: string;

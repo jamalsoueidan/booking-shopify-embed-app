@@ -1,14 +1,11 @@
+import FormStatus from '@components/FormStatus';
+import LoadingPage from '@components/LoadingPage';
 import ProductActivate from '@components/collections/product/ProductActivate';
 import ProductBanner from '@components/collections/product/ProductBanner';
 import ProductOptionsCard from '@components/collections/product/ProductOptionsCard';
 import ProductStaff from '@components/collections/product/ProductStaff';
-import FormStatus from '@components/FormStatus';
-import LoadingPage from '@components/LoadingPage';
 import { useSave } from '@hooks';
-import {
-  useCollectionProductGet,
-  useCollectionProductUpdate,
-} from '@services';
+import { useCollectionProductGet, useCollectionProductUpdate } from '@services';
 import { Form, Layout, Page, PageActions } from '@shopify/polaris';
 import { useDynamicList, useField, useForm } from '@shopify/react-form';
 import { useParams } from 'react-router-dom';
@@ -86,7 +83,7 @@ export default () => {
               active={fields.active}
               staffLength={product.staff.length}></ProductActivate>
             <br />
-            <ProductStaff product={product as any} form={staff}></ProductStaff>
+            <ProductStaff product={product} form={staff}></ProductStaff>
             <br />
             <ProductOptionsCard fields={fields}></ProductOptionsCard>
           </Layout>

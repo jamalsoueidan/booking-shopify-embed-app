@@ -2,7 +2,7 @@ import { useNavigate } from '@shopify/app-bridge-react';
 import { Card, EmptyState, Page } from '@shopify/polaris';
 import { useTranslation } from '@hooks';
 
-export default ({}) => {
+export default () => {
   const navigate = useNavigate();
   const { t } = useTranslation('staff', { keyPrefix: 'empty' });
 

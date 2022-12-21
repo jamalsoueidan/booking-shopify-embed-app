@@ -2,12 +2,11 @@ import Calendar from '@components/Calendar';
 import BookingModal from '@components/bookings/BookingModal';
 import StaffSelection from '@components/bookings/staff-selection';
 import FullCalendar, { DatesSetArg, EventClickArg } from '@fullcalendar/react'; // must go before plugins
-import { useDate, useFulfillment } from '@hooks';
-import { useSetting, useBookings } from '@services';
+import { useDate, useFulfillment, useTranslation } from '@hooks';
+import { useBookings, useSetting } from '@services';
 import { Badge, Card, Page } from '@shopify/polaris';
 import { format } from 'date-fns-tz';
 import { createRef, useCallback, useEffect, useState } from 'react';
-import { useTranslation } from '@hooks';
 
 export default () => {
   const [info, setInfo] = useState(null);
