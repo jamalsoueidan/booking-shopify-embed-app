@@ -50,20 +50,17 @@ export default ({ productId, show, close }: StaffModalProps) => {
     setSelected(() => [...value]);
   }, [value]);
 
-  const choices = useMemo(
-    () =>
-      data
-        ?.sort((a, b) => (a.fullname > b.fullname ? 1 : -1))
-        .map((staff) => (
-          <ChoiceStaff
-            key={staff._id}
-            staff={staff}
-            toggle={toggle}
-            selected={selected}
-          />
-        )),
-    [data]
-  );
+  const choices = useMemo(() => {
+    const sorted = data?.sort((a, b) => (a.fullname > b.fullname ? 1 : -1));
+    return sorted.map((staff) => (
+      <ChoiceStaff
+        key={staff._id}
+        staff={staff}
+        toggle={toggle}
+        selected={selected}
+      />
+    ));
+  }, [data]);
 
   return (
     <Modal

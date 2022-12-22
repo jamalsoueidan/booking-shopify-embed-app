@@ -8,6 +8,7 @@ interface Props {
   isLoading: boolean;
   onSelect: (value: string) => void;
 }
+
 export default ({ staff, onSelect, isLoading }: Props) => {
   const { data } = useStaff();
   const { t } = useTranslation('bookings');
@@ -18,20 +19,15 @@ export default ({ staff, onSelect, isLoading }: Props) => {
 
   const buttons = useMemo(
     () =>
-      data?.map((s) => {
-        const onClickUser = () => onSelect(s._id);
-        return (
-          <Button
-            size="large"
-            key={s._id}
-            onClick={onClickUser}
-            pressed={staff === s._id}
-            loading={staff === s._id ? isLoading : false}
-            icon={<Avatar size="medium" name={s.fullname} source={s.avatar} />}>
-            {s.fullname}
-          </Button>
-        );
-      }),
+      data?.map((s) => (
+        <StaffButton
+          key={s._id}
+          selectedStaff={staff}
+          onSelect={onSelect}
+          staff={s}
+          isLoading={isLoading}
+        />
+      )),
     [data]
   );
 
@@ -51,5 +47,35 @@ export default ({ staff, onSelect, isLoading }: Props) => {
       </Button>
       {buttons}
     </Stack>
+  );
+};
+
+interface StaffButton {
+  selectedStaff: string;
+  staff: Staff;
+  onSelect: (value: string) => void;
+  isLoading?: boolean;
+}
+
+const StaffButton = ({
+  selectedStaff,
+  staff,
+  onSelect,
+  isLoading,
+}: StaffButton) => {
+  const onClick = useCallback(() => onSelect(staff._id), [onSelect]);
+
+  return (
+    <Button
+      size="large"
+      key={staff._id}
+      onClick={onClick}
+      pressed={selectedStaff === staff._id}
+      loading={selectedStaff === staff._id ? isLoading : false}
+      icon={
+        <Avatar size="medium" name={staff.fullname} source={staff.avatar} />
+      }>
+      {staff.fullname}
+    </Button>
   );
 };
