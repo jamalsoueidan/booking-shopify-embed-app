@@ -89,7 +89,6 @@ const getByDateRange = async ({
   start,
   end,
 }: GetByDateRangeProps) => {
-  console.log(new Date(start), start);
   return await ScheduleModel.find({
     staff: new mongoose.Types.ObjectId(staff),
     start: {
@@ -122,7 +121,6 @@ const getByStaffAndTag = async ({
   start,
   end,
 }: GetByStaffAndTagProps): Promise<Array<GetByStaffAndTagReturn>> => {
-  console.log(new Date(start), start);
   return await ScheduleModel.aggregate([
     {
       $match: {

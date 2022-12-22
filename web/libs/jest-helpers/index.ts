@@ -54,12 +54,17 @@ export const createSchedule = async ({
   });
 };
 
-export const createNewStaffAndAddToProductWithSchedule = async ({
-  product,
-  tag,
-}) => {
+export const createStaffWithSchedule = async ({ tag }) => {
   const staff = await createStaff();
+  const schedule = await createSchedule({
+    staff: staff._id,
+    tag,
+  });
+  return { staff, schedule };
+};
 
+export const createStaffAndUpdateProduct = async ({ product, tag }) => {
+  const { staff, schedule } = await createStaffWithSchedule({ tag });
   const updateProduct = await ProductService.update({
     query: {
       shop: global.shop,
@@ -68,11 +73,6 @@ export const createNewStaffAndAddToProductWithSchedule = async ({
     body: {
       staff: [{ _id: staff._id, tag }],
     },
-  });
-
-  const schedule = await createSchedule({
-    staff: staff._id.toString(),
-    tag,
   });
 
   return { staff, updateProduct, schedule };
