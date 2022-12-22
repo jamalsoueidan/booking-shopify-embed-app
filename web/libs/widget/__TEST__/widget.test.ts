@@ -97,7 +97,7 @@ describe("admin-widget controller", () => {
     let availabilityDay = availability.at(0);
     const schedule = availabilityDay.hours.at(3);
 
-    const booking = await BookingModel.create({
+    await BookingModel.create({
       orderId: 1000,
       lineItemId: 1100,
       lineItemTotal: 1,

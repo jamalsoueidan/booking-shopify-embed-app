@@ -30,6 +30,7 @@ const modify = async ({
         r.refund_line_items.find((l) => l.line_item_id === lineItem.id)
       );
 
+      //TODO: should we validate start, end with the availability?
       return {
         orderId,
         lineItemId: lineItem.id,
@@ -47,24 +48,6 @@ const modify = async ({
       };
     }
   });
-
-  /*const query = {
-    shop,
-    productId: models.map((model) => model.productId).filter(onlyUnique),
-  };
-
-  const products = await ProductModel.find<IProductModel>(query);
-
-  models = models.map((model) => {
-    const product = products.find(
-      (product) => product.productId === model.productId
-    );
-    // TODO: validate time?
-    return {
-      ...model,
-      end: addMinutes(model.start, product.duration),
-    };
-  });*/
 
   const customer = await CustomerService.findCustomerAndUpdate({
     shop,

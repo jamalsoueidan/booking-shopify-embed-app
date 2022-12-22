@@ -39,28 +39,8 @@ const modify = async ({ body, shop }: CreateProps) => {
     if (_data) {
       const data: Data = JSON.parse(_data.split("\\").join(""));
       const { start, end, staff } = data;
-      /*
 
-      const response = await widgetController.availabilityDay({
-        query: {
-          staffId: staff.staff,
-          date: start.substring(0, 10),
-          productId,
-          shop,
-        },
-      });
-
-      const validateDate = !!response.find(
-        (scheduleDate) =>
-          scheduleDate.date === start.substring(0, 10) &&
-          scheduleDate.hours.find(
-            (hour) =>
-              hour.start.toISOString() === start &&
-              hour.end.toISOString() === end
-          )
-      );
-
-      if (validateDate) {*/
+      //TODO: should we validate start, end with the availability?
       models.push({
         cartId: body.id,
         start,
@@ -68,7 +48,6 @@ const modify = async ({ body, shop }: CreateProps) => {
         staff: new mongoose.Types.ObjectId(staff._id),
         shop,
       });
-      //}
     }
   }
 
