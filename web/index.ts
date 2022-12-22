@@ -135,7 +135,7 @@ export async function createServer(
 
   app.use(
     cors({
-      origin: ["https://bysistersdk.myshopify.com"],
+      origin: /.myshopify\.com$/,
       credentials: true,
     })
   );
