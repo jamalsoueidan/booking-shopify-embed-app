@@ -50,7 +50,7 @@ export default ({ staff, onSelect, isLoading }: Props) => {
   );
 };
 
-interface StaffButton {
+interface StaffButtonProps {
   selectedStaff: string;
   staff: Staff;
   onSelect: (value: string) => void;
@@ -62,7 +62,7 @@ const StaffButton = ({
   staff,
   onSelect,
   isLoading,
-}: StaffButton) => {
+}: StaffButtonProps) => {
   const onClick = useCallback(() => onSelect(staff._id), [onSelect]);
 
   return (
