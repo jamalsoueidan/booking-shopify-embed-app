@@ -4,15 +4,15 @@ import { AppBridgeProvider, PolarisProvider, QueryProvider } from './providers';
 import Routes from './Routes';
 import Wrapper from './Wrapper';
 
+const i18nManager = new I18nManager({
+  interpolation: { escapeValue: false },
+  locale: 'en',
+});
+
 export default function App() {
   // Any .tsx or .jsx files in /pages will become a route
   // See documentation for <Routes /> for more info
   const pages = import.meta.globEager('./pages/**/!(*.test.[jt]sx)*.([jt]sx)');
-
-  const i18nManager = new I18nManager({
-    interpolation: { escapeValue: false },
-    locale: 'en',
-  });
 
   return (
     <I18nContext.Provider value={i18nManager}>
