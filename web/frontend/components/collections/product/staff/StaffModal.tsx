@@ -111,7 +111,7 @@ const ChoiceStaff = ({ staff, selected, toggle }: ChoiceStaffProps) => {
 
   const choices = useMemo(
     () =>
-      staff.tags.sort().map((t) => {
+      [...staff.tags].sort().map((t) => {
         return {
           value: t,
           label: selectTag(t),
