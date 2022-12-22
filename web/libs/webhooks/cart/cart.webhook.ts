@@ -34,7 +34,6 @@ const modify = async ({ body, shop }: CreateProps) => {
   const models = [];
 
   for (const lineItem of lineItems) {
-    const productId = lineItem.product_id.toString();
     const _data = lineItem.properties?._data;
     if (_data) {
       const data: Data = JSON.parse(_data.split("\\").join(""));
