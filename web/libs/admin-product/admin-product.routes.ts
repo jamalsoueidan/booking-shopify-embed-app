@@ -8,6 +8,10 @@ export default function adminProductRoutes(app) {
 
   const handleRoute = expressHandleRoute(app, controller);
 
+  router.get("/products", async (req, res) => {
+    handleRoute(req, res, ControllerMethods.get);
+  });
+
   router.get("/products/:id", async (req, res) => {
     handleRoute(req, res, ControllerMethods.getById);
   });

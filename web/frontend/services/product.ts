@@ -2,13 +2,23 @@ import { useCallback } from 'react';
 import { useFetch } from '@hooks';
 import { useQuery } from 'react-query';
 
-interface UseCollectionProductGetProps {
+export const useProducts = () => {
+  const { get } = useFetch();
+
+  const { data } = useQuery<ApiResponse<Array<Product>>>([`products`], () =>
+    get(`/api/admin/products`)
+  );
+
+  return {
+    data: data?.payload,
+  };
+};
+
+interface UseProductGetProps {
   productId: string;
 }
 
-export const useCollectionProductGet = ({
-  productId,
-}: UseCollectionProductGetProps) => {
+export const useProductGet = ({ productId }: UseProductGetProps) => {
   const { get } = useFetch();
 
   const { data } = useQuery<ApiResponse<ProductAggreate>>(
@@ -21,19 +31,15 @@ export const useCollectionProductGet = ({
   };
 };
 
-interface UseCollectionProductUpdateProps {
+interface UseProductUpdateProps {
   productId: string;
 }
 
-type UseCollectionProductUpdateFetch = (
-  body: ProductUpdateBody
-) => Promise<Product>;
+type UseProductUpdateFetch = (body: ProductUpdateBody) => Promise<Product>;
 
-export const useCollectionProductUpdate = ({
-  productId,
-}: UseCollectionProductUpdateProps) => {
+export const useProductUpdate = ({ productId }: UseProductUpdateProps) => {
   const { put, mutate } = useFetch();
-  const update: UseCollectionProductUpdateFetch = useCallback(
+  const update: UseProductUpdateFetch = useCallback(
     async (body) => {
       const response: Product = await put(
         `/api/admin/products/${productId}`,
@@ -50,13 +56,11 @@ export const useCollectionProductUpdate = ({
   };
 };
 
-interface UseCollectionProductStaffListProps {
+interface UseProductStaffListProps {
   productId: string;
 }
 
-export const useCollectionProductStaff = ({
-  productId,
-}: UseCollectionProductStaffListProps) => {
+export const useProductStaff = ({ productId }: UseProductStaffListProps) => {
   const { get } = useFetch();
 
   const { data } = useQuery<ApiResponse<Array<ProductAddStaff>>>(

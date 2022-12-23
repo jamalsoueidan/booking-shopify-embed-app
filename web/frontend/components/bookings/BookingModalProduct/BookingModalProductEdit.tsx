@@ -1,4 +1,4 @@
-import FormErrors from '@components/FormErrors';
+import { FormErrors } from '@components/FormErrors';
 import LoadingSpinner from '@components/LoadingSpinner';
 import { useCustomForm, useDate } from '@hooks';
 import { useBookingUpdate, useWidgetDate, useWidgetStaff } from '@services';
@@ -63,11 +63,11 @@ export default forwardRef(({ info }: BookingModalChildProps, ref) => {
       fields: {
         staff: useField({
           value: info.staff._id || '',
-          validates: [notEmpty('to is required')],
+          validates: [notEmpty('staff is required')],
         }),
         date: useField({
           value: startDate || undefined,
-          validates: [notEmpty('message is required')],
+          validates: [notEmpty('date is required')],
         }),
         time: useField({
           value: info.start || undefined,

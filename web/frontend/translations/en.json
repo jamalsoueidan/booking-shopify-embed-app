@@ -1,6 +1,10 @@
 {
 	"bookings": {
 		"all": "All staff",
+		"new": {
+			"save": "",
+			"title": "Create booking"
+		},
 		"title": "Bookings"
 	},
 	"collections": {

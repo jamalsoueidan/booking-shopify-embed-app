@@ -8,3 +8,6 @@ interface Customer {
   phone: string;
   shop: string;
 }
+
+interface CustomerQuery
+  extends Pick<Customer, "customerId" | "firstName" | "lastName"> {}

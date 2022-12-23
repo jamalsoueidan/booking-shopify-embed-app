@@ -71,9 +71,9 @@ describe("webhooks order", () => {
     const order1 = result[0];
     expect(order1.orderId).toEqual(mockCreate.id);
     expect(order1.productId).toBe(mockCreate.line_items[0].product_id);
-    expect(differenceInMinutes(order1.end, order1.start)).toEqual(
-      product.duration + product.buffertime
-    );
+    expect(
+      differenceInMinutes(new Date(order1.end), new Date(order1.start))
+    ).toEqual(product.duration + product.buffertime);
 
     const order2 = result[1];
     expect(order2.anyAvailable).toBeTruthy();

@@ -4,7 +4,6 @@ import { useQuery } from 'react-query';
 
 export const useBookings = ({ start, end, staff }: BookingQuery) => {
   const { get } = useFetch();
-  const enabled = start !== null && end !== null;
   const { data, isLoading } = useQuery<ApiResponse<Array<BookingAggreate>>>({
     queryKey: ['bookings', { start, end, staff }],
     queryFn: () =>
@@ -13,7 +12,7 @@ export const useBookings = ({ start, end, staff }: BookingQuery) => {
           staff ? '&staff=' + staff : ''
         }`
       ),
-    enabled,
+    enabled: !!start && !!end,
   });
 
   return {

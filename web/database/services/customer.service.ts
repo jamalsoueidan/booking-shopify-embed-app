@@ -1,6 +1,7 @@
 import CustomerModel from "@models/customer.model";
 import ShopifySessions from "@models/shopify-sessions.model";
 import Shopify from "@shopify/shopify-api";
+import { LeanDocument } from "mongoose";
 
 const getCustomerQuery = `
   query($id: ID!) {
@@ -48,4 +49,27 @@ const findCustomerAndUpdate = async ({
   );
 };
 
-export default { findCustomerAndUpdate };
+interface FindCustomerProps {
+  shop: string;
+  name: string;
+}
+
+const findCustomer = ({ shop, name }: FindCustomerProps) => {
+  const rgx = (pattern) => new RegExp(`.*${pattern}.*`);
+  const searchRgx = rgx(name);
+
+  return CustomerModel.find(
+    {
+      $or: [
+        { firstName: { $regex: searchRgx, $options: "i" } },
+        { lastName: { $regex: searchRgx, $options: "i" } },
+      ],
+      shop,
+    },
+    "customerId firstName lastName"
+  )
+    .limit(10)
+    .lean();
+};
+
+export default { findCustomerAndUpdate, findCustomer };

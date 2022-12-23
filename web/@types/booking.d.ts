@@ -20,9 +20,20 @@ interface BookingAggreate extends Booking {
   customer: Customer;
   product: Product;
   staff: Staff;
+  start: string;
+  end: string;
 }
 
 interface BookingBodyUpdate extends Pick<Booking, "staff" | "isEdit"> {
+  start: string;
+  end: string;
+}
+
+interface BookingBodyCreate
+  extends Pick<
+    Booking,
+    "anyAvailable" | "productId" | "customerId" | "staff" | "isEdit"
+  > {
   start: string;
   end: string;
 }

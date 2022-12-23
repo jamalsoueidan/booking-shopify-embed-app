@@ -8,7 +8,7 @@ export const useStaffSchedule = ({ staff, start, end }: ScheduleQuery) => {
     queryKey: ['staff', staff, 'schedules', start, end],
     queryFn: () =>
       get(`/api/admin/staff/${staff}/schedules?start=${start}&end=${end}`),
-    enabled: start !== undefined && end !== undefined,
+    enabled: !!start && !!end,
   });
 
   return { data: data?.payload || [] };

@@ -5,7 +5,7 @@ interface FormErrorsProps {
   errors: FormError[];
 }
 
-export default ({ errors }: FormErrorsProps) => {
+export const FormErrors = ({ errors }: FormErrorsProps) => {
   if (errors.length > 0) {
     return (
       <Banner status="critical">

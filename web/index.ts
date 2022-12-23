@@ -1,5 +1,6 @@
 // @ts-check
 import adminNotificationRoutes from "@libs/admin-notification/admin-notification.routes";
+import customerRoutes from "@libs/customer/customer.routes";
 import CartWebhook from "@libs/webhooks/cart/cart.webhook.js";
 import CustomerWebhook from "@libs/webhooks/customer/customer.webhook.js";
 import { LATEST_API_VERSION, Shopify } from "@shopify/shopify-api";
@@ -176,6 +177,8 @@ export async function createServer(
     })
   );
 
+  app.use("/api/admin", customerRoutes(app));
+  app.use("/api/admin", adminProductRoutes(app));
   app.use("/api/admin", adminBookingRoutes(app));
   app.use("/api/admin", adminProductRoutes(app));
   app.use("/api/admin", adminNotificationRoutes(app));

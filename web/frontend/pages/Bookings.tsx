@@ -4,11 +4,13 @@ import StaffSelection from '@components/bookings/staff-selection';
 import FullCalendar, { DatesSetArg, EventClickArg } from '@fullcalendar/react'; // must go before plugins
 import { useDate, useFulfillment, useTranslation } from '@hooks';
 import { useBookings, useSetting } from '@services';
+import { useNavigate } from '@shopify/app-bridge-react';
 import { Badge, Card, Page } from '@shopify/polaris';
 import { format } from 'date-fns-tz';
 import { createRef, useCallback, useEffect, useState } from 'react';
 
 export default () => {
+  const navigate = useNavigate();
   const [info, setInfo] = useState(null);
   const [start, setStart] = useState(null);
   const [end, setEnd] = useState(null);
@@ -90,7 +92,13 @@ export default () => {
   ) : null;
 
   return (
-    <Page fullWidth title={t('title')}>
+    <Page
+      fullWidth
+      title={t('title')}
+      primaryAction={{
+        content: 'Opret en bestilling',
+        onAction: () => navigate('/Bookings/New'),
+      }}>
       {bookingModal}
       <Card sectioned>
         <Card.Section

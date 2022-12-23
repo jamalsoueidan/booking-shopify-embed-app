@@ -1,5 +1,5 @@
 import { useTagOptions, usePositions, useTranslation } from '@hooks';
-import { useCollectionProductStaff } from '@services';
+import { useProductStaff } from '@services';
 import { Modal, OptionList, Spinner, Text } from '@shopify/polaris';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import FormContext from './FormContext';
@@ -15,7 +15,7 @@ export default ({ productId, show, close }: StaffModalProps) => {
     keyPrefix: 'product.staff.modal',
   });
 
-  const { data } = useCollectionProductStaff({ productId });
+  const { data } = useProductStaff({ productId });
   const { value, fields, addItem, removeItems } = useContext(FormContext);
   const [selected, setSelected] = useState<Array<ProductStaffAggreate>>([]);
 

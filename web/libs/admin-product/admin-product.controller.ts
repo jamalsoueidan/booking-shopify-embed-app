@@ -6,6 +6,7 @@ import { Session } from "@shopify/shopify-api/dist/auth/session";
 import mongoose from "mongoose";
 
 export enum ControllerMethods {
+  get = "get",
   getById = "getById",
   getOrderFromShopify = "getOrderFromShopify",
   update = "update",
@@ -46,6 +47,14 @@ const getOrderFromShopify = async ({
   });
 
   return data?.body?.data?.order;
+};
+
+interface GetQuery {
+  shop: string;
+}
+
+const get = ({ query }: { query: GetQuery }) => {
+  return ProductModel.find({ shop: query.shop });
 };
 
 interface Query {
@@ -217,6 +226,7 @@ const getStaff = ({ query }: { query: Query }) => {
 };
 
 export default {
+  get,
   getById,
   getOrderFromShopify,
   update,

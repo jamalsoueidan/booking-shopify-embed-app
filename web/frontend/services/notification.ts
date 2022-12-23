@@ -4,7 +4,6 @@ import { useQuery } from 'react-query';
 
 export const useNotification = ({ orderId, lineItemId }: NotificationQuery) => {
   const { get } = useFetch();
-  const enabled = orderId !== null && lineItemId !== null;
 
   const { data, isLoading } = useQuery<ApiResponse<Array<Notification>>>({
     queryKey: ['notification', orderId, lineItemId],
@@ -12,7 +11,7 @@ export const useNotification = ({ orderId, lineItemId }: NotificationQuery) => {
       get(
         `/api/admin/notifications?orderId=${orderId}&lineItemId=${lineItemId}`
       ),
-    enabled,
+    enabled: !!orderId && !!lineItemId,
   });
 
   return {

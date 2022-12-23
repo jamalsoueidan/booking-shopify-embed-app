@@ -27,7 +27,8 @@ export const useCustomForm = <T extends FieldBag>(
   });
 
   useEffect(() => {
-    setIsValid(isSubmitted && customForm.submitErrors.length === 0);
+    const isValid = isSubmitted && customForm.submitErrors.length === 0;
+    setIsValid(isValid);
   }, [isSubmitted, customForm.submitErrors]);
 
   return {

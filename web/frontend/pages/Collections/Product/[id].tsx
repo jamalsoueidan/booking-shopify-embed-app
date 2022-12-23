@@ -5,7 +5,7 @@ import ProductBanner from '@components/collections/product/ProductBanner';
 import ProductOptionsCard from '@components/collections/product/ProductOptionsCard';
 import ProductStaff from '@components/collections/product/ProductStaff';
 import { useSave } from '@hooks';
-import { useCollectionProductGet, useCollectionProductUpdate } from '@services';
+import { useProductGet, useProductUpdate } from '@services';
 import { Form, Layout, Page, PageActions } from '@shopify/polaris';
 import { useDynamicList, useField, useForm } from '@shopify/react-form';
 import { useParams } from 'react-router-dom';
@@ -13,8 +13,8 @@ import { useParams } from 'react-router-dom';
 export default () => {
   const params = useParams();
 
-  const { data: product } = useCollectionProductGet({ productId: params.id });
-  const { update } = useCollectionProductUpdate({
+  const { data: product } = useProductGet({ productId: params.id });
+  const { update } = useProductUpdate({
     productId: params.id,
   });
 

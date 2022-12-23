@@ -1,6 +1,10 @@
 {
 	"bookings": {
 		"all": "Alle medarbejder",
+		"new": {
+			"save": "Gem",
+			"title": "Opret en bestilling"
+		},
 		"title": "Bestillinger"
 	},
 	"collections": {

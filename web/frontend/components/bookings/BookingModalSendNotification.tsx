@@ -1,4 +1,4 @@
-import FormErrors from '@components/FormErrors';
+import { FormErrors } from '@components/FormErrors';
 import FormToast from '@components/FormToast';
 import { useCustomForm } from '@hooks';
 import { useSendCustomNotification } from '@services';
