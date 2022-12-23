@@ -2,6 +2,7 @@ import FormToast from '@components/FormToast';
 import LoadingSpinner from '@components/LoadingSpinner';
 import { useBookingGet } from '@services';
 import { Modal } from '@shopify/polaris';
+import { isAfter } from 'date-fns';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import BookingModalProductEdit from './BookingModalProduct/BookingModalProductEdit';
 import BookingModalProductView from './BookingModalProduct/BookingModalProductView';
@@ -48,7 +49,10 @@ export default ({
         },
       ]);
     } else {
-      if (!booking.fulfillmentStatus) {
+      if (
+        !booking.fulfillmentStatus &&
+        isAfter(new Date(booking.start), new Date())
+      ) {
         setSecondaryActions([
           {
             content: 'Ændre dato/tid',

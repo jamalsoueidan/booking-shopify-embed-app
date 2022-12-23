@@ -24,7 +24,7 @@ export const ScheduleTimerSelect = ({
   productId,
   field,
 }: ScheduleTimerSelectProps) => {
-  const selectedDate = date ? format(date, 'yyyy-MM-dd') : null;
+  const selectedDate = date ? format(new Date(date), 'yyyy-MM-dd') : null;
   const { toTimeZone } = useDate();
 
   const { data } = useWidgetDate({
@@ -43,15 +43,16 @@ export const ScheduleTimerSelect = ({
       (s) => s.date === format(new Date(date), 'yyyy-MM-dd')
     );
 
-    const hours = schedule?.hours.map((t) => ({
-      label:
-        format(toTimeZone(t.start), 'HH:mm') +
-        ' - ' +
-        format(toTimeZone(t.end), 'HH:mm'),
-      value: t.start,
-    }));
+    const hours =
+      schedule?.hours.map((t) => ({
+        label:
+          format(toTimeZone(t.start), 'HH:mm') +
+          ' - ' +
+          format(toTimeZone(t.end), 'HH:mm'),
+        value: t.start,
+      })) || [];
 
-    hours?.sort(sortByDate);
+    hours.sort(sortByDate);
 
     return [defaultOption, ...hours];
   }, [data]);

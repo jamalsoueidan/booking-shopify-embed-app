@@ -1,10 +1,12 @@
 import { useCustomer } from '@services/customer';
-import { Autocomplete, Icon, InlineError } from '@shopify/polaris';
+import { Autocomplete, Icon, InlineError, Text } from '@shopify/polaris';
 import { CustomerPlusMajor } from '@shopify/polaris-icons';
 import { Field } from '@shopify/react-form';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
-export const CustomerAutocomplete = (field: Field<number>) => {
+export const CustomerAutocomplete = (
+  field: Field<{ customerId: number; fullName: string }>
+) => {
   const { find } = useCustomer();
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState([]);
@@ -48,11 +50,24 @@ export const CustomerAutocomplete = (field: Field<number>) => {
         });
         return matchedOption && matchedOption.label;
       });
-      field.onChange(parseInt(selected[0]));
+      field.onChange({
+        customerId: parseInt(selected[0]),
+        fullName: selectedText[0],
+      });
       setInputValue(selectedText[0]);
     },
     [field.onChange, options]
   );
+
+  useEffect(() => {
+    setNewOptions('a');
+  }, []);
+
+  useEffect(() => {
+    if (!field.dirty) {
+      setInputValue(field.defaultValue?.fullName);
+    }
+  }, [field.dirty]);
 
   const textField = useMemo(
     () => (
@@ -83,6 +98,11 @@ export const CustomerAutocomplete = (field: Field<number>) => {
           fieldID="errorCustomerAutoComplete"
         />
       ) : null}
+      <div style={{ marginTop: 'var(--p-space-1)' }}>
+        <Text variant="bodyMd" as="p" color="subdued">
+          Start med at udfylde feltet, så kommer der valgmuligheder frem.
+        </Text>
+      </div>
     </>
   );
 };

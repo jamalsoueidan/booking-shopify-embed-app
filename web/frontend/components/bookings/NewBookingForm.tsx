@@ -8,11 +8,13 @@ import {
   Page,
 } from '@shopify/polaris';
 import { notEmpty, useField } from '@shopify/react-form';
-import { CustomerAutocomplete } from './CustomerAutocomplete';
-import { ProductSelect } from './ProductSelect';
-import { ScheduleDateSelect } from './ScheduleDateSelect';
-import { ScheduleStaffSelect } from './ScheduleStaffSelect';
-import { ScheduleTimerSelect } from './ScheduleTimerSelect';
+import {
+  CustomerAutocomplete,
+  ProductSelect,
+  ScheduleDateSelect,
+  ScheduleStaffSelect,
+  ScheduleTimerSelect,
+} from './BookingForm';
 
 interface StaffFormProps {
   action: (body: BookingBodyCreate) => void;
@@ -21,7 +23,7 @@ interface StaffFormProps {
   data?: BookingAggreate;
 }
 
-export const BookingForm = ({
+export const NewBookingForm = ({
   action,
   breadcrumbs,
   titleMetadata,
@@ -37,7 +39,10 @@ export const BookingForm = ({
         validates: [notEmpty('Der er ikke valgt produkt')],
       }),
       customerId: useField({
-        value: data?.customerId || undefined,
+        value: {
+          customerId: data?.customerId || undefined,
+          fullName: data?.customer.fullname || undefined,
+        },
         validates: [notEmpty('Du mangler vælg kunde')],
       }),
       staff: useField({

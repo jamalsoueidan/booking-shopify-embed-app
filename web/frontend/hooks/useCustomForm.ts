@@ -13,7 +13,8 @@ interface CustomForm<T extends FieldBag> extends Form<T> {
 }
 
 export const useCustomForm = <T extends FieldBag>(
-  form: FormWithoutDynamicListsInput<T>
+  form: FormWithoutDynamicListsInput<T>,
+  isModal = true
 ): CustomForm<T> => {
   const saveBar = useSaveBar();
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
@@ -45,10 +46,10 @@ export const useCustomForm = <T extends FieldBag>(
   }, []);
 
   useEffect(() => {
-    if (saveBar.dirty !== customForm.dirty) {
+    if (saveBar.dirty !== customForm.dirty && isModal) {
       saveBar.setDirty(customForm.dirty);
     }
-  }, [customForm.dirty]);
+  }, [customForm.dirty, isModal]);
 
   useEffect(() => {
     if (saveBar.submitting !== customForm.submitting) {

@@ -12,19 +12,19 @@ export default () => {
   const { data } = useCollection();
   const { t } = useTranslation('collections');
 
-  if (!data) {
-    return <LoadingPage />;
-  }
-
   const collection = useMemo(
     () =>
-      data.map((collection) => (
+      data?.map((collection) => (
         <CollectionsList
           key={collection._id}
           collection={collection}></CollectionsList>
       )),
     [data]
   );
+
+  if (!data) {
+    return <LoadingPage />;
+  }
 
   return (
     <Page

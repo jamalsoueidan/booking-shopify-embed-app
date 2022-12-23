@@ -21,14 +21,12 @@ export default ({ productId, show, close }: StaffModalProps) => {
 
   const toggle = useCallback(
     (value: ProductStaffAggreate) => {
-      console.log(value);
       // first we remove the selected Staff
       const newSelected = selected.filter((s) => s._id !== value._id);
       // then if tag is NOT null, we the selected staff
       if (value.tag) {
         newSelected.push(value);
       }
-      console.log(newSelected);
       setSelected(() => newSelected);
     },
     [selected]
@@ -49,7 +47,6 @@ export default ({ productId, show, close }: StaffModalProps) => {
 
   // onOpen update selected to correspond to the useForm
   useEffect(() => {
-    console.log(value);
     setSelected(() => [...value]);
   }, [value]);
 
@@ -139,8 +136,6 @@ const ChoiceStaff = ({ staff, selected, toggle }: ChoiceStaffProps) => {
   const choiceSelected = selected
     .filter((s) => s._id === staff._id)
     .map((s) => s.tag);
-
-  console.log(selected, choiceSelected);
 
   return (
     <OptionList

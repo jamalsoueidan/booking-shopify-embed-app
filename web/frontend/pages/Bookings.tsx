@@ -5,7 +5,7 @@ import FullCalendar, { DatesSetArg, EventClickArg } from '@fullcalendar/react'; 
 import { useDate, useFulfillment, useTranslation } from '@hooks';
 import { useBookings, useSetting } from '@services';
 import { useNavigate } from '@shopify/app-bridge-react';
-import { Badge, Card, Page } from '@shopify/polaris';
+import { Badge, Card, FooterHelp, Page } from '@shopify/polaris';
 import { format } from 'date-fns-tz';
 import { createRef, useCallback, useEffect, useState } from 'react';
 
@@ -128,6 +128,10 @@ export default () => {
           />
         </Card.Section>
       </Card>
+      <FooterHelp>
+        Kan ikke ændre i bookinger der er refunderet eller oprettet tidligere
+        end dagens dato.
+      </FooterHelp>
     </Page>
   );
 };

@@ -1,4 +1,4 @@
-import { BookingForm } from '@components/bookings/NewOrEditBooking/BookingForm';
+import { NewBookingForm } from '@components/bookings/NewBookingForm';
 import { useStaffCreate } from '@services';
 import { useNavigate } from '@shopify/app-bridge-react';
 import { useCallback } from 'react';
@@ -16,8 +16,10 @@ export default () => {
   );
 
   return (
-    <BookingForm
+    <NewBookingForm
       action={submit}
-      breadcrumbs={[{ content: 'Bookings', url: '/Bookings' }]}></BookingForm>
+      breadcrumbs={[
+        { content: 'Bookings', url: '/Bookings' },
+      ]}></NewBookingForm>
   );
 };
