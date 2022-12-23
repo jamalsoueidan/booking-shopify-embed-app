@@ -1,14 +1,24 @@
-import { Autocomplete, Icon } from '@shopify/polaris';
-import { CustomerPlusMajor } from '@shopify/polaris-icons';
-import { useState, useCallback, useMemo } from 'react';
-import { Field } from '@shopify/react-form';
 import { useCustomer } from '@services/customer';
+import { Autocomplete, Icon, InlineError } from '@shopify/polaris';
+import { CustomerPlusMajor } from '@shopify/polaris-icons';
+import { Field } from '@shopify/react-form';
+import { useCallback, useMemo, useState } from 'react';
 
 export const CustomerAutocomplete = (field: Field<number>) => {
   const { find } = useCustomer();
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const setNewOptions = useCallback(async (value: string) => {
+    const results = await find(value);
+    setOptions(
+      results?.map((r) => ({
+        label: `${r.firstName} ${r.lastName}`,
+        value: r.customerId.toString(),
+      }))
+    );
+  }, []);
 
   const updateText = useCallback(
     async (value: string) => {
@@ -24,13 +34,7 @@ export const CustomerAutocomplete = (field: Field<number>) => {
         return;
       }
 
-      const results = await find(value);
-      setOptions(
-        results?.map((r) => ({
-          label: `${r.firstName} ${r.lastName}`,
-          value: r.customerId.toString(),
-        }))
-      );
+      setNewOptions(value);
       setLoading(false);
     },
     [loading]
@@ -65,12 +69,20 @@ export const CustomerAutocomplete = (field: Field<number>) => {
   );
 
   return (
-    <Autocomplete
-      options={options}
-      selected={[field.value?.toString()]}
-      onSelect={updateSelection}
-      loading={loading}
-      textField={textField}
-    />
+    <>
+      <Autocomplete
+        options={options}
+        selected={[field.value?.toString()]}
+        onSelect={updateSelection}
+        loading={loading}
+        textField={textField}
+      />
+      {field.error ? (
+        <InlineError
+          message={field.error}
+          fieldID="errorCustomerAutoComplete"
+        />
+      ) : null}
+    </>
   );
 };

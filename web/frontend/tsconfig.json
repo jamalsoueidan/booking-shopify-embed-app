@@ -24,6 +24,7 @@
       "@components/*": ["components/*"],
       "@hooks/*": ["hooks/*"],
       "@hooks": ["hooks"],
+      "@providers/*": ["providers/*"],
       "@libs/*": ["libs/*"]
     }
   },

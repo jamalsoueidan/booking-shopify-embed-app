@@ -27,7 +27,14 @@ export const ScheduleStaffSelect = ({
     return [{ key: '-', label: 'Vælg medarbejder', value: '' }, ...all];
   }, [data]);
 
-  return <Select label="Vælg medarbejder" options={options} {...field} />;
+  return (
+    <Select
+      label="Vælg medarbejder"
+      options={options}
+      disabled={options.length === 1}
+      {...field}
+    />
+  );
 };
 
 const sortByName = (a: any, b: any) => {

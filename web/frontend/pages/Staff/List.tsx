@@ -18,10 +18,6 @@ export default () => {
   const { data } = useStaff();
   const { select } = usePositions();
 
-  if (!data) {
-    return <LoadingPage />;
-  }
-
   const renderItems = useCallback(
     (item: Staff) => {
       const { _id, fullname, active, avatar, position } = item;
@@ -49,6 +45,10 @@ export default () => {
     },
     [select]
   );
+
+  if (!data) {
+    return <LoadingPage />;
+  }
 
   return (
     <Page

@@ -1,7 +1,13 @@
 import { useProducts } from '@services/product';
-import { Select } from '@shopify/polaris';
+import { Select, SelectOption } from '@shopify/polaris';
 import { Field } from '@shopify/react-form';
 import { useCallback, useMemo } from 'react';
+
+const defaultOption: SelectOption = {
+  key: 'vælg produkt',
+  label: 'Vælg produkt',
+  value: undefined,
+} as any;
 
 export const ProductSelect = (field: Field<number>) => {
   const { data } = useProducts();
@@ -14,7 +20,7 @@ export const ProductSelect = (field: Field<number>) => {
         value: o.productId.toString(),
       })) || [];
 
-    return [{ key: '-', label: 'Vælg produkt', value: '' }, ...all];
+    return [defaultOption, ...all];
   }, [data]);
 
   const onChange = useCallback(
@@ -28,9 +34,11 @@ export const ProductSelect = (field: Field<number>) => {
     <Select
       label="Vælg produkt"
       options={productOptions}
-      {...field}
       value={field.value?.toString()}
+      disabled={productOptions.length === 1}
       onChange={onChange}
+      onBlur={field.onBlur}
+      error={field.error}
     />
   );
 };

@@ -1,4 +1,3 @@
-import { FormErrors } from '@components/FormErrors';
 import { useCustomForm, useTranslation } from '@hooks';
 import {
   BreadcrumbsProps,
@@ -7,9 +6,8 @@ import {
   FormLayout,
   Layout,
   Page,
-  Text,
 } from '@shopify/polaris';
-import { useField } from '@shopify/react-form';
+import { notEmpty, useField } from '@shopify/react-form';
 import { CustomerAutocomplete } from './CustomerAutocomplete';
 import { ProductSelect } from './ProductSelect';
 import { ScheduleDateSelect } from './ScheduleDateSelect';
@@ -32,27 +30,30 @@ export const BookingForm = ({
   const { t } = useTranslation('bookings', { keyPrefix: 'new' });
 
   //https://codesandbox.io/s/1wpxz?file=/src/MyForm.tsx:2457-2473
-  const { fields, submit, submitErrors } = useCustomForm({
+  const { fields, submit } = useCustomForm({
     fields: {
       productId: useField({
         value: data?.productId || undefined,
-        validates: [],
+        validates: [notEmpty('Der er ikke valgt produkt')],
       }),
       customerId: useField({
         value: data?.customerId || undefined,
-        validates: [],
+        validates: [notEmpty('Du mangler vælg kunde')],
       }),
       staff: useField({
         value: data?.staff?._id || undefined,
-        validates: [],
+        validates: [notEmpty('Du mangler vælg medarbejder')],
       }),
       date: useField({
         value: data?.start ? new Date(data?.start) : undefined,
-        validates: [],
+        validates: [notEmpty('Du mangler vælg dato')],
       }),
       time: useField({
-        value: { start: data?.start || undefined, end: data?.end || undefined },
-        validates: [],
+        value: {
+          start: data?.start || undefined,
+          end: data?.end || undefined,
+        },
+        validates: [notEmpty('Du mangler vælg tid')],
       }),
     },
     onSubmit: async (fieldValues) => {
@@ -69,7 +70,6 @@ export const BookingForm = ({
       titleMetadata={titleMetadata}>
       <Form onSubmit={submit}>
         <Layout>
-          <FormErrors errors={submitErrors} />
           <Layout.AnnotatedSection title={'Produkt'}>
             <Card sectioned>
               <FormLayout>
@@ -87,29 +87,23 @@ export const BookingForm = ({
             title={'Tidsbestilling'}
             description="Vælg medarbejder, dato og tid">
             <Card sectioned>
-              {!fields.productId.value ? (
-                <Text variant="bodyMd" as="p">
-                  Vælg produkt for at gå igang med at udfylde resten af felterne
-                </Text>
-              ) : (
-                <FormLayout>
-                  <ScheduleStaffSelect
-                    field={fields.staff}
-                    productId={fields.productId.value}
-                  />
-                  <ScheduleDateSelect
-                    field={fields.date}
-                    staff={fields.staff.value}
-                    productId={fields.productId.value}
-                  />
-                  <ScheduleTimerSelect
-                    field={fields.time}
-                    staff={fields.staff.value}
-                    date={fields.date.value}
-                    productId={fields.productId.value}
-                  />
-                </FormLayout>
-              )}
+              <FormLayout>
+                <ScheduleStaffSelect
+                  field={fields.staff}
+                  productId={fields.productId.value}
+                />
+                <ScheduleDateSelect
+                  field={fields.date}
+                  staff={fields.staff.value}
+                  productId={fields.productId.value}
+                />
+                <ScheduleTimerSelect
+                  field={fields.time}
+                  staff={fields.staff.value}
+                  date={fields.date.value}
+                  productId={fields.productId.value}
+                />
+              </FormLayout>
             </Card>
           </Layout.AnnotatedSection>
         </Layout>

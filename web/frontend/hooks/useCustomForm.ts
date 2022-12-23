@@ -1,3 +1,4 @@
+import { useSaveBar } from '@providers/saveBar';
 import {
   FieldBag,
   Form,
@@ -14,6 +15,7 @@ interface CustomForm<T extends FieldBag> extends Form<T> {
 export const useCustomForm = <T extends FieldBag>(
   form: FormWithoutDynamicListsInput<T>
 ): CustomForm<T> => {
+  const saveBar = useSaveBar();
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [isValid, setIsValid] = useState<boolean>(false);
   const customForm = useForm({
@@ -27,9 +29,32 @@ export const useCustomForm = <T extends FieldBag>(
   });
 
   useEffect(() => {
-    const isValid = isSubmitted && customForm.submitErrors.length === 0;
-    setIsValid(isValid);
+    const isValidNew = isSubmitted && customForm.submitErrors.length === 0;
+    if (isValidNew !== isValid) {
+      setIsValid(isValidNew);
+    }
   }, [isSubmitted, customForm.submitErrors]);
+
+  useEffect(() => {
+    saveBar.setReset(customForm.reset);
+    saveBar.setSubmit(customForm.submit);
+
+    return () => {
+      saveBar.setDirty(false);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (saveBar.dirty !== customForm.dirty) {
+      saveBar.setDirty(customForm.dirty);
+    }
+  }, [customForm.dirty]);
+
+  useEffect(() => {
+    if (saveBar.submitting !== customForm.submitting) {
+      saveBar.setSubmitting(customForm.submitting);
+    }
+  }, [customForm.submitting]);
 
   return {
     isSubmitted,

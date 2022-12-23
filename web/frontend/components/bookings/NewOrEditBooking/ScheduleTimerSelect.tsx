@@ -13,9 +13,10 @@ interface ScheduleTimerSelectProps {
 }
 
 const defaultOption: SelectOption = {
-  label: 'Vælge tid',
-  value: '',
-};
+  key: 'vælg tid',
+  label: 'Vælg tid',
+  value: null,
+} as any;
 
 export const ScheduleTimerSelect = ({
   date,
@@ -42,15 +43,15 @@ export const ScheduleTimerSelect = ({
       (s) => s.date === format(new Date(date), 'yyyy-MM-dd')
     );
 
-    const hours = schedule?.hours
-      .map((t) => ({
-        label:
-          format(toTimeZone(t.start), 'HH:mm') +
-          ' - ' +
-          format(toTimeZone(t.end), 'HH:mm'),
-        value: t.start,
-      }))
-      .sort(sortByDate);
+    const hours = schedule?.hours.map((t) => ({
+      label:
+        format(toTimeZone(t.start), 'HH:mm') +
+        ' - ' +
+        format(toTimeZone(t.end), 'HH:mm'),
+      value: t.start,
+    }));
+
+    hours?.sort(sortByDate);
 
     return [defaultOption, ...hours];
   }, [data]);
@@ -75,10 +76,11 @@ export const ScheduleTimerSelect = ({
     <Select
       label="Tid"
       options={timeOptions}
-      {...field}
       value={field.value?.start}
       disabled={timeOptions.length <= 1}
       onChange={onChange}
+      onBlur={field.onBlur}
+      error={field.error}
     />
   );
 };
