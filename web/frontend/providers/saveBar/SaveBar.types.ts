@@ -18,5 +18,3 @@ export interface SaveBarValues {
 }
 
 export interface SaveBarProps extends SaveBarActions, SaveBarValues {}
-
-export interface SaveBarProps extends SaveBarActions, SaveBarValues {}
