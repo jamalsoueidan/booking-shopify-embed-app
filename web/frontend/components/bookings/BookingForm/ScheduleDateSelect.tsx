@@ -43,14 +43,14 @@ export const ScheduleDateSelect = ({
 
   const disableSpecificDates = useMemo(() => {
     const dayIntervals = eachDayOfInterval({
-      start: new Date(year, month, defaultDate.getDate()),
+      start: new Date(year, month),
       end: endOfMonth(new Date(year, month)),
     });
 
     return dayIntervals.filter(
       (r) => !data?.find((s) => s.date === format(r, 'yyyy-MM-dd'))
     );
-  }, [data]);
+  }, [data, year, month]);
 
   return (
     <Stack vertical spacing="tight">
