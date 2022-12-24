@@ -28,7 +28,7 @@ export default ({ staff, onSelect, isLoading }: Props) => {
           isLoading={isLoading}
         />
       )),
-    [data]
+    [data, staff, onSelect, isLoading]
   );
 
   if (!data) {
