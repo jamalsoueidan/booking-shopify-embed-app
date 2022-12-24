@@ -50,12 +50,12 @@ const getBookingsForWidget = ({
         $or: [
           {
             start: {
-              $gte: start,
+              $gte: beginningOfDay(start),
             },
           },
           {
             end: {
-              $gte: start,
+              $gte: beginningOfDay(start),
             },
           },
         ],
@@ -66,12 +66,12 @@ const getBookingsForWidget = ({
         $or: [
           {
             start: {
-              $lt: end,
+              $lt: closeOfDay(end),
             },
           },
           {
             end: {
-              $lt: end,
+              $lt: closeOfDay(end),
             },
           },
         ],
