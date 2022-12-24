@@ -5,7 +5,14 @@ import FullCalendar, { DatesSetArg, EventClickArg } from '@fullcalendar/react'; 
 import { useDate, useFulfillment, useTranslation } from '@hooks';
 import { useBookings, useSetting } from '@services';
 import { useNavigate } from '@shopify/app-bridge-react';
-import { Badge, Card, FooterHelp, Page, Tooltip } from '@shopify/polaris';
+import {
+  Avatar,
+  Badge,
+  Card,
+  FooterHelp,
+  Page,
+  Tooltip,
+} from '@shopify/polaris';
 import { format } from 'date-fns-tz';
 import { createRef, useCallback, useEffect, useState } from 'react';
 
@@ -63,13 +70,26 @@ export default () => {
 
       return (
         <Tooltip content={fulfillmentStatus} dismissOnMouseOut>
-          <div style={{ cursor: 'pointer' }}>
+          <div
+            style={{ cursor: 'pointer', padding: '4px', position: 'relative' }}>
             <div>{extendHour}</div>
             <div
               style={{
-                overflow: 'hidden',
+                position: 'absolute',
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: '4px',
+                display: 'flex',
+                justifyContent: 'flex-end',
+                alignItems: 'center',
               }}>
-              {booking.staff?.fullname} - {booking.anyAvailable ? '(ET)' : ''}
+              <Avatar
+                size="small"
+                name={booking.staff?.fullname}
+                shape="square"
+                source={booking.staff?.avatar}
+              />
             </div>
             <div
               style={{

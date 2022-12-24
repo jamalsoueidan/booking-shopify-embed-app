@@ -1,6 +1,5 @@
 import BookingService from "@services/booking.service";
 import { GetBookingsProps } from "./booking.types";
-import { body } from "express-validator";
 
 export enum ControllerMethods {
   get = "get",

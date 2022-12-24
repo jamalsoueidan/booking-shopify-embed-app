@@ -30,10 +30,7 @@ interface BookingBodyUpdate extends Pick<Booking, "staff" | "isEdit"> {
 }
 
 interface BookingBodyCreate
-  extends Pick<
-    Booking,
-    "anyAvailable" | "productId" | "customerId" | "staff" | "isEdit"
-  > {
+  extends Pick<Booking, "productId" | "customerId" | "staff"> {
   start: string;
   end: string;
 }

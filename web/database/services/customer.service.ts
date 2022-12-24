@@ -1,7 +1,6 @@
 import CustomerModel from "@models/customer.model";
 import ShopifySessions from "@models/shopify-sessions.model";
 import Shopify from "@shopify/shopify-api";
-import { LeanDocument } from "mongoose";
 
 const getCustomerQuery = `
   query($id: ID!) {

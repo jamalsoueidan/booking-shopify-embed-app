@@ -6,12 +6,13 @@ const BookingSchema = new mongoose.Schema({
   productId: Number,
   orderId: {
     type: Number,
-    inded: true,
+    index: true,
   },
   lineItemId: {
     type: Number,
-    inded: true,
-    unique: true,
+    unqiue: true,
+    sparse: true,
+    index: true,
   },
   lineItemTotal: Number,
   customerId: Number,

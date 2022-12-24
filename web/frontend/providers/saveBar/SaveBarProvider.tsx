@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { SaveBarContext } from './SaveBar.context';
 import { SaveBarConsumer } from './SaveBarConsumer';
 import { setReset, setSubmit } from './SaveBar.types';
@@ -22,22 +22,39 @@ export const SaveBarProvider = ({ children }: any) => {
     submit.current = value;
   }, []);
 
+  const value = useMemo(
+    () => ({
+      dirty,
+      setDirty,
+      show,
+      setShow,
+      submitting,
+      setSubmitting,
+      submit,
+      reset,
+      setReset,
+      setSubmit,
+      contextualSaveBar,
+      setContextualSaveBar,
+    }),
+    [
+      dirty,
+      setDirty,
+      show,
+      setShow,
+      submitting,
+      setSubmitting,
+      submit,
+      reset,
+      setReset,
+      setSubmit,
+      contextualSaveBar,
+      setContextualSaveBar,
+    ]
+  );
+
   return (
-    <SaveBarContext.Provider
-      value={{
-        dirty,
-        setDirty,
-        show,
-        setShow,
-        submitting,
-        setSubmitting,
-        submit,
-        reset,
-        setReset,
-        setSubmit,
-        contextualSaveBar,
-        setContextualSaveBar,
-      }}>
+    <SaveBarContext.Provider value={value}>
       <SaveBarConsumer></SaveBarConsumer>
       {children}
     </SaveBarContext.Provider>

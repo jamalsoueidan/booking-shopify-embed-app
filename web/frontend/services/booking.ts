@@ -43,6 +43,25 @@ export const useBookingUpdate = ({ id }: UseBookingUpdateProps) => {
   };
 };
 
+type UseBookingCreateFetch = (body: BookingBodyCreate) => void;
+
+export const useBookingCreate = () => {
+  const { post, mutate } = useFetch();
+
+  const create: UseBookingCreateFetch = useCallback(
+    async (body) => {
+      await post('/api/admin/bookings', body);
+      mutate(['bookings']);
+      mutate(['widget', 'availability']);
+    },
+    [post, mutate]
+  );
+
+  return {
+    create,
+  };
+};
+
 interface UseBookingGetProps {
   id: string;
 }
