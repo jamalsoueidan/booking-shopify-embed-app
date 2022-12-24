@@ -1,4 +1,5 @@
-import { Card, ComplexAction, Modal, Tabs } from '@shopify/polaris';
+import { ModalProvider } from '@providers/modal';
+import { Card, Tabs } from '@shopify/polaris';
 import { useCallback, useMemo, useState } from 'react';
 import BookingModalCustomer from './BookingModalCustomer';
 import BookingModalNotification from './BookingModalNotification';
@@ -12,9 +13,6 @@ interface BookingModalProps {
 }
 
 export default ({ show, toggle, info }: BookingModalProps) => {
-  const [primaryAction, setPrimaryAction] = useState<ComplexAction>();
-  const [secondaryActions, setSecondaryActions] = useState<ComplexAction[]>();
-
   const close = useCallback(() => {
     toggle(null);
   }, []);
@@ -51,30 +49,18 @@ export default ({ show, toggle, info }: BookingModalProps) => {
   }, [info]);
 
   const handleTabChange = useCallback((selectedTabIndex: number) => {
-    setPrimaryAction(null);
-    setSecondaryActions(null);
     setSelected(selectedTabIndex);
   }, []);
 
   const Component = tabs[selected].component;
 
   return (
-    <Modal
-      large
-      open={show}
-      onClose={close}
-      title={info.product.title}
-      primaryAction={primaryAction}
-      secondaryActions={secondaryActions}>
+    <ModalProvider large open={show} onClose={close} title={info.product.title}>
       <Card>
         <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange}>
-          <Component
-            info={info}
-            setPrimaryAction={setPrimaryAction}
-            setSecondaryActions={setSecondaryActions}
-          />
+          <Component info={info} />
         </Tabs>
       </Card>
-    </Modal>
+    </ModalProvider>
   );
 };

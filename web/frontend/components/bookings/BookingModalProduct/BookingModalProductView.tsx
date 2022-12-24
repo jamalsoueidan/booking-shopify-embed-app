@@ -1,14 +1,32 @@
 import { FulfillmentStatus, useDate } from '@hooks';
+import { useModal } from '@providers/modal';
 import { Banner, Link, Modal, TextContainer } from '@shopify/polaris';
-import { differenceInHours, format, formatRelative } from 'date-fns';
+import { differenceInHours, format, formatRelative, isAfter } from 'date-fns';
 import da from 'date-fns/locale/da';
+import { useEffect } from 'react';
 
-export default ({ info }: BookingModalChildProps) => {
+export default ({ info, toggle }: BookingModalProductChildProps) => {
   const orderUrl = 'https://' + info.shop + '/admin/orders/' + info.orderId;
   const productUrl =
     'https://' + info.shop + '/admin/products/' + info.productId;
 
   const { toTimeZone } = useDate();
+  const { setSecondaryActions } = useModal();
+
+  useEffect(() => {
+    if (!!info.fulfillmentStatus && isAfter(new Date(info.start), new Date())) {
+      setSecondaryActions([
+        {
+          content: 'Ændre dato/tid',
+          onAction: toggle,
+        },
+      ]);
+    }
+
+    return () => {
+      setSecondaryActions(null);
+    };
+  }, [setSecondaryActions, info, toggle]);
 
   return (
     <>
@@ -111,11 +129,13 @@ export default ({ info }: BookingModalChildProps) => {
         </TextContainer>
       </Modal.Section>
 
-      <Modal.Section>
-        <TextContainer>
-          <strong>Tidszone:</strong> {info.timeZone}
-        </TextContainer>
-      </Modal.Section>
+      {info.timeZone && (
+        <Modal.Section>
+          <TextContainer>
+            <strong>Tidszone:</strong> {info.timeZone}
+          </TextContainer>
+        </Modal.Section>
+      )}
 
       {info.lineItemTotal > 0 && (
         <Modal.Section>

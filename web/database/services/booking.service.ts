@@ -116,9 +116,11 @@ const update = async ({ filter, body }: UpdateProps) => {
     throw new Error("Not found");
   }
   booking.staff = body.staff;
-  booking.start = body.start as any;
-  booking.end = body.end as any;
-  booking.isEdit = true;
+  booking.start = new Date(body.start);
+  booking.end = new Date(body.end);
+  if (booking.orderId) {
+    booking.isEdit = true;
+  }
   // TODO: Send notification to customer and staff about new changes to this booking, delete schedule from sms.dk
   return await booking.save();
 };

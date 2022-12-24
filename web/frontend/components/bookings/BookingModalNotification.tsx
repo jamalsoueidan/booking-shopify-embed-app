@@ -4,7 +4,7 @@ import { Badge, ResourceItem, ResourceList, Text } from '@shopify/polaris';
 import { format } from 'date-fns';
 import { useCallback } from 'react';
 
-export default ({ info }: BookingModalChildProps) => {
+export default ({ info }: BookingModalProps) => {
   const { data } = useNotification({
     orderId: info.orderId,
     lineItemId: info.lineItemId,

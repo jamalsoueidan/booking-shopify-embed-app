@@ -16,9 +16,10 @@ interface CustomForm<T extends FieldBag> extends Form<T> {
 
 export const useCustomForm = <T extends FieldBag>(
   form: FormWithoutDynamicListsInput<T>,
-  isModal = true
+  // eslint-disable-next-line @typescript-eslint/no-inferrable-types
+  isFullPage: boolean = true
 ): CustomForm<T> => {
-  const saveBar = useSaveBar({ show: isModal });
+  const saveBar = useSaveBar({ show: isFullPage });
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [isValid, setIsValid] = useState<boolean>(false);
   const customForm = useForm({
@@ -32,13 +33,6 @@ export const useCustomForm = <T extends FieldBag>(
   });
 
   useEffect(() => {
-    const isValidNew = isSubmitted && customForm.submitErrors.length === 0;
-    if (isValidNew !== isValid) {
-      setIsValid(isValidNew);
-    }
-  }, [isSubmitted, customForm.submitErrors]);
-
-  useEffect(() => {
     saveBar.setReset(customForm.reset);
     saveBar.setSubmit(customForm.submit);
 
@@ -46,6 +40,13 @@ export const useCustomForm = <T extends FieldBag>(
       saveBar.setDirty(false);
     };
   }, []);
+
+  useEffect(() => {
+    const isValidNew = isSubmitted && customForm.submitErrors.length === 0;
+    if (isValidNew !== isValid) {
+      setIsValid(isValidNew);
+    }
+  }, [isSubmitted, customForm.submitErrors]);
 
   useEffect(() => {
     if (saveBar.dirty !== customForm.dirty) {

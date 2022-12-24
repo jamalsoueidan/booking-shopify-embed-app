@@ -1,5 +1,7 @@
-interface BookingModalChildProps {
+interface BookingModalProps {
   info: BookingAggreate;
-  setPrimaryAction: (value: ComplexAction) => void;
-  setSecondaryActions: (value: ComplexAction[]) => void;
+}
+
+interface BookingModalProductChildProps extends BookingModalProps {
+  toggle: () => void;
 }

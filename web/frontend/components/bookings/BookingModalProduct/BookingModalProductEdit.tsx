@@ -4,33 +4,57 @@ import { useCustomForm } from '@hooks';
 import { useBookingUpdate, useWidgetStaff } from '@services';
 import { Form, FormLayout, Modal, Text } from '@shopify/polaris';
 import { notEmpty, useField } from '@shopify/react-form';
-import { forwardRef, useImperativeHandle } from 'react';
 import {
   ScheduleDateSelect,
   ScheduleStaffSelect,
   ScheduleTimerSelect,
 } from '../BookingForm';
+import { useModal } from '@providers/modal';
+import { useEffect } from 'react';
 
-export default forwardRef(({ info }: BookingModalChildProps, ref) => {
+export default ({ info, toggle }: BookingModalProductChildProps) => {
   const { data: staffOptions } = useWidgetStaff({
     productId: info.productId,
   });
 
   const { update } = useBookingUpdate({ id: info._id });
 
-  const { validate, fields, submit, submitErrors, isSubmitted, isValid } =
-    useCustomForm({
+  const { setPrimaryAction, setSecondaryActions } = useModal();
+
+  useEffect(() => {
+    setPrimaryAction({
+      content: 'Ændre dato/tid',
+      onAction: submit,
+    });
+    setSecondaryActions([
+      {
+        content: 'Annullere',
+        onAction: toggle,
+      },
+    ]);
+
+    return () => {
+      setSecondaryActions(null);
+      setPrimaryAction(null);
+    };
+  }, [setPrimaryAction, setPrimaryAction]);
+
+  const { fields, submit, submitErrors, isSubmitted, isValid } = useCustomForm(
+    {
       fields: {
-        staff: useField({
+        staff: useField<string>({
           value: info.staff._id || '',
           validates: [notEmpty('staff is required')],
         }),
-        date: useField({
-          value: info.start || undefined,
+        date: useField<Date>({
+          value: new Date(info.start) || undefined,
           validates: [notEmpty('date is required')],
         }),
-        time: useField({
-          value: { start: info.start || undefined, end: info.end || undefined },
+        time: useField<{ start: string; end: string }>({
+          value: {
+            start: info.start || undefined,
+            end: info.end || undefined,
+          },
           validates: [notEmpty('time is required')],
         }),
       },
@@ -43,17 +67,8 @@ export default forwardRef(({ info }: BookingModalChildProps, ref) => {
 
         return { status: 'success' };
       },
-    });
-
-  useImperativeHandle(
-    ref,
-    () => ({
-      submit() {
-        submit();
-        return validate().length == 0;
-      },
-    }),
-    []
+    },
+    false
   );
 
   if (!staffOptions) {
@@ -103,4 +118,4 @@ export default forwardRef(({ info }: BookingModalChildProps, ref) => {
       </Modal.Section>
     </Form>
   );
-});
+};

@@ -1,6 +1,6 @@
 import { Link, Modal, TextContainer } from '@shopify/polaris';
 
-export default ({ info }: BookingModalChildProps) => {
+export default ({ info }: BookingModalProps) => {
   const url =
     'https://testeriphone.myshopify.com/admin/customers/' + info.customerId;
 
