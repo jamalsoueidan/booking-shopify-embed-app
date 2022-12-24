@@ -1,6 +1,6 @@
 import { FormErrors } from '@components/FormErrors';
 import LoadingSpinner from '@components/LoadingSpinner';
-import { useCustomForm } from '@hooks';
+import { useCustomForm, useTranslation } from '@hooks';
 import { useBookingUpdate, useWidgetStaff } from '@services';
 import { Form, FormLayout, Modal, Text } from '@shopify/polaris';
 import { notEmpty, useField } from '@shopify/react-form';
@@ -11,6 +11,7 @@ import {
 } from '../BookingForm';
 import { useModal } from '@providers/modal';
 import { useEffect } from 'react';
+import { useToast } from '@providers/toast';
 
 export default ({ info, toggle }: BookingModalProductChildProps) => {
   const { data: staffOptions } = useWidgetStaff({
@@ -18,7 +19,8 @@ export default ({ info, toggle }: BookingModalProductChildProps) => {
   });
 
   const { update } = useBookingUpdate({ id: info._id });
-
+  const { t } = useTranslation('bookings.modal.product.edit');
+  const { show } = useToast();
   const { setPrimaryAction, setSecondaryActions } = useModal();
 
   useEffect(() => {
@@ -64,7 +66,8 @@ export default ({ info, toggle }: BookingModalProductChildProps) => {
           end: fieldValues.time.end,
           staff: fieldValues.staff,
         });
-
+        toggle();
+        show({ content: t('content', { keyPrefix: 'toast' }) });
         return { status: 'success' };
       },
     },

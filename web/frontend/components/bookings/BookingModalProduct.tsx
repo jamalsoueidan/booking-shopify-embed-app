@@ -1,4 +1,3 @@
-import FormToast from '@components/FormToast';
 import LoadingSpinner from '@components/LoadingSpinner';
 import { useBookingGet } from '@services';
 import { Modal } from '@shopify/polaris';
@@ -8,7 +7,6 @@ import BookingModalProductView from './BookingModalProduct/BookingModalProductVi
 
 export default ({ info }: BookingModalProps) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const { data: booking } = useBookingGet({ id: info._id });
 
@@ -22,15 +20,9 @@ export default ({ info }: BookingModalProps) => {
     );
   }
 
-  return (
-    <>
-      {isSubmitted && <FormToast message={'Booking updated'} />}
-
-      {isEditing ? (
-        <BookingModalProductEdit info={booking} toggle={toggle} />
-      ) : (
-        <BookingModalProductView info={booking} toggle={toggle} />
-      )}
-    </>
+  return isEditing ? (
+    <BookingModalProductEdit info={booking} toggle={toggle} />
+  ) : (
+    <BookingModalProductView info={booking} toggle={toggle} />
   );
 };

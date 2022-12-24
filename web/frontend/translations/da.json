@@ -1,6 +1,15 @@
 {
 	"bookings": {
 		"all": "Alle medarbejder",
+		"modal": {
+			"product": {
+				"edit": {
+					"toast": {
+						"content": "Bestilling er opdateret"
+					}
+				}
+			}
+		},
 		"new": {
 			"save": "Gem",
 			"title": "Opret en bestilling"

@@ -1,9 +1,10 @@
+import { SaveBarProvider } from '@providers/saveBar';
+import { ToastProvider } from '@providers/toast';
 import { useSetting } from '@services';
 import { NavigationMenu } from '@shopify/app-bridge-react';
 import { NavigationLink } from '@shopify/app-bridge-react/components/NavigationMenu/NavigationMenu';
 import { Frame, Loading } from '@shopify/polaris';
 import { I18nContext, I18nManager, useI18n } from '@shopify/react-i18n';
-import { SaveBarProvider } from '@providers/saveBar';
 import { useCallback, useContext, useEffect } from 'react';
 import { Query, useIsFetching } from 'react-query';
 import en from './translations/en.json';
@@ -65,7 +66,9 @@ export default ({ children }: { children: JSX.Element }) => {
       <Frame>
         {isFetching > 0 && <Loading></Loading>}
         <ShareTranslations>
-          <SaveBarProvider>{children}</SaveBarProvider>
+          <SaveBarProvider>
+            <ToastProvider>{children}</ToastProvider>
+          </SaveBarProvider>
         </ShareTranslations>
       </Frame>
     </>

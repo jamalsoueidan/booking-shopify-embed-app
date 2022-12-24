@@ -1,6 +1,15 @@
 {
 	"bookings": {
 		"all": "All staff",
+		"modal": {
+			"product": {
+				"edit": {
+					"toast": {
+						"content": "Booking has been updated"
+					}
+				}
+			}
+		},
 		"new": {
 			"save": "",
 			"title": "Create booking"
