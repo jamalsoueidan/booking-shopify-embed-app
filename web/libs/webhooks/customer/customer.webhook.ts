@@ -12,7 +12,10 @@ interface CreateProps {
   shop: string;
 }
 
-const modify = async ({ body, shop }: CreateProps): Promise<CreateReturn> => {
+export const modify = async ({
+  body,
+  shop,
+}: CreateProps): Promise<CreateReturn> => {
   const firstName = body.first_name || body.default_address.first_name;
   const lastName = body.last_name || body.default_address.last_name;
   const phone = body.phone || body.default_address.phone;
@@ -38,5 +41,3 @@ const modify = async ({ body, shop }: CreateProps): Promise<CreateReturn> => {
     }
   );
 };
-
-export default { modify };

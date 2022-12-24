@@ -3,7 +3,7 @@ import { Router } from "express";
 import { checkSchema } from "express-validator";
 import controller, { ControllerMethods } from "./widget.controller";
 
-export default function widgetRoutes(app) {
+export const widgetRoutes = (app) => {
   const router = Router();
 
   const handleRoute = expressHandleRoute(app, controller);
@@ -29,4 +29,4 @@ export default function widgetRoutes(app) {
   });
 
   return router;
-}
+};

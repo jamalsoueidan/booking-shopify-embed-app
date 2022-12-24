@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { body } from "express-validator";
 import { expressHandleRoute } from "../express-helpers/handle-route";
-import controller, { ControllerMethods } from "./admin-product.controller";
+import controller, { ControllerMethods } from "./product.controller";
 
-export default function adminProductRoutes(app) {
+export const productRoutes = (app) => {
   const router = Router();
 
   const handleRoute = expressHandleRoute(app, controller);
@@ -36,4 +36,4 @@ export default function adminProductRoutes(app) {
   });
 
   return router;
-}
+};

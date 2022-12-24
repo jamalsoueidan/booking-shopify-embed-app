@@ -1,3 +1,4 @@
+import { ContextualSaveBarProps } from '@shopify/polaris';
 import { MutableRefObject } from 'react';
 
 export type setReset = () => void;
@@ -8,6 +9,8 @@ export interface SaveBarActions {
   setSubmitting: (value: boolean) => void;
   setReset: (value: setReset) => void;
   setSubmit: (value: setSubmit) => void;
+  setContextualSaveBar: (value: ContextualSaveBarProps) => void;
+  setShow: (value: boolean) => void;
 }
 
 export interface SaveBarValues {
@@ -15,6 +18,13 @@ export interface SaveBarValues {
   submitting: boolean;
   reset?: MutableRefObject<setReset>;
   submit?: MutableRefObject<setSubmit>;
+  contextualSaveBar: ContextualSaveBarProps;
+  show: boolean;
 }
 
-export interface SaveBarProps extends SaveBarActions, SaveBarValues {}
+export interface SaveBarProps extends SaveBarActions, SaveBarValues {
+  contextualSaveBar: ContextualSaveBarProps;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface UseSaveBarProps extends Pick<SaveBarValues, 'show'> {}

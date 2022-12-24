@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { body, check, query } from "express-validator";
-import { expressHandleRoute } from "./../express-helpers/handle-route";
-import controller, { ControllerMethods } from "./admin-notification.controller";
+import { expressHandleRoute } from "../express-helpers/handle-route";
+import controller, { ControllerMethods } from "./notification.controller";
 
-export default function (app) {
+export const notificationRoutes = (app) => {
   const handleRoute = expressHandleRoute(app, controller);
 
   const router = Router();
@@ -42,4 +42,4 @@ export default function (app) {
   );
 
   return router;
-}
+};

@@ -1,11 +1,9 @@
 import { Router } from "express";
 import { query } from "express-validator";
 import { expressHandleRoute } from "../express-helpers/handle-route";
-import controller, {
-  ControllerMethods,
-} from "./admin-staff-schedule.controller";
+import controller, { ControllerMethods } from "./staff-schedule.controller";
 
-export default function adminStaffScheduleRoutes(app) {
+export const staffScheduleRoutes = (app) => {
   const router = Router();
 
   const handleRoute = expressHandleRoute(app, controller);
@@ -46,4 +44,4 @@ export default function adminStaffScheduleRoutes(app) {
   );
 
   return router;
-}
+};

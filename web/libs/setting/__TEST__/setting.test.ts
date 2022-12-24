@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import settingController from "../admin-setting.controller";
+import settingController from "../setting.controller";
 
 describe("admin-setting controller", () => {
   beforeAll(() => mongoose.connect(global.__MONGO_URI__));

@@ -1,4 +1,5 @@
 import { useSaveBar } from '@providers/saveBar';
+import { ContextualSaveBarProps } from '@shopify/polaris';
 import {
   FieldBag,
   Form,
@@ -10,13 +11,14 @@ import { useEffect, useState } from 'react';
 interface CustomForm<T extends FieldBag> extends Form<T> {
   isSubmitted: boolean;
   isValid: boolean;
+  contextualSaveBar: ContextualSaveBarProps;
 }
 
 export const useCustomForm = <T extends FieldBag>(
   form: FormWithoutDynamicListsInput<T>,
   isModal = true
 ): CustomForm<T> => {
-  const saveBar = useSaveBar();
+  const saveBar = useSaveBar({ show: isModal });
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [isValid, setIsValid] = useState<boolean>(false);
   const customForm = useForm({
@@ -46,10 +48,10 @@ export const useCustomForm = <T extends FieldBag>(
   }, []);
 
   useEffect(() => {
-    if (saveBar.dirty !== customForm.dirty && isModal) {
+    if (saveBar.dirty !== customForm.dirty) {
       saveBar.setDirty(customForm.dirty);
     }
-  }, [customForm.dirty, isModal]);
+  }, [customForm.dirty]);
 
   useEffect(() => {
     if (saveBar.submitting !== customForm.submitting) {
@@ -60,6 +62,7 @@ export const useCustomForm = <T extends FieldBag>(
   return {
     isSubmitted,
     isValid,
+    contextualSaveBar: saveBar.contextualSaveBar,
     ...customForm,
   };
 };

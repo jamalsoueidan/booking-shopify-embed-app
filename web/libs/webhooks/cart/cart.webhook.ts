@@ -26,7 +26,7 @@ interface CreateProps {
   shop: string;
 }
 
-const modify = async ({ body, shop }: CreateProps) => {
+export const modify = async ({ body, shop }: CreateProps) => {
   // TODO: Maybe compare lineItems and only remove those that needs to be removed!!!
   await CartModel.deleteMany({ cartId: body.id, shop });
 
@@ -52,5 +52,3 @@ const modify = async ({ body, shop }: CreateProps) => {
 
   return CartModel.insertMany(models);
 };
-
-export default { modify };

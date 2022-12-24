@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { expressHandleRoute } from "./../express-helpers/handle-route";
-import controller, { ControllerMethods } from "./admin-setting.controller";
+import { expressHandleRoute } from "../express-helpers/handle-route";
+import controller, { ControllerMethods } from "./setting.controller";
 
-export default function adminSettingRoutes(app) {
+export const settingRoutes = (app) => {
   const handleRoute = expressHandleRoute(app, controller);
 
   const router = Router();
@@ -16,4 +16,4 @@ export default function adminSettingRoutes(app) {
   });
 
   return router;
-}
+};

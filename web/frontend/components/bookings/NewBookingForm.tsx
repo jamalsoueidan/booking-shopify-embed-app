@@ -6,6 +6,7 @@ import {
   FormLayout,
   Layout,
   Page,
+  PageActions,
 } from '@shopify/polaris';
 import { notEmpty, useField } from '@shopify/react-form';
 import {
@@ -32,7 +33,7 @@ export const NewBookingForm = ({
   const { t } = useTranslation('bookings', { keyPrefix: 'new' });
 
   //https://codesandbox.io/s/1wpxz?file=/src/MyForm.tsx:2457-2473
-  const { fields, submit } = useCustomForm({
+  const { fields, submit, contextualSaveBar } = useCustomForm({
     fields: {
       productId: useField({
         value: data?.productId || undefined,
@@ -113,6 +114,7 @@ export const NewBookingForm = ({
           </Layout.AnnotatedSection>
         </Layout>
       </Form>
+      <PageActions primaryAction={contextualSaveBar?.saveAction} />
     </Page>
   );
 };

@@ -5,7 +5,7 @@ import FullCalendar, { DatesSetArg, EventClickArg } from '@fullcalendar/react'; 
 import { useDate, useFulfillment, useTranslation } from '@hooks';
 import { useBookings, useSetting } from '@services';
 import { useNavigate } from '@shopify/app-bridge-react';
-import { Badge, Card, FooterHelp, Page } from '@shopify/polaris';
+import { Badge, Card, FooterHelp, Page, Tooltip } from '@shopify/polaris';
 import { format } from 'date-fns-tz';
 import { createRef, useCallback, useEffect, useState } from 'react';
 
@@ -58,22 +58,27 @@ export default () => {
           {format(arg.event.start, 'HH:mm')} - {format(arg.event.end, 'HH:mm')}{' '}
         </i>
       );
+
+      const fulfillmentStatus = booking.fulfillmentStatus || 'In progress';
+
       return (
-        <div style={{ cursor: 'pointer' }}>
-          <div>{extendHour}</div>
-          <div
-            style={{
-              overflow: 'hidden',
-            }}>
-            {booking.staff?.fullname} - {booking.anyAvailable ? '(ET)' : ''}
+        <Tooltip content={fulfillmentStatus} dismissOnMouseOut>
+          <div style={{ cursor: 'pointer' }}>
+            <div>{extendHour}</div>
+            <div
+              style={{
+                overflow: 'hidden',
+              }}>
+              {booking.staff?.fullname} - {booking.anyAvailable ? '(ET)' : ''}
+            </div>
+            <div
+              style={{
+                overflow: 'hidden',
+              }}>
+              {booking.product.title}
+            </div>
           </div>
-          <div
-            style={{
-              overflow: 'hidden',
-            }}>
-            {booking.product.title}
-          </div>
-        </div>
+        </Tooltip>
       );
     },
     [calendarRef]

@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { checkSchema } from "express-validator";
 import { expressHandleRoute } from "../express-helpers/handle-route";
-import controller, { ControllerMethods } from "./admin-staff.controller";
+import controller, { ControllerMethods } from "./staff.controller";
 
-export default function adminSettingRoutes(app) {
+export const staffRoutes = (app) => {
   const router = Router();
 
   const handleRoute = expressHandleRoute(app, controller);
@@ -31,4 +31,4 @@ export default function adminSettingRoutes(app) {
   });
 
   return router;
-}
+};

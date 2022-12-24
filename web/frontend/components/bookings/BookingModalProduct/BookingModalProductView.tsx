@@ -49,12 +49,23 @@ export default ({ info }: BookingModalChildProps) => {
           </Banner>
         </Modal.Section>
       )}
+      {info.fulfillmentStatus === FulfillmentStatus.BOOKED && (
+        <Modal.Section>
+          <Banner title="Behandling er booket af medarbejder" status="info">
+            <p>Dette behandling er blevet booket af medarbejder</p>
+          </Banner>
+        </Modal.Section>
+      )}
       <Modal.Section>
         <TextContainer>
           <strong>Ordre:</strong>{' '}
-          <Link url={orderUrl} external>
-            {info.orderId}
-          </Link>
+          {info.orderId ? (
+            <Link url={orderUrl} external>
+              {info.orderId}
+            </Link>
+          ) : (
+            'Booket af medarbejder'
+          )}
         </TextContainer>
       </Modal.Section>
 

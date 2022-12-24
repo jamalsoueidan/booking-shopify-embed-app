@@ -1,6 +1,6 @@
-import adminBookingController from "@libs/admin-booking/admin-booking.controller";
+import adminBookingController from "@libs/booking/booking.controller";
 import { createProduct } from "@libs/jest-helpers";
-import OrderWebhook from "@libs/webhooks/order/order.webhook";
+import * as OrderWebhook from "@libs/webhooks/order/order.webhook";
 import { IProductModel } from "@models/product.model";
 import ShopifySessions from "@models/shopify-sessions.model";
 import { differenceInMinutes, isAfter, isBefore } from "date-fns";

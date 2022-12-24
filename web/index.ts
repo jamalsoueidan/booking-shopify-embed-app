@@ -1,8 +1,5 @@
 // @ts-check
-import adminNotificationRoutes from "@libs/admin-notification/admin-notification.routes";
-import customerRoutes from "@libs/customer/customer.routes";
-import CartWebhook from "@libs/webhooks/cart/cart.webhook.js";
-import CustomerWebhook from "@libs/webhooks/customer/customer.webhook.js";
+import { CartWebhook, CustomerWebhook, OrderWebhook } from "@libs/webhooks/";
 import { LATEST_API_VERSION, Shopify } from "@shopify/shopify-api";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -13,14 +10,17 @@ import { AppInstallations } from "./app_installations.js";
 import connect from "./database/database.js";
 import { setupGDPRWebHooks } from "./gdpr.js";
 import redirectToAuth from "./helpers/redirect-to-auth.js";
-import adminBookingRoutes from "./libs/admin-booking/admin-booking.routes";
-import adminCollectionRoutes from "./libs/admin-collection/admin-collection.routes";
-import adminProductRoutes from "./libs/admin-product/admin-product.routes";
-import adminSettingRoutes from "./libs/admin-setting/admin-setting.routes";
-import adminStaffScheduleRoutes from "./libs/admin-staff-schedule/admin-staff-schedule.routes";
-import adminStaffRoutes from "./libs/admin-staff/admin-staff.routes";
-import OrderWebhook from "./libs/webhooks/order/order.webhook.js";
-import widgetRoutes from "./libs/widget/widget.routes";
+import {
+  bookingRoutes,
+  collectionRoutes,
+  customerRoutes,
+  notificationRoutes,
+  productRoutes,
+  settingRoutes,
+  staffRoutes,
+  staffScheduleRoutes,
+  widgetRoutes,
+} from "./libs";
 import applyAuthMiddleware from "./middleware/auth.js";
 import verifyRequest from "./middleware/verify-request.js";
 
@@ -168,6 +168,7 @@ export async function createServer(
   app.use(express.json({ limit: "1mb", extended: true } as any));
 
   app.use("/api/widget", widgetRoutes(app));
+  app.use("/api/admin", bookingRoutes(app));
 
   // All endpoints after this point will require an active session
   app.use(
@@ -178,15 +179,13 @@ export async function createServer(
   );
 
   app.use("/api/admin", customerRoutes(app));
-  app.use("/api/admin", adminProductRoutes(app));
-  app.use("/api/admin", adminBookingRoutes(app));
-  app.use("/api/admin", adminProductRoutes(app));
-  app.use("/api/admin", adminNotificationRoutes(app));
-  app.use("/api/admin", adminCollectionRoutes(app));
-  app.use("/api/admin", adminProductRoutes(app));
-  app.use("/api/admin", adminStaffRoutes(app));
-  app.use("/api/admin", adminStaffScheduleRoutes(app));
-  app.use("/api/admin", adminSettingRoutes(app));
+  app.use("/api/admin", productRoutes(app));
+  app.use("/api/admin", bookingRoutes(app));
+  app.use("/api/admin", notificationRoutes(app));
+  app.use("/api/admin", collectionRoutes(app));
+  app.use("/api/admin", staffRoutes(app));
+  app.use("/api/admin", staffScheduleRoutes(app));
+  app.use("/api/admin", settingRoutes(app));
 
   app.use((req: Request<{}, {}, {}, { shop: string }>, res, next) => {
     const shop = Shopify.Utils.sanitizeShop(req.query.shop);

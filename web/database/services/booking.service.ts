@@ -1,7 +1,28 @@
 import { beginningOfDay, closeOfDay } from "@helpers/date";
-import { GetBookingsProps } from "@libs/admin-booking/admin-booking.types";
+import { GetBookingsProps } from "@libs/booking/booking.types";
+import productModel from "@models/product.model";
 import mongoose, { Types } from "mongoose";
 import BookingModel from "../models/booking.model";
+
+interface CreateProps extends BookingBodyCreate {
+  shop: string;
+}
+
+const create = async (body: CreateProps) => {
+  const product = await productModel
+    .findOne({ productId: body.productId })
+    .lean();
+  if (product) {
+    const booking = await BookingModel.create({
+      ...body,
+      fulfillmentStatus: "booked",
+      title: product.title,
+    });
+    return booking;
+  } else {
+    throw new Error("no product found");
+  }
+};
 
 const find = async (shop) => {
   return await BookingModel.find({ shop });
@@ -172,4 +193,5 @@ export default {
   getBookings,
   update,
   getById,
+  create,
 };

@@ -4,6 +4,7 @@ export enum FulfillmentStatus {
   CANCELLED = 'cancelled',
   REFUNDED = 'refunded',
   FULFILLED = 'fulfilled',
+  BOOKED = 'booked',
 }
 
 //attention = yellow
@@ -14,7 +15,7 @@ export enum FulfillmentStatus {
 interface UseFulfillmentOptions {
   label: string;
   color: string;
-  status: 'critical' | 'success' | 'attention';
+  status: 'critical' | 'success' | 'attention' | 'info';
 }
 
 export const useFulfillment = () => {
@@ -30,6 +31,11 @@ export const useFulfillment = () => {
         label: FulfillmentStatus.REFUNDED,
         color: '#FED3D1',
         status: 'critical',
+      },
+      {
+        label: FulfillmentStatus.BOOKED,
+        color: '#a4e8f2',
+        status: 'info',
       },
       { label: null, color: '#FFEA8A', status: 'attention' },
     ],

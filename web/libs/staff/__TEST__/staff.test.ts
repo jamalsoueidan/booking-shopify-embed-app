@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import staffController from "../admin-staff.controller";
+import staffController from "../staff.controller";
 
 describe("Admin-staff controller", () => {
   beforeAll(() => mongoose.connect(global.__MONGO_URI__));

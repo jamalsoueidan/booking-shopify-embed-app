@@ -1,10 +1,12 @@
 import BookingService from "@services/booking.service";
-import { GetBookingsProps } from "./admin-booking.types";
+import { GetBookingsProps } from "./booking.types";
+import { body } from "express-validator";
 
 export enum ControllerMethods {
   get = "get",
   getById = "getById",
   update = "update",
+  create = "create",
 }
 
 interface GetQuery {
@@ -13,6 +15,15 @@ interface GetQuery {
 
 const get = ({ query }: GetQuery) => {
   return BookingService.getBookings(query);
+};
+
+interface CreateProps extends GetQuery {
+  body: BookingBodyCreate;
+}
+
+const create = ({ query, body }: CreateProps) => {
+  const shop = query.shop;
+  return BookingService.create({ ...body, shop });
 };
 
 const getById = async ({ query, body }) => {
@@ -24,4 +35,4 @@ const update = async ({ query, body }) => {
   return await BookingService.update({ filter: { shop, _id: id }, body });
 };
 
-export default { update, get, getById };
+export default { update, get, getById, create };

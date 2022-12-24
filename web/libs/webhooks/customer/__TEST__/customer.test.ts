@@ -1,4 +1,4 @@
-import CustomerWebhook from "@libs/webhooks/customer/customer.webhook";
+import * as CustomerWebhook from "@libs/webhooks/customer/customer.webhook";
 import { IProductModel } from "@models/product.model";
 import ShopifySessions from "@models/shopify-sessions.model";
 import mongoose from "mongoose";

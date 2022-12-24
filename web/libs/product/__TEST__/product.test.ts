@@ -4,7 +4,7 @@ import mongoose, { Document } from "mongoose";
 import { createProduct, createSchedule, createStaff } from "@libs/jest-helpers";
 import { IStaffModel } from "@models/staff.model";
 import { addHours, subHours } from "date-fns";
-import productController from "../admin-product.controller";
+import productController from "../product.controller";
 
 const productId = 123456789;
 

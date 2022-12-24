@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { body } from "express-validator";
-import { expressHandleRoute } from "./../express-helpers/handle-route";
-import controller, { ControllerMethods } from "./admin-booking.controller";
+import { expressHandleRoute } from "../express-helpers/handle-route";
+import controller, { ControllerMethods } from "./booking.controller";
 
-export default function adminBookingRoutes(app) {
+export const bookingRoutes = (app) => {
   const handleRoute = expressHandleRoute(app, controller);
 
   const router = Router();
@@ -16,6 +16,18 @@ export default function adminBookingRoutes(app) {
     handleRoute(req, res, ControllerMethods.getById);
   });
 
+  router.post(
+    "/bookings",
+    body("productId").notEmpty(),
+    body("customerId").notEmpty(),
+    body("start").notEmpty(),
+    body("end").notEmpty(),
+    body("staff").notEmpty(),
+    async (req, res) => {
+      handleRoute(req, res, ControllerMethods.create);
+    }
+  );
+
   router.put(
     "/bookings/:id",
     body("start").notEmpty(),
@@ -27,4 +39,4 @@ export default function adminBookingRoutes(app) {
   );
 
   return router;
-}
+};

@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { checkSchema, query } from "express-validator";
+import { query } from "express-validator";
 import { expressHandleRoute } from "../express-helpers/handle-route";
 import controller, { ControllerMethods } from "./customer.controller";
 
-export default function customerRoutes(app) {
+export const customerRoutes = (app) => {
   const router = Router();
 
   const handleRoute = expressHandleRoute(app, controller);
@@ -13,4 +13,4 @@ export default function customerRoutes(app) {
   });
 
   return router;
-}
+};

@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { expressHandleRoute } from "../express-helpers/handle-route";
-import controller, { ControllerMethods } from "./admin-collection.controller";
+import controller, { ControllerMethods } from "./collection.controller";
 
-export default function adminCollectionRoutes(app) {
+export const collectionRoutes = (app) => {
   const router = Router();
 
   const handleRoute = expressHandleRoute(app, controller);
@@ -20,4 +20,4 @@ export default function adminCollectionRoutes(app) {
   });
 
   return router;
-}
+};

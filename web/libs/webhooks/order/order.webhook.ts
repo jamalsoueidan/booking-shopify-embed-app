@@ -8,7 +8,7 @@ interface ModifyProps {
   sendBooking?: boolean;
 }
 
-const modify = async ({
+export const modify = async ({
   body,
   shop,
   sendBooking,
@@ -101,7 +101,7 @@ interface CreateProps {
   shop: string;
 }
 
-const create = ({ body, shop }: CreateProps) => {
+export const create = ({ body, shop }: CreateProps) => {
   return modify({ body, shop, sendBooking: true });
 };
 
@@ -110,7 +110,7 @@ interface UpdateProps {
   shop: string;
 }
 
-const update = ({ body, shop }: UpdateProps) => {
+export const update = ({ body, shop }: UpdateProps) => {
   return modify({ body, shop });
 };
 
@@ -119,11 +119,9 @@ interface CancelProps {
   shop: string;
 }
 
-const cancel = async ({ body, shop }: CancelProps) => {
+export const cancel = async ({ body, shop }: CancelProps) => {
   return await BookingModel.updateMany(
     { orderId: body.id, shop },
     { fulfillmentStatus: "cancelled" }
   );
 };
-
-export default { create, update, cancel };
