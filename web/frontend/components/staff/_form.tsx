@@ -1,4 +1,4 @@
-import FormStatus from '@components/FormStatus';
+import { FormErrors } from '@components/FormErrors';
 import { usePositions, useSave, useTranslation } from '@hooks';
 import isEmail from '@libs/validators/isEmail';
 import isPhoneNumber from '@libs/validators/isPhoneNumber';
@@ -91,11 +91,7 @@ export const StaffForm = ({
         titleMetadata={titleMetadata}>
         {saveBar}
         <Layout>
-          <FormStatus
-            errors={submitErrors}
-            success={submitting && dirty}
-            showErrors={false}
-          />
+          <FormErrors errors={submitErrors} />
           <Layout.AnnotatedSection title={t('staff.title')}>
             <Card sectioned>
               <FormLayout>

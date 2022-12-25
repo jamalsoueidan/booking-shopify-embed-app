@@ -4,8 +4,9 @@
 		"modal": {
 			"product": {
 				"edit": {
-					"toast": {
-						"content": "Bestilling er opdateret"
+					"toast": "Bestilling er opdateret",
+					"toasta": {
+						"content": ""
 					}
 				}
 			}
@@ -99,7 +100,8 @@
 			"subtitle": "Deaktiver reservationer på online butik.",
 			"title": "App Status"
 		},
-		"title": "Indstillinger"
+		"title": "Indstillinger",
+		"toast": "Indstillinger er opdateret"
 	},
 	"staff": {
 		"empty": {

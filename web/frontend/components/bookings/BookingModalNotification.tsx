@@ -1,4 +1,4 @@
-import { useToast } from '@hooks';
+import { useToast } from '@providers/toast';
 import { useNotification, useResendNotification } from '@services';
 import { Badge, ResourceItem, ResourceList, Text } from '@shopify/polaris';
 import { format } from 'date-fns';
@@ -17,8 +17,8 @@ export default ({ info }: BookingModalProps) => {
     async (id: string) => {
       const response = await resend({ id });
       show({
-        message: response.success ? 'Message send' : response.error,
-        isError: !response.success,
+        content: response.success ? 'Message send' : response.error,
+        error: !response.success,
       });
     },
     [resend]

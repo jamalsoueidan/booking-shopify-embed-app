@@ -24,7 +24,7 @@ export default () => {
   const { create } = useBookingCreate();
   const { t } = useTranslation('bookings', { keyPrefix: 'new' });
   //https://codesandbox.io/s/1wpxz?file=/src/MyForm.tsx:2457-2473
-  const { fields, submit, contextualSaveBar } = useCustomForm({
+  const { fields, submit, primaryAction } = useCustomForm({
     fields: {
       productId: useField<number>({
         value: undefined,
@@ -109,7 +109,7 @@ export default () => {
           </Layout.AnnotatedSection>
         </Layout>
         <br />
-        <PageActions primaryAction={contextualSaveBar?.saveAction} />
+        <PageActions primaryAction={primaryAction} />
       </Page>
     </Form>
   );

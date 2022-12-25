@@ -16,6 +16,7 @@ export const useSaveBar = ({ show }: UseSaveBarProps) => {
       saveAction: {
         content: t('buttons.save'),
         loading: context.submitting,
+        disabled: !context.dirty,
         onAction: () => context.submit.current(),
       },
       discardAction: {
@@ -24,7 +25,14 @@ export const useSaveBar = ({ show }: UseSaveBarProps) => {
       },
       message: t('unsaved'),
     });
-  }, [context.setContextualSaveBar, t]);
+  }, [
+    context.setContextualSaveBar,
+    context.submitting,
+    context.dirty,
+    context.submit,
+    context.reset,
+    t,
+  ]);
 
   useEffect(() => {
     context.setShow(show);

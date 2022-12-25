@@ -1,4 +1,4 @@
-import FormStatus from '@components/FormStatus';
+import { FormErrors } from '@components/FormErrors';
 import LoadingPage from '@components/LoadingPage';
 import ProductActivate from '@components/collections/product/ProductActivate';
 import ProductBanner from '@components/collections/product/ProductBanner';
@@ -77,7 +77,7 @@ export default () => {
         {saveBar}
         {product && (
           <Layout>
-            <FormStatus errors={submitErrors} success={submitting && dirty} />
+            <FormErrors errors={submitErrors} />
             {product.staff.length === 0 && <ProductBanner></ProductBanner>}
             <ProductActivate
               active={fields.active}

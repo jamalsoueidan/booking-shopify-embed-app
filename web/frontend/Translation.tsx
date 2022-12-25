@@ -22,6 +22,10 @@ export default ({ children }: { children: JSX.Element }) => {
     i18nManager.update({ locale: language });
   }, []);
 
+  useEffect(() => {
+    i18nManager.update({ locale: language });
+  }, [language]);
+
   if (language !== i18n.locale || i18n.translations.length < 2) {
     return <LoadingPage></LoadingPage>;
   }

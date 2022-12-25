@@ -67,7 +67,7 @@ export default ({ info, toggle }: BookingModalProductChildProps) => {
           staff: fieldValues.staff,
         });
         toggle();
-        show({ content: t('content', { keyPrefix: 'toast' }) });
+        show({ content: t('toast') });
         return { status: 'success' };
       },
     },

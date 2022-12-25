@@ -1,6 +1,7 @@
-import FormStatus from '@components/FormStatus';
+import { FormErrors } from '@components/FormErrors';
 import LoadingPage from '@components/LoadingPage';
-import { useTranslation, useSave } from '@hooks';
+import { useCustomForm, useTranslation } from '@hooks';
+import { useToast } from '@providers/toast';
 import { useSetting, useSettingUpdate } from '@services';
 import {
   Card,
@@ -14,7 +15,7 @@ import {
   Stack,
   Text,
 } from '@shopify/polaris';
-import { useField, useForm } from '@shopify/react-form';
+import { useField } from '@shopify/react-form';
 import { useCallback } from 'react';
 import TimezoneSelect, { ITimezoneOption } from 'react-timezone-select';
 
@@ -23,6 +24,8 @@ export default () => {
   const { update } = useSettingUpdate();
 
   const { t } = useTranslation('settings');
+
+  const { show } = useToast();
 
   const languageOptions = [
     {
@@ -36,32 +39,26 @@ export default () => {
   ];
 
   //https://codesandbox.io/s/1wpxz?file=/src/MyForm.tsx:2457-2473
-  const { fields, submit, submitErrors, submitting, dirty, reset } = useForm({
+  const { fields, submit, submitErrors, primaryAction } = useCustomForm({
     fields: {
-      timeZone: useField({
-        value: data.timeZone,
+      timeZone: useField<string>({
+        value: data?.timeZone,
         validates: [],
       }),
-      language: useField({
-        value: data.language,
+      language: useField<string>({
+        value: data?.language,
         validates: [],
       }),
-      status: useField({
-        value: data.status,
+      status: useField<boolean>({
+        value: data?.status,
         validates: [],
       }),
     },
     onSubmit: async (fieldValues) => {
       await update(fieldValues);
+      show({ content: t('toast') });
       return { status: 'success' };
     },
-  });
-
-  const { primaryAction, saveBar } = useSave({
-    dirty,
-    reset,
-    submit,
-    submitting,
   });
 
   const onChangeTimezone = useCallback(
@@ -76,9 +73,8 @@ export default () => {
   return (
     <Form onSubmit={submit}>
       <Page title={t('title')}>
-        {saveBar}
         <Layout>
-          <FormStatus errors={submitErrors} success={submitting && dirty} />
+          <FormErrors errors={submitErrors} />
           <Layout.AnnotatedSection
             title={t('store_settings.title')}
             description={t('store_settings.subtitle')}>

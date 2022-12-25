@@ -4,8 +4,9 @@
 		"modal": {
 			"product": {
 				"edit": {
-					"toast": {
-						"content": "Booking has been updated"
+					"toast": "Booking has been updated",
+					"toasta": {
+						"content": ""
 					}
 				}
 			}
@@ -99,7 +100,8 @@
 			"subtitle": "Disable bookings on the storefront.",
 			"title": "App Status"
 		},
-		"title": "Settings"
+		"title": "Settings",
+		"toast": "Settings has been updated"
 	},
 	"staff": {
 		"empty": {

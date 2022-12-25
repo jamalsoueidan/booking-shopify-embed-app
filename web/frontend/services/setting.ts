@@ -4,14 +4,15 @@ import { useQuery } from 'react-query';
 
 export const useSetting = () => {
   const { get } = useFetch();
-  const { data: setting } = useQuery<ApiResponse<Setting>>({
-    queryKey: ['settings'],
+  const { data, ...rest } = useQuery<ApiResponse<Setting>>({
+    queryKey: ['setting'],
     queryFn: () => get(`/api/admin/setting`),
     refetchOnWindowFocus: false,
   });
 
   return {
-    data: setting?.payload || null,
+    data: data?.payload || null,
+    ...rest,
   };
 };
 
