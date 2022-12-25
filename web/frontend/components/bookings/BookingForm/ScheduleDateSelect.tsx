@@ -64,6 +64,7 @@ export const ScheduleDateSelect = ({
         onMonthChange={handleMonthChange}
         selected={defaultDate}
         onChange={onChange}
+        weekStartsOn={1}
         disableDatesBefore={subDays(new Date(), 1)}
         disableSpecificDates={disableSpecificDates}
       />
