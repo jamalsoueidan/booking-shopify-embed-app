@@ -4,7 +4,7 @@ import EditScheduleModal from '@components/staff/EditScheduleModal';
 import Metadata from '@components/staff/Metadata';
 import StaffCalendar from '@components/staff/StaffCalendar';
 import { DateClickArg } from '@fullcalendar/interaction';
-import { EventClickArg } from '@fullcalendar/react';
+import { EventClickArg } from '@fullcalendar/core';
 import { useStaffGet, useStaffSchedule } from '@services';
 import { useNavigate } from '@shopify/app-bridge-react';
 import { Card, Page } from '@shopify/polaris';

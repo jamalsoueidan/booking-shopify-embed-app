@@ -58,8 +58,8 @@
 		},
 		"remove_collection": "Fjern",
 		"staff": {
-			"one": "Tillføje medarbejder til dette produkt",
-			"other": "{{count}} medarbejder tilføjet"
+			"other": "{count} medarbejder tilføjet",
+			"zero": "Tillføje medarbejder til dette produkt"
 		},
 		"title": "Kategorier"
 	},
@@ -67,14 +67,6 @@
 		"buttons": {
 			"discard": "Annullere",
 			"save": "Gem"
-		},
-		"calendar": {
-			"all": "Alle",
-			"day_grid_month": "Måned",
-			"list": "Liste",
-			"time_grid_day": "Dag",
-			"time_grid_week": "Uge",
-			"today": "I dag"
 		},
 		"unsaved": "Ikke-gemte ændringer"
 	},

@@ -40,6 +40,8 @@ export default ({ children }: { children: JSX.Element }) => {
     []
   );
 
+  console.log(i18nManager.details.locale);
+
   return (
     <>
       <NavigationMenu

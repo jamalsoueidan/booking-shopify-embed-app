@@ -14,11 +14,11 @@
     "node": ">= 12.16"
   },
   "dependencies": {
-    "@fullcalendar/daygrid": "^5.11.3",
-    "@fullcalendar/interaction": "^5.11.3",
-    "@fullcalendar/list": "^5.11.3",
-    "@fullcalendar/react": "^5.11.2",
-    "@fullcalendar/timegrid": "^5.11.3",
+    "@fullcalendar/daygrid": "^6.0.1",
+    "@fullcalendar/interaction": "^6.0.1",
+    "@fullcalendar/list": "^6.0.1",
+    "@fullcalendar/react": "^6.0.1",
+    "@fullcalendar/timegrid": "^6.0.1",
     "@shopify/app-bridge": "^3.1.0",
     "@shopify/app-bridge-react": "^3.1.0",
     "@shopify/app-bridge-utils": "^3.1.0",

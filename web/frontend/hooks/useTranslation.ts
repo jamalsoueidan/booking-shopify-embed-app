@@ -23,17 +23,18 @@ export const useTranslation = (
       }
       tKey += `.${key}`;
 
-      const tOptions = {} as any;
+      let replacements = {} as { count: number };
       if (secondOptions?.count) {
-        tOptions.count = secondOptions?.count.length;
+        replacements = { count: secondOptions?.count.length };
+        tKey += `.${replacements.count === 0 ? 'zero' : 'other'}`;
       }
 
-      return i18n.translate(tKey, tOptions);
+      return i18n.translate(tKey, replacements);
     },
     []
   );
-
   return {
     t,
+    i18n,
   };
 };

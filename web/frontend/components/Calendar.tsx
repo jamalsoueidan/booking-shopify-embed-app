@@ -1,53 +1,55 @@
-import '@fullcalendar/react/dist/vdom';
+import { CalendarOptions } from '@fullcalendar/core';
+import da from '@fullcalendar/core/locales/da';
+import en from '@fullcalendar/core/locales/en-gb';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import listPlugin from '@fullcalendar/list';
-import FullCalendar, { CalendarOptions } from '@fullcalendar/react'; // must go before plugins
 import interactionPlugin from '@fullcalendar/interaction';
+import listPlugin from '@fullcalendar/list';
+import FullCalendar from '@fullcalendar/react'; // must go before plugins
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { useSetting } from '@services';
-import { forwardRef } from 'react';
-import { useTranslation } from '@hooks';
+import { forwardRef, useEffect } from 'react';
 
-export default forwardRef((props: CalendarOptions, ref: any) => {
-  const { t } = useTranslation('common', { keyPrefix: 'calendar' });
-  const { data: settings } = useSetting();
+export default forwardRef(
+  (props: CalendarOptions, ref: { current: FullCalendar }) => {
+    const { data: settings } = useSetting();
 
-  return (
-    <FullCalendar
-      height="auto"
-      ref={ref}
-      plugins={[timeGridPlugin, dayGridPlugin, listPlugin, interactionPlugin]}
-      initialView="dayGridMonth"
-      headerToolbar={{
-        left: 'today prev,next',
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
-      }}
-      firstDay={1}
-      dayMaxEvents={true}
-      slotDuration="00:15:00"
-      slotLabelFormat={[
-        {
-          hour: 'numeric',
-          minute: '2-digit',
-          omitZeroMinute: false,
-          meridiem: 'short',
-        },
-      ]}
-      eventDisplay="block"
-      slotMinTime="07:00"
-      slotMaxTime="20:00"
-      locale={settings.language}
-      buttonText={{
-        prev: '<<',
-        next: '>>',
-        today: t('today'),
-        dayGridMonth: t('day_grid_month'),
-        timeGridWeek: t('time_grid_week'),
-        timeGridDay: t('time_grid_day'),
-        list: t('list'),
-      }}
-      {...props}
-    />
-  );
-});
+    useEffect(() => {
+      console.log(ref.current.props);
+    }, [ref.current, settings.language]);
+
+    return (
+      <FullCalendar
+        height="auto"
+        ref={ref}
+        plugins={[timeGridPlugin, dayGridPlugin, listPlugin, interactionPlugin]}
+        initialView="dayGridMonth"
+        headerToolbar={{
+          left: 'today prev,next',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
+        }}
+        firstDay={1}
+        dayMaxEvents={true}
+        slotDuration="00:15:00"
+        slotLabelFormat={[
+          {
+            hour: 'numeric',
+            minute: '2-digit',
+            omitZeroMinute: false,
+            meridiem: 'short',
+          },
+        ]}
+        eventDisplay="block"
+        slotMinTime="07:00"
+        slotMaxTime="20:00"
+        locales={[en, da]}
+        locale={settings.language}
+        buttonText={{
+          prev: '<<',
+          next: '>>',
+        }}
+        {...props}
+      />
+    );
+  }
+);

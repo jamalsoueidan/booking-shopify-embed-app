@@ -1,7 +1,8 @@
 import Calendar from '@components/Calendar';
 import BookingModal from '@components/bookings/BookingModal';
 import StaffSelection from '@components/bookings/staff-selection';
-import FullCalendar, { DatesSetArg, EventClickArg } from '@fullcalendar/react'; // must go before plugins
+import { DatesSetArg, EventClickArg } from '@fullcalendar/core';
+import FullCalendar from '@fullcalendar/react'; // must go before plugins
 import { useDate, useFulfillment, useTranslation } from '@hooks';
 import { useBookings, useSetting } from '@services';
 import { useNavigate } from '@shopify/app-bridge-react';

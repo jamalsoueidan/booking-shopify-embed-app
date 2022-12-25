@@ -58,8 +58,8 @@
 		},
 		"remove_collection": "Remove",
 		"staff": {
-			"one": "Add staff to this product",
-			"other": "{{count}} staff added"
+			"other": "{count} staff added",
+			"zero": "Add staff to this product"
 		},
 		"title": "Categories"
 	},
@@ -67,14 +67,6 @@
 		"buttons": {
 			"discard": "Discard",
 			"save": "Save"
-		},
-		"calendar": {
-			"all": "All",
-			"day_grid_month": "Month",
-			"list": "List",
-			"time_grid_day": "Day",
-			"time_grid_week": "Week",
-			"today": "Today"
 		},
 		"unsaved": "Unsaved changes"
 	},

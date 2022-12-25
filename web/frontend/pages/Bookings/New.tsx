@@ -67,10 +67,10 @@ export default () => {
   });
 
   return (
-    <Page
-      title={t('title')}
-      breadcrumbs={[{ content: 'Bookings', url: '/Bookings' }]}>
-      <Form onSubmit={submit}>
+    <Form onSubmit={submit}>
+      <Page
+        title={t('title')}
+        breadcrumbs={[{ content: 'Bookings', url: '/Bookings' }]}>
         <Layout>
           <Layout.AnnotatedSection title={'Produkt'}>
             <Card sectioned>
@@ -108,8 +108,9 @@ export default () => {
             </Card>
           </Layout.AnnotatedSection>
         </Layout>
-      </Form>
-      <PageActions primaryAction={contextualSaveBar?.saveAction} />
-    </Page>
+        <br />
+        <PageActions primaryAction={contextualSaveBar?.saveAction} />
+      </Page>
+    </Form>
   );
 };
