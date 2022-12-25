@@ -1,8 +1,10 @@
 import { I18nContext, I18nManager } from '@shopify/react-i18n';
 import { BrowserRouter } from 'react-router-dom';
-import { AppBridgeProvider, PolarisProvider, QueryProvider } from './providers';
 import Routes from './Routes';
-import Wrapper from './Wrapper';
+import Translation from './Translation';
+import Navigation from './Navigation';
+import { AppBridgeProvider, PolarisProvider, QueryProvider } from './providers';
+import { SettingsProvider } from './providers/settings';
 
 const i18nManager = new I18nManager({
   interpolation: { escapeValue: false },
@@ -20,9 +22,13 @@ export default function App() {
         <BrowserRouter>
           <AppBridgeProvider>
             <QueryProvider>
-              <Wrapper>
-                <Routes pages={pages} />
-              </Wrapper>
+              <SettingsProvider>
+                <Translation>
+                  <Navigation>
+                    <Routes pages={pages} />
+                  </Navigation>
+                </Translation>
+              </SettingsProvider>
             </QueryProvider>
           </AppBridgeProvider>
         </BrowserRouter>

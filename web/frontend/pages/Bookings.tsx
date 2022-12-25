@@ -4,7 +4,7 @@ import StaffSelection from '@components/bookings/staff-selection';
 import { DatesSetArg, EventClickArg } from '@fullcalendar/core';
 import FullCalendar from '@fullcalendar/react'; // must go before plugins
 import { useDate, useFulfillment, useTranslation } from '@hooks';
-import { useBookings, useSetting } from '@services';
+import { useBookings } from '@services';
 import { useNavigate } from '@shopify/app-bridge-react';
 import {
   Avatar,
@@ -26,7 +26,6 @@ export default () => {
 
   const { t } = useTranslation('bookings');
   const { getColor, options } = useFulfillment();
-  const { data: settings } = useSetting();
   const { toTimeZone } = useDate();
   const calendarRef = createRef<FullCalendar>();
 
@@ -56,7 +55,7 @@ export default () => {
         });
       });
     }
-  }, [settings, bookings, calendarRef]);
+  }, [bookings, calendarRef]);
 
   const eventContent = useCallback(
     (arg: any) => {

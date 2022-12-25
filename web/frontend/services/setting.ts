@@ -1,27 +1,17 @@
-import { useCallback, useMemo } from 'react';
 import { useFetch } from '@hooks';
+import { useCallback } from 'react';
 import { useQuery } from 'react-query';
 
 export const useSetting = () => {
   const { get } = useFetch();
-  const { data: setting } = useQuery<ApiResponse<Setting>>(['settings'], () =>
-    get(`/api/admin/setting`)
-  );
-
-  const data = useMemo(() => {
-    return (
-      setting?.payload || {
-        _id: '',
-        shop: '',
-        timeZone: 'Europe/Paris',
-        language: 'en',
-        status: true,
-      }
-    );
-  }, [setting]);
+  const { data: setting } = useQuery<ApiResponse<Setting>>({
+    queryKey: ['settings'],
+    queryFn: () => get(`/api/admin/setting`),
+    refetchOnWindowFocus: false,
+  });
 
   return {
-    data,
+    data: setting?.payload || null,
   };
 };
 

@@ -1,18 +1,18 @@
-import { useSetting } from '@services';
+import { useSettings } from '@providers/settings';
 import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import { useCallback } from 'react';
 
 export const useDate = () => {
-  const { data } = useSetting();
+  const { timeZone } = useSettings();
 
   const toTimeZone = useCallback(
-    (fromUTC: string | Date) => utcToZonedTime(fromUTC, data.timeZone),
-    [data.timeZone]
+    (fromUTC: string | Date) => utcToZonedTime(fromUTC, timeZone),
+    [timeZone]
   );
 
   const toUtc = useCallback(
-    (date: string | Date) => zonedTimeToUtc(date, data.timeZone),
-    [data.timeZone]
+    (date: string | Date) => zonedTimeToUtc(date, timeZone),
+    [timeZone]
   );
 
   return {

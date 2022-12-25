@@ -6,16 +6,12 @@ import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
 import FullCalendar from '@fullcalendar/react'; // must go before plugins
 import timeGridPlugin from '@fullcalendar/timegrid';
-import { useSetting } from '@services';
-import { forwardRef, useEffect } from 'react';
+import { useSettings } from '@providers/settings';
+import { forwardRef } from 'react';
 
 export default forwardRef(
   (props: CalendarOptions, ref: { current: FullCalendar }) => {
-    const { data: settings } = useSetting();
-
-    useEffect(() => {
-      console.log(ref.current.props);
-    }, [ref.current, settings.language]);
+    const { language } = useSettings();
 
     return (
       <FullCalendar
@@ -43,7 +39,7 @@ export default forwardRef(
         slotMinTime="07:00"
         slotMaxTime="20:00"
         locales={[en, da]}
-        locale={settings.language}
+        locale={language}
         buttonText={{
           prev: '<<',
           next: '>>',
