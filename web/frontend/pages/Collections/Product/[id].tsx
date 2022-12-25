@@ -4,10 +4,10 @@ import ProductActivate from '@components/collections/product/ProductActivate';
 import ProductBanner from '@components/collections/product/ProductBanner';
 import ProductOptionsCard from '@components/collections/product/ProductOptionsCard';
 import ProductStaff from '@components/collections/product/ProductStaff';
-import { useSave } from '@hooks';
+import { useExtendForm } from '@hooks';
 import { useProductGet, useProductUpdate } from '@services';
 import { Form, Layout, Page, PageActions } from '@shopify/polaris';
-import { useDynamicList, useField, useForm } from '@shopify/react-form';
+import { useDynamicList, useField } from '@shopify/react-form';
 import { useParams } from 'react-router-dom';
 
 export default () => {
@@ -21,12 +21,10 @@ export default () => {
   const {
     fields,
     submit,
-    reset,
     submitErrors,
     dynamicLists: { staff },
-    submitting,
-    dirty,
-  } = useForm({
+    primaryAction,
+  } = useExtendForm({
     fields: {
       buffertime: useField({
         value: product?.buffertime,
@@ -58,13 +56,6 @@ export default () => {
     },
   });
 
-  const { primaryAction, saveBar } = useSave({
-    dirty,
-    reset,
-    submit,
-    submitting,
-  });
-
   if (!product) {
     return <LoadingPage />;
   }
@@ -74,7 +65,6 @@ export default () => {
       <Page
         title={product?.title}
         breadcrumbs={[{ content: 'Collections', url: '/Collections' }]}>
-        {saveBar}
         {product && (
           <Layout>
             <FormErrors errors={submitErrors} />

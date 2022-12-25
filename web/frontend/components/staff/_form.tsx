@@ -1,5 +1,5 @@
 import { FormErrors } from '@components/FormErrors';
-import { usePositions, useSave, useTranslation } from '@hooks';
+import { useExtendForm, usePositions, useTranslation } from '@hooks';
 import isEmail from '@libs/validators/isEmail';
 import isPhoneNumber from '@libs/validators/isPhoneNumber';
 import {
@@ -13,12 +13,7 @@ import {
   Select,
   TextField,
 } from '@shopify/polaris';
-import {
-  lengthMoreThan,
-  notEmpty,
-  useField,
-  useForm,
-} from '@shopify/react-form';
+import { lengthMoreThan, notEmpty, useField } from '@shopify/react-form';
 
 interface StaffFormProps {
   action: (body: StaffBodyUpdate) => void;
@@ -37,7 +32,7 @@ export const StaffForm = ({
   const { t } = useTranslation('staff', { keyPrefix: 'new' });
 
   //https://codesandbox.io/s/1wpxz?file=/src/MyForm.tsx:2457-2473
-  const { fields, submit, submitErrors, submitting, dirty, reset } = useForm({
+  const { fields, submit, submitErrors } = useExtendForm({
     fields: {
       fullname: useField({
         value: data?.fullname || '',
@@ -76,20 +71,12 @@ export const StaffForm = ({
     },
   });
 
-  const { saveBar } = useSave({
-    dirty,
-    reset,
-    submit,
-    submitting,
-  });
-
   return (
     <Form onSubmit={submit}>
       <Page
         title={t('title')}
         breadcrumbs={breadcrumbs}
         titleMetadata={titleMetadata}>
-        {saveBar}
         <Layout>
           <FormErrors errors={submitErrors} />
           <Layout.AnnotatedSection title={t('staff.title')}>

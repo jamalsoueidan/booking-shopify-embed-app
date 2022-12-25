@@ -1,7 +1,7 @@
 import { FormErrors } from '@components/FormErrors';
-import FormToast from '@components/FormToast';
-import { useCustomForm } from '@hooks';
+import { useExtendForm } from '@hooks';
 import { useModal } from '@providers/modal';
+import { useToast } from '@providers/toast';
 import { useSendCustomNotification } from '@services';
 import { Form, Modal, Select, Stack, TextField } from '@shopify/polaris';
 import { lengthMoreThan, notEmpty, useField } from '@shopify/react-form';
@@ -15,16 +15,10 @@ export default ({ info }: BookingModalProps) => {
 
   const { setPrimaryAction } = useModal();
 
-  const {
-    submitting,
-    fields,
-    submit,
-    submitErrors,
-    isSubmitted,
-    isValid,
-    reset,
-  } = useCustomForm(
-    {
+  const { show } = useToast();
+
+  const { submitting, fields, submit, submitErrors, isSubmitted, isValid } =
+    useExtendForm({
       fields: {
         message: useField({
           value: '',
@@ -40,18 +34,18 @@ export default ({ info }: BookingModalProps) => {
       },
       onSubmit: async (fieldValues) => {
         const response = await send(fieldValues);
-        reset();
         if (!response.success) {
+          show({ content: 'Error happened', error: true });
           return {
             status: 'fail',
             errors: [{ fields: 'ijooji', message: response.error }],
           };
         }
+        show({ content: 'Message sent' });
         return { status: 'success' };
       },
-    },
-    false
-  );
+      enableSaveBar: false,
+    });
 
   useEffect(() => {
     setPrimaryAction({
@@ -80,12 +74,6 @@ export default ({ info }: BookingModalProps) => {
 
   return (
     <Form onSubmit={submit}>
-      {isSubmitted && (
-        <FormToast
-          message={isValid ? 'Message send' : 'Error happened'}
-          error={!isValid}
-        />
-      )}
       <Modal.Section>
         <Stack vertical>
           {isSubmitted && !isValid && <FormErrors errors={submitErrors} />}

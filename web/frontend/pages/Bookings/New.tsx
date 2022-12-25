@@ -5,7 +5,7 @@ import {
   ScheduleStaffSelect,
   ScheduleTimerSelect,
 } from '@components/bookings/BookingForm';
-import { useCustomForm, useTranslation } from '@hooks';
+import { useExtendForm, useTranslation } from '@hooks';
 import { notEmptyObject } from '@libs/validators/notEmptyObject';
 import { useBookingCreate } from '@services/booking';
 import { useNavigate } from '@shopify/app-bridge-react';
@@ -24,7 +24,7 @@ export default () => {
   const { create } = useBookingCreate();
   const { t } = useTranslation('bookings', { keyPrefix: 'new' });
   //https://codesandbox.io/s/1wpxz?file=/src/MyForm.tsx:2457-2473
-  const { fields, submit, primaryAction } = useCustomForm({
+  const { fields, submit, primaryAction } = useExtendForm({
     fields: {
       productId: useField<number>({
         value: undefined,

@@ -1,25 +1,30 @@
 import { useSaveBar } from '@providers/saveBar';
 import { Action } from '@shopify/polaris';
 import {
+  DynamicListBag,
   FieldBag,
-  Form,
-  FormWithoutDynamicListsInput,
+  FormInput,
+  FormWithDynamicLists,
   useForm,
 } from '@shopify/react-form';
 import { useEffect, useState } from 'react';
 
-interface CustomForm<T extends FieldBag> extends Form<T> {
+interface FormReturn<T extends FieldBag, D extends DynamicListBag>
+  extends Partial<FormWithDynamicLists<T, D>> {
   isSubmitted: boolean;
   isValid: boolean;
   primaryAction?: Action;
 }
 
-export const useCustomForm = <T extends FieldBag>(
-  form: FormWithoutDynamicListsInput<T>,
-  // eslint-disable-next-line @typescript-eslint/no-inferrable-types
-  isFullPage: boolean = true
-): CustomForm<T> => {
-  const saveBar = useSaveBar({ show: isFullPage });
+interface FormProps<T extends FieldBag, D extends DynamicListBag>
+  extends FormInput<T, D> {
+  enableSaveBar?: boolean;
+}
+
+export const useExtendForm = <T extends FieldBag, D extends DynamicListBag>(
+  form: FormProps<T, D>
+): FormReturn<T, D> => {
+  const saveBar = useSaveBar({ show: form.enableSaveBar });
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [isValid, setIsValid] = useState<boolean>(false);
   const customForm = useForm({
@@ -27,7 +32,7 @@ export const useCustomForm = <T extends FieldBag>(
     onSubmit: async (fieldValues) => {
       setIsSubmitted(true);
       if (form.onSubmit) {
-        return form.onSubmit(fieldValues);
+        return form.onSubmit(fieldValues as any);
       }
     },
     makeCleanAfterSubmit: true,

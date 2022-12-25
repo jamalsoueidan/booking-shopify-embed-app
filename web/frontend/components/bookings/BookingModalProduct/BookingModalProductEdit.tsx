@@ -1,6 +1,6 @@
 import { FormErrors } from '@components/FormErrors';
 import LoadingSpinner from '@components/LoadingSpinner';
-import { useCustomForm, useTranslation } from '@hooks';
+import { useExtendForm, useTranslation } from '@hooks';
 import { useBookingUpdate, useWidgetStaff } from '@services';
 import { Form, FormLayout, Modal, Text } from '@shopify/polaris';
 import { notEmpty, useField } from '@shopify/react-form';
@@ -41,38 +41,36 @@ export default ({ info, toggle }: BookingModalProductChildProps) => {
     };
   }, [setPrimaryAction, setPrimaryAction]);
 
-  const { fields, submit, submitErrors, isSubmitted, isValid } = useCustomForm(
-    {
-      fields: {
-        staff: useField<string>({
-          value: info.staff._id || '',
-          validates: [notEmpty('staff is required')],
-        }),
-        date: useField<Date>({
-          value: new Date(info.start) || undefined,
-          validates: [notEmpty('date is required')],
-        }),
-        time: useField<{ start: string; end: string }>({
-          value: {
-            start: info.start || undefined,
-            end: info.end || undefined,
-          },
-          validates: [notEmpty('time is required')],
-        }),
-      },
-      onSubmit: async (fieldValues: any) => {
-        update({
-          start: fieldValues.time.start,
-          end: fieldValues.time.end,
-          staff: fieldValues.staff,
-        });
-        toggle();
-        show({ content: t('toast') });
-        return { status: 'success' };
-      },
+  const { fields, submit, submitErrors, isSubmitted, isValid } = useExtendForm({
+    fields: {
+      staff: useField<string>({
+        value: info.staff._id || '',
+        validates: [notEmpty('staff is required')],
+      }),
+      date: useField<Date>({
+        value: new Date(info.start) || undefined,
+        validates: [notEmpty('date is required')],
+      }),
+      time: useField<{ start: string; end: string }>({
+        value: {
+          start: info.start || undefined,
+          end: info.end || undefined,
+        },
+        validates: [notEmpty('time is required')],
+      }),
     },
-    false
-  );
+    onSubmit: async (fieldValues: any) => {
+      update({
+        start: fieldValues.time.start,
+        end: fieldValues.time.end,
+        staff: fieldValues.staff,
+      });
+      toggle();
+      show({ content: t('toast') });
+      return { status: 'success' };
+    },
+    enableSaveBar: false,
+  });
 
   if (!staffOptions) {
     return (

@@ -1,6 +1,6 @@
 import { FormErrors } from '@components/FormErrors';
 import LoadingPage from '@components/LoadingPage';
-import { useCustomForm, useTranslation } from '@hooks';
+import { useExtendForm, useTranslation } from '@hooks';
 import { useToast } from '@providers/toast';
 import { useSetting, useSettingUpdate } from '@services';
 import {
@@ -39,7 +39,7 @@ export default () => {
   ];
 
   //https://codesandbox.io/s/1wpxz?file=/src/MyForm.tsx:2457-2473
-  const { fields, submit, submitErrors, primaryAction } = useCustomForm({
+  const { fields, submit, submitErrors, primaryAction } = useExtendForm({
     fields: {
       timeZone: useField<string>({
         value: data?.timeZone,
