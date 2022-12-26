@@ -55,6 +55,13 @@ export default function applyAuthMiddleware(
 
       await Shopify.Webhooks.Registry.register({
         path: "/api/webhooks",
+        topic: "CUSTOMERS_CREATE",
+        accessToken: session.accessToken,
+        shop: session.shop,
+      });
+
+      await Shopify.Webhooks.Registry.register({
+        path: "/api/webhooks",
         topic: "CARTS_UPDATE",
         accessToken: session.accessToken,
         shop: session.shop,

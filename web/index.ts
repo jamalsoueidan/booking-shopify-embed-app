@@ -91,6 +91,14 @@ Shopify.Webhooks.Registry.addHandler("CUSTOMERS_UPDATE", {
   },
 });
 
+Shopify.Webhooks.Registry.addHandler("CUSTOMERS_CREATE", {
+  path: "/api/webhooks",
+  webhookHandler: async (_topic, shop, _body) => {
+    CustomerWebhook.modify({ body: JSON.parse(_body), shop });
+    console.log("customers/update");
+  },
+});
+
 Shopify.Webhooks.Registry.addHandler("CARTS_CREATE", {
   path: "/api/webhooks",
   webhookHandler: async (_topic, shop, _body) => {
