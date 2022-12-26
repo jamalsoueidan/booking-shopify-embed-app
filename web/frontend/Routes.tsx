@@ -1,4 +1,16 @@
-import { Routes as ReactRouterRoutes, Route } from 'react-router-dom';
+import { Suspense, lazy } from 'react';
+import { useRoutes } from 'react-router-dom';
+
+const lazyLoadRoutes = (componentName: string) => {
+  const LazyElement = lazy(() => import(componentName));
+
+  // Wrapping around the suspense component is mandatory
+  return (
+    <Suspense fallback="Loading...">
+      <LazyElement />
+    </Suspense>
+  );
+};
 
 /**
  * File-based routing.
@@ -14,23 +26,9 @@ import { Routes as ReactRouterRoutes, Route } from 'react-router-dom';
  *
  * @return {Routes} `<Routes/>` from React Router, with a `<Route/>` for each file in `pages`
  */
-export default function Routes({ pages }) {
-  const routes = useRoutes(pages);
-  const routeComponents = routes.map(({ path, component: Component }) => (
-    <Route key={path} path={path} element={<Component />} />
-  ));
+export default ({ pages }: any) => useRoutes(useBuildRoutes(pages));
 
-  const NotFound = routes.find(({ path }) => path === '/notFound').component;
-
-  return (
-    <ReactRouterRoutes>
-      {routeComponents}
-      <Route path="*" element={<NotFound />} />
-    </ReactRouterRoutes>
-  );
-}
-
-function useRoutes(pages) {
+const useBuildRoutes = (pages: any) => {
   const routes = Object.keys(pages)
     .map((key) => {
       let path = key
@@ -60,10 +58,11 @@ function useRoutes(pages) {
 
       return {
         path,
-        component: pages[key].default,
+        name: path.substring(1).toLowerCase(),
+        element: lazyLoadRoutes(key),
       };
     })
-    .filter((route) => route.component);
+    .filter((route) => route.element);
 
   return routes;
-}
+};

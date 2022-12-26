@@ -7,13 +7,13 @@ import { AppBridgeProvider, PolarisProvider, QueryProvider } from './providers';
 import { SettingsProvider } from './providers/settings';
 
 const i18nManager = new I18nManager({
-  interpolation: { escapeValue: false },
   locale: 'en',
 });
 
 export default function App() {
   // Any .tsx or .jsx files in /pages will become a route
   // See documentation for <Routes /> for more info
+
   const pages = import.meta.globEager('./pages/**/!(*.test.[jt]sx)*.([jt]sx)');
 
   return (
