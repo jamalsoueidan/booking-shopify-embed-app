@@ -16,7 +16,6 @@ export default function App() {
   // See documentation for <Routes /> for more info
   const pages = import.meta.globEager('./pages/**/!(*.test.[jt]sx)*.([jt]sx)');
 
-  console.log(pages);
   return (
     <I18nContext.Provider value={i18nManager}>
       <PolarisProvider>

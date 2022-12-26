@@ -9,6 +9,7 @@
 /// <reference path="../@types/notification.d.ts" />
 /// <reference path="../@types/schedule.d.ts" />
 /// <reference path="../@types/widget.d.ts" />
+/// <reference types="vite/client" />
 
 declare module '*';
 interface Response {

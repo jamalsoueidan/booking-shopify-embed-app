@@ -13,7 +13,7 @@ export default ({ children }: { children: JSX.Element }) => {
   const [i18n, ShareTranslations] = useI18n({
     id: 'Application',
     fallback: en,
-    async translations(locale: string) {
+    translations(locale: string) {
       return locale === 'en' ? en : da;
     },
   });
