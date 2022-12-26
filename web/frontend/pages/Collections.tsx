@@ -11,9 +11,9 @@ export default () => {
   }
 
   if (data?.length === 0) {
-    navigate('/Collections/Empty');
+    navigate('/collections/empty');
   } else {
-    navigate('/Collections/List');
+    navigate('/collections/list');
   }
   return <></>;
 };
