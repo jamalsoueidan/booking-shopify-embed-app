@@ -28,11 +28,6 @@
       "@libs/*": ["libs/*"]
     }
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "providers/PolarisProvider.jsx",
-    "providers/PolarisProvider.jsx"
-  ],
+  "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules/**", "dist"]
 }
