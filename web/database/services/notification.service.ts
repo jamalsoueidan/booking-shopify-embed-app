@@ -1,11 +1,10 @@
-let request = require("request");
 import BookingModel from "@models/booking.model";
 import CustomerModel, { ICustomerModel } from "@models/customer.model";
 import NotificationModel from "@models/notification.model";
 import {
-  default as staffModel,
-  default as StaffModel,
   IStaffModel,
+  default as StaffModel,
+  default as staffModel,
 } from "@models/staff.model";
 import { format, subDays, subMinutes } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
@@ -154,22 +153,6 @@ const send = async ({
     isStaff,
   });
   return notification.save();
-  request.post(
-    {
-      headers: {
-        "content-type": "application/json",
-        Authorization: "Bearer 4dcc09f3-68e2-11ed-8524-005056010a37",
-      },
-      url: "https://api.sms.dk/v1/sms/send",
-      formData: {
-        receiver,
-        message,
-        senderName: "SMSDKDemo",
-        scheduled,
-      },
-    },
-    function (error, response, body) {}
-  );
 };
 
 interface SendBookingConfirmation {
