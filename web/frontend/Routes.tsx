@@ -1,16 +1,4 @@
-import { Suspense, lazy, useMemo } from 'react';
-import { useRoutes } from 'react-router-dom';
-
-const lazyLoadRoutes = (componentName: string) => {
-  const LazyElement = lazy(() => import(`./pages/${componentName}`));
-
-  // Wrapping around the suspense component is mandatory
-  return (
-    <Suspense fallback="Loading...">
-      <LazyElement />
-    </Suspense>
-  );
-};
+import { Routes as ReactRouterRoutes, Route } from 'react-router-dom';
 
 /**
  * File-based routing.
@@ -26,12 +14,23 @@ const lazyLoadRoutes = (componentName: string) => {
  *
  * @return {Routes} `<Routes/>` from React Router, with a `<Route/>` for each file in `pages`
  */
-export default ({ pages }: any) => {
-  const routes = useMemo(() => useBuildRoutes(pages), [pages]);
-  return useRoutes(routes);
-};
+export default function Routes({ pages }: any) {
+  const routes = useRoutes(pages);
+  const routeComponents = routes.map(({ path, component: Component }) => (
+    <Route key={path} path={path} element={<Component />} />
+  ));
 
-const useBuildRoutes = (pages: any) => {
+  const NotFound = routes.find(({ path }) => path === '/notFound').component;
+
+  return (
+    <ReactRouterRoutes>
+      {routeComponents}
+      <Route path="*" element={<NotFound />} />
+    </ReactRouterRoutes>
+  );
+}
+
+function useRoutes(pages: any) {
   const routes = Object.keys(pages)
     .map((key) => {
       let path = key
@@ -60,12 +59,11 @@ const useBuildRoutes = (pages: any) => {
       }
 
       return {
-        path: path.toLowerCase(),
-        name: path.substring(1).toLowerCase(),
-        element: lazyLoadRoutes(path.substring(1)),
+        path,
+        component: pages[key].default,
       };
     })
-    .filter((route) => route.element);
+    .filter((route) => route.component);
 
   return routes;
-};
+}
