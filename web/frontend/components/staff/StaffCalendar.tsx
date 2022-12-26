@@ -4,7 +4,7 @@ import {
   DatesSetArg,
   EventClickArg,
   EventContentArg,
-} from '@fullcalendar/core';
+} from '@fullcalendar/react';
 import { useDate, useTagOptions } from '@hooks';
 import { format } from 'date-fns';
 import { createRef, useCallback, useEffect } from 'react';

@@ -1,8 +1,7 @@
 import Calendar from '@components/Calendar';
 import BookingModal from '@components/bookings/BookingModal';
 import StaffSelection from '@components/bookings/staff-selection';
-import { DatesSetArg, EventClickArg } from '@fullcalendar/core';
-import FullCalendar from '@fullcalendar/react'; // must go before plugins
+import FullCalendar, { DatesSetArg, EventClickArg } from '@fullcalendar/react';
 import { useDate, useFulfillment, useTranslation } from '@hooks';
 import { useBookings } from '@services';
 import { useNavigate } from '@shopify/app-bridge-react';
@@ -15,7 +14,7 @@ import {
   Tooltip,
 } from '@shopify/polaris';
 import { format } from 'date-fns-tz';
-import { createRef, useCallback, useEffect, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 
 export default () => {
   const navigate = useNavigate();
@@ -24,85 +23,76 @@ export default () => {
   const [end, setEnd] = useState(null);
   const [staff, setStaff] = useState(null);
 
+  const ref = useRef<FullCalendar>();
   const { t } = useTranslation('bookings');
   const { getColor, options } = useFulfillment();
   const { toTimeZone } = useDate();
-  const calendarRef = createRef<FullCalendar>();
 
   const { data: bookings, isLoading } = useBookings({ start, end, staff });
 
   const dateChanged = useCallback((props: DatesSetArg) => {
-    setStart(format(props.start, 'yyyy-MM-dd'));
-    setEnd(format(props.end, 'yyyy-MM-dd'));
+    if (props.start !== start || props.end !== end) {
+      setStart(format(props.start, 'yyyy-MM-dd'));
+      setEnd(format(props.end, 'yyyy-MM-dd'));
+    }
   }, []);
 
-  useEffect(() => {
-    if (bookings) {
-      const api = calendarRef.current.getApi();
-      const removeEvents = api.getEvents();
-      removeEvents.forEach((event) => {
-        event.remove();
-      });
-
-      bookings.forEach((d) => {
-        api.addEvent({
-          ...d,
-          start: toTimeZone(new Date(d.start)),
-          end: toTimeZone(new Date(d.end)),
-          backgroundColor: getColor(d.fulfillmentStatus),
-          color: getColor(d.fulfillmentStatus),
-          textColor: '#202223',
-        });
-      });
-    }
-  }, [bookings, calendarRef]);
-
-  const eventContent = useCallback(
-    (arg: any) => {
-      const booking: BookingAggreate = arg.event.extendedProps;
-      const extendHour = (
-        <i>
-          {format(arg.event.start, 'HH:mm')} - {format(arg.event.end, 'HH:mm')}{' '}
-        </i>
-      );
-
-      const fulfillmentStatus = booking.fulfillmentStatus || 'In progress';
-
-      return (
-        <Tooltip content={fulfillmentStatus} dismissOnMouseOut>
-          <div
-            style={{ cursor: 'pointer', padding: '4px', position: 'relative' }}>
-            <div>{extendHour}</div>
-            <div
-              style={{
-                position: 'absolute',
-                top: 0,
-                bottom: 0,
-                left: 0,
-                right: '4px',
-                display: 'flex',
-                justifyContent: 'flex-end',
-                alignItems: 'center',
-              }}>
-              <Avatar
-                size="small"
-                name={booking.staff?.fullname}
-                shape="square"
-                source={booking.staff?.avatar}
-              />
-            </div>
-            <div
-              style={{
-                overflow: 'hidden',
-              }}>
-              {booking.product.title}
-            </div>
-          </div>
-        </Tooltip>
-      );
-    },
-    [calendarRef]
+  const events = useMemo(
+    () =>
+      bookings?.map((d) => ({
+        ...d,
+        start: toTimeZone(new Date(d.start)),
+        end: toTimeZone(new Date(d.end)),
+        backgroundColor: getColor(d.fulfillmentStatus),
+        color: getColor(d.fulfillmentStatus),
+        textColor: '#202223',
+      })) || [],
+    [bookings]
   );
+
+  const eventContent = useCallback((arg: any) => {
+    const booking: BookingAggreate = arg.event.extendedProps;
+    const extendHour = (
+      <i>
+        {format(arg.event.start, 'HH:mm')} - {format(arg.event.end, 'HH:mm')}{' '}
+      </i>
+    );
+
+    const fulfillmentStatus = booking.fulfillmentStatus || 'In progress';
+
+    return (
+      <Tooltip content={fulfillmentStatus} dismissOnMouseOut>
+        <div
+          style={{ cursor: 'pointer', padding: '4px', position: 'relative' }}>
+          <div>{extendHour}</div>
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: '4px',
+              display: 'flex',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+            }}>
+            <Avatar
+              size="small"
+              name={booking.staff?.fullname}
+              shape="square"
+              source={booking.staff?.avatar}
+            />
+          </div>
+          <div
+            style={{
+              overflow: 'hidden',
+            }}>
+            {booking.product.title}
+          </div>
+        </div>
+      </Tooltip>
+    );
+  }, []);
 
   const showBooking = useCallback(({ event }: EventClickArg) => {
     setInfo({
@@ -146,7 +136,8 @@ export default () => {
         </Card.Section>
         <Card.Section>
           <Calendar
-            ref={calendarRef}
+            ref={ref}
+            events={events}
             eventContent={eventContent}
             datesSet={dateChanged}
             eventClick={showBooking}

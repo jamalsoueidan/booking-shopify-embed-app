@@ -1,10 +1,8 @@
-import { CalendarOptions } from '@fullcalendar/core';
-import da from '@fullcalendar/core/locales/da';
-import en from '@fullcalendar/core/locales/en-gb';
+import '@fullcalendar/react/dist/vdom';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
-import FullCalendar from '@fullcalendar/react'; // must go before plugins
+import FullCalendar, { CalendarOptions } from '@fullcalendar/react'; // must go before plugins
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { useSettings } from '@providers/settings';
 import { forwardRef } from 'react';
@@ -38,7 +36,6 @@ export default forwardRef(
         eventDisplay="block"
         slotMinTime="07:00"
         slotMaxTime="20:00"
-        locales={[en, da]}
         locale={language}
         buttonText={{
           prev: '<<',
