@@ -75,9 +75,6 @@ export default defineConfig({
               .split('/')[0]
               .toString();
           }
-          if (id.includes('pages')) {
-            return id.toString().split('pages/')[1].split('/')[0].toString();
-          }
         },
       },
     },
