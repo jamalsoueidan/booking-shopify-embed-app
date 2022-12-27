@@ -12,9 +12,6 @@ export default () => {
   const { data: staff } = useStaffGet({ userId: params.id });
   const { update } = useStaffUpdate({ userId: params.id });
 
-  if (!staff) {
-    return <></>;
-  }
   const submit = useCallback(
     async (fieldValues: any) => {
       await update(fieldValues);
@@ -22,6 +19,10 @@ export default () => {
     },
     [update, navigate]
   );
+
+  if (!staff) {
+    return <></>;
+  }
 
   return (
     <StaffForm

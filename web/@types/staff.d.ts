@@ -7,6 +7,8 @@ interface Staff {
   active: boolean;
   avatar: string;
   position: string;
+  postal: number;
+  address: string;
 }
 
 interface StaffBodyUpdate extends Partial<Omit<Staff, "_id" | "shop">> {}

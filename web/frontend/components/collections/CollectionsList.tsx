@@ -14,8 +14,8 @@ import {
 } from '@shopify/polaris';
 import { CircleCancelMinor, CircleTickMinor } from '@shopify/polaris-icons';
 import { useCallback, useMemo, useState } from 'react';
-import ModalConfirm from '@components/modals/ModalConfirm.js';
-import { sortStrings } from '@libs/sortStrings.js';
+import ModalConfirm from '@components/modals/ModalConfirm';
+import { sortStrings } from '@libs/sortStrings';
 
 interface CollectionListProps {
   collection: CollectionAggreate;

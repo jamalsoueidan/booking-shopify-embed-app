@@ -3,6 +3,7 @@ import { useExtendForm, usePositions, useTranslation } from '@hooks';
 import isEmail from '@libs/validators/isEmail';
 import isPhoneNumber from '@libs/validators/isPhoneNumber';
 import {
+  Box,
   BreadcrumbsProps,
   Card,
   Form,
@@ -10,6 +11,7 @@ import {
   Image,
   Layout,
   Page,
+  PageActions,
   Select,
   TextField,
 } from '@shopify/polaris';
@@ -29,10 +31,10 @@ export const StaffForm = ({
   data,
 }: StaffFormProps) => {
   const { options } = usePositions();
-  const { t } = useTranslation('staff', { keyPrefix: 'new' });
+  const { t } = useTranslation('staff', { keyPrefix: 'form' });
 
   //https://codesandbox.io/s/1wpxz?file=/src/MyForm.tsx:2457-2473
-  const { fields, submit, submitErrors } = useExtendForm({
+  const { fields, submit, submitErrors, primaryAction } = useExtendForm({
     fields: {
       fullname: useField({
         value: data?.fullname || '',
@@ -58,7 +60,15 @@ export const StaffForm = ({
       }),
       position: useField({
         value: data?.position || options[0].value,
-        validates: [notEmpty('position must be selexcted')],
+        validates: [notEmpty('position must be selected')],
+      }),
+      postal: useField<number>({
+        value: data?.postal || undefined,
+        validates: [notEmpty('postal must be filled')],
+      }),
+      address: useField({
+        value: data?.address || '',
+        validates: [notEmpty('postal must be filled')],
       }),
       active: useField({
         value: data?.active || true,
@@ -74,7 +84,7 @@ export const StaffForm = ({
   return (
     <Form onSubmit={submit}>
       <Page
-        title={t('title')}
+        title={data ? data?.fullname : t('title')}
         breadcrumbs={breadcrumbs}
         titleMetadata={titleMetadata}>
         <Layout>
@@ -105,6 +115,31 @@ export const StaffForm = ({
                   helpText={<span>{t('staff.phone.help')}</span>}
                   {...fields.phone}
                 />
+                <TextField
+                  label={t('staff.address.label')}
+                  type="text"
+                  autoComplete="address"
+                  placeholder={t('staff.address.placeholder')}
+                  {...fields.address}
+                />
+                <TextField
+                  label={t('staff.postal.label')}
+                  type="text"
+                  autoComplete="postal"
+                  placeholder={t('staff.postal.placeholder')}
+                  helpText={<span>{t('staff.postal.help')}</span>}
+                  {...fields.postal}
+                  value={fields.postal?.value?.toString()}
+                  onChange={(value: string) =>
+                    fields.postal.onChange(parseInt(value))
+                  }
+                />
+              </FormLayout>
+            </Card>
+          </Layout.AnnotatedSection>
+          <Layout.AnnotatedSection title={t('staff.position.title')}>
+            <Card sectioned>
+              <FormLayout>
                 <Select
                   label={t('staff.position.label')}
                   options={options}
@@ -124,14 +159,21 @@ export const StaffForm = ({
                   helpText={<span>{t('staff.avatarUrl.help')}</span>}
                   {...fields.avatar}
                 />
+                {fields.avatar.value && (
+                  <Box paddingBlockStart="4">
+                    <Image
+                      source={fields.avatar.value}
+                      alt="avatar url"
+                      width="100px"
+                    />
+                  </Box>
+                )}
               </Card.Section>
-              {fields.avatar.value && (
-                <Image source={fields.avatar.value} alt="avatar url" />
-              )}
             </Card>
-            <br />
           </Layout.AnnotatedSection>
         </Layout>
+        <br />
+        <PageActions primaryAction={primaryAction} />
       </Page>
     </Form>
   );

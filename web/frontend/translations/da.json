@@ -4,10 +4,7 @@
 		"modal": {
 			"product": {
 				"edit": {
-					"toast": "Bestilling er opdateret",
-					"toasta": {
-						"content": ""
-					}
+					"toast": "Bestilling er opdateret"
 				}
 			}
 		},
@@ -110,12 +107,16 @@
 			"text": "Tilføj nye medarbejder. Efterfølgende kan du tilføje timer, og tilføje medarbejder til behandlinger.",
 			"title": "Medarbejder"
 		},
-		"new": {
+		"form": {
 			"image": {
 				"title": "Vedhæft"
 			},
 			"save": "Gem",
 			"staff": {
+				"address": {
+					"label": "Din adresse",
+					"placeholder": "Indtast din adresse"
+				},
 				"avatarUrl": {
 					"help": "Brug en url til at importere billedet",
 					"label": "Avatar Link",
@@ -136,7 +137,13 @@
 					"placeholder": "Eksempel: +4531311234"
 				},
 				"position": {
-					"label": "Title"
+					"label": "Title",
+					"title": "Din position, makeup artist, eller frisør?"
+				},
+				"postal": {
+					"help": "8000, 8200",
+					"label": "Postnummer",
+					"placeholder": "Postnummer"
 				},
 				"title": "Medarbejder overblik"
 			},

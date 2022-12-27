@@ -4,10 +4,7 @@
 		"modal": {
 			"product": {
 				"edit": {
-					"toast": "Booking has been updated",
-					"toasta": {
-						"content": ""
-					}
+					"toast": "Booking has been updated"
 				}
 			}
 		},
@@ -110,12 +107,16 @@
 			"text": "Add new staff. Then you'll be able to manage member profiles, working hours and who's doing what service.",
 			"title": "Staff"
 		},
-		"new": {
+		"form": {
 			"image": {
 				"title": "Upload"
 			},
 			"save": "Save",
 			"staff": {
+				"address": {
+					"label": "Your address",
+					"placeholder": "Enter your address"
+				},
 				"avatarUrl": {
 					"help": "Use url to import a picture",
 					"label": "Avatar URL",
@@ -136,7 +137,13 @@
 					"placeholder": "Example: +4531311234"
 				},
 				"position": {
-					"label": "Title"
+					"label": "Title",
+					"title": "Your position makeup artist or hair artist?"
+				},
+				"postal": {
+					"help": "8000, 8220",
+					"label": "Postal",
+					"placeholder": "Postal"
 				},
 				"title": "Staff overview"
 			},

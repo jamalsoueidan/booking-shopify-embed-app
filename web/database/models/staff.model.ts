@@ -14,7 +14,7 @@ const StaffSchema = new Schema({
     type: String,
     unique: true,
   },
-  postal_code: {
+  postal: {
     type: Number,
     required: true,
     index: true,

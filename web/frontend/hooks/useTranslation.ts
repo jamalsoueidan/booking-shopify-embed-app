@@ -7,6 +7,7 @@ interface UseTranslationOptions {
 
 interface UseTranslationInnerOptions extends UseTranslationOptions {
   count?: Array<any>;
+  [key: string]: any;
 }
 
 export const useTranslation = (
@@ -29,7 +30,7 @@ export const useTranslation = (
         tKey += `.${replacements.count === 0 ? 'zero' : 'other'}`;
       }
 
-      return i18n.translate(tKey, replacements);
+      return i18n.translate(tKey, { ...secondOptions, ...replacements });
     },
     []
   );
