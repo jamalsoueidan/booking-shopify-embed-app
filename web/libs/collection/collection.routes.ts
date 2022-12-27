@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { expressHandleRoute } from "../express-helpers/handle-route";
 import controller, { ControllerMethods } from "./collection.controller";
+import { body } from "express-validator";
 
 export const collectionRoutes = (app) => {
   const router = Router();
@@ -15,9 +16,13 @@ export const collectionRoutes = (app) => {
     handleRoute(req, res, ControllerMethods.remove);
   });
 
-  router.post("/collections", async (req, res) => {
-    handleRoute(req, res, ControllerMethods.create);
-  });
+  router.post(
+    "/collections",
+    body("selections").notEmpty(),
+    async (req, res) => {
+      handleRoute(req, res, ControllerMethods.create);
+    }
+  );
 
   return router;
 };

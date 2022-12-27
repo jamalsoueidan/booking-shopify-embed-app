@@ -25,15 +25,15 @@ const create = async ({
   const { session, shop } = query;
 
   const selections = body.selections;
-  const collections = await Promise.all(
-    selections.map((id) => getCollection(session, id))
-  );
+  const collections = (
+    await Promise.all(selections.map((id) => getCollection(session, id)))
+  ).filter((el) => el != null);
 
   const getGid = (value: string): number =>
     parseInt(value.substring(value.lastIndexOf("/") + 1));
 
   //TODO: What about the products that are removed from the collections, they needs to be removed also or moved?
-  const collectionBulkWrite = collections.map((c) => {
+  const collectionBulkWrite = collections?.map((c) => {
     return {
       updateOne: {
         filter: { collectionId: getGid(c.id) },
@@ -45,7 +45,7 @@ const create = async ({
     };
   });
 
-  const products = collections.reduce<Array<Partial<IProductModel>>>(
+  const products = collections?.reduce<Array<Partial<IProductModel>>>(
     (products, currentCollection) => {
       currentCollection.products.nodes.forEach((n) => {
         products.push({
@@ -60,6 +60,19 @@ const create = async ({
     []
   );
 
+  let cleanupProducts = await ProductModel.find(
+    { collectionId: { $in: products?.map((p) => p.collectionId) } },
+    "collectionId productId"
+  );
+
+  cleanupProducts = cleanupProducts.filter(
+    (p) =>
+      !products.find(
+        (pp: IProductModel) =>
+          pp.collectionId === p.collectionId && pp.productId === p.productId
+      )
+  );
+
   const productsBulkWrite = products.map((product) => {
     return {
       updateOne: {
@@ -72,9 +85,20 @@ const create = async ({
     };
   });
 
+  const productsDeleteOne = cleanupProducts.map((product) => {
+    return {
+      deleteOne: {
+        filter: { ...product },
+      },
+    };
+  });
+
   return {
     collections: await CollectionModel.bulkWrite(collectionBulkWrite),
-    products: await ProductModel.bulkWrite(productsBulkWrite),
+    products: await ProductModel.bulkWrite([
+      ...productsBulkWrite,
+      ...productsDeleteOne,
+    ]),
   };
 };
 
