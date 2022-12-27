@@ -87,7 +87,7 @@ export default () => {
             style={{
               overflow: 'hidden',
             }}>
-            {booking.product.title}
+            {arg.event.title}
           </div>
         </div>
       </Tooltip>
@@ -99,6 +99,7 @@ export default () => {
       ...event._def.extendedProps,
       start: event.startStr,
       end: event.endStr,
+      title: event.title,
     });
   }, []);
 

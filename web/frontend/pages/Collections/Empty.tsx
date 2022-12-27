@@ -1,3 +1,4 @@
+import LoadingPage from '@components/LoadingPage';
 import { useTranslation } from '@hooks';
 import { useCollection, useCollectionCreate } from '@services';
 import { ResourcePicker, useNavigate } from '@shopify/app-bridge-react';
@@ -7,8 +8,9 @@ import { useCallback, useMemo, useState } from 'react';
 export default () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-  const { create } = useCollectionCreate();
+  const { create, isFetching, isFetched } = useCollectionCreate();
   const { t } = useTranslation('collections');
+  const { data } = useCollection();
 
   const handleSelection = useCallback(
     (resources: Resources) => {
@@ -29,15 +31,17 @@ export default () => {
     []
   );
 
-  const { data } = useCollection();
+  if (isFetching) {
+    return <LoadingPage></LoadingPage>;
+  }
 
-  if (data?.length > 0) {
-    navigate('/Collections/List');
+  if (data?.length > 0 || isFetched) {
+    navigate('/Collections');
     return <></>;
   }
 
   return (
-    <Page title={t('title')}>
+    <Page fullWidth title={t('title')}>
       <ResourcePicker
         resourceType="Collection"
         open={open}

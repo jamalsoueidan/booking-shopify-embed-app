@@ -28,7 +28,7 @@ export const useStaffScheduleCreate = ({
   const create: UseStaffScheduleCreateFunction = useCallback(async (body) => {
     setIsCreating(true);
     await post(`/api/admin/staff/${staff}/schedules`, body);
-    mutate(['staff', staff]);
+    await mutate(['staff', staff]);
     setIsCreating(false);
   }, []);
 
@@ -54,7 +54,7 @@ export const useStaffScheduleDestroy = ({
           body.groupId ? '/group/' + body.groupId : ''
         }`
       );
-      fetch.mutate(['staff', staff]);
+      await fetch.mutate(['staff', staff]);
       setIsDestroying(false);
     },
     [setIsDestroying, fetch]
@@ -83,7 +83,7 @@ export const useStaffScheduleUpdate = ({
         }`,
         body
       );
-      mutate(['staff', staff]);
+      await mutate(['staff', staff]);
       setIsUpdating(false);
     },
     [setIsUpdating, mutate, put]

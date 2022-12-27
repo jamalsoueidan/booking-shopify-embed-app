@@ -53,6 +53,7 @@ const create = async ({
           collectionId: getGid(currentCollection.id),
           productId: getGid(n.id),
           title: n.title,
+          hidden: false,
         });
       });
       return products;
@@ -73,6 +74,17 @@ const create = async ({
       )
   );
 
+  const productsHide = cleanupProducts.map((product) => {
+    return {
+      updateOne: {
+        filter: { _id: product._id },
+        update: {
+          $set: { hidden: true, active: false },
+        },
+      },
+    };
+  });
+
   const productsBulkWrite = products.map((product) => {
     return {
       updateOne: {
@@ -85,19 +97,11 @@ const create = async ({
     };
   });
 
-  const productsDeleteOne = cleanupProducts.map((product) => {
-    return {
-      deleteOne: {
-        filter: { ...product },
-      },
-    };
-  });
-
   return {
     collections: await CollectionModel.bulkWrite(collectionBulkWrite),
     products: await ProductModel.bulkWrite([
       ...productsBulkWrite,
-      ...productsDeleteOne,
+      ...productsHide,
     ]),
   };
 };
@@ -115,9 +119,17 @@ const remove = async ({ query }: { query: DeleteQuery }) => {
   if (collection) {
     return {
       collection: await CollectionModel.deleteOne({ shop, _id: id }),
-      products: await ProductModel.deleteMany({
-        collectionId: collection.collectionId,
-      }),
+      products: await ProductModel.updateMany(
+        {
+          collectionId: collection.collectionId,
+        },
+        {
+          $set: {
+            hidden: true,
+            active: false,
+          },
+        }
+      ),
     };
   }
 };

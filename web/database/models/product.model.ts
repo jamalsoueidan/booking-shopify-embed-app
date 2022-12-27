@@ -46,6 +46,12 @@ const ProductSchema = new Schema({
   active: {
     type: Boolean,
     default: false,
+    index: true,
+  },
+  hidden: {
+    type: Boolean,
+    default: false,
+    index: true,
   },
 });
 

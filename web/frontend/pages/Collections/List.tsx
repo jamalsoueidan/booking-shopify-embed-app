@@ -33,6 +33,7 @@ export default () => {
 
   return (
     <Page
+      fullWidth
       title={t('title')}
       primaryAction={{
         content: t('add_collection'),

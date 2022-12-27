@@ -84,6 +84,7 @@ export const StaffForm = ({
   return (
     <Form onSubmit={submit}>
       <Page
+        fullWidth
         title={data ? data?.fullname : t('title')}
         breadcrumbs={breadcrumbs}
         titleMetadata={titleMetadata}>

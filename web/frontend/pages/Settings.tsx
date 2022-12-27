@@ -72,7 +72,7 @@ export default () => {
 
   return (
     <Form onSubmit={submit}>
-      <Page title={t('title')}>
+      <Page fullWidth title={t('title')}>
         <Layout>
           <FormErrors errors={submitErrors} />
           <Layout.AnnotatedSection

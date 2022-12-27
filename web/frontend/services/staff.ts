@@ -36,7 +36,7 @@ export const useStaffCreate = () => {
   const create: UseStaffCreateFetch = useCallback(
     async (body) => {
       const response: Staff = await post('/api/admin/staff', body);
-      mutate(['staff']);
+      await mutate(['staff']);
       return response;
     },
     [post, mutate]
@@ -59,7 +59,7 @@ export const useStaffUpdate = ({ userId }: UseStaffUpdateProps) => {
   const update: UseStaffUpdateFetch = useCallback(
     async (body) => {
       const response: Staff = await put('/api/admin/staff/' + userId, body);
-      mutate(['staff']);
+      await mutate(['staff']);
       return response;
     },
     [put, mutate]

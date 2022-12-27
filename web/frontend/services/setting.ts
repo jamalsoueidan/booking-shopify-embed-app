@@ -24,7 +24,7 @@ export const useSettingUpdate = () => {
   const update: UseSettingUpdateFetch = useCallback(
     async (body) => {
       const response: Setting = await put(`/api/admin/setting`, body);
-      mutate(['setting']);
+      await mutate(['setting']);
       return response;
     },
     [put, mutate]

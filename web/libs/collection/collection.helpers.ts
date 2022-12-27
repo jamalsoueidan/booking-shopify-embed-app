@@ -14,6 +14,7 @@ interface Collection {
     nodes: Array<Product>;
   };
 }
+
 interface GetCollectionQuery {
   body: {
     data: {

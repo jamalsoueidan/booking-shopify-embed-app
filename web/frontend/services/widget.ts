@@ -6,7 +6,7 @@ export const useWidgetStaff = ({ productId }: WidgetStaffQuery) => {
 
   const { data } = useQuery<ApiResponse<Array<WidgetStaff>>>({
     queryKey: ['widget', 'staff', productId],
-    queryFn: () => {
+    queryFn: async () => {
       mutate(['widget', 'availability']);
       return get(`/api/widget/staff?productId=${productId}`);
     },

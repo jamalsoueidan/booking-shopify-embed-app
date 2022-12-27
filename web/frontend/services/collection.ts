@@ -1,5 +1,5 @@
 import { useFetch } from '@hooks';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useQuery } from 'react-query';
 
 export const useCollection = () => {
@@ -18,11 +18,16 @@ type UseCollectionCreateFetch = ({ selections }: CollectionBodyCreate) => void;
 
 export const useCollectionCreate = () => {
   const { post, mutate } = useFetch();
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+  const [isFetched, setIsFetched] = useState<boolean>(false);
 
   const create: UseCollectionCreateFetch = useCallback(
     async ({ selections }) => {
+      setIsFetching(true);
       const response = await post('/api/admin/collections', { selections });
-      mutate(['collections']);
+      await mutate(['collections']);
+      setIsFetching(false);
+      setIsFetched(true);
       return response;
     },
     [mutate, post]
@@ -30,6 +35,8 @@ export const useCollectionCreate = () => {
 
   return {
     create,
+    isFetching,
+    isFetched,
   };
 };
 

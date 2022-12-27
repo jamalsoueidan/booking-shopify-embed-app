@@ -45,7 +45,7 @@ export const useProductUpdate = ({ productId }: UseProductUpdateProps) => {
         `/api/admin/products/${productId}`,
         body
       );
-      mutate(['products', productId]);
+      await mutate(['products', productId]);
       return response;
     },
     [put, mutate]

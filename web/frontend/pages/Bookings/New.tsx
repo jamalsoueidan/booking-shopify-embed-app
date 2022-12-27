@@ -69,6 +69,7 @@ export default () => {
   return (
     <Form onSubmit={submit}>
       <Page
+        fullWidth
         title={t('title')}
         breadcrumbs={[{ content: 'Bookings', url: '/Bookings' }]}>
         <Layout>

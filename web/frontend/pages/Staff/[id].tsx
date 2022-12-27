@@ -65,6 +65,7 @@ export default () => {
 
   return (
     <Page
+      fullWidth
       title={fullname}
       titleMetadata={<Metadata active={active} />}
       breadcrumbs={[{ content: 'Staff', url: '/Staff' }]}

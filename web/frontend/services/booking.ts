@@ -33,7 +33,7 @@ export const useBookingUpdate = ({ id }: UseBookingUpdateProps) => {
   const update: UseBookingUpdateFetch = useCallback(
     async (body) => {
       await put('/api/admin/bookings/' + id, body);
-      mutate(['booking', id]);
+      await mutate(['booking', id]);
     },
     [put, mutate]
   );
@@ -51,8 +51,8 @@ export const useBookingCreate = () => {
   const create: UseBookingCreateFetch = useCallback(
     async (body) => {
       await post('/api/admin/bookings', body);
-      mutate(['bookings']);
-      mutate(['widget', 'availability']);
+      await mutate(['bookings']);
+      await mutate(['widget', 'availability']);
     },
     [post, mutate]
   );

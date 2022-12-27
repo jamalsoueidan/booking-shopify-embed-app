@@ -63,6 +63,7 @@ export default () => {
   return (
     <Form onSubmit={submit}>
       <Page
+        fullWidth
         title={product?.title}
         breadcrumbs={[{ content: 'Collections', url: '/Collections' }]}>
         {product && (

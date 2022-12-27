@@ -47,18 +47,20 @@ export default ({ collection }: CollectionListProps) => {
       <ResourceItem
         id={_id}
         url={'/Collections/Product/' + _id}
-        media={<Icon source={icon} color={status} />}
-        verticalAlignment="center">
-        <Text variant="headingSm" as="h6">
+        media={<Icon source={icon} color={status} backdrop />}
+        name={title}>
+        <Text variant="bodyMd" fontWeight="bold" as="h3">
           {title}
         </Text>
-        <Text variant="bodySm" as="p">
+
+        <div>
           {t('staff', {
             count: item.staff,
           })}
-        </Text>
+        </div>
+
         {item.staff?.length > 0 && (
-          <Box paddingBlockStart="4">
+          <Box paddingBlockStart="2">
             <Stack spacing="extraTight">
               {item.staff.map((staff) => {
                 return (
@@ -94,7 +96,11 @@ export default ({ collection }: CollectionListProps) => {
           </Button>
         </Text>
         <Card>
-          <ResourceList items={products} renderItem={renderItem} />
+          <ResourceList
+            resourceName={{ singular: 'product', plural: 'products' }}
+            items={products}
+            renderItem={renderItem}
+          />
         </Card>
       </TextContainer>
       <br />

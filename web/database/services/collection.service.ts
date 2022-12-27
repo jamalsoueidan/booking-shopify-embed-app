@@ -1,3 +1,4 @@
+import { getCollection } from "@libs/collection/collection.helpers";
 import CollectionModel from "@models/collection.model";
 
 const findAll = () => {
@@ -5,13 +6,24 @@ const findAll = () => {
     {
       $lookup: {
         from: "Product",
-        localField: "collectionId",
-        foreignField: "collectionId",
+        let: { cID: "$collectionId" },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  { $eq: ["$collectionId", "$$cID"] },
+                  { $eq: ["$hidden", false] },
+                ],
+              },
+            },
+          },
+        ],
         as: "products",
       },
     },
     {
-      $unwind: { path: "$products", preserveNullAndEmptyArrays: true },
+      $unwind: { path: "$products" },
     },
     {
       $unwind: { path: "$products.staff", preserveNullAndEmptyArrays: true },

@@ -52,6 +52,7 @@ export default () => {
 
   return (
     <Page
+      fullWidth
       title="Staff"
       primaryAction={{
         content: 'Add team member',

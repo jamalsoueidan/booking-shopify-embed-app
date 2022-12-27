@@ -14,6 +14,7 @@ interface Booking {
   title: string;
   timeZone: string;
   isEdit?: boolean;
+  isSelfBooked?: boolean;
 }
 
 interface BookingAggreate extends Booking {
