@@ -109,6 +109,7 @@ const getById = async ({
         staff: "$staff.staff",
       },
     },
+    { $sort: { "staff.fullname": 1 } },
     {
       $group: {
         _id: "$_id",
@@ -143,6 +144,7 @@ const getStaff = ({ query }: { query: Query }) => {
 
   return ScheduleModel.aggregate<ProductAddStaff>([
     /*{
+      //TODO: should we only show staff who have schedule after today?
       $match: {
         start: {
           $gte: startOfDay(new Date()),
@@ -198,30 +200,7 @@ const getStaff = ({ query }: { query: Query }) => {
         newRoot: "$staffs",
       },
     },
-    /*{
-      $lookup: {
-        from: "Product",
-        localField: "_id",
-        foreignField: "staff.staff",
-        let: {
-          staffId: "$_id",
-        },
-        pipeline: [
-          {
-            $match: {
-              _id: new mongoose.Types.ObjectId(id),
-            },
-          },
-        ],
-        as: "products",
-      },
-    },
-    { $match: { products: { $size: 0 } } },
-    {
-      $project: {
-        products: 0,
-      },
-    },*/
+    { $sort: { fullname: 1 } },
   ]);
 };
 

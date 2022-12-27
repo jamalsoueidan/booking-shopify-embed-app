@@ -1,17 +1,21 @@
 import { useTranslation } from '@hooks';
 import { useCollectionDestroy } from '@services';
 import {
+  Avatar,
+  Box,
   Button,
   Card,
   Icon,
   ResourceItem,
   ResourceList,
+  Stack,
   Text,
   TextContainer,
 } from '@shopify/polaris';
-import { CancelMinor, TickMinor } from '@shopify/polaris-icons';
-import { useCallback, useState } from 'react';
-import ModalConfirm from '../modals/ModalConfirm.js';
+import { CircleCancelMinor, CircleTickMinor } from '@shopify/polaris-icons';
+import { useCallback, useMemo, useState } from 'react';
+import ModalConfirm from '@components/modals/ModalConfirm.js';
+import { sortStrings } from '@libs/sortStrings.js';
 
 interface CollectionListProps {
   collection: CollectionAggreate;
@@ -33,11 +37,11 @@ export default ({ collection }: CollectionListProps) => {
     );
   }, []);
 
-  const renderItem = useCallback((item: Product) => {
+  const renderItem = useCallback((item: Product<ProductStaffAggreate>) => {
     const { _id, title, active } = item;
 
     const status = active ? 'success' : 'critical';
-    const icon = active ? TickMinor : CancelMinor;
+    const icon = active ? CircleTickMinor : CircleCancelMinor;
 
     return (
       <ResourceItem
@@ -53,9 +57,32 @@ export default ({ collection }: CollectionListProps) => {
             count: item.staff,
           })}
         </Text>
+        {item.staff?.length > 0 && (
+          <Box paddingBlockStart="4">
+            <Stack spacing="extraTight">
+              {item.staff.map((staff) => {
+                return (
+                  <Avatar
+                    key={staff._id}
+                    customer
+                    size="small"
+                    name={staff.fullname}
+                    source={staff.avatar}
+                  />
+                );
+              })}
+            </Stack>
+          </Box>
+        )}
       </ResourceItem>
     );
   }, []);
+
+  const products = useMemo(
+    () => [...collection.products].sort(sortStrings('title')),
+    [collection.products]
+  );
+
   return (
     <>
       {modalConfirm}
@@ -67,7 +94,7 @@ export default ({ collection }: CollectionListProps) => {
           </Button>
         </Text>
         <Card>
-          <ResourceList items={collection.products} renderItem={renderItem} />
+          <ResourceList items={products} renderItem={renderItem} />
         </Card>
       </TextContainer>
       <br />

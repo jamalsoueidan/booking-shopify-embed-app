@@ -14,6 +14,12 @@ const StaffSchema = new Schema({
     type: String,
     unique: true,
   },
+  postal_code: {
+    type: Number,
+    required: true,
+    index: true,
+  },
+  address: String,
   phone: { type: String, required: true },
   avatar: { type: String, required: true },
   position: { type: String, required: true },

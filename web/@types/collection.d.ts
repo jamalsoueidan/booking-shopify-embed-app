@@ -6,7 +6,7 @@ interface Collection {
 }
 
 interface CollectionAggreate extends Collection {
-  products: Product[];
+  products: Product<ProductStaffAggreate>[];
 }
 
 interface CollectionBodyCreate {
