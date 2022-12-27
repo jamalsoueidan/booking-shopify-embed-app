@@ -24,12 +24,12 @@ interface FormProps<T extends FieldBag, D extends DynamicListBag>
 export const useExtendForm = <T extends FieldBag, D extends DynamicListBag>(
   form: FormProps<T, D>
 ): FormReturn<T, D> => {
-  const saveBar = useSaveBar({ show: form.enableSaveBar });
+  const saveBar = useSaveBar({ show: form.enableSaveBar !== false });
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [isValid, setIsValid] = useState<boolean>(false);
   const customForm = useForm({
     ...form,
-    onSubmit: async (fieldValues) => {
+    onSubmit: (fieldValues) => {
       setIsSubmitted(true);
       if (form.onSubmit) {
         return form.onSubmit(fieldValues as any);

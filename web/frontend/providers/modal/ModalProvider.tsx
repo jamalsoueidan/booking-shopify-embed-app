@@ -1,14 +1,22 @@
 import { ComplexAction, Modal, ModalProps } from '@shopify/polaris';
 import { ModalContext } from './Modal.context';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 export const ModalProvider = (props: ModalProps) => {
   const [primaryAction, setPrimaryAction] = useState<ComplexAction>();
   const [secondaryActions, setSecondaryActions] = useState<ComplexAction[]>();
 
+  const value = useMemo(
+    () => ({
+      ...props,
+      setPrimaryAction,
+      setSecondaryActions,
+    }),
+    [props, setPrimaryAction, setSecondaryActions]
+  );
+
   return (
-    <ModalContext.Provider
-      value={{ ...props, setPrimaryAction, setSecondaryActions }}>
+    <ModalContext.Provider value={value}>
       <Modal
         large
         primaryAction={primaryAction}

@@ -1,4 +1,4 @@
-import { useTagOptions, usePositions, useTranslation } from '@hooks';
+import { usePositions, useTagOptions, useTranslation } from '@hooks';
 import { useProductStaff } from '@services';
 import { Modal, OptionList, Spinner, Text } from '@shopify/polaris';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
@@ -29,7 +29,7 @@ export default ({ productId, show, close }: StaffModalProps) => {
       }
       setSelected(() => newSelected);
     },
-    [selected]
+    [selected, setSelected]
   );
 
   const didChange = useMemo(
@@ -37,13 +37,13 @@ export default ({ productId, show, close }: StaffModalProps) => {
     [value, selected]
   );
 
-  const submit = () => {
+  const submit = useCallback(() => {
     if (didChange) {
       removeItems(fields.map((_, index) => index));
       selected.forEach((s) => addItem(s));
     }
     close();
-  };
+  }, [didChange, removeItems, selected, addItem]);
 
   // onOpen update selected to correspond to the useForm
   useEffect(() => {

@@ -1,5 +1,5 @@
 import { Toast, ToastProps } from '@shopify/polaris';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { ToastContext } from './Toast.context';
 
 export const ToastProvider = ({ children }: any) => {
@@ -13,8 +13,10 @@ export const ToastProvider = ({ children }: any) => {
     setActive(true);
   }, []);
 
+  const value = useMemo(() => ({ show }), [show]);
+
   return (
-    <ToastContext.Provider value={{ show }}>
+    <ToastContext.Provider value={value}>
       {active && (
         <Toast
           duration={3500}

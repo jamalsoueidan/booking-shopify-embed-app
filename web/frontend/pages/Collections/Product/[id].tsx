@@ -50,7 +50,7 @@ export default () => {
         buffertime: fieldValues.buffertime,
         duration: fieldValues.duration,
         active: fieldValues.active,
-        staff: staff.value,
+        staff: fieldValues.staff,
       });
       return { status: 'success' };
     },

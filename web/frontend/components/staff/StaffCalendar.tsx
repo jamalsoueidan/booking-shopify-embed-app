@@ -1,6 +1,6 @@
 import Calendar from '@components/Calendar';
 import { DateClickArg } from '@fullcalendar/interaction';
-import {
+import FullCalendar, {
   DatesSetArg,
   EventClickArg,
   EventContentArg,
@@ -8,7 +8,6 @@ import {
 import { useDate, useTagOptions } from '@hooks';
 import { format } from 'date-fns';
 import { createRef, useCallback, useEffect } from 'react';
-import FullCalendar from '@fullcalendar/react';
 
 interface StaffCalendarProps {
   create: (info: DateClickArg) => void;
