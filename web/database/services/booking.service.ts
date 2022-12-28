@@ -15,8 +15,11 @@ const create = async (body: CreateProps) => {
   if (product) {
     const booking = await BookingModel.create({
       ...body,
+      orderId: Date.now() - Math.floor(Math.random() * 100),
+      lineItemId: Date.now() - Math.floor(Math.random() * 100),
       fulfillmentStatus: "booked",
       title: product.title,
+      isSelfBooked: true,
     });
     return booking;
   } else {

@@ -2,7 +2,8 @@ import react from '@vitejs/plugin-react';
 import { dirname } from 'path';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { fileURLToPath } from 'url';
-import { defineConfig, splitVendorChunkPlugin } from 'vite';
+import { defineConfig } from 'vite';
+import dynamicImportVars from '@rollup/plugin-dynamic-import-vars';
 import checker from 'vite-plugin-checker';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
@@ -49,12 +50,12 @@ if (host === 'localhost') {
   };
 }
 
+console.log(dirname(fileURLToPath(import.meta.url)));
 export default defineConfig({
   root: dirname(fileURLToPath(import.meta.url)),
   plugins: [
     react(),
     checker({ typescript: true }),
-    splitVendorChunkPlugin(),
     visualizer(),
     tsconfigPaths(),
   ],
@@ -66,17 +67,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      output: {
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            return id
-              .toString()
-              .split('node_modules/')[1]
-              .split('/')[0]
-              .toString();
-          }
-        },
-      },
+      plugins: [dynamicImportVars({})],
     },
   },
   server: {
