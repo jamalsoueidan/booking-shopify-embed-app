@@ -17,7 +17,13 @@ export default function App() {
         <BrowserRouter>
           <AppBridgeProvider>
             <QueryProvider>
-              <Routes />
+              <SettingsProvider>
+                <Translation>
+                  <Navigation>
+                    <Routes />
+                  </Navigation>
+                </Translation>
+              </SettingsProvider>
             </QueryProvider>
           </AppBridgeProvider>
         </BrowserRouter>

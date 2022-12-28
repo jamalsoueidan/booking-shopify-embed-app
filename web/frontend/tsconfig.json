@@ -4,7 +4,7 @@
     "allowJs": false,
     "lib": ["dom", "dom.iterable", "esnext"],
     "esModuleInterop": true,
-    "target": "esnext",
+    "target": "es6",
     "noImplicitAny": true,
     "moduleResolution": "node",
     "sourceMap": true,

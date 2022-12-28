@@ -1,13 +1,10 @@
-import '@fullcalendar/react/dist/vdom';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import listPlugin from '@fullcalendar/list';
 import FullCalendar, { CalendarOptions } from '@fullcalendar/react'; // must go before plugins
+import '@fullcalendar/react/dist/vdom';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { useSettings } from '@providers/settings';
 import { forwardRef } from 'react';
 
-export default forwardRef(
+export const Calendar = forwardRef(
   (props: CalendarOptions, ref: { current: FullCalendar }) => {
     const { language } = useSettings();
 
@@ -15,7 +12,7 @@ export default forwardRef(
       <FullCalendar
         height="auto"
         ref={ref}
-        plugins={[timeGridPlugin, dayGridPlugin, listPlugin, interactionPlugin]}
+        plugins={[timeGridPlugin]}
         initialView="dayGridMonth"
         headerToolbar={{
           left: 'today prev,next',

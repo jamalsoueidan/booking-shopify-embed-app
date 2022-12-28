@@ -1,3 +1,4 @@
+import LoadingPage from '@components/LoadingPage';
 import {
   ComponentType,
   LazyExoticComponent,
@@ -7,62 +8,7 @@ import {
 } from 'react';
 import { Routes as ReactRouterRoutes, Route } from 'react-router-dom';
 
-interface CustomRoute {
-  path: string;
-  element: LazyExoticComponent<ComponentType<any>>;
-  children?: CustomRoute[];
-}
-
-/*const routes: CustomRoute[] = [
-  {
-    path: '/bookings',
-    element: lazy(() => import(`./pages/Bookings.tsx`)),
-    children: [
-      {
-        path: '/new',
-        element: lazy(() => import(`./pages/Bookings/New.tsx`)),
-      },
-    ],
-  },
-  {
-    path: '/collections',
-    element: lazy(() => import(`./pages/Collections.tsx`)),
-  },
-  {
-    path: '/existiframe',
-    element: lazy(() => import(`./pages/ExitIframe.tsx`)),
-  },
-  {
-    path: '/',
-    element: lazy(() => import(`./pages/index.tsx`)),
-  },
-  {
-    path: '/settings',
-    element: lazy(() => import(`./pages/Settings.tsx`)),
-  },
-  {
-    path: '/staff',
-    element: lazy(() => import(`./pages/Staff.tsx`)),
-  },
-];
-
-const createRoutes = ({ path, element: Component }: CustomRoute) => {
-  return (
-    <Route
-      key={path}
-      path={path}
-      element={
-        <Suspense>
-          <Component />
-        </Suspense>
-      }
-    />
-  );
-};*/
-
 export default function Routes() {
-  //const routesComponents = routes.map(createRoutes);
-
   const oneDepth = (one: string) =>
     lazy(() => import(`./pages/${one.replace('.tsx', '')}.tsx`));
   const twoDepth = (one: string, two: string) =>
@@ -128,14 +74,13 @@ export default function Routes() {
     });
   });
 
-  console.log(routes);
   const [components] = useState(() =>
     routes.map(({ path, element: Component }) => (
       <Route
         key={path}
         path={path}
         element={
-          <Suspense fallback={<>Loading</>}>
+          <Suspense fallback={<LoadingPage />}>
             <Component />
           </Suspense>
         }
@@ -143,5 +88,19 @@ export default function Routes() {
     ))
   );
 
-  return <ReactRouterRoutes>{components}</ReactRouterRoutes>;
+  const NotFound = routes.find(({ path }) => path === '/notfound')?.element;
+
+  return (
+    <ReactRouterRoutes>
+      {components}
+      <Route
+        path="*"
+        element={
+          <Suspense>
+            <NotFound />
+          </Suspense>
+        }
+      />
+    </ReactRouterRoutes>
+  );
 }

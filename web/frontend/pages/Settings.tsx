@@ -1,5 +1,6 @@
 import { FormErrors } from '@components/FormErrors';
 import LoadingPage from '@components/LoadingPage';
+import { TimeZoneSelect } from '@components/settings/TimeZoneSelect';
 import { useExtendForm, useTranslation } from '@hooks';
 import { useToast } from '@providers/toast';
 import { useSetting, useSettingUpdate } from '@services';
@@ -12,12 +13,9 @@ import {
   PageActions,
   Select,
   SettingToggle,
-  Stack,
   Text,
 } from '@shopify/polaris';
 import { useField } from '@shopify/react-form';
-import { useCallback } from 'react';
-import TimezoneSelect, { ITimezoneOption } from 'react-timezone-select';
 
 export default () => {
   const { data } = useSetting();
@@ -61,11 +59,6 @@ export default () => {
     },
   });
 
-  const onChangeTimezone = useCallback(
-    ({ value }: ITimezoneOption) => fields.timeZone.onChange(value),
-    [fields.timeZone.onChange]
-  );
-
   if (!data) {
     return <LoadingPage />;
   }
@@ -80,18 +73,10 @@ export default () => {
             description={t('store_settings.subtitle')}>
             <Card sectioned>
               <FormLayout>
-                <Stack vertical spacing="extraTight">
-                  <Stack.Item>{t('store_settings.timezone.label')}</Stack.Item>
-                  <div style={{ zIndex: 99, position: 'relative' }}>
-                    <TimezoneSelect
-                      value={{
-                        value: fields.timeZone.value,
-                        label: fields.timeZone.value,
-                      }}
-                      onChange={onChangeTimezone}
-                    />
-                  </div>
-                </Stack>
+                <TimeZoneSelect
+                  label={t('store_settings.timezone.label')}
+                  {...fields.timeZone}
+                />
                 <Select
                   label={t('store_settings.language.label')}
                   options={languageOptions}

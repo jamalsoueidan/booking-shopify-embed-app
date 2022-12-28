@@ -68,6 +68,12 @@ export default defineConfig({
   build: {
     rollupOptions: {
       plugins: [dynamicImportVars({})],
+      output: {
+        manualChunks: {
+          react: ['react', 'react-router-dom', 'react-dom'],
+          shopify: ['@shopify/polaris'],
+        },
+      },
     },
   },
   server: {

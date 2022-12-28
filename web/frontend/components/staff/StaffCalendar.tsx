@@ -1,4 +1,4 @@
-import Calendar from '@components/Calendar';
+import { Calendar } from '@components/Calendar';
 import { DateClickArg } from '@fullcalendar/interaction';
 import FullCalendar, {
   DatesSetArg,

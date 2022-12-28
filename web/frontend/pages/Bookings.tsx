@@ -1,4 +1,4 @@
-import Calendar from '@components/Calendar';
+import { Calendar } from '@components/Calendar';
 import BookingModal from '@components/bookings/BookingModal';
 import StaffSelection from '@components/bookings/staff-selection';
 import FullCalendar, { DatesSetArg, EventClickArg } from '@fullcalendar/react';
