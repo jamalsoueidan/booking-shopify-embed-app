@@ -1,9 +1,11 @@
-import '@fullcalendar/react/dist/vdom';
+import { CalendarOptions } from '@fullcalendar/core';
+import da from '@fullcalendar/core/locales/da';
+import en from '@fullcalendar/core/locales/en-gb';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import listPlugin from '@fullcalendar/list';
-import FullCalendar, { CalendarOptions } from '@fullcalendar/react'; // must go before plugins
+import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import listPlugin from '@fullcalendar/list';
 import { useSettings } from '@providers/settings';
 import { forwardRef } from 'react';
 
@@ -15,7 +17,7 @@ export default forwardRef(
       <FullCalendar
         height="auto"
         ref={ref}
-        plugins={[timeGridPlugin, dayGridPlugin, listPlugin, interactionPlugin]}
+        plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin, listPlugin]}
         initialView="dayGridMonth"
         headerToolbar={{
           left: 'today prev,next',
@@ -36,6 +38,7 @@ export default forwardRef(
         eventDisplay="block"
         slotMinTime="07:00"
         slotMaxTime="20:00"
+        locales={[da, en]}
         locale={language}
         buttonText={{
           prev: '<<',

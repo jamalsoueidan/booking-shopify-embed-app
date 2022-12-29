@@ -1,10 +1,11 @@
 import Calendar from '@components/Calendar';
-import { DateClickArg } from '@fullcalendar/interaction';
-import FullCalendar, {
+import {
   DatesSetArg,
   EventClickArg,
   EventContentArg,
-} from '@fullcalendar/react';
+} from '@fullcalendar/core';
+import { DateClickArg } from '@fullcalendar/interaction';
+import FullCalendar from '@fullcalendar/react';
 import { useDate, useTagOptions } from '@hooks';
 import { format } from 'date-fns';
 import { createRef, useCallback, useEffect } from 'react';
