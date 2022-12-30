@@ -1,5 +1,4 @@
 import Calendar from '@components/Calendar';
-import BookingModal from '@components/bookings/BookingModal';
 import StaffSelection from '@components/bookings/staff-selection';
 import { DatesSetArg, EventClickArg } from '@fullcalendar/core';
 import FullCalendar from '@fullcalendar/react';
@@ -15,7 +14,7 @@ import {
   Tooltip,
 } from '@shopify/polaris';
 import { format } from 'date-fns-tz';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { Suspense, lazy, useCallback, useMemo, useRef, useState } from 'react';
 
 export default () => {
   const navigate = useNavigate();
@@ -104,9 +103,9 @@ export default () => {
     });
   }, []);
 
-  const bookingModal = info ? (
-    <BookingModal show={info !== null} toggle={setInfo} info={info} />
-  ) : null;
+  const BookingModal = info
+    ? lazy(() => import('../components/bookings/BookingModal'))
+    : null;
 
   return (
     <Page
@@ -116,7 +115,11 @@ export default () => {
         content: 'Opret en bestilling',
         onAction: () => navigate('/Bookings/New'),
       }}>
-      {bookingModal}
+      {info ? (
+        <Suspense>
+          <BookingModal show={true} toggle={setInfo} info={info} />
+        </Suspense>
+      ) : null}
       <Card sectioned>
         <Card.Section
           title={
