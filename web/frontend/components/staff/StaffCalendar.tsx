@@ -98,7 +98,7 @@ export default ({ create, edit, events, onChangeDate }: StaffCalendarProps) => {
       headerToolbar={{
         left: 'today prev,next',
         center: 'title',
-        right: 'dayGridMonth',
+        right: null,
       }}
       dateClick={create}
       eventClick={edit}

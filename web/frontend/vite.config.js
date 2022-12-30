@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 import { defineConfig, splitVendorChunkPlugin } from 'vite';
 import checker from 'vite-plugin-checker';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import dynamicImportVars from '@rollup/plugin-dynamic-import-vars';
 
 if (
   process.env.npm_lifecycle_event === 'build' &&
@@ -67,14 +68,10 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            return id
-              .toString()
-              .split('node_modules/')[1]
-              .split('/')[0]
-              .toString();
-          }
+        plugins: [dynamicImportVars({})],
+        manualChunks: {
+          react: ['react', 'react-router-dom', 'react-dom', 'react-query'],
+          shopify: ['@shopify/app-bridge-react', '@shopify/polaris'],
         },
       },
     },
