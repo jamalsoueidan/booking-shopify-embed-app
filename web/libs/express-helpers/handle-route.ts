@@ -10,11 +10,7 @@ export const expressHandleRoute =
         throw errors;
       }
 
-      const session = await Shopify.Utils.loadCurrentSession(
-        req,
-        res,
-        app.get("use-online-tokens")
-      );
+      const session = res.locals.shopify.session;
 
       res.status(202).send({
         success: true,
@@ -34,11 +30,9 @@ export const expressHandleRoute =
         }),
       });
     } catch (error) {
-      res
-        .status(500)
-        .json({
-          success: false,
-          error: error instanceof Error ? `${error}` : error,
-        });
+      res.status(500).json({
+        success: false,
+        error: error instanceof Error ? `${error}` : error,
+      });
     }
   };
