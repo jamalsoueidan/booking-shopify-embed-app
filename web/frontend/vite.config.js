@@ -67,8 +67,8 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
+      plugins: [dynamicImportVars({})],
       output: {
-        plugins: [dynamicImportVars({})],
         manualChunks: {
           react: ['react', 'react-router-dom', 'react-dom', 'react-query'],
           shopify: ['@shopify/app-bridge-react', '@shopify/polaris'],
