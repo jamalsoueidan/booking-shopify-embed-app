@@ -2,7 +2,6 @@
   "name": "shopify-frontend-template-react",
   "private": true,
   "license": "UNLICENSED",
-  "type": "module",
   "scripts": {
     "build": "vite build",
     "dev": "vite",
@@ -20,20 +19,20 @@
     "@fullcalendar/react": "^6.0.2",
     "@fullcalendar/timegrid": "^6.0.2",
     "@fullcalendar/list": "^6.0.2",
-    "@shopify/app-bridge": "^3.5.0",
-    "@shopify/app-bridge-react": "^3.5.0",
-    "@shopify/app-bridge-utils": "^3.5.0",
+    "@shopify/app-bridge": "^3.1.0",
+    "@shopify/app-bridge-react": "^3.1.0",
+    "@shopify/app-bridge-utils": "^3.1.0",
     "@shopify/polaris": "^10.16.1",
     "@shopify/react-form": "^2.4.1",
     "@shopify/react-i18n": "^7.5.1",
-    "@vitejs/plugin-react": "3.0.0",
+    "@vitejs/plugin-react": "1.2.0",
     "date-fns": "^2.29.3",
     "date-fns-tz": "^1.3.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-query": "^3.39.2",
     "react-router-dom": "^6.6.1",
-    "vite": "^4.0.3"
+    "vite": "^2.8.6"
   },
   "devDependencies": {
     "@types/react": "^18.0.26",

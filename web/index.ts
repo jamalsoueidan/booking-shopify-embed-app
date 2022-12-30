@@ -45,6 +45,7 @@ app.use("/api/widget", widgetRoutes(app));
 // All endpoints after this point will require an active session
 app.use("/api/*", shopify.validateAuthenticatedSession());
 
+app.use("/api/admin", settingRoutes(app));
 app.use("/api/admin", bookingRoutes(app));
 app.use("/api/admin", customerRoutes(app));
 app.use("/api/admin", productRoutes(app));

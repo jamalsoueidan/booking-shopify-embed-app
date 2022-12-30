@@ -64,6 +64,17 @@ export default defineConfig({
   resolve: {
     preserveSymlinks: true,
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            return 'vendor';
+          }
+        },
+      },
+    },
+  },
   server: {
     host: 'localhost',
     port: process.env.FRONTEND_PORT,

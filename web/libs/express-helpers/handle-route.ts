@@ -1,5 +1,5 @@
-import Shopify from "@shopify/shopify-api";
 import { validationResult } from "express-validator";
+import shopify from "../../shopify";
 
 export const expressHandleRoute =
   (app, controller) =>
@@ -10,7 +10,8 @@ export const expressHandleRoute =
         throw errors;
       }
 
-      const session = res.locals.shopify.session;
+      console.log(res.locals?.shopify);
+      const session = res?.locals?.shopify?.session;
 
       res.status(202).send({
         success: true,
