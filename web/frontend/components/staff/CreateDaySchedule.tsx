@@ -7,6 +7,7 @@ import da from 'date-fns/locale/da';
 import { forwardRef, useImperativeHandle } from 'react';
 import { useParams } from 'react-router-dom';
 import { CreateScheduleForm } from './_createScheduleForm';
+import { useToast } from '@providers/toast';
 
 interface CreateDayScheduleProps {
   date: string;
@@ -15,6 +16,7 @@ interface CreateDayScheduleProps {
 
 export default forwardRef(({ date, close }: CreateDayScheduleProps, ref) => {
   const { options } = useTagOptions();
+  const { show } = useToast();
   const params = useParams();
   const { toUtc } = useDate();
 
@@ -54,6 +56,7 @@ export default forwardRef(({ date, close }: CreateDayScheduleProps, ref) => {
 
       createSchedule(body);
       close(null);
+      show({ content: 'Schedule created' });
       return { status: 'success' };
     },
   });

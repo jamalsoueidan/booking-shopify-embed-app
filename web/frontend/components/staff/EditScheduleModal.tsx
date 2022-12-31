@@ -1,4 +1,5 @@
 import { useDate, useTagOptions } from '@hooks';
+import { useToast } from '@providers/toast';
 import { useStaffScheduleDestroy, useStaffScheduleUpdate } from '@services';
 import {
   Button,
@@ -20,6 +21,7 @@ interface Props {
 export default ({ info, setInfo }: Props) => {
   const { options } = useTagOptions();
   const params = useParams();
+  const { show } = useToast();
   const toggleActive = () => setInfo(null);
   const { toTimeZone, toUtc } = useDate();
 
@@ -77,6 +79,12 @@ export default ({ info, setInfo }: Props) => {
 
       type == 'all' ? updateScheduleAll(body) : updateSchedule(body);
       setInfo(null);
+      show({
+        content:
+          type === 'all'
+            ? 'Schedules has been updated'
+            : 'Schedule has been updated',
+      });
     },
     [toUtc, updateSchedule, updateScheduleAll, setInfo]
   );
@@ -89,6 +97,10 @@ export default ({ info, setInfo }: Props) => {
 
       type == 'all' ? destroyScheduleAll(body) : destroySchedule(body);
       setInfo(null);
+      show({
+        content:
+          type === 'all' ? 'Schedules is deleted' : 'Schedule is deleted',
+      });
     },
     [destroyScheduleAll, destroySchedule, setInfo]
   );

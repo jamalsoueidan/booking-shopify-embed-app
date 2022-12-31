@@ -15,6 +15,7 @@ import { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { SelectDays } from './SelectDays';
 import { CreateScheduleForm } from './_createScheduleForm';
+import { useToast } from '@providers/toast';
 
 interface CreateDayScheduleProps {
   date: string;
@@ -24,6 +25,7 @@ interface CreateDayScheduleProps {
 export default forwardRef(({ date, close }: CreateDayScheduleProps, ref) => {
   const { options } = useTagOptions();
   const params = useParams();
+  const { show } = useToast();
   const [{ month, year }, setDate] = useState({
     month: getMonth(new Date(date)) - 1,
     year: getYear(new Date(date)),
@@ -80,6 +82,7 @@ export default forwardRef(({ date, close }: CreateDayScheduleProps, ref) => {
           tag: fieldValues.tag,
         };
       });
+      show({ content: 'Schedules created' });
       create(body);
       close(null);
 

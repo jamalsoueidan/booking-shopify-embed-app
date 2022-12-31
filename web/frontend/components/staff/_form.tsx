@@ -2,6 +2,7 @@ import { FormErrors } from '@components/FormErrors';
 import { useExtendForm, usePositions, useTranslation } from '@hooks';
 import isEmail from '@libs/validators/isEmail';
 import isPhoneNumber from '@libs/validators/isPhoneNumber';
+import { useToast } from '@providers/toast';
 import {
   Box,
   BreadcrumbsProps,
@@ -31,6 +32,7 @@ export const StaffForm = ({
   data,
 }: StaffFormProps) => {
   const { options } = usePositions();
+  const { show } = useToast();
   const { t } = useTranslation('staff', { keyPrefix: 'form' });
 
   //https://codesandbox.io/s/1wpxz?file=/src/MyForm.tsx:2457-2473
@@ -77,6 +79,7 @@ export const StaffForm = ({
     },
     onSubmit: async (fieldValues) => {
       action(fieldValues);
+      show({ content: data ? 'Staff has been updated' : 'Staff created' });
       return { status: 'success' };
     },
   });
