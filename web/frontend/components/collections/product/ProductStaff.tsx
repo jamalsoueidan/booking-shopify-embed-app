@@ -1,11 +1,11 @@
 import { useTranslation } from '@hooks';
-import { Card, Layout } from '@shopify/polaris';
+import { Card } from '@shopify/polaris';
 import { DynamicList } from '@shopify/react-form/build/ts/hooks/list/dynamiclist';
-import { memo, useCallback, useState } from 'react';
+import { Suspense, lazy, memo, useCallback, useState } from 'react';
 import FormContext from './staff/FormContext';
 import StaffList from './staff/StaffList';
-import StaffModal from './staff/StaffModal';
 
+const StaffModal = lazy(() => import('./staff/StaffModal'));
 interface StaffCardProps {
   product: Product | ProductAggreate;
   form: DynamicList<ProductStaffAggreate>;
@@ -20,18 +20,15 @@ export default memo(({ product, form }: StaffCardProps) => {
 
   return (
     <FormContext.Provider value={form}>
-      <Layout.AnnotatedSection
-        id="staff"
-        title={t('title')}
-        description={t('description')}>
-        <Card>
-          <StaffList action={show}></StaffList>
+      <Card title={t('title')}>
+        <StaffList action={show}></StaffList>
+        <Suspense>
           <StaffModal
             productId={product._id}
             show={showModal}
             close={hide}></StaffModal>
-        </Card>
-      </Layout.AnnotatedSection>
+        </Suspense>
+      </Card>
     </FormContext.Provider>
   );
 });

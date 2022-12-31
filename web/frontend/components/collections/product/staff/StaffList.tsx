@@ -57,13 +57,14 @@ const StaffEmptyState = ({ action }: StaffEmptyStateProps) => {
   });
 
   return (
-    <div style={{ maxHeight: '270px' }}>
+    <>
+      <br />
       <EmptyState
         heading={t('title')}
         image="https://cdn.shopify.com/s/files/1/2376/3301/products/emptystate-files.png"
         imageContained={true}
         fullWidth
         action={{ content: t('browse'), onAction: action }}></EmptyState>
-    </div>
+    </>
   );
 };

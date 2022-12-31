@@ -23,7 +23,10 @@ export const useProductGet = ({ productId }: UseProductGetProps) => {
 
   const { data } = useQuery<ApiResponse<ProductAggreate>>(
     [`products`, productId],
-    () => get(`/api/admin/products/${productId}`)
+    () => get(`/api/admin/products/${productId}`),
+    {
+      enabled: !!productId,
+    }
   );
 
   return {
@@ -65,7 +68,8 @@ export const useProductStaff = ({ productId }: UseProductStaffListProps) => {
 
   const { data } = useQuery<ApiResponse<Array<ProductAddStaff>>>(
     [`products`, productId, 'staff'],
-    () => get(`/api/admin/products/${productId}/staff`)
+    () => get(`/api/admin/products/${productId}/staff`),
+    { enabled: !!productId }
   );
 
   return {

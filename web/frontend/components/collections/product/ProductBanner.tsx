@@ -1,15 +1,15 @@
-import { Banner, Layout } from '@shopify/polaris';
+import { Banner, Box } from '@shopify/polaris';
 import { memo } from 'react';
 
 export default memo(() => {
   return (
-    <Layout.Section>
+    <Box paddingBlockEnd="4">
       <Banner title="Tilføj staff til produktet" status="warning">
         <p>
           Før denne service kan aktiveres, skal du først tilføje medarbejder til
           produktet
         </p>
       </Banner>
-    </Layout.Section>
+    </Box>
   );
 });

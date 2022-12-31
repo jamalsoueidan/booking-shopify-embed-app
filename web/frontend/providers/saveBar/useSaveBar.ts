@@ -25,14 +25,7 @@ export const useSaveBar = ({ show }: UseSaveBarProps) => {
       },
       message: t('unsaved'),
     });
-  }, [
-    context.setContextualSaveBar,
-    context.submitting,
-    context.dirty,
-    context.submit,
-    context.reset,
-    t,
-  ]);
+  }, [context.submitting, context.dirty, context.submit, context.reset, t]);
 
   useEffect(() => {
     context.setShow(show);

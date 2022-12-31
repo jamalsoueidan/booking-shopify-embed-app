@@ -6,7 +6,7 @@ import ProductOptionsCard from '@components/collections/product/ProductOptionsCa
 import ProductStaff from '@components/collections/product/ProductStaff';
 import { useExtendForm } from '@hooks';
 import { useProductGet, useProductUpdate } from '@services';
-import { Form, Layout, Page, PageActions } from '@shopify/polaris';
+import { Badge, Form, Grid, Page, PageActions } from '@shopify/polaris';
 import { useDynamicList, useField } from '@shopify/react-form';
 import { useParams } from 'react-router-dom';
 
@@ -65,20 +65,26 @@ export default () => {
       <Page
         fullWidth
         title={product?.title}
+        titleMetadata={
+          <Badge status={product.active ? 'attention' : 'info'}>
+            {product.active ? 'Active' : 'Deactive'}
+          </Badge>
+        }
         breadcrumbs={[{ content: 'Collections', url: '/Collections' }]}>
-        {product && (
-          <Layout>
-            <FormErrors errors={submitErrors} />
-            {product.staff.length === 0 && <ProductBanner></ProductBanner>}
+        <FormErrors errors={submitErrors} />
+        {product.staff.length === 0 && <ProductBanner></ProductBanner>}
+        <Grid>
+          <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 4, lg: 8, xl: 8 }}>
+            <ProductStaff product={product} form={staff}></ProductStaff>
+          </Grid.Cell>
+          <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 2, lg: 4, xl: 4 }}>
             <ProductActivate
               active={fields.active}
               staffLength={product.staff.length}></ProductActivate>
-            <br />
-            <ProductStaff product={product} form={staff}></ProductStaff>
-            <br />
+
             <ProductOptionsCard fields={fields}></ProductOptionsCard>
-          </Layout>
-        )}
+          </Grid.Cell>
+        </Grid>
         <br />
         <PageActions primaryAction={primaryAction} />
       </Page>

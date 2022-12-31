@@ -13,7 +13,7 @@ import {
   TextContainer,
 } from '@shopify/polaris';
 import { CircleCancelMinor, CircleTickMinor } from '@shopify/polaris-icons';
-import { useCallback, useMemo, useState } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 import ModalConfirm from '@components/modals/ModalConfirm';
 import { sortStrings } from '@libs/sortStrings';
 
@@ -21,7 +21,7 @@ interface CollectionListProps {
   collection: CollectionAggreate;
 }
 
-export default ({ collection }: CollectionListProps) => {
+export default memo(({ collection }: CollectionListProps) => {
   const [modalConfirm, setModalConfirm] = useState<JSX.Element>();
   const { destroy } = useCollectionDestroy({ collectionId: collection._id });
   const { t } = useTranslation('collections');
@@ -107,4 +107,4 @@ export default ({ collection }: CollectionListProps) => {
       <br />
     </>
   );
-};
+});

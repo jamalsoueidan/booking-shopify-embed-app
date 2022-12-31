@@ -15,7 +15,7 @@ export default ({ productId, show, close }: StaffModalProps) => {
     keyPrefix: 'product.staff.modal',
   });
 
-  const { data } = useProductStaff({ productId });
+  const { data } = useProductStaff({ productId: show ? productId : null });
   const { value, fields, addItem, removeItems } = useContext(FormContext);
   const [selected, setSelected] = useState<Array<ProductStaffAggreate>>([]);
 
