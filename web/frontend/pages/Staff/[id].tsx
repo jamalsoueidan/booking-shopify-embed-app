@@ -13,6 +13,14 @@ const StaffCalendar = lazy(
   () => import('../../components/staff/StaffCalendar')
 );
 
+const CreateScheduleModal = lazy(
+  () => import('../../components/staff/CreateScheduleModal')
+);
+
+const EditScheduleModal = lazy(
+  () => import('../../components/staff/EditScheduleModal')
+);
+
 export default () => {
   const params = useParams();
   const navigate = useNavigate();
@@ -33,18 +41,10 @@ export default () => {
     []
   );
 
-  const CreateScheduleModal = showCreate
-    ? lazy(() => import('../../components/staff/CreateScheduleModal'))
-    : null;
-
   const editSchedule = useCallback(
     (info: EventClickArg) => setShowEdit(info),
     []
   );
-
-  const EditScheduleModal = showEdit
-    ? lazy(() => import('../../components/staff/EditScheduleModal'))
-    : null;
 
   const onChangeDate = useCallback(
     (props: CalendarDateChangeProps) => {

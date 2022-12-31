@@ -18,6 +18,8 @@ import { Suspense, lazy, useCallback, useMemo, useRef, useState } from 'react';
 
 const Calendar = lazy(() => import('../components/Calendar'));
 
+const BookingModal = lazy(() => import('../components/bookings/BookingModal'));
+
 export default () => {
   const navigate = useNavigate();
   const [info, setInfo] = useState(null);
@@ -122,10 +124,6 @@ export default () => {
       )),
     [options]
   );
-
-  const BookingModal = info
-    ? lazy(() => import('../components/bookings/BookingModal'))
-    : null;
 
   return (
     <Page
