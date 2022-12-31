@@ -27,7 +27,7 @@ export default ({ children }: { children: JSX.Element }) => {
   }, [language]);
 
   if (language !== i18n.locale || i18n.translations.length < 2) {
-    return <LoadingPage></LoadingPage>;
+    return <LoadingPage title="Loading translations"></LoadingPage>;
   }
 
   return <ShareTranslations>{children}</ShareTranslations>;

@@ -6,7 +6,7 @@ export const SettingsProvider = ({ children }: any) => {
   const { data } = useSetting();
 
   if (!data) {
-    return <LoadingPage></LoadingPage>;
+    return <LoadingPage title="Loading application settings"></LoadingPage>;
   }
 
   return (

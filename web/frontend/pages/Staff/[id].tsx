@@ -1,15 +1,17 @@
 import LoadingPage from '@components/LoadingPage';
-import CreateScheduleModal from '@components/staff/CreateScheduleModal';
-import EditScheduleModal from '@components/staff/EditScheduleModal';
+import LoadingSpinner from '@components/LoadingSpinner';
 import Metadata from '@components/staff/Metadata';
-import StaffCalendar from '@components/staff/StaffCalendar';
 import { EventClickArg } from '@fullcalendar/core';
 import { DateClickArg } from '@fullcalendar/interaction';
 import { useStaffGet, useStaffSchedule } from '@services';
 import { useNavigate } from '@shopify/app-bridge-react';
 import { Card, Page } from '@shopify/polaris';
-import { useCallback, useState } from 'react';
+import { Suspense, lazy, useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
+
+const StaffCalendar = lazy(
+  () => import('../../components/staff/StaffCalendar')
+);
 
 export default () => {
   const params = useParams();
@@ -31,22 +33,18 @@ export default () => {
     []
   );
 
-  const createScheduleModal = showCreate && (
-    <CreateScheduleModal
-      info={showCreate}
-      setInfo={setShowCreate}></CreateScheduleModal>
-  );
+  const CreateScheduleModal = showCreate
+    ? lazy(() => import('../../components/staff/CreateScheduleModal'))
+    : null;
 
   const editSchedule = useCallback(
     (info: EventClickArg) => setShowEdit(info),
     []
   );
 
-  const editScheduleModal = showEdit && (
-    <EditScheduleModal
-      info={showEdit}
-      setInfo={setShowEdit}></EditScheduleModal>
-  );
+  const EditScheduleModal = showEdit
+    ? lazy(() => import('../../components/staff/EditScheduleModal'))
+    : null;
 
   const onChangeDate = useCallback(
     (props: CalendarDateChangeProps) => {
@@ -58,7 +56,11 @@ export default () => {
   );
 
   if (!staff || !calendar) {
-    return <LoadingPage />;
+    return (
+      <LoadingPage
+        title={!staff ? 'Loading staff data...' : 'Loading schedules data...'}
+      />
+    );
   }
 
   const { _id, fullname, active } = staff;
@@ -73,15 +75,25 @@ export default () => {
         content: 'Redigere ' + fullname,
         onAction: () => navigate('/Staff/Edit/' + _id),
       }}>
-      {createScheduleModal}
-      {editScheduleModal}
+      {showCreate && (
+        <Suspense>
+          <CreateScheduleModal info={showCreate} setInfo={setShowCreate} />
+        </Suspense>
+      )}
+      {showEdit && (
+        <Suspense>
+          <EditScheduleModal info={showEdit} setInfo={setShowEdit} />
+        </Suspense>
+      )}
       <Card sectioned>
-        <StaffCalendar
-          onChangeDate={onChangeDate}
-          events={calendar}
-          create={createSchedule}
-          edit={editSchedule}
-        />
+        <Suspense fallback={<LoadingSpinner />}>
+          <StaffCalendar
+            onChangeDate={onChangeDate}
+            events={calendar}
+            create={createSchedule}
+            edit={editSchedule}
+          />
+        </Suspense>
       </Card>
     </Page>
   );

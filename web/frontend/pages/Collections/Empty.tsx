@@ -32,7 +32,7 @@ export default () => {
   );
 
   if (isFetching) {
-    return <LoadingPage></LoadingPage>;
+    return <LoadingPage title="Updating collections..."></LoadingPage>;
   }
 
   if (data?.length > 0 || isFetched) {

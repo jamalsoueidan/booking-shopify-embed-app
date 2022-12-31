@@ -80,7 +80,10 @@ export default function Routes() {
         key={path}
         path={path}
         element={
-          <Suspense fallback={<LoadingPage />}>
+          <Suspense
+            fallback={
+              <LoadingPage title={`Loading ${path.substring(1)} route`} />
+            }>
             <Component />
           </Suspense>
         }

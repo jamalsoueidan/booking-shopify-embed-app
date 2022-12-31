@@ -2,20 +2,75 @@ import LoadingPage from '@components/LoadingPage';
 import { useStaff } from '@services';
 import { useNavigate } from '@shopify/app-bridge-react';
 
-export default () => {
-  const { data } = useStaff();
+import Metadata from '@components/staff/Metadata';
+import { usePositions } from '@hooks';
+import {
+  Avatar,
+  Card,
+  Page,
+  ResourceItem,
+  ResourceList,
+  Text,
+} from '@shopify/polaris';
+import { useCallback, useMemo } from 'react';
 
+export default () => {
   const navigate = useNavigate();
+  const { data } = useStaff();
+  const { select } = usePositions();
+
+  const renderItems = useCallback(
+    (item: Staff) => {
+      const { _id, fullname, active, avatar, position } = item;
+      const url = '/Staff/' + _id;
+      const media = useMemo(
+        () => <Avatar customer size="medium" name={fullname} source={avatar} />,
+        [fullname, avatar]
+      );
+
+      return (
+        <ResourceItem
+          id={_id}
+          url={url}
+          media={media}
+          accessibilityLabel={`View details for ${fullname}`}>
+          <Text variant="headingSm" as="h6">
+            {fullname} <Metadata active={active} />
+          </Text>
+          <div>
+            {select(position)}
+            <br />
+          </div>
+        </ResourceItem>
+      );
+    },
+    [select]
+  );
 
   if (!data) {
-    return <LoadingPage />;
+    return <LoadingPage title="Loading staff data" />;
   }
 
-  if (data?.length === 0) {
+  if (data.length === 0) {
     navigate('/Staff/Empty');
-  } else {
-    navigate('/Staff/List');
+    return <></>;
   }
 
-  return <></>;
+  return (
+    <Page
+      fullWidth
+      title="Staff"
+      primaryAction={{
+        content: 'Add team member',
+        onAction: () => navigate('/Staff/New'),
+      }}>
+      <Card>
+        <ResourceList
+          resourceName={{ singular: 'customer', plural: 'customers' }}
+          items={data}
+          renderItem={renderItems}
+        />
+      </Card>
+    </Page>
+  );
 };

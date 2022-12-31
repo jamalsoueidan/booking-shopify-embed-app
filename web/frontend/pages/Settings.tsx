@@ -60,7 +60,7 @@ export default () => {
   });
 
   if (!data) {
-    return <LoadingPage />;
+    return <LoadingPage title="Loading settings data" />;
   }
 
   return (

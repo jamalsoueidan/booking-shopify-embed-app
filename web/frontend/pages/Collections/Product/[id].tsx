@@ -57,7 +57,7 @@ export default () => {
   });
 
   if (!product) {
-    return <LoadingPage />;
+    return <LoadingPage title="Loading product details" />;
   }
 
   return (

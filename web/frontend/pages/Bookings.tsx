@@ -58,6 +58,10 @@ export default () => {
       <i>
         {padTo2Digits(arg.event.start.getHours()) +
           ':' +
+          padTo2Digits(arg.event.start.getMinutes())}{' '}
+        -
+        {padTo2Digits(arg.event.end.getHours()) +
+          ':' +
           padTo2Digits(arg.event.end.getMinutes())}
       </i>
     );

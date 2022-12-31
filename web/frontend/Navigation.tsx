@@ -44,7 +44,7 @@ export default ({ children }: any) => {
         matcher={matcher}
       />
       <Frame>
-        {isFetching > 0 && <Loading></Loading>}
+        {isFetching > 0 && <Loading />}
 
         <SaveBarProvider>
           <ToastProvider>{children}</ToastProvider>

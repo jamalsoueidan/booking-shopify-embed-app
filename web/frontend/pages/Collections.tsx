@@ -30,13 +30,13 @@ export default () => {
       ));
   }, [data]);
 
-  if (data?.length === 0) {
-    navigate('/collections/empty');
-    return <></>;
+  if (!data) {
+    return <LoadingPage title="Loading collection data" />;
   }
 
-  if (!data) {
-    return <LoadingPage />;
+  if (data.length === 0) {
+    navigate('/collections/empty');
+    return <></>;
   }
 
   return (

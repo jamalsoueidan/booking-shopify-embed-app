@@ -1,7 +1,7 @@
-import { Frame, Loading, Spinner } from '@shopify/polaris';
+import { AlphaStack, Frame, Loading, Spinner } from '@shopify/polaris';
 import { memo } from 'react';
 
-export default memo(() => {
+export default memo(({ title }: { title?: string }) => {
   return (
     <Frame>
       <Loading />
@@ -12,10 +12,13 @@ export default memo(() => {
           left: '50%',
           transform: 'translate(-50%, -50%)',
         }}>
-        <Spinner
-          accessibilityLabel="Loading form field"
-          hasFocusableParent={false}
-        />
+        <AlphaStack align="center">
+          <Spinner
+            accessibilityLabel="Loading form field"
+            hasFocusableParent={false}
+          />
+          {title}
+        </AlphaStack>
       </div>
     </Frame>
   );
