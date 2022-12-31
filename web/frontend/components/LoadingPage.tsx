@@ -1,6 +1,7 @@
 import { Frame, Loading, Spinner } from '@shopify/polaris';
+import { memo } from 'react';
 
-export default () => {
+export default memo(() => {
   return (
     <Frame>
       <Loading />
@@ -18,4 +19,4 @@ export default () => {
       </div>
     </Frame>
   );
-};
+});

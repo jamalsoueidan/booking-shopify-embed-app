@@ -1,12 +1,12 @@
 import { Autocomplete } from '@shopify/polaris';
 import { Field } from '@shopify/react-form';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 
 interface TimeZoneSelectProps extends Field<string> {
   label: string;
 }
 
-export const TimeZoneSelect = (props: TimeZoneSelectProps) => {
+export const TimeZoneSelect = memo((props: TimeZoneSelectProps) => {
   const deselectedOptions = useMemo(
     () => timeZones.map((timeZone) => ({ value: timeZone, label: timeZone })),
     []
@@ -68,7 +68,7 @@ export const TimeZoneSelect = (props: TimeZoneSelectProps) => {
       textField={textField}
     />
   );
-};
+});
 
 const timeZones = [
   'Europe/Amsterdam',

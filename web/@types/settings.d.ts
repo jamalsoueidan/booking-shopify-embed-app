@@ -1,6 +1,6 @@
 enum SettingLanguage {
-  en = "en",
-  da = "da",
+  en = "en-US",
+  da = "da-DK",
 }
 
 interface Setting {

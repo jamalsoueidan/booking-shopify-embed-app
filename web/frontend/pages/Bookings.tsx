@@ -1,4 +1,4 @@
-import Calendar from '@components/Calendar';
+import LoadingSpinner from '@components/LoadingSpinner';
 import StaffSelection from '@components/bookings/staff-selection';
 import { DatesSetArg, EventClickArg } from '@fullcalendar/core';
 import FullCalendar from '@fullcalendar/react';
@@ -13,8 +13,10 @@ import {
   Page,
   Tooltip,
 } from '@shopify/polaris';
-import { format } from 'date-fns-tz';
+import { padTo2Digits } from 'helpers/pad2Digits';
 import { Suspense, lazy, useCallback, useMemo, useRef, useState } from 'react';
+
+const Calendar = lazy(() => import('../components/Calendar'));
 
 export default () => {
   const navigate = useNavigate();
@@ -32,8 +34,8 @@ export default () => {
 
   const dateChanged = useCallback((props: DatesSetArg) => {
     if (props.start !== start || props.end !== end) {
-      setStart(format(props.start, 'yyyy-MM-dd'));
-      setEnd(format(props.end, 'yyyy-MM-dd'));
+      setStart(props.start.toISOString().slice(0, 10));
+      setEnd(props.end.toISOString().slice(0, 10));
     }
   }, []);
 
@@ -54,7 +56,9 @@ export default () => {
     const booking: BookingAggreate = arg.event.extendedProps;
     const extendHour = (
       <i>
-        {format(arg.event.start, 'HH:mm')} - {format(arg.event.end, 'HH:mm')}{' '}
+        {padTo2Digits(arg.event.start.getHours()) +
+          ':' +
+          padTo2Digits(arg.event.end.getMinutes())}
       </i>
     );
 
@@ -103,6 +107,18 @@ export default () => {
     });
   }, []);
 
+  const badges = useMemo(
+    () =>
+      options.map((o) => (
+        <Badge key={o.label} status={o.status} progress="complete">
+          {o.label
+            ? o.label.charAt(0).toUpperCase() + o.label.slice(1)
+            : 'In progress'}
+        </Badge>
+      )),
+    [options]
+  );
+
   const BookingModal = info
     ? lazy(() => import('../components/bookings/BookingModal'))
     : null;
@@ -121,32 +137,23 @@ export default () => {
         </Suspense>
       ) : null}
       <Card sectioned>
-        <Card.Section
-          title={
-            <>
-              {options.map((o) => (
-                <Badge key={o.label} status={o.status} progress="complete">
-                  {o.label
-                    ? o.label.charAt(0).toUpperCase() + o.label.slice(1)
-                    : 'In progress'}
-                </Badge>
-              ))}
-              <br />
-            </>
-          }>
+        <Card.Section title={badges}>
+          <br />
           <StaffSelection
             isLoading={isLoading}
             staff={staff}
             onSelect={setStaff}></StaffSelection>
         </Card.Section>
         <Card.Section>
-          <Calendar
-            ref={ref}
-            events={events}
-            eventContent={eventContent}
-            datesSet={dateChanged}
-            eventClick={showBooking}
-          />
+          <Suspense fallback={<LoadingSpinner />}>
+            <Calendar
+              ref={ref}
+              events={events}
+              eventContent={eventContent}
+              datesSet={dateChanged}
+              eventClick={showBooking}
+            />
+          </Suspense>
         </Card.Section>
       </Card>
       <FooterHelp>

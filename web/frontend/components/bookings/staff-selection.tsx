@@ -1,7 +1,7 @@
+import { useTranslation } from '@hooks';
 import { useStaff } from '@services';
 import { Avatar, Button, Stack } from '@shopify/polaris';
-import { useTranslation } from '@hooks';
-import { useCallback, useMemo } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 
 interface Props {
   staff: string;
@@ -9,7 +9,7 @@ interface Props {
   onSelect: (value: string) => void;
 }
 
-export default ({ staff, onSelect, isLoading }: Props) => {
+export default memo(({ staff, onSelect, isLoading }: Props) => {
   const { data } = useStaff();
   const { t } = useTranslation('bookings');
 
@@ -48,7 +48,7 @@ export default ({ staff, onSelect, isLoading }: Props) => {
       {buttons}
     </Stack>
   );
-};
+});
 
 interface StaffButtonProps {
   selectedStaff: string;
@@ -57,25 +57,22 @@ interface StaffButtonProps {
   isLoading?: boolean;
 }
 
-const StaffButton = ({
-  selectedStaff,
-  staff,
-  onSelect,
-  isLoading,
-}: StaffButtonProps) => {
-  const onClick = useCallback(() => onSelect(staff._id), [onSelect]);
+const StaffButton = memo(
+  ({ selectedStaff, staff, onSelect, isLoading }: StaffButtonProps) => {
+    const onClick = useCallback(() => onSelect(staff._id), [onSelect]);
 
-  return (
-    <Button
-      size="large"
-      key={staff._id}
-      onClick={onClick}
-      pressed={selectedStaff === staff._id}
-      loading={selectedStaff === staff._id ? isLoading : false}
-      icon={
-        <Avatar size="medium" name={staff.fullname} source={staff.avatar} />
-      }>
-      {staff.fullname}
-    </Button>
-  );
-};
+    return (
+      <Button
+        size="large"
+        key={staff._id}
+        onClick={onClick}
+        pressed={selectedStaff === staff._id}
+        loading={selectedStaff === staff._id ? isLoading : false}
+        icon={
+          <Avatar size="medium" name={staff.fullname} source={staff.avatar} />
+        }>
+        {staff.fullname}
+      </Button>
+    );
+  }
+);

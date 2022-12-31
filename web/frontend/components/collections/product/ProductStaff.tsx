@@ -1,7 +1,7 @@
+import { useTranslation } from '@hooks';
 import { Card, Layout } from '@shopify/polaris';
 import { DynamicList } from '@shopify/react-form/build/ts/hooks/list/dynamiclist';
-import { useCallback, useState } from 'react';
-import { useTranslation } from '@hooks';
+import { memo, useCallback, useState } from 'react';
 import FormContext from './staff/FormContext';
 import StaffList from './staff/StaffList';
 import StaffModal from './staff/StaffModal';
@@ -11,7 +11,7 @@ interface StaffCardProps {
   form: DynamicList<ProductStaffAggreate>;
 }
 
-export default ({ product, form }: StaffCardProps) => {
+export default memo(({ product, form }: StaffCardProps) => {
   const [showModal, setShowModal] = useState(false);
   const { t } = useTranslation('collections', { keyPrefix: 'product.staff' });
 
@@ -34,4 +34,4 @@ export default ({ product, form }: StaffCardProps) => {
       </Layout.AnnotatedSection>
     </FormContext.Provider>
   );
-};
+});

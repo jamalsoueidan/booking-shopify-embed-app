@@ -1,12 +1,13 @@
+import { useTranslation } from '@hooks';
 import { Layout, SettingToggle } from '@shopify/polaris';
 import { FieldDictionary } from '@shopify/react-form';
-import { useTranslation } from '@hooks';
+import { memo } from 'react';
 
 interface FormFields extends FieldDictionary<Pick<Product, 'active'>> {
   staffLength: number;
 }
 
-export default ({ active, staffLength }: FormFields) => {
+export default memo(({ active, staffLength }: FormFields) => {
   const { t } = useTranslation('collections', { keyPrefix: 'product' });
 
   const contentStatus = active.value ? 'deactivate' : 'activate';
@@ -25,4 +26,4 @@ export default ({ active, staffLength }: FormFields) => {
       </SettingToggle>
     </Layout.AnnotatedSection>
   );
-};
+});

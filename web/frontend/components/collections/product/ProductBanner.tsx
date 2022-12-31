@@ -1,6 +1,7 @@
 import { Banner, Layout } from '@shopify/polaris';
+import { memo } from 'react';
 
-export default () => {
+export default memo(() => {
   return (
     <Layout.Section>
       <Banner title="Tilføj staff til produktet" status="warning">
@@ -11,4 +12,4 @@ export default () => {
       </Banner>
     </Layout.Section>
   );
-};
+});

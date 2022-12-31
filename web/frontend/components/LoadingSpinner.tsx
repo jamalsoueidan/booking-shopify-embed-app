@@ -1,6 +1,7 @@
 import { Spinner } from '@shopify/polaris';
+import { memo } from 'react';
 
-export default () => {
+export default memo(() => {
   return (
     <div
       style={{
@@ -13,4 +14,4 @@ export default () => {
       />
     </div>
   );
-};
+});

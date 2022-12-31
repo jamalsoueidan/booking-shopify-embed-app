@@ -1,6 +1,7 @@
 import { Link, Modal, TextContainer } from '@shopify/polaris';
+import { memo } from 'react';
 
-export default ({ info }: BookingModalProps) => {
+export default memo(({ info }: BookingModalProps) => {
   const url =
     'https://testeriphone.myshopify.com/admin/customers/' + info.customerId;
 
@@ -26,4 +27,4 @@ export default ({ info }: BookingModalProps) => {
       </Modal.Section>
     </>
   );
-};
+});
