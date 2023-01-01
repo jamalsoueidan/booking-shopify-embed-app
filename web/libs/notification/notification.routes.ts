@@ -41,5 +41,13 @@ export const notificationRoutes = (app) => {
     }
   );
 
+  router.delete(
+    "/notifications/:id",
+    check("id").notEmpty(),
+    async (req, res) => {
+      handleRoute(req, res, ControllerMethods.cancel);
+    }
+  );
+
   return router;
 };

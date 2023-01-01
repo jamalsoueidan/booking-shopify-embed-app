@@ -1,3 +1,4 @@
+import LoadingSpinner from '@components/LoadingSpinner';
 import { useTranslation } from '@hooks';
 import { useStaff } from '@services';
 import { Avatar, Button, Stack } from '@shopify/polaris';
@@ -9,7 +10,7 @@ interface Props {
   onSelect: (value: string) => void;
 }
 
-export default memo(({ staff, onSelect, isLoading }: Props) => {
+export default ({ staff, onSelect, isLoading }: Props) => {
   const { data } = useStaff();
   const { t } = useTranslation('bookings');
 
@@ -32,7 +33,7 @@ export default memo(({ staff, onSelect, isLoading }: Props) => {
   );
 
   if (!data) {
-    return <></>;
+    return <LoadingSpinner />;
   }
 
   return (
@@ -48,7 +49,7 @@ export default memo(({ staff, onSelect, isLoading }: Props) => {
       {buttons}
     </Stack>
   );
-});
+};
 
 interface StaffButtonProps {
   selectedStaff: string;

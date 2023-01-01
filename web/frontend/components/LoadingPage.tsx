@@ -12,11 +12,8 @@ export default memo(({ title }: { title?: string }) => {
           left: '50%',
           transform: 'translate(-50%, -50%)',
         }}>
-        <AlphaStack align="center">
-          <Spinner
-            accessibilityLabel="Loading form field"
-            hasFocusableParent={false}
-          />
+        <AlphaStack align="center" gap="2">
+          <Spinner accessibilityLabel="Loading" hasFocusableParent={false} />
           {title}
         </AlphaStack>
       </div>

@@ -6,9 +6,10 @@ import {
   default as StaffModel,
   default as staffModel,
 } from "@models/staff.model";
-import { format, subDays, subMinutes } from "date-fns";
+import { format, isValid, subDays, subMinutes } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
 import mongoose from "mongoose";
+import axios, { AxiosResponse } from "axios";
 
 interface NoMesageSendLastMinutesProps {
   shop: string;
@@ -55,6 +56,17 @@ interface SendCustomProps extends NotificationQuery, NotificationBody {
 const sendCustom = async (query: SendCustomProps) => {
   const { shop, orderId, lineItemId, message, to } = query;
 
+  const messageSend = await noMesageSendLastMinutes({
+    shop,
+    orderId: orderId,
+    lineItemId: lineItemId,
+    receiver: to.replace("+", ""),
+  });
+
+  if (!messageSend) {
+    throw new Error("after_fifteen_minutes_send_message");
+  }
+
   //TODO: 15 minutes must pass between each message.
   const booking = await BookingModel.findOne({
     shop,
@@ -71,17 +83,6 @@ const sendCustom = async (query: SendCustomProps) => {
         : await StaffModel.findOne({
             staffId: booking.staff,
           }).lean();
-
-    if (
-      !(await noMesageSendLastMinutes({
-        shop,
-        orderId: booking.orderId,
-        lineItemId: booking.lineItemId,
-        receiver: phone.replace("+", ""),
-      }))
-    ) {
-      throw new Error("after_fifteen_minutes_send_message");
-    }
 
     return send({
       shop,
@@ -107,18 +108,19 @@ const resend = async ({ shop, id }: ResendProps) => {
     _id: new mongoose.Types.ObjectId(id),
   });
 
-  if (
-    notification &&
-    (await noMesageSendLastMinutes({
+  if (notification) {
+    const noMessage = await noMesageSendLastMinutes({
       shop,
       orderId: notification.orderId,
       lineItemId: notification.lineItemId,
       receiver: notification.receiver.replace("+", ""),
-    }))
-  ) {
-    notification.updatedAt = new Date();
-    await notification.save();
-    return send(notification);
+    });
+
+    if (noMessage) {
+      notification.updatedAt = new Date();
+      await notification.save();
+      return send(notification);
+    }
   }
 
   throw new Error("after_fifteen_minutes_send_message");
@@ -152,6 +154,26 @@ const send = async ({
     shop,
     isStaff,
   });
+
+  const response: AxiosResponse<SMSDK.Response> = await axios.post(
+    "https://api.sms.dk/v1/sms/send",
+    {
+      receiver: 4531317428,
+      message,
+      senderName: "BySisters",
+      scheduled: scheduled ? scheduled.toISOString().slice(0, -1) : null,
+    },
+    {
+      headers: {
+        "content-type": "application/json",
+        Authorization: "Bearer 4dcc09f3-68e2-11ed-8524-005056010a37",
+      },
+    }
+  );
+
+  notification.status = response.data.status;
+  notification.batchId = response.data.result.batchId;
+
   return notification.save();
 };
 
@@ -187,7 +209,7 @@ const sendReminderCustomer = ({ receiver, bookings, shop }: SendReminder) => {
   }
 
   // TODO: use timezone from settings
-  bookings.forEach((booking) => {
+  return bookings.forEach((booking) => {
     send({
       shop,
       orderId: booking.orderId,
@@ -207,7 +229,7 @@ const sendReminderCustomer = ({ receiver, bookings, shop }: SendReminder) => {
 
 const sendReminderStaff = ({ bookings, shop }: SendReminder) => {
   // TODO: use timezone from settings
-  bookings.forEach(async (booking) => {
+  return bookings.forEach(async (booking) => {
     const staff = await staffModel.findById(booking.staff);
 
     send({
@@ -230,6 +252,40 @@ const sendReminderStaff = ({ bookings, shop }: SendReminder) => {
   });
 };
 
+interface CancelProps {
+  id: string;
+  shop: string;
+}
+
+const cancel = async ({ id: _id, shop }: CancelProps) => {
+  const notification = await NotificationModel.findOneAndUpdate(
+    {
+      _id,
+      shop,
+    },
+    {
+      status: "cancelled",
+    },
+    {
+      new: true,
+    }
+  );
+
+  if (notification.status !== "cancelled") {
+    axios.delete(
+      `https://api.sms.dk/v1/sms/delete?batchId=${notification.batchId}`,
+      {
+        headers: {
+          "content-type": "application/json",
+          Authorization: "Bearer 4dcc09f3-68e2-11ed-8524-005056010a37",
+        },
+      }
+    );
+  }
+
+  return notification;
+};
+
 export default {
   sendBookingConfirmationCustomer,
   sendReminderCustomer,
@@ -237,4 +293,5 @@ export default {
   get,
   sendCustom,
   resend,
+  cancel,
 };

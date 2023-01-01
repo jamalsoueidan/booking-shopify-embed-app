@@ -4,6 +4,7 @@ export enum ControllerMethods {
   get = "get",
   sendCustom = "sendCustom",
   resend = "resend",
+  cancel = "cancel",
 }
 
 const get = ({ query }) => {
@@ -18,4 +19,8 @@ const resend = ({ query }) => {
   return NotificationService.resend(query);
 };
 
-export default { get, sendCustom, resend };
+const cancel = ({ query }) => {
+  return NotificationService.cancel(query);
+};
+
+export default { get, sendCustom, resend, cancel };

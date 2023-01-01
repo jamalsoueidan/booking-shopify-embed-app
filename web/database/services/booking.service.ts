@@ -3,6 +3,7 @@ import { GetBookingsProps } from "@libs/booking/booking.types";
 import productModel from "@models/product.model";
 import mongoose, { Types } from "mongoose";
 import BookingModel from "../models/booking.model";
+import notificationService from "./notification.service";
 
 interface CreateProps extends BookingBodyCreate {
   shop: string;
@@ -15,9 +16,18 @@ const create = async (body: CreateProps) => {
   if (product) {
     const booking = await BookingModel.create({
       ...body,
+      orderId: Date.now() + Math.floor(100000 + Math.random() * 900000),
+      lineItemId: Date.now() + Math.floor(100000 + Math.random() * 900000),
       fulfillmentStatus: "booked",
       title: product.title,
+      isSelfBooked: true,
     });
+
+    notificationService.sendReminderStaff({
+      bookings: [booking],
+      receiver: { fullname: "ad", phone: "4531317428" },
+      shop: body.shop,
+    } as any);
     return booking;
   } else {
     throw new Error("no product found");

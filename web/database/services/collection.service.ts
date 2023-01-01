@@ -1,4 +1,3 @@
-import { getCollection } from "@libs/collection/collection.helpers";
 import CollectionModel from "@models/collection.model";
 
 const findAll = () => {

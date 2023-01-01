@@ -50,6 +50,20 @@ if (host === 'localhost') {
   };
 }
 
+let build = {};
+if (process.env.npm_lifecycle_event === 'build') {
+  build = {
+    rollupOptions: {
+      plugins: [dynamicImportVars({})],
+      output: {
+        manualChunks: {
+          react: ['react', 'react-router-dom', 'react-dom', 'react-query'],
+          shopify: ['@shopify/app-bridge-react', '@shopify/polaris'],
+        },
+      },
+    },
+  };
+}
 export default defineConfig({
   root: dirname(fileURLToPath(import.meta.url)),
   plugins: [
@@ -65,17 +79,7 @@ export default defineConfig({
   resolve: {
     preserveSymlinks: true,
   },
-  build: {
-    rollupOptions: {
-      plugins: [dynamicImportVars({})],
-      output: {
-        manualChunks: {
-          react: ['react', 'react-router-dom', 'react-dom', 'react-query'],
-          shopify: ['@shopify/app-bridge-react', '@shopify/polaris'],
-        },
-      },
-    },
-  },
+  build,
   server: {
     host: 'localhost',
     port: process.env.FRONTEND_PORT,

@@ -1,3 +1,4 @@
+import LoadingModal from '@components/LoadingModal';
 import LoadingPage from '@components/LoadingPage';
 import LoadingSpinner from '@components/LoadingSpinner';
 import Metadata from '@components/staff/Metadata';
@@ -76,12 +77,12 @@ export default () => {
         onAction: () => navigate('/Staff/Edit/' + _id),
       }}>
       {showCreate && (
-        <Suspense>
+        <Suspense fallback={<LoadingModal />}>
           <CreateScheduleModal info={showCreate} setInfo={setShowCreate} />
         </Suspense>
       )}
       {showEdit && (
-        <Suspense>
+        <Suspense fallback={<LoadingModal />}>
           <EditScheduleModal info={showEdit} setInfo={setShowEdit} />
         </Suspense>
       )}

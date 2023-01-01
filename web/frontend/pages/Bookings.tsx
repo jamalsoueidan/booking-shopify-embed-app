@@ -1,3 +1,4 @@
+import LoadingModal from '@components/LoadingModal';
 import LoadingSpinner from '@components/LoadingSpinner';
 import StaffSelection from '@components/bookings/staff-selection';
 import { DatesSetArg, EventClickArg } from '@fullcalendar/core';
@@ -17,7 +18,6 @@ import { padTo2Digits } from 'helpers/pad2Digits';
 import { Suspense, lazy, useCallback, useMemo, useRef, useState } from 'react';
 
 const Calendar = lazy(() => import('../components/Calendar'));
-
 const BookingModal = lazy(() => import('../components/bookings/BookingModal'));
 
 export default () => {
@@ -134,7 +134,7 @@ export default () => {
         onAction: () => navigate('/Bookings/New'),
       }}>
       {info ? (
-        <Suspense>
+        <Suspense fallback={<LoadingModal />}>
           <BookingModal show={true} toggle={setInfo} info={info} />
         </Suspense>
       ) : null}

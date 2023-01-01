@@ -21,6 +21,7 @@ const NotificationSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    batchId: String,
   },
   { timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" } }
 );

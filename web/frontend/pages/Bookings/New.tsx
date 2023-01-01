@@ -7,6 +7,7 @@ import {
 } from '@components/bookings/BookingForm';
 import { useExtendForm, useTranslation } from '@hooks';
 import { notEmptyObject } from '@libs/validators/notEmptyObject';
+import { useToast } from '@providers/toast';
 import { useBookingCreate } from '@services/booking';
 import { useNavigate } from '@shopify/app-bridge-react';
 import {
@@ -22,6 +23,7 @@ import { notEmpty, useField } from '@shopify/react-form';
 export default () => {
   const navigate = useNavigate();
   const { create } = useBookingCreate();
+  const { show } = useToast();
   const { t } = useTranslation('bookings', { keyPrefix: 'new' });
   //https://codesandbox.io/s/1wpxz?file=/src/MyForm.tsx:2457-2473
   const { fields, submit, primaryAction } = useExtendForm({
@@ -54,13 +56,14 @@ export default () => {
       }),
     },
     onSubmit: async (fieldValues) => {
-      create({
+      await create({
         productId: fieldValues.productId,
         customerId: fieldValues.customer.customerId,
         staff: fieldValues.staff,
         start: fieldValues.time.start,
         end: fieldValues.time.end,
       });
+      show({ content: 'Booking created' });
       navigate(`/bookings`);
       return { status: 'success' };
     },
@@ -68,6 +71,7 @@ export default () => {
 
   return (
     <Form onSubmit={submit}>
+      y
       <Page
         fullWidth
         title={t('title')}

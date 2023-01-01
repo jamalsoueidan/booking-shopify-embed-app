@@ -1,6 +1,12 @@
 import { useToast } from '@providers/toast';
 import { useNotification, useResendNotification } from '@services';
-import { Badge, ResourceItem, ResourceList, Text } from '@shopify/polaris';
+import {
+  Badge,
+  EmptyState,
+  ResourceItem,
+  ResourceList,
+  Text,
+} from '@shopify/polaris';
 import { format } from 'date-fns';
 import { useCallback } from 'react';
 
@@ -62,10 +68,21 @@ export default ({ info }: BookingModalProps) => {
     );
   }, []);
 
+  const emptyStateMarkup =
+    data?.length === 0 ? (
+      <>
+        <br />
+        <EmptyState heading="Notification empty" image={null}>
+          <p>No notification is send yet!</p>
+        </EmptyState>
+      </>
+    ) : undefined;
+
   return (
     <ResourceList
+      emptyState={emptyStateMarkup}
       items={data.reverse()}
-      loading={data.length === 0}
+      loading={!data}
       renderItem={renderItem}
     />
   );

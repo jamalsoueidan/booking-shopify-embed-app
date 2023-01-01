@@ -49,6 +49,10 @@ const BookingSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  isSelfBooked: {
+    type: Boolean,
+    default: false,
+  },
   title: String,
 });
 

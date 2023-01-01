@@ -17,6 +17,7 @@ import {
   TextField,
 } from '@shopify/polaris';
 import { lengthMoreThan, notEmpty, useField } from '@shopify/react-form';
+import { useCallback } from 'react';
 
 interface StaffFormProps {
   action: (body: StaffBodyUpdate) => void;
@@ -84,6 +85,11 @@ export const StaffForm = ({
     },
   });
 
+  const changePostal = useCallback(
+    (value: string) => fields.postal.onChange(parseInt(value)),
+    []
+  );
+
   return (
     <Form onSubmit={submit}>
       <Page
@@ -134,9 +140,7 @@ export const StaffForm = ({
                   helpText={<span>{t('staff.postal.help')}</span>}
                   {...fields.postal}
                   value={fields.postal?.value?.toString()}
-                  onChange={(value: string) =>
-                    fields.postal.onChange(parseInt(value))
-                  }
+                  onChange={changePostal}
                 />
               </FormLayout>
             </Card>

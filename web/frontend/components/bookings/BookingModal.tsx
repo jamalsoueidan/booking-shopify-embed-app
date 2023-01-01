@@ -5,6 +5,7 @@ import BookingModalCustomer from './BookingModalCustomer';
 import BookingModalNotification from './BookingModalNotification';
 import BookingModalProduct from './BookingModalProduct';
 import BookingModalSendNotification from './BookingModalSendNotification';
+import { isAfter } from 'date-fns';
 
 interface BookingModalProps {
   show: boolean;
@@ -38,7 +39,10 @@ export default ({ show, toggle, info }: BookingModalProps) => {
       },
     ];
 
-    if (!info.fulfillmentStatus) {
+    if (
+      (!info.fulfillmentStatus || info.isSelfBooked) &&
+      isAfter(new Date(info.start), new Date())
+    ) {
       t.push({
         id: 'send',
         content: 'Send Meddelelser',
