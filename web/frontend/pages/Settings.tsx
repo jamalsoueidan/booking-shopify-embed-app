@@ -5,7 +5,7 @@ import { NotificationMajor, SettingsMajor } from '@shopify/polaris-icons';
 import { useState } from 'react';
 
 export default () => {
-  const [current, setCurrent] = useState<string>('notifications');
+  const [current, setCurrent] = useState<string>('application');
 
   let Component;
   if (current === 'application') {

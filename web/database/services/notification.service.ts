@@ -157,14 +157,14 @@ const send = async ({
     isStaff,
   });
 
-  /*const response = await smsdkApi.send({
+  const response = await smsdkApi.send({
     receiver,
     message,
     scheduled,
   });
 
   notification.status = response.status;
-  notification.batchId = response.result.batchId;*/
+  notification.batchId = response.result.batchId;
 
   return notification.save();
 };
