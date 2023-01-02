@@ -1,27 +1,26 @@
+import ModalConfirm from '@components/modals/ModalConfirm';
 import { useTranslation } from '@hooks';
+import { sortStrings } from '@libs/sortStrings';
 import { useCollectionDestroy } from '@services';
 import {
   Avatar,
+  Badge,
   Box,
   Button,
   Card,
-  Icon,
   ResourceItem,
   ResourceList,
   Stack,
   Text,
   TextContainer,
 } from '@shopify/polaris';
-import { CircleCancelMinor, CircleTickMinor } from '@shopify/polaris-icons';
 import { memo, useCallback, useMemo, useState } from 'react';
-import ModalConfirm from '@components/modals/ModalConfirm';
-import { sortStrings } from '@libs/sortStrings';
 
-interface CollectionListProps {
+interface CollectionProps {
   collection: CollectionAggreate;
 }
 
-export default memo(({ collection }: CollectionListProps) => {
+export default memo(({ collection }: CollectionProps) => {
   const [modalConfirm, setModalConfirm] = useState<JSX.Element>();
   const { destroy } = useCollectionDestroy({ collectionId: collection._id });
   const { t } = useTranslation('collections');
@@ -41,41 +40,39 @@ export default memo(({ collection }: CollectionListProps) => {
     const { _id, title, active } = item;
 
     const status = active ? 'success' : 'critical';
-    const icon = active ? CircleTickMinor : CircleCancelMinor;
 
     return (
-      <ResourceItem
-        id={_id}
-        url={'/Collections/Product/' + _id}
-        media={<Icon source={icon} color={status} backdrop />}
-        name={title}>
+      <ResourceItem id={_id} url={'/Collections/Product/' + _id} name={title}>
         <Text variant="bodyMd" fontWeight="bold" as="h3">
-          {title}
+          {title}{' '}
+          <Badge status={status}>{active ? 'Active' : 'Deactive'}</Badge>
         </Text>
 
-        <div>
-          {t('staff', {
-            count: item.staff,
-          })}
-        </div>
+        <Box paddingBlockStart="2">
+          <div>
+            {t('staff', {
+              count: item.staff,
+            })}
+          </div>
 
-        {item.staff?.length > 0 && (
-          <Box paddingBlockStart="2">
-            <Stack spacing="extraTight">
-              {item.staff.sort(sortStrings('fullname')).map((staff) => {
-                return (
-                  <Avatar
-                    key={staff._id}
-                    customer
-                    size="small"
-                    name={staff.fullname}
-                    source={staff.avatar}
-                  />
-                );
-              })}
-            </Stack>
-          </Box>
-        )}
+          {item.staff?.length > 0 && (
+            <Box paddingBlockStart="2">
+              <Stack spacing="extraTight">
+                {item.staff.sort(sortStrings('fullname')).map((staff) => {
+                  return (
+                    <Avatar
+                      key={staff._id}
+                      customer
+                      size="small"
+                      name={staff.fullname}
+                      source={staff.avatar}
+                    />
+                  );
+                })}
+              </Stack>
+            </Box>
+          )}
+        </Box>
       </ResourceItem>
     );
   }, []);

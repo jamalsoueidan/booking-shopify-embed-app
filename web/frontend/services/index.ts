@@ -6,3 +6,4 @@ export * from './setting';
 export * from './staff';
 export * from './widget';
 export * from './staff/schedule';
+export * from './setting/notification-templates';

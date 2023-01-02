@@ -6,7 +6,8 @@ export const useCollection = () => {
   const { get } = useFetch();
   const { data } = useQuery<ApiResponse<Array<CollectionAggreate>>>(
     ['collections'],
-    () => get('/api/admin/collections')
+    () => get('/api/admin/collections'),
+    { suspense: true }
   );
 
   return {

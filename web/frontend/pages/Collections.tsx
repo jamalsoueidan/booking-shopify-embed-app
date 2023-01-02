@@ -1,40 +1,20 @@
-import LoadingPage from '@components/LoadingPage';
 import { useCollection } from '@services';
 
-import AddNewCollection from '@components/collections/AddNewCollection';
-import CollectionsList from '@components/collections/CollectionsList';
+import CollectionList from '@components/collections/CollectionList';
+import ResourcePicker from '@components/collections/ResourcePicker';
 import { useTranslation } from '@hooks/useTranslation';
-import { sortStrings } from '@libs/sortStrings';
 import { useNavigate } from '@shopify/app-bridge-react';
 import { Page } from '@shopify/polaris';
-import { useMemo, useState } from 'react';
+import { Suspense, useState } from 'react';
+import LoadingSpinner from '@components/LoadingSpinner';
 
 export default () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-
   const { data } = useCollection();
   const { t } = useTranslation('collections');
 
-  const collection = useMemo(() => {
-    if (!data) {
-      return [];
-    }
-
-    return [...data]
-      .sort(sortStrings('title'))
-      .map((collection) => (
-        <CollectionsList
-          key={collection._id}
-          collection={collection}></CollectionsList>
-      ));
-  }, [data]);
-
-  if (!data) {
-    return <LoadingPage title="Loading collection data" />;
-  }
-
-  if (data.length === 0) {
+  if (data?.length === 0) {
     navigate('/collections/empty');
     return <></>;
   }
@@ -47,8 +27,10 @@ export default () => {
         content: t('add_collection'),
         onAction: () => setOpen(true),
       }}>
-      <AddNewCollection open={open} setOpen={setOpen}></AddNewCollection>
-      {collection}
+      <ResourcePicker open={open} setOpen={setOpen} />
+      <Suspense fallback={<LoadingSpinner />}>
+        <CollectionList collections={data} />
+      </Suspense>
     </Page>
   );
 };

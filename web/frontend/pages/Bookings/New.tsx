@@ -71,7 +71,6 @@ export default () => {
 
   return (
     <Form onSubmit={submit}>
-      y
       <Page
         fullWidth
         title={t('title')}

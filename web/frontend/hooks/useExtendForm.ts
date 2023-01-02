@@ -29,11 +29,12 @@ export const useExtendForm = <T extends FieldBag, D extends DynamicListBag>(
   const [isValid, setIsValid] = useState<boolean>(false);
   const customForm = useForm({
     ...form,
-    onSubmit: (fieldValues) => {
+    onSubmit: async (fieldValues) => {
       setIsSubmitted(true);
       if (form.onSubmit) {
         return form.onSubmit(fieldValues as any);
       }
+      return { status: 'success' };
     },
     makeCleanAfterSubmit: true,
   });
@@ -44,6 +45,7 @@ export const useExtendForm = <T extends FieldBag, D extends DynamicListBag>(
 
     return () => {
       saveBar.setDirty(false);
+      saveBar.setSubmitting(false);
     };
   }, []);
 
@@ -55,15 +57,11 @@ export const useExtendForm = <T extends FieldBag, D extends DynamicListBag>(
   }, [isSubmitted, customForm.submitErrors]);
 
   useEffect(() => {
-    if (saveBar.dirty !== customForm.dirty) {
-      saveBar.setDirty(customForm.dirty);
-    }
+    saveBar.setDirty(customForm.dirty);
   }, [customForm.dirty]);
 
   useEffect(() => {
-    if (saveBar.submitting !== customForm.submitting) {
-      saveBar.setSubmitting(customForm.submitting);
-    }
+    saveBar.setSubmitting(customForm.submitting);
   }, [customForm.submitting]);
 
   return {

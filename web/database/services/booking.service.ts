@@ -14,10 +14,13 @@ const create = async (body: CreateProps) => {
     .findOne({ productId: body.productId })
     .lean();
   if (product) {
+    const myArray = new Uint32Array(2);
+    const randomValues = crypto.getRandomValues(myArray);
+
     const booking = await BookingModel.create({
       ...body,
-      orderId: Date.now() + Math.floor(100000 + Math.random() * 900000),
-      lineItemId: Date.now() + Math.floor(100000 + Math.random() * 900000),
+      orderId: randomValues[0],
+      lineItemId: randomValues[1],
       fulfillmentStatus: "booked",
       title: product.title,
       isSelfBooked: true,

@@ -5,8 +5,10 @@ import { useQuery } from 'react-query';
 export const useStaff = () => {
   const { get } = useFetch();
 
-  const { data } = useQuery<ApiResponse<Array<Staff>>>(['staff'], () =>
-    get('/api/admin/staff')
+  const { data } = useQuery<ApiResponse<Array<Staff>>>(
+    ['staff'],
+    () => get('/api/admin/staff'),
+    { suspense: true }
   );
 
   return { data: data?.payload };

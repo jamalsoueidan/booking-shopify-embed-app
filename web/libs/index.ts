@@ -7,3 +7,4 @@ export * from "./setting/setting.routes";
 export * from "./staff/staff.routes";
 export * from "./staff-schedule/staff-schedule.routes";
 export * from "./widget/widget.routes";
+export * from "./setting-notification-templates/setting-notification-templates.routes";

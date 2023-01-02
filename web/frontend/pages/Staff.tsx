@@ -1,9 +1,8 @@
-import LoadingPage from '@components/LoadingPage';
-import { useStaff } from '@services';
-import { useNavigate } from '@shopify/app-bridge-react';
-
+import EmptyStaff from '@components/staff/EmptyStaff';
 import Metadata from '@components/staff/Metadata';
 import { usePositions } from '@hooks';
+import { useStaff } from '@services';
+import { useNavigate } from '@shopify/app-bridge-react';
 import {
   Avatar,
   Card,
@@ -47,15 +46,6 @@ export default () => {
     [select]
   );
 
-  if (!data) {
-    return <LoadingPage title="Loading staff data" />;
-  }
-
-  if (data.length === 0) {
-    navigate('/Staff/Empty');
-    return <></>;
-  }
-
   return (
     <Page
       fullWidth
@@ -66,8 +56,9 @@ export default () => {
       }}>
       <Card>
         <ResourceList
+          emptyState={<EmptyStaff />}
           resourceName={{ singular: 'customer', plural: 'customers' }}
-          items={data}
+          items={data || []}
           renderItem={renderItems}
         />
       </Card>

@@ -6,6 +6,7 @@
 /// <reference path="../@types/collection.d.ts" />
 /// <reference path="../@types/customer.d.ts" />
 /// <reference path="../@types/booking.d.ts" />
+/// <reference path="../@types/notification-template.d.ts" />
 /// <reference path="../@types/notification.d.ts" />
 /// <reference path="../@types/schedule.d.ts" />
 /// <reference path="../@types/widget.d.ts" />

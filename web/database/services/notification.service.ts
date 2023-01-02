@@ -1,3 +1,4 @@
+import smsdkApi from "@libs/smsdk/smsdk.api";
 import BookingModel from "@models/booking.model";
 import CustomerModel, { ICustomerModel } from "@models/customer.model";
 import NotificationModel from "@models/notification.model";
@@ -6,10 +7,10 @@ import {
   default as StaffModel,
   default as staffModel,
 } from "@models/staff.model";
-import { format, isValid, subDays, subMinutes } from "date-fns";
+import axios from "axios";
+import { format, subDays, subMinutes } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
 import mongoose from "mongoose";
-import axios, { AxiosResponse } from "axios";
 
 interface NoMesageSendLastMinutesProps {
   shop: string;
@@ -155,24 +156,14 @@ const send = async ({
     isStaff,
   });
 
-  const response: AxiosResponse<SMSDK.Response> = await axios.post(
-    "https://api.sms.dk/v1/sms/send",
-    {
-      receiver: 4531317428,
-      message,
-      senderName: "BySisters",
-      scheduled: scheduled ? scheduled.toISOString().slice(0, -1) : null,
-    },
-    {
-      headers: {
-        "content-type": "application/json",
-        Authorization: "Bearer 4dcc09f3-68e2-11ed-8524-005056010a37",
-      },
-    }
-  );
+  const response = await smsdkApi.send({
+    receiver,
+    message,
+    scheduled,
+  });
 
-  notification.status = response.data.status;
-  notification.batchId = response.data.result.batchId;
+  notification.status = response.status;
+  notification.batchId = response.result.batchId;
 
   return notification.save();
 };
@@ -203,7 +194,11 @@ interface SendReminder {
   shop: string;
 }
 
-const sendReminderCustomer = ({ receiver, bookings, shop }: SendReminder) => {
+const sendBookingReminderCustomer = ({
+  receiver,
+  bookings,
+  shop,
+}: SendReminder) => {
   if (!receiver.phone) {
     return;
   }
@@ -227,7 +222,7 @@ const sendReminderCustomer = ({ receiver, bookings, shop }: SendReminder) => {
   });
 };
 
-const sendReminderStaff = ({ bookings, shop }: SendReminder) => {
+const sendBookingReminderStaff = ({ bookings, shop }: SendReminder) => {
   // TODO: use timezone from settings
   return bookings.forEach(async (booking) => {
     const staff = await staffModel.findById(booking.staff);
@@ -272,15 +267,7 @@ const cancel = async ({ id: _id, shop }: CancelProps) => {
   );
 
   if (notification.status !== "cancelled") {
-    axios.delete(
-      `https://api.sms.dk/v1/sms/delete?batchId=${notification.batchId}`,
-      {
-        headers: {
-          "content-type": "application/json",
-          Authorization: "Bearer 4dcc09f3-68e2-11ed-8524-005056010a37",
-        },
-      }
-    );
+    smsdkApi.cancel(notification.batchId);
   }
 
   return notification;
@@ -288,8 +275,8 @@ const cancel = async ({ id: _id, shop }: CancelProps) => {
 
 export default {
   sendBookingConfirmationCustomer,
-  sendReminderCustomer,
-  sendReminderStaff,
+  sendReminderCustomer: sendBookingReminderCustomer,
+  sendReminderStaff: sendBookingReminderStaff,
   get,
   sendCustom,
   resend,

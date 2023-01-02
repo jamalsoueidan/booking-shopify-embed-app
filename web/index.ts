@@ -16,6 +16,7 @@ import {
   customerRoutes,
   notificationRoutes,
   productRoutes,
+  settingNotificationTemplatesRoutes,
   settingRoutes,
   staffRoutes,
   staffScheduleRoutes,
@@ -176,7 +177,6 @@ export async function createServer(
   app.use(express.json({ limit: "1mb", extended: true } as any));
 
   app.use("/api/widget", widgetRoutes(app));
-  app.use("/api/admin", notificationRoutes(app));
 
   // All endpoints after this point will require an active session
   app.use(
@@ -187,13 +187,14 @@ export async function createServer(
   );
 
   app.use("/api/admin", bookingRoutes(app));
-  app.use("/api/admin", customerRoutes(app));
-  app.use("/api/admin", productRoutes(app));
-  app.use("/api/admin", notificationRoutes(app));
   app.use("/api/admin", collectionRoutes(app));
+  app.use("/api/admin", customerRoutes(app));
+  app.use("/api/admin", notificationRoutes(app));
+  app.use("/api/admin", productRoutes(app));
+  app.use("/api/admin", settingRoutes(app));
+  app.use("/api/admin", settingNotificationTemplatesRoutes(app));
   app.use("/api/admin", staffRoutes(app));
   app.use("/api/admin", staffScheduleRoutes(app));
-  app.use("/api/admin", settingRoutes(app));
 
   app.use((req: Request<{}, {}, {}, { shop: string }>, res, next) => {
     const shop = Shopify.Utils.sanitizeShop(req.query.shop);

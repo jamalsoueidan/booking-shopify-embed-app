@@ -1,118 +1,56 @@
-import { FormErrors } from '@components/FormErrors';
-import LoadingPage from '@components/LoadingPage';
-import { TimeZoneSelect } from '@components/settings/TimeZoneSelect';
-import { useExtendForm, useTranslation } from '@hooks';
-import { useToast } from '@providers/toast';
-import { useSetting, useSettingUpdate } from '@services';
-import {
-  Card,
-  Form,
-  FormLayout,
-  Layout,
-  Page,
-  PageActions,
-  Select,
-  SettingToggle,
-  Text,
-} from '@shopify/polaris';
-import { useField } from '@shopify/react-form';
+import Application from '@components/settings/Application';
+import Notifications from '@components/settings/Notifications';
+import { ActionList, Card, Grid, Page } from '@shopify/polaris';
+import { NotificationMajor, SettingsMajor } from '@shopify/polaris-icons';
+import { useState } from 'react';
 
 export default () => {
-  const { data } = useSetting();
-  const { update } = useSettingUpdate();
+  const [current, setCurrent] = useState<string>('notifications');
 
-  const { t } = useTranslation('settings');
-
-  const { show } = useToast();
-
-  const languageOptions = [
-    {
-      label: t('store_settings.language.options.english'),
-      value: 'en-US',
-    },
-    {
-      label: t('store_settings.language.options.danish'),
-      value: 'da-DK',
-    },
-  ];
-
-  //https://codesandbox.io/s/1wpxz?file=/src/MyForm.tsx:2457-2473
-  const { fields, submit, submitErrors, primaryAction } = useExtendForm({
-    fields: {
-      timeZone: useField<string>({
-        value: data?.timeZone,
-        validates: [],
-      }),
-      language: useField<string>({
-        value: data?.language,
-        validates: [],
-      }),
-      status: useField<boolean>({
-        value: data?.status,
-        validates: [],
-      }),
-    },
-    onSubmit: async (fieldValues) => {
-      await update(fieldValues);
-      show({ content: t('toast') });
-      return { status: 'success' };
-    },
-  });
-
-  if (!data) {
-    return <LoadingPage title="Loading settings data" />;
+  let Component;
+  if (current === 'application') {
+    Component = Application;
+  } else {
+    Component = Notifications;
   }
 
   return (
-    <Form onSubmit={submit}>
-      <Page fullWidth title={t('title')}>
-        <Layout>
-          <FormErrors errors={submitErrors} />
-          <Layout.AnnotatedSection
-            title={t('store_settings.title')}
-            description={t('store_settings.subtitle')}>
-            <Card sectioned>
-              <FormLayout>
-                <TimeZoneSelect
-                  label={t('store_settings.timezone.label')}
-                  {...fields.timeZone}
-                />
-                <Select
-                  label={t('store_settings.language.label')}
-                  options={languageOptions}
-                  {...fields.language}
-                />
-              </FormLayout>
-            </Card>
-          </Layout.AnnotatedSection>
-          <Layout.AnnotatedSection
-            title={t('store_status.title')}
-            description={t('store_status.subtitle')}>
-            <Card sectioned>
-              <FormLayout>
-                <SettingToggle
-                  action={{
-                    content: fields.status.value
-                      ? t('store_status.status.disable')
-                      : t('store_status.status.enable'),
-                    onAction: () =>
-                      fields.status.onChange(!fields.status.value),
-                  }}
-                  enabled={fields.status.value}>
-                  <Text variant="bodyMd" fontWeight="bold" as="span">
-                    {fields.status.value
-                      ? t('store_status.status.enabled')
-                      : t('store_status.status.disabled')}
-                  </Text>
-                  .
-                </SettingToggle>
-              </FormLayout>
-            </Card>
-          </Layout.AnnotatedSection>
-        </Layout>
-        <br />
-        <PageActions primaryAction={primaryAction} />
-      </Page>
-    </Form>
+    <Page fullWidth>
+      <Grid>
+        <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 2, lg: 3, xl: 3 }}>
+          <Card>
+            <ActionList
+              actionRole="menuitem"
+              sections={[
+                {
+                  title: 'Settings',
+                  items: [
+                    {
+                      active: current === 'application',
+                      content: 'Application',
+                      icon: SettingsMajor,
+                      onAction: () => {
+                        setCurrent('application');
+                      },
+                    },
+                    {
+                      active: current === 'notifications',
+                      content: 'Notifications',
+                      icon: NotificationMajor,
+                      onAction: () => {
+                        setCurrent('notifications');
+                      },
+                    },
+                  ],
+                },
+              ]}
+            />
+          </Card>
+        </Grid.Cell>
+        <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 4, lg: 9, xl: 9 }}>
+          <Component />
+        </Grid.Cell>
+      </Grid>
+    </Page>
   );
 };
