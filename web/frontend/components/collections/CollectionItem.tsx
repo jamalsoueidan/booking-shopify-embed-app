@@ -15,7 +15,7 @@ import {
   TextContainer,
 } from '@shopify/polaris';
 import { memo, useCallback, useMemo, useState } from 'react';
-import MissingImage from './MissingImage';
+import MissingImage from '../MissingImage';
 
 interface CollectionProps {
   collection: CollectionAggreate;
