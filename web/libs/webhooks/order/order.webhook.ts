@@ -61,13 +61,13 @@ export const modify = async ({
       bookings: models,
       shop,
     });
-    NotificationService.sendReminderCustomer({
+    NotificationService.sendBookingReminderCustomer({
       receiver: customer,
       bookings: models,
       shop,
     });
 
-    NotificationService.sendReminderStaff({
+    NotificationService.sendBookingReminderStaff({
       receiver: customer,
       bookings: models,
       shop,

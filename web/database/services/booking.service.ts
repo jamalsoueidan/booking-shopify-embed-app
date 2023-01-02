@@ -14,19 +14,16 @@ const create = async (body: CreateProps) => {
     .findOne({ productId: body.productId })
     .lean();
   if (product) {
-    const myArray = new Uint32Array(2);
-    const randomValues = crypto.getRandomValues(myArray);
-
     const booking = await BookingModel.create({
       ...body,
-      orderId: randomValues[0],
-      lineItemId: randomValues[1],
+      orderId: Date.now() + Math.floor(100000 + Math.random() * 900000),
+      lineItemId: Date.now() + Math.floor(100000 + Math.random() * 900000),
       fulfillmentStatus: "booked",
       title: product.title,
       isSelfBooked: true,
     });
 
-    notificationService.sendReminderStaff({
+    notificationService.sendBookingReminderStaff({
       bookings: [booking],
       receiver: { fullname: "ad", phone: "4531317428" },
       shop: body.shop,

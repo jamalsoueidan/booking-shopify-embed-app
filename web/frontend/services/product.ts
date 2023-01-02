@@ -49,6 +49,7 @@ export const useProductUpdate = ({ productId }: UseProductUpdateProps) => {
         body
       );
       await mutate(['products', productId]);
+      await mutate(['collections']);
       return response;
     },
     [put, mutate]
