@@ -26,7 +26,7 @@ export const useCollectionCreate = () => {
     async ({ selections }) => {
       setIsFetching(true);
       const response = await post('/api/admin/collections', { selections });
-      await mutate(['collections']);
+      mutate(['collections']);
       setIsFetching(false);
       setIsFetched(true);
       return response;

@@ -15,6 +15,7 @@ import {
   TextContainer,
 } from '@shopify/polaris';
 import { memo, useCallback, useMemo, useState } from 'react';
+import MissingImage from './MissingImage';
 
 interface CollectionProps {
   collection: CollectionAggreate;
@@ -47,7 +48,11 @@ export default memo(({ collection }: CollectionProps) => {
         url={'/Collections/Product/' + _id}
         name={title}
         media={
-          imageUrl ? <Avatar customer size="large" source={imageUrl} /> : null
+          imageUrl ? (
+            <Avatar customer size="large" source={`${imageUrl}&width=80`} />
+          ) : (
+            <MissingImage />
+          )
         }>
         <Stack spacing="tight">
           <Text variant="bodyMd" fontWeight="bold" as="h3">
