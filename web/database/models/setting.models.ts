@@ -22,8 +22,21 @@ const SettingSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.model<ISettingModel>(
+const SettingModel = mongoose.model<ISettingModel>(
   "setting",
   SettingSchema,
   "Setting"
 );
+
+SettingModel.createCollection().then(async (collection) => {
+  const count = await collection.countDocuments();
+  if (count === 0) {
+    collection.insertMany([
+      {
+        shop: "testeriphone.myshopify.com",
+      },
+    ]);
+  }
+});
+
+export default SettingModel;

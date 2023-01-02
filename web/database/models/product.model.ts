@@ -48,6 +48,7 @@ const ProductSchema = new Schema({
     default: false,
     index: true,
   },
+  imageUrl: String,
   hidden: {
     type: Boolean,
     default: false,

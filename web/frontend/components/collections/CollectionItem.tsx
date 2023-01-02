@@ -37,16 +37,24 @@ export default memo(({ collection }: CollectionProps) => {
   }, []);
 
   const renderItem = useCallback((item: Product<ProductStaffAggreate>) => {
-    const { _id, title, active } = item;
+    const { _id, title, active, imageUrl } = item;
 
     const status = active ? 'success' : 'critical';
 
     return (
-      <ResourceItem id={_id} url={'/Collections/Product/' + _id} name={title}>
-        <Text variant="bodyMd" fontWeight="bold" as="h3">
-          {title}{' '}
+      <ResourceItem
+        id={_id}
+        url={'/Collections/Product/' + _id}
+        name={title}
+        media={
+          imageUrl ? <Avatar customer size="large" source={imageUrl} /> : null
+        }>
+        <Stack spacing="tight">
+          <Text variant="bodyMd" fontWeight="bold" as="h3">
+            {title}
+          </Text>
           <Badge status={status}>{active ? 'Active' : 'Deactive'}</Badge>
-        </Text>
+        </Stack>
 
         <Box paddingBlockStart="2">
           <div>

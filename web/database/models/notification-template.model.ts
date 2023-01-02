@@ -43,6 +43,21 @@ NotificationTemplateModel.createCollection().then(async (collection) => {
         message: `Hej {fullname}, Husk du har en kunde som skal lave {title} behandling imorgen kl. {time}`,
         shop: "testeriphone.myshopify.com",
       },
+      {
+        name: "BOOKING_CONFIRMATION",
+        message: `Hej {fullname}, tak for din resevations, som indeholder {total} behandling(er)`,
+        shop: "bysistersdk.myshopify.com",
+      },
+      {
+        name: "BOOKING_REMINDER_CUSTOMER",
+        message: `Hej {fullname}, Husk din {title} behandling imorgen kl. {time}, Vi ser frem til at se dig!`,
+        shop: "bysistersdk.myshopify.com",
+      },
+      {
+        name: "BOOKING_REMINDER_STAFF",
+        message: `Hej {fullname}, Husk du har en kunde som skal lave {title} behandling imorgen kl. {time}`,
+        shop: "bysistersdk.myshopify.com",
+      },
     ]);
   }
 });

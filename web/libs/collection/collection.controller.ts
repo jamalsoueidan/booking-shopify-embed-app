@@ -53,6 +53,7 @@ const create = async ({
           collectionId: getGid(currentCollection.id),
           productId: getGid(n.id),
           title: n.title,
+          imageUrl: n.featuredImage?.url,
           hidden: false,
         });
       });

@@ -13,6 +13,7 @@ interface Product<T = ProductStaff> {
   shop: string;
   title: string;
   staff: T[];
+  imageUrl: string;
 }
 
 // api/admin/products/:id

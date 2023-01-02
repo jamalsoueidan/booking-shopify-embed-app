@@ -5,6 +5,9 @@ import { Session } from "@shopify/shopify-api/dist/auth/session";
 interface Product {
   id: string;
   title: string;
+  featuredImage: {
+    url: string;
+  };
 }
 
 interface Collection {
@@ -32,6 +35,9 @@ const getCollectionQuery = `
         nodes {
           id
           title
+          featuredImage {
+            url
+          }
         }
       }
     }
