@@ -1,12 +1,15 @@
+import { FormErrors } from '@components/FormErrors';
 import { useExtendForm } from '@hooks/useExtendForm';
+import { useTranslation } from '@hooks/useTranslation';
 import { useToast } from '@providers/toast';
 import {
   useNotificationTemplates,
   useNotificationTemplatesUpdate,
 } from '@services';
 import {
+  Card,
   Form,
-  FormLayout,
+  Layout,
   Page,
   PageActions,
   TextField,
@@ -17,9 +20,11 @@ export default () => {
   const { data } = useNotificationTemplates();
   const { show } = useToast();
   const { update } = useNotificationTemplatesUpdate();
+  const { t } = useTranslation('settings', { keyPrefix: 'notifications' });
 
   const {
     submit,
+    submitErrors,
     dynamicLists: { notificationTemplates },
     primaryAction,
   } = useExtendForm({
@@ -40,19 +45,27 @@ export default () => {
   return (
     <Form onSubmit={submit}>
       <Page fullWidth title="Beskeder">
-        <FormLayout>
+        <Layout>
+          <FormErrors errors={submitErrors} />
           {notificationTemplates.fields.map(
             (field: FieldDictionary<NotificationTemplate>) => (
-              <TextField
+              <Layout.AnnotatedSection
                 key={field._id.value}
-                label={field.name.value}
-                autoComplete="false"
-                multiline
-                {...field.message}
-              />
+                title={t(`${field.name.value.toLowerCase()}.title`)}
+                description={t(
+                  `${field.name.value.toLowerCase()}.description`
+                )}>
+                <Card sectioned>
+                  <TextField
+                    label={t(`${field.name.value.toLowerCase()}.label`)}
+                    autoComplete="false"
+                    {...field.message}
+                  />
+                </Card>
+              </Layout.AnnotatedSection>
             )
           )}
-        </FormLayout>
+        </Layout>
         <br />
         <PageActions primaryAction={primaryAction} />
       </Page>

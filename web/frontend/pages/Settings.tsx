@@ -17,7 +17,7 @@ export default () => {
   return (
     <Page fullWidth>
       <Grid>
-        <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 2, lg: 3, xl: 3 }}>
+        <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 2, lg: 2, xl: 2 }}>
           <Card>
             <ActionList
               actionRole="menuitem"
@@ -47,7 +47,7 @@ export default () => {
             />
           </Card>
         </Grid.Cell>
-        <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 4, lg: 9, xl: 9 }}>
+        <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 4, lg: 10, xl: 10 }}>
           <Component />
         </Grid.Cell>
       </Grid>

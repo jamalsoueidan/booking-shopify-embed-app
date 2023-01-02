@@ -73,6 +73,23 @@
 		"makeup": "Makeup"
 	},
 	"settings": {
+		"notifications": {
+			"booking_confirmation": {
+				"description": "SMS bliver sendt som en bekræftelse på vi har modtaget hans bestilling.",
+				"label": "Bestillingsbekræftelse",
+				"title": "Bestillingsbekræftelse"
+			},
+			"booking_reminder_customer": {
+				"description": "Kunde modtager en påmindelse besked en dag før reservationen.",
+				"label": "Kunde bestillingspåmindelse",
+				"title": "Kunde bestillingspåmindelse"
+			},
+			"booking_reminder_staff": {
+				"description": "Medarbejder modtager en påmindelse besked en dag før reservationen.",
+				"label": "Medarbejder bestillings påmindelse",
+				"title": "Medarbejder bestillings påmindelse"
+			}
+		},
 		"store_settings": {
 			"language": {
 				"label": "Sprog",
