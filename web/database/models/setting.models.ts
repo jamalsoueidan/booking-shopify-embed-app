@@ -10,7 +10,7 @@ const SettingSchema = new mongoose.Schema({
   },
   timeZone: {
     type: String,
-    default: "Europe/Brussels",
+    default: "Europe/Copenhagen",
   },
   language: {
     type: String,
@@ -34,6 +34,9 @@ SettingModel.createCollection().then(async (collection) => {
     collection.insertMany([
       {
         shop: "testeriphone.myshopify.com",
+      },
+      {
+        shop: "bysistersdk.myshopify.com",
       },
     ]);
   }
