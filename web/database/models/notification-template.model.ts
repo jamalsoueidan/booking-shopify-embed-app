@@ -30,32 +30,32 @@ NotificationTemplateModel.createCollection().then(async (collection) => {
     collection.insertMany([
       {
         name: "BOOKING_CONFIRMATION",
-        message: `Hej {fullname}, tak for din resevations, som indeholder {total} behandling(er)`,
+        message: `Hej {fullname}, Tak for din reservation, som indeholder {total} behandling(er)`,
         shop: "testeriphone.myshopify.com",
       },
       {
         name: "BOOKING_REMINDER_CUSTOMER",
-        message: `Hej {fullname}, Husk din {title} behandling imorgen kl. {time}, Vi ser frem til at se dig!`,
+        message: `Hej {fullname}, Husk din {title} behandling {time}, Vi ser frem til at se dig!`,
         shop: "testeriphone.myshopify.com",
       },
       {
         name: "BOOKING_REMINDER_STAFF",
-        message: `Hej {fullname}, Husk du har en kunde som skal lave {title} behandling imorgen kl. {time}`,
+        message: `Hej {fullname}, Husk du har en kunde som skal lave {title} behandling, {time}`,
         shop: "testeriphone.myshopify.com",
       },
       {
         name: "BOOKING_CONFIRMATION",
-        message: `Hej {fullname}, tak for din resevations, som indeholder {total} behandling(er)`,
+        message: `Hej {fullname}, Tak for din reservation, som indeholder {total} behandling(er)`,
         shop: "bysistersdk.myshopify.com",
       },
       {
         name: "BOOKING_REMINDER_CUSTOMER",
-        message: `Hej {fullname}, Husk din {title} behandling imorgen kl. {time}, Vi ser frem til at se dig!`,
+        message: `Hej {fullname}, Husk din {title} behandling {time}, Vi ser frem til at se dig!`,
         shop: "bysistersdk.myshopify.com",
       },
       {
         name: "BOOKING_REMINDER_STAFF",
-        message: `Hej {fullname}, Husk du har en kunde som skal lave {title} behandling imorgen kl. {time}`,
+        message: `Hej {fullname}, Husk du har en kunde som skal lave {title} behandling, {time}`,
         shop: "bysistersdk.myshopify.com",
       },
     ]);
