@@ -48,31 +48,36 @@ export default () => {
     <Form onSubmit={submit}>
       <Page fullWidth title="Beskeder">
         <FormErrors errors={submitErrors} />
-        <Card title="Tegn der kan bruges i tekstfelterne" sectioned>
-          <DescriptionList
-            items={[
-              {
-                term: '{fullname}',
-                description:
-                  'Fuldnavn på kunde eller medarbejder, eksempel: jamal soueidan',
-              },
-              {
-                term: '{total}',
-                description: 'Antal behandlinger, eksempel: 2',
-              },
-              {
-                term: '{time}',
-                description:
-                  'Tid tilbage til behandling start, eksempel: imorgen kl 12:00',
-              },
-              {
-                term: '{title}',
-                description: 'Behandlinger title, eksempel: hårfarve',
-              },
-            ]}
-          />
-        </Card>
+
         <Layout>
+          <Layout.AnnotatedSection
+            title="Customize beskederne"
+            description="Brug følgende i beskederne for at redigere dynamisk værdier">
+            <Card sectioned>
+              <DescriptionList
+                items={[
+                  {
+                    term: '{fullname}',
+                    description:
+                      'Fuldnavn på kunde eller medarbejder, eksempel: jamal soueidan',
+                  },
+                  {
+                    term: '{total}',
+                    description: 'Antal behandlinger, eksempel: 2',
+                  },
+                  {
+                    term: '{time}',
+                    description:
+                      'Tid tilbage til behandling start, eksempel: imorgen kl 12:00',
+                  },
+                  {
+                    term: '{title}',
+                    description: 'Behandlinger title, eksempel: hårfarve',
+                  },
+                ]}
+              />
+            </Card>
+          </Layout.AnnotatedSection>
           {!data ? (
             <LoadingSpinner />
           ) : (
