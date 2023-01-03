@@ -44,7 +44,7 @@ export default () => {
         validates: [],
       }),
       language: useField<string>({
-        value: data?.language,
+        value: data?.language || 'en-US',
         validates: [],
       }),
       status: useField<boolean>({

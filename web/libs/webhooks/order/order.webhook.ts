@@ -57,18 +57,16 @@ export const modify = async ({
 
   if (sendBooking) {
     NotificationService.sendBookingConfirmationCustomer({
-      receiver: customer,
-      bookings: models,
+      booking: models[0],
       shop,
     });
+
     NotificationService.sendBookingReminderCustomer({
-      receiver: customer,
       bookings: models,
       shop,
     });
 
     NotificationService.sendBookingReminderStaff({
-      receiver: customer,
       bookings: models,
       shop,
     });

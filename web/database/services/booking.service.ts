@@ -19,15 +19,15 @@ const create = async (body: CreateProps) => {
       orderId: Date.now() + Math.floor(100000 + Math.random() * 900000),
       lineItemId: Date.now() + Math.floor(100000 + Math.random() * 900000),
       fulfillmentStatus: "booked",
+      lineItemTotal: 1,
       title: product.title,
       isSelfBooked: true,
     });
 
     notificationService.sendBookingReminderStaff({
       bookings: [booking],
-      receiver: { fullname: "ad", phone: "4531317428" },
       shop: body.shop,
-    } as any);
+    });
     return booking;
   } else {
     throw new Error("no product found");

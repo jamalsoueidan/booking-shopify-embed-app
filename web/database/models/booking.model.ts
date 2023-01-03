@@ -11,10 +11,12 @@ const BookingSchema = new mongoose.Schema({
   lineItemId: {
     type: Number,
     unqiue: true,
-    sparse: true,
     index: true,
   },
-  lineItemTotal: Number,
+  lineItemTotal: {
+    type: Number,
+    default: 1,
+  },
   customerId: Number,
   staff: {
     type: mongoose.Schema.Types.ObjectId,

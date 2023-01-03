@@ -14,7 +14,7 @@ export default ({ children }: { children: JSX.Element }) => {
     id: 'Application',
     fallback: en,
     translations(locale: string) {
-      return locale === 'en' ? en : da;
+      return locale === 'en-US' ? en : da;
     },
   });
 

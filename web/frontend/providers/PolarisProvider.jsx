@@ -1,9 +1,10 @@
 import { useNavigate } from '@shopify/app-bridge-react';
 import { AppProvider } from '@shopify/polaris';
 import '@shopify/polaris/build/esm/styles.css';
-import { useCallback } from 'react';
-import shopifyTranslations from '@shopify/polaris/locales/en.json';
+import da from '@shopify/polaris/locales/da.json';
+import en from '@shopify/polaris/locales/en.json';
 import { useI18n } from '@shopify/react-i18n';
+import { useCallback } from 'react';
 
 function AppBridgeLink({ url, children, external, ...rest }) {
   const navigate = useNavigate();
@@ -51,11 +52,9 @@ function AppBridgeLink({ url, children, external, ...rest }) {
 export function PolarisProvider({ children }) {
   const [i18n] = useI18n({
     id: 'Polaris',
-    fallback: shopifyTranslations,
+    fallback: en,
     async translations(locale) {
-      return locale === 'en'
-        ? shopifyTranslations
-        : import('@shopify/polaris/locales/da.json');
+      return locale === 'en-US' ? en : da;
     },
   });
 

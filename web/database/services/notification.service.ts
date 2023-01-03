@@ -1,17 +1,15 @@
 import smsdkApi from "@libs/smsdk/smsdk.api";
 import BookingModel from "@models/booking.model";
-import CustomerModel, { ICustomerModel } from "@models/customer.model";
-import NotificationTemplateModel from "@models/notification-template.model";
-import NotificationModel from "@models/notification.model";
-import settingModels from "@models/setting.models";
 import {
-  IStaffModel,
-  default as StaffModel,
-  default as staffModel,
-} from "@models/staff.model";
-import { format, subDays, subMinutes } from "date-fns";
+  default as CustomerModel,
+  default as customerModel,
+} from "@models/customer.model";
+import NotificationModel from "@models/notification.model";
+import StaffModel from "@models/staff.model";
+import { subDays, subMinutes } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
 import mongoose from "mongoose";
+import notificationTemplateService from "./notification-template.service";
 
 interface NoMesageSendLastMinutesProps {
   shop: string;
@@ -91,6 +89,7 @@ const sendCustom = async (query: SendCustomProps) => {
       orderId,
       lineItemId,
       message,
+      template: "cusom",
       receiver: phone,
       isStaff: to === "staff",
     });
@@ -121,6 +120,25 @@ const resend = async ({ shop, id }: ResendProps) => {
     if (noMessage) {
       notification.updatedAt = new Date();
       await notification.save();
+
+      /*const template = notification.template;
+      const notificationTemplate =
+        await notificationTemplateService.getNotificationTemplate({
+          type: template,
+          shop,
+        });
+
+      let message = notification.message;
+      if (notificationTemplate) {
+        const booking = bookingModel.findOne({booking})
+        message = notificationTemplateService.replace(
+          notificationTemplate,
+          {
+
+          }
+        );
+      }*/
+
       return send(notification);
     }
   }
@@ -133,6 +151,7 @@ interface SendProps {
   lineItemId?: number;
   receiver: string;
   message: string;
+  template: string;
   scheduled?: Date;
   shop: string;
   isStaff: boolean;
@@ -144,13 +163,17 @@ const send = async ({
   shop,
   receiver,
   message,
+  template,
   scheduled,
   isStaff,
 }: SendProps) => {
+  //clear out all old schedules messages before sending new one.
+
   const notification = new NotificationModel({
     orderId,
     lineItemId,
     message,
+    template,
     receiver,
     scheduled,
     shop,
@@ -169,69 +192,68 @@ const send = async ({
   return notification.save();
 };
 
-interface SendBookingConfirmation {
-  receiver: ICustomerModel | IStaffModel;
-  bookings: Omit<Booking, "_id">[];
+interface SendBookingConfirmationCustomerProps {
+  booking: Omit<Booking, "_id">;
   shop: string;
 }
 
 const sendBookingConfirmationCustomer = async ({
-  receiver,
-  bookings,
+  booking,
   shop,
-}: SendBookingConfirmation) => {
-  const template = await NotificationTemplateModel.findOne({
-    shop,
-    name: "BOOKING_CONFIRMATION",
+}: SendBookingConfirmationCustomerProps) => {
+  const customer = await customerModel.findOne({ _id: booking.customerId });
+  if (!customer.phone) {
+    return;
+  }
+
+  const template = "BOOKING_CONFIRMATION";
+  const notificationTemplate =
+    await notificationTemplateService.getNotificationTemplate({
+      type: template,
+      shop,
+    });
+
+  const message = notificationTemplateService.replace(notificationTemplate, {
+    booking,
+    receiver: customer,
   });
 
-  let message = template.message;
-  message = message
-    .replace(/{fullname}/g, receiver.fullname)
-    .replace(/{length}/g, bookings.length.toString());
-
   send({
-    orderId: bookings[0].orderId,
+    orderId: booking.orderId,
     shop,
-    receiver: receiver.phone?.replace("+", ""),
+    receiver: customer.phone?.replace("+", ""),
     message,
+    template,
     isStaff: false,
   });
 };
 
-interface SendReminder {
-  receiver: ICustomerModel | IStaffModel;
+interface SendBookingReminderCustomerProps {
   bookings: Omit<Booking, "_id">[];
   shop: string;
 }
 
 const sendBookingReminderCustomer = async ({
-  receiver,
   bookings,
   shop,
-}: SendReminder) => {
+}: SendBookingReminderCustomerProps) => {
+  const receiver = await customerModel.findOne({ _id: bookings[0].customerId });
   if (!receiver.phone) {
     return;
   }
 
-  const setting = await settingModels.findOne({ shop });
-  const template = await NotificationTemplateModel.findOne({
-    shop,
-    name: "BOOKING_REMINDER_CUSTOMER",
-  });
+  const template = "BOOKING_REMINDER_CUSTOMER";
+  const notificationTemplate =
+    await notificationTemplateService.getNotificationTemplate({
+      type: template,
+      shop,
+    });
 
   return bookings.forEach((booking) => {
-    let message = template.message;
-    message = message
-      .replace(/{fullname}/g, receiver.fullname)
-      .replace(
-        /{time}/g,
-        format(
-          utcToZonedTime(new Date(booking.start), setting.timeZone),
-          "HH:mm"
-        )
-      )
-      .replace(/{title}/g, booking.title);
+    const message = notificationTemplateService.replace(notificationTemplate, {
+      booking,
+      receiver,
+    });
 
     send({
       shop,
@@ -239,39 +261,50 @@ const sendBookingReminderCustomer = async ({
       lineItemId: booking.lineItemId,
       receiver: receiver.phone?.replace("+", ""),
       message,
-      scheduled: utcToZonedTime(subDays(booking.start, 1), "Europe/Paris"),
+      template,
+      scheduled: utcToZonedTime(
+        subDays(booking.start, 1),
+        notificationTemplate.timeZone
+      ),
       isStaff: false,
     });
   });
 };
 
-const sendBookingReminderStaff = async ({ bookings, shop }: SendReminder) => {
-  const setting = await settingModels.findOne({ shop });
-  const template = await NotificationTemplateModel.findOne({
-    shop,
-    name: "BOOKING_REMINDER_STAFF",
-  });
+interface SendBookingReminderStaffProps {
+  bookings: Omit<Booking, "_id">[];
+  shop: string;
+}
+
+const sendBookingReminderStaff = async ({
+  bookings,
+  shop,
+}: SendBookingReminderStaffProps) => {
+  const template = "BOOKING_REMINDER_STAFF";
+  const notificationTemplate =
+    await notificationTemplateService.getNotificationTemplate({
+      type: template,
+      shop,
+    });
 
   return bookings.forEach(async (booking) => {
-    const staff = await staffModel.findById(booking.staff);
-
-    let message = template.message;
-    message = message
-      .replace(/{fullname}/g, staff.fullname)
-      .replace(
-        /{time}/g,
-        format(
-          utcToZonedTime(new Date(booking.start), setting.timeZone),
-          "HH:mm"
-        )
-      );
+    const receiver = await StaffModel.findById(booking.staff);
+    const message = notificationTemplateService.replace(notificationTemplate, {
+      booking,
+      receiver,
+    });
 
     send({
       shop,
       orderId: booking.orderId,
       lineItemId: booking.lineItemId,
-      receiver: staff?.phone?.replace("+", ""),
+      receiver: receiver?.phone?.replace("+", ""),
+      scheduled: utcToZonedTime(
+        subDays(booking.start, 1),
+        notificationTemplate.timeZone
+      ),
       message,
+      template,
       isStaff: true,
     });
   });

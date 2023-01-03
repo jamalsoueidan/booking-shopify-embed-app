@@ -21,7 +21,15 @@ const NotificationSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    batchId: String,
+    batchId: {
+      type: String,
+      index: true,
+    },
+    template: {
+      type: String,
+      index: true,
+      default: "custom",
+    },
   },
   { timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" } }
 );

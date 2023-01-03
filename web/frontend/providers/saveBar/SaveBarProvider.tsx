@@ -1,56 +1,33 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
-import { SaveBarContext } from './SaveBar.context';
-import { SaveBarConsumer } from './SaveBarConsumer';
-import { setReset, setSubmit } from './SaveBar.types';
 import { ContextualSaveBarProps } from '@shopify/polaris';
+import { useCallback, useMemo, useState } from 'react';
+import { SaveBarContext } from './SaveBar.context';
+import { ShowBarFormProps } from './SaveBar.types';
+import { SaveBarConsumer } from './SaveBarConsumer';
 
 export const SaveBarProvider = ({ children }: any) => {
-  const [dirty, setDirty] = useState<boolean>(false);
-  const [submitting, setSubmitting] = useState<boolean>(false);
-  const [show, setShow] = useState<boolean>(true);
+  const [form, setForm] = useState<ShowBarFormProps>();
   const [contextualSaveBar, setContextualSaveBar] =
     useState<ContextualSaveBarProps>();
 
-  const submit = useRef<setSubmit>();
-  const reset = useRef<setReset>();
-
-  const setReset = useCallback((value: setReset) => {
-    reset.current = value;
+  const changeForm = useCallback((newValues: Partial<ShowBarFormProps>) => {
+    setForm((value) => ({ ...value, ...newValues }));
   }, []);
 
-  const setSubmit = useCallback((value: setSubmit) => {
-    submit.current = value;
-  }, []);
+  const changeSaveBar = useCallback(
+    (newValues: Partial<ContextualSaveBarProps>) => {
+      setContextualSaveBar(() => newValues);
+    },
+    []
+  );
 
   const value = useMemo(
     () => ({
-      dirty,
-      setDirty,
-      show,
-      setShow,
-      submitting,
-      setSubmitting,
-      submit,
-      reset,
-      setReset,
-      setSubmit,
+      form,
+      setForm: changeForm,
       contextualSaveBar,
-      setContextualSaveBar,
+      setContextualSaveBar: changeSaveBar,
     }),
-    [
-      dirty,
-      setDirty,
-      show,
-      setShow,
-      submitting,
-      setSubmitting,
-      submit,
-      reset,
-      setReset,
-      setSubmit,
-      contextualSaveBar,
-      setContextualSaveBar,
-    ]
+    [form, contextualSaveBar]
   );
 
   return (

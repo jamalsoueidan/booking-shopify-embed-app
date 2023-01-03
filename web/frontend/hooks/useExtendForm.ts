@@ -26,13 +26,17 @@ export const useExtendForm = <T extends FieldBag, D extends DynamicListBag>(
 ): FormReturn<T, D> => {
   const saveBar = useSaveBar({ show: form.enableSaveBar !== false });
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false); //fix for useForm
   const [isValid, setIsValid] = useState<boolean>(false);
   const customForm = useForm({
     ...form,
     onSubmit: async (fieldValues) => {
       setIsSubmitted(true);
+      setIsSubmitting(true);
       if (form.onSubmit) {
-        return form.onSubmit(fieldValues as any);
+        const response = await form.onSubmit(fieldValues as any);
+        setIsSubmitting(false);
+        return response;
       }
       return { status: 'success' };
     },
@@ -40,12 +44,10 @@ export const useExtendForm = <T extends FieldBag, D extends DynamicListBag>(
   });
 
   useEffect(() => {
-    saveBar.setReset(customForm.reset);
-    saveBar.setSubmit(customForm.submit);
+    saveBar.setForm({ reset: customForm.reset, submit: customForm.submit });
 
     return () => {
-      saveBar.setDirty(false);
-      saveBar.setSubmitting(false);
+      saveBar.setForm(null);
     };
   }, []);
 
@@ -57,12 +59,12 @@ export const useExtendForm = <T extends FieldBag, D extends DynamicListBag>(
   }, [isSubmitted, customForm.submitErrors]);
 
   useEffect(() => {
-    saveBar.setDirty(customForm.dirty);
+    saveBar.setForm({ dirty: customForm.dirty });
   }, [customForm.dirty]);
 
   useEffect(() => {
-    saveBar.setSubmitting(customForm.submitting);
-  }, [customForm.submitting]);
+    saveBar.setForm({ submitting: isSubmitting });
+  }, [isSubmitting]);
 
   return {
     isSubmitted,

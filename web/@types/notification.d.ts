@@ -10,6 +10,7 @@ interface Notification {
   updatedAt: Date;
   isStaff: boolean;
   batchId: string;
+  template: string;
   shop: string;
 }
 

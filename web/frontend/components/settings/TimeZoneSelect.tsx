@@ -8,7 +8,12 @@ interface TimeZoneSelectProps extends Field<string> {
 
 export const TimeZoneSelect = memo((props: TimeZoneSelectProps) => {
   const deselectedOptions = useMemo(
-    () => timeZones.map((timeZone) => ({ value: timeZone, label: timeZone })),
+    () =>
+      timeZones.map((timeZone) => ({
+        key: timeZone,
+        value: timeZone,
+        label: timeZone,
+      })),
     []
   );
 

@@ -12,30 +12,26 @@ export const useSaveBar = ({ show }: UseSaveBarProps) => {
   const { t } = useTranslation('common');
 
   useEffect(() => {
-    context.setContextualSaveBar({
-      saveAction: {
-        content: t('buttons.save'),
-        loading: context.submitting && context.dirty,
-        disabled: !context.dirty,
-        onAction: () => context.submit.current(),
-      },
-      discardAction: {
-        content: t('buttons.discard'),
-        onAction: () => context.reset.current(),
-      },
-      message: t('unsaved'),
-    });
-  }, [
-    context.submitting,
-    context.dirty,
-    context.submit,
-    context.reset,
-    context.show,
-    t,
-  ]);
+    const form = context.form;
+    if (form) {
+      context.setContextualSaveBar({
+        saveAction: {
+          content: t('buttons.save'),
+          loading: form.submitting,
+          disabled: !form.dirty,
+          onAction: () => form.submit(),
+        },
+        discardAction: {
+          content: t('buttons.discard'),
+          onAction: () => form.reset(),
+        },
+        message: t('unsaved'),
+      });
+    }
+  }, [context.form]);
 
   useEffect(() => {
-    context.setShow(show);
+    context.setForm({ show });
   }, [show]);
 
   return {
