@@ -63,8 +63,14 @@ Shopify Extension (react)
 
 <table>
  <tr>
+ <td>
+      <img src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/bookings.png?raw=true" width="300" />
+    </td>
     <td>
       <img src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/product-view.png?raw=true" width="300" />
+    </td>
+     <td>
+     <img  src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/settings.png?raw=true"  width="300" />
     </td>
     <td>
      <img  src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-list.png?raw=true"  width="300" />
