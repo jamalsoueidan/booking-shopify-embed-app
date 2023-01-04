@@ -9,7 +9,7 @@ interface GetQuery extends Pick<NotificationTemplate, "shop" | "language"> {}
 
 const get = ({ query }: { query: GetQuery }) => {
   const { shop, language } = query;
-  return NotificationTemplateModel.find({ shop, language });
+  return NotificationTemplateModel.find({ shop, language: "da-DK" });
 };
 
 interface CreateQuery {

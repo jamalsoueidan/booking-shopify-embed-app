@@ -88,6 +88,11 @@
 				"description": "Staff receive message a day before the booking.",
 				"label": "Staff booking reminder",
 				"title": "Staff booking reminder"
+			},
+			"booking_update": {
+				"description": "When booking is updated",
+				"label": "Customer booking update",
+				"title": "Customer booking update"
 			}
 		},
 		"store_settings": {

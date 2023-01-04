@@ -69,7 +69,7 @@ export default ({ info, toggle }: BookingModalProductChildProps) => {
       )}
       {info.fulfillmentStatus === FulfillmentStatus.BOOKED && (
         <Modal.Section>
-          <Banner title="Behandling er booket af medarbejder" status="info">
+          <Banner title="Behandling er booket af medarbejder">
             <p>Dette behandling er blevet booket af medarbejder</p>
           </Banner>
         </Modal.Section>

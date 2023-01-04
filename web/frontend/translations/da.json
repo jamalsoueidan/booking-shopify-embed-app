@@ -88,6 +88,11 @@
 				"description": "Medarbejder modtager en påmindelse besked en dag før reservationen.",
 				"label": "Medarbejder bestillings påmindelse",
 				"title": "Medarbejder bestillings påmindelse"
+			},
+			"booking_update": {
+				"description": "Når en bestilling bliver opdateret",
+				"label": "Kunde bestillingsopdatering",
+				"title": "Kunde bestillingsopdatering"
 			}
 		},
 		"store_settings": {

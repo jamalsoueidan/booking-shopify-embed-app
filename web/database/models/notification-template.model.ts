@@ -39,7 +39,7 @@ NotificationTemplateModel.createCollection().then(async (collection) => {
       return [
         {
           name: "BOOKING_UPDATE",
-          message: `Hej {fullname}, din behandlingstid er opdatere til {time}`,
+          message: `Hej {fullname}, din behandlingstid er opdatere til d. {date}`,
           shop,
           language: "da-DK",
         },
@@ -63,7 +63,7 @@ NotificationTemplateModel.createCollection().then(async (collection) => {
         },
         {
           name: "BOOKING_UPDATE",
-          message: `Hey {fullname}, your booking time have changed {time}`,
+          message: `Hey {fullname}, your booking time have changed to {date}`,
           shop,
           language: "en-US",
         },

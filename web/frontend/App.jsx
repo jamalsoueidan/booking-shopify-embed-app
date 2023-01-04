@@ -7,7 +7,7 @@ import { AppBridgeProvider, PolarisProvider, QueryProvider } from './providers';
 import { SettingsProvider } from './providers/settings';
 
 const i18nManager = new I18nManager({
-  locale: 'en',
+  locale: 'en-US',
 });
 
 export default function App() {

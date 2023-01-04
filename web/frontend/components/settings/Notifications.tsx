@@ -8,6 +8,7 @@ import {
   useNotificationTemplatesUpdate,
 } from '@services';
 import {
+  Box,
   Card,
   DescriptionList,
   Form,
@@ -62,8 +63,8 @@ export default () => {
                       'Fuldnavn på kunde eller medarbejder, eksempel: jamal soueidan',
                   },
                   {
-                    term: '{total}',
-                    description: 'Antal behandlinger, eksempel: 2',
+                    term: '{title}',
+                    description: 'Behandlinger title, eksempel: hårfarve',
                   },
                   {
                     term: '{time}',
@@ -71,15 +72,22 @@ export default () => {
                       'Tid tilbage til behandling start, eksempel: imorgen kl 12:00',
                   },
                   {
-                    term: '{title}',
-                    description: 'Behandlinger title, eksempel: hårfarve',
+                    term: '{date}',
+                    description:
+                      'Dato til behandling tid, eksempel: 2. Januar - 11:23',
+                  },
+                  {
+                    term: '{total}',
+                    description: 'Antal behandlinger, eksempel: 2',
                   },
                 ]}
               />
             </Card>
           </Layout.AnnotatedSection>
           {!data ? (
-            <LoadingSpinner />
+            <Box paddingBlockStart="8">
+              <LoadingSpinner />
+            </Box>
           ) : (
             notificationTemplates.fields.map(
               (field: FieldDictionary<NotificationTemplate>) => (

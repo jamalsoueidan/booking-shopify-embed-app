@@ -60,7 +60,18 @@ const replace = (
           subDays(new Date(replace.booking.start), 1),
           notificationTemplate.timeZone
         ),
-        { locale: da }
+        { locale: notificationTemplate.language === "en-US" ? null : da }
+      )
+    );
+    message = message.replace(
+      /{date}/g,
+      format(
+        utcToZonedTime(
+          new Date(replace.booking.start),
+          notificationTemplate.timeZone
+        ),
+        "d. MMMM - HH:mm",
+        { locale: notificationTemplate.language === "en-US" ? null : da }
       )
     );
     message = message.replace(/{title}/g, replace.booking.title);
