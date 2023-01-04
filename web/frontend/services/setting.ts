@@ -16,14 +16,19 @@ export const useSetting = () => {
   };
 };
 
-type UseSettingUpdateFetch = (body: SettingBodyUpdate) => Promise<Setting>;
+type UseSettingUpdateFetch = (
+  body: SettingBodyUpdate
+) => Promise<ApiResponse<Setting>>;
 
 export const useSettingUpdate = () => {
   const { put, mutate } = useFetch();
 
   const update: UseSettingUpdateFetch = useCallback(
     async (body) => {
-      const response: Setting = await put(`/api/admin/setting`, body);
+      const response: ApiResponse<Setting> = await put(
+        `/api/admin/setting`,
+        body
+      );
       await mutate(['setting']);
       return response;
     },

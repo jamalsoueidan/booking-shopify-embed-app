@@ -10,7 +10,7 @@ export default () => {
   const submit = useCallback(
     async (fieldValues: any) => {
       const staff = await create(fieldValues);
-      navigate(`/Staff/${staff._id}`);
+      navigate(`/Staff/${staff.payload._id}`);
     },
     [create, navigate]
   );

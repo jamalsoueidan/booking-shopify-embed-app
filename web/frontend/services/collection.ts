@@ -25,7 +25,10 @@ export const useCollectionCreate = () => {
   const create: UseCollectionCreateFetch = useCallback(
     async ({ selections }) => {
       setIsFetching(true);
-      const response = await post('/api/admin/collections', { selections });
+      const response: ApiResponse<CollectionAggreate> = await post(
+        '/api/admin/collections',
+        { selections }
+      );
       mutate(['collections']);
       setIsFetching(false);
       setIsFetched(true);

@@ -30,14 +30,16 @@ export const useStaffGet = ({ userId }: UseStaffGetProps) => {
   };
 };
 
-type UseStaffCreateFetch = (body: StaffBodyCreate) => Promise<Staff>;
+type UseStaffCreateFetch = (
+  body: StaffBodyCreate
+) => Promise<ApiResponse<Staff>>;
 
 export const useStaffCreate = () => {
   const { post, mutate } = useFetch();
 
   const create: UseStaffCreateFetch = useCallback(
     async (body) => {
-      const response: Staff = await post('/api/admin/staff', body);
+      const response: ApiResponse<Staff> = await post('/api/admin/staff', body);
       await mutate(['staff']);
       return response;
     },
@@ -53,14 +55,19 @@ interface UseStaffUpdateProps {
   userId: string;
 }
 
-type UseStaffUpdateFetch = (body: StaffBodyUpdate) => Promise<Staff>;
+type UseStaffUpdateFetch = (
+  body: StaffBodyUpdate
+) => Promise<ApiResponse<Staff>>;
 
 export const useStaffUpdate = ({ userId }: UseStaffUpdateProps) => {
   const { put, mutate } = useFetch();
 
   const update: UseStaffUpdateFetch = useCallback(
     async (body) => {
-      const response: Staff = await put('/api/admin/staff/' + userId, body);
+      const response: ApiResponse<Staff> = await put(
+        '/api/admin/staff/' + userId,
+        body
+      );
       await mutate(['staff']);
       return response;
     },

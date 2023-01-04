@@ -52,7 +52,10 @@ export const useBookingCreate = () => {
 
   const create: UseBookingCreateFetch = useCallback(
     async (body) => {
-      const response = await post('/api/admin/bookings', body);
+      const response: ApiResponse<BookingAggreate> = await post(
+        '/api/admin/bookings',
+        body
+      );
       await mutate(['bookings']);
       await mutate(['widget', 'availability']);
       return response;

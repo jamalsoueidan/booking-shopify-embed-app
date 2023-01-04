@@ -12,7 +12,7 @@ export const useFetch = () => {
         method: 'PUT',
         ...(body ? { body: JSON.stringify(body) } : null),
         headers: { 'Content-Type': 'application/json' },
-      }),
+      }).then((r: Response) => r.json()),
     [fetch]
   );
 
@@ -21,7 +21,7 @@ export const useFetch = () => {
       fetch(url, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-      }),
+      }).then((r: Response) => r.json()),
     [fetch]
   );
 
@@ -31,7 +31,7 @@ export const useFetch = () => {
         method: 'POST',
         ...(body ? { body: JSON.stringify(body) } : null),
         headers: { 'Content-Type': 'application/json' },
-      }),
+      }).then((r: Response) => r.json()),
     [fetch]
   );
 

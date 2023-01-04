@@ -44,13 +44,13 @@ export const useProductUpdate = ({ productId }: UseProductUpdateProps) => {
   const { put, mutate } = useFetch();
   const update: UseProductUpdateFetch = useCallback(
     async (body) => {
-      const response: Product = await put(
+      const response: ApiResponse<Product> = await put(
         `/api/admin/products/${productId}`,
         body
       );
       await mutate(['products', productId]);
       await mutate(['collections']);
-      return response;
+      return response.payload;
     },
     [put, mutate]
   );
