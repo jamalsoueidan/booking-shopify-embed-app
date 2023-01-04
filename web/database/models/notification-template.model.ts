@@ -16,6 +16,11 @@ const NotificationTemplateSchema = new mongoose.Schema({
     required: true,
     index: true,
   },
+  language: {
+    type: String,
+    required: true,
+    default: "da-DK",
+  },
 });
 
 const NotificationTemplateModel = mongoose.model<INotificationTemplateModel>(
@@ -27,38 +32,63 @@ const NotificationTemplateModel = mongoose.model<INotificationTemplateModel>(
 NotificationTemplateModel.createCollection().then(async (collection) => {
   const count = await collection.countDocuments();
   if (count === 0) {
-    collection.insertMany([
-      {
-        name: "BOOKING_CONFIRMATION",
-        message: `Hej {fullname}, Tak for din reservation, som indeholder {total} behandling(er)`,
-        shop: "testeriphone.myshopify.com",
-      },
-      {
-        name: "BOOKING_REMINDER_CUSTOMER",
-        message: `Hej {fullname}, Husk din {title} behandling {time}, Vi ser frem til at se dig!`,
-        shop: "testeriphone.myshopify.com",
-      },
-      {
-        name: "BOOKING_REMINDER_STAFF",
-        message: `Hej {fullname}, Husk du har en kunde som skal lave {title} behandling, {time}`,
-        shop: "testeriphone.myshopify.com",
-      },
-      {
-        name: "BOOKING_CONFIRMATION",
-        message: `Hej {fullname}, Tak for din reservation, som indeholder {total} behandling(er)`,
-        shop: "bysistersdk.myshopify.com",
-      },
-      {
-        name: "BOOKING_REMINDER_CUSTOMER",
-        message: `Hej {fullname}, Husk din {title} behandling {time}, Vi ser frem til at se dig!`,
-        shop: "bysistersdk.myshopify.com",
-      },
-      {
-        name: "BOOKING_REMINDER_STAFF",
-        message: `Hej {fullname}, Husk du har en kunde som skal lave {title} behandling, {time}`,
-        shop: "bysistersdk.myshopify.com",
-      },
-    ]);
+    const models = [
+      "testeriphone.myshopify.com",
+      "bysistersdk.myshopify.com",
+    ].map((shop) => {
+      return [
+        {
+          name: "BOOKING_UPDATE",
+          message: `Hej {fullname}, din behandlingstid er opdatere til {time}`,
+          shop,
+          language: "da-DK",
+        },
+        {
+          name: "BOOKING_CONFIRMATION",
+          message: `Hej {fullname}, Tak for din reservation, som indeholder {total} behandling(er)`,
+          shop,
+          language: "da-DK",
+        },
+        {
+          name: "BOOKING_REMINDER_CUSTOMER",
+          message: `Hej {fullname}, Husk din {title} behandling {time}, Vi ser frem til at se dig!`,
+          shop,
+          language: "da-DK",
+        },
+        {
+          name: "BOOKING_REMINDER_STAFF",
+          message: `Hej {fullname}, Husk du har en kunde som skal lave {title} behandling, {time}`,
+          shop,
+          language: "da-DK",
+        },
+        {
+          name: "BOOKING_UPDATE",
+          message: `Hey {fullname}, your booking time have changed {time}`,
+          shop,
+          language: "en-US",
+        },
+        {
+          name: "BOOKING_CONFIRMATION",
+          message: `hey {fullname}, thank you for your order, you have booked {total} treatments`,
+          shop,
+          language: "en-US",
+        },
+        {
+          name: "BOOKING_REMINDER_CUSTOMER",
+          message: `hey {fullname}, remember your {title} treatment {time}, we look forward to see you!`,
+          shop,
+          language: "en-US",
+        },
+        {
+          name: "BOOKING_REMINDER_STAFF",
+          message: `hey {fullname}, remember your customer needs to do {title} treatment, {time}`,
+          shop,
+          language: "en-US",
+        },
+      ];
+    });
+
+    collection.insertMany(models.flat());
   }
 });
 

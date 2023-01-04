@@ -21,6 +21,7 @@ const getNotificationTemplate = async ({
   const template = await NotificationTemplateModel.findOne({
     shop,
     name: type,
+    language: setting.language,
   }).lean();
 
   if (!template) {

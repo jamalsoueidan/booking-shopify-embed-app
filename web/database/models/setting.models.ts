@@ -14,7 +14,7 @@ const SettingSchema = new mongoose.Schema({
   },
   language: {
     type: String,
-    default: "en",
+    default: "da-DK",
   },
   status: {
     type: Boolean,
@@ -34,9 +34,15 @@ SettingModel.createCollection().then(async (collection) => {
     collection.insertMany([
       {
         shop: "testeriphone.myshopify.com",
+        timeZone: "Europe/Copenhagen",
+        language: "da-DK",
+        status: true,
       },
       {
         shop: "bysistersdk.myshopify.com",
+        timeZone: "Europe/Copenhagen",
+        language: "da-DK",
+        status: true,
       },
     ]);
   }

@@ -10,6 +10,54 @@ import { subDays, subMinutes } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
 import mongoose from "mongoose";
 import notificationTemplateService from "./notification-template.service";
+import { id } from "date-fns/locale";
+import { beginningOfDay } from "@helpers/date";
+
+interface SendProps {
+  orderId: number;
+  lineItemId?: number;
+  receiver: string;
+  message: string;
+  template: string;
+  scheduled?: Date;
+  shop: string;
+  isStaff: boolean;
+}
+
+const send = async ({
+  orderId,
+  lineItemId,
+  shop,
+  receiver,
+  message,
+  template,
+  scheduled,
+  isStaff,
+}: SendProps) => {
+  //clear out all old schedules messages before sending new one.
+
+  const notification = new NotificationModel({
+    orderId,
+    lineItemId,
+    message,
+    template,
+    receiver,
+    scheduled,
+    shop,
+    isStaff,
+  });
+
+  const response = await smsdkApi.send({
+    receiver,
+    message,
+    scheduled,
+  });
+
+  notification.status = scheduled ? "pending" : "success";
+  notification.batchId = response.result.batchId;
+
+  return notification.save();
+};
 
 interface NoMesageSendLastMinutesProps {
   shop: string;
@@ -146,75 +194,6 @@ const resend = async ({ shop, id }: ResendProps) => {
   throw new Error("after_fifteen_minutes_send_message");
 };
 
-interface SendProps {
-  orderId: number;
-  lineItemId?: number;
-  receiver: string;
-  message: string;
-  template: string;
-  scheduled?: Date;
-  shop: string;
-  isStaff: boolean;
-}
-
-const send = async ({
-  orderId,
-  lineItemId,
-  shop,
-  receiver,
-  message,
-  template,
-  scheduled,
-  isStaff,
-}: SendProps) => {
-  //clear out all old schedules messages before sending new one.
-
-  const notification = new NotificationModel({
-    orderId,
-    lineItemId,
-    message,
-    template,
-    receiver,
-    scheduled,
-    shop,
-    isStaff,
-  });
-
-  const notifications = await NotificationModel.find({
-    orderId,
-    lineItemId,
-    template,
-    createdAt: {
-      $gte: new Date(),
-    },
-  }).lean();
-
-  notifications.forEach((n) => smsdkApi.cancel(n.batchId));
-
-  const updated = await NotificationModel.updateMany(
-    {
-      orderId,
-      lineItemId,
-      template,
-      createdAt: {
-        $gte: new Date(),
-      },
-    },
-    { status: "cancelled" }
-  );
-
-  const response = await smsdkApi.send({
-    receiver,
-    message,
-    scheduled,
-  });
-
-  notification.status = response.status;
-  notification.batchId = response.result.batchId;
-
-  return notification.save();
-};
-
 interface SendBookingConfirmationCustomerProps {
   booking: Omit<Booking, "_id">;
   shop: string;
@@ -232,6 +211,44 @@ const sendBookingConfirmationCustomer = async ({
   }
 
   const template = "BOOKING_CONFIRMATION";
+  const notificationTemplate =
+    await notificationTemplateService.getNotificationTemplate({
+      type: template,
+      shop,
+    });
+
+  const message = notificationTemplateService.replace(notificationTemplate, {
+    booking,
+    receiver: customer,
+  });
+
+  return send({
+    orderId: booking.orderId,
+    shop,
+    receiver: customer.phone?.replace("+", ""),
+    message,
+    template,
+    isStaff: false,
+  });
+};
+
+interface SendBookingUpdateCustomerProps {
+  booking: Omit<Booking, "_id">;
+  shop: string;
+}
+
+const sendBookingUpdateCustomer = async ({
+  booking,
+  shop,
+}: SendBookingConfirmationCustomerProps) => {
+  const customer = await customerModel.findOne({
+    customerId: booking.customerId,
+  });
+  if (!customer.phone) {
+    return;
+  }
+
+  const template = "BOOKING_UPDATE";
   const notificationTemplate =
     await notificationTemplateService.getNotificationTemplate({
       type: template,
@@ -350,25 +367,55 @@ const cancel = async ({ id: _id, shop }: CancelProps) => {
     },
     {
       status: "cancelled",
-    },
-    {
-      new: true,
     }
   );
 
-  if (notification.status !== "cancelled") {
-    smsdkApi.cancel(notification.batchId);
-  }
+  smsdkApi.cancel(notification.batchId);
 
   return notification;
 };
 
+interface CancelAllProps extends Pick<Notification, "orderId" | "lineItemId"> {
+  shop: string;
+}
+
+const cancelAll = async ({ orderId, lineItemId, shop }: CancelAllProps) => {
+  const notifications = await NotificationModel.find({
+    orderId,
+    lineItemId,
+    shop,
+    status: "pending",
+    scheduled: {
+      $gte: beginningOfDay(new Date()),
+    },
+  }).lean();
+
+  for (let notification of notifications) {
+    smsdkApi.cancel(notification.batchId);
+  }
+
+  return NotificationModel.updateMany(
+    {
+      orderId,
+      lineItemId,
+      shop,
+      status: "pending",
+      scheduled: {
+        $gte: beginningOfDay(new Date()),
+      },
+    },
+    { status: "cancelled" }
+  );
+};
+
 export default {
   sendBookingConfirmationCustomer,
+  sendBookingUpdateCustomer,
   sendBookingReminderCustomer,
   sendBookingReminderStaff,
   get,
   sendCustom,
   resend,
   cancel,
+  cancelAll,
 };

@@ -6,21 +6,29 @@ import {
   createSchedule,
   createStaff,
 } from "@libs/jest-helpers";
-import waitForExpect from "wait-for-expect";
 import notificationController from "@libs/notification/notification.controller";
-import smsdkApi, { SendProps } from "@libs/smsdk/smsdk.api";
+import smsdkApi from "@libs/smsdk/smsdk.api";
+import { IBookingModel } from "@models/booking.model";
+import { ICustomerModel } from "@models/customer.model";
 import { IProductModel } from "@models/product.model";
 import { IStaffModel } from "@models/staff.model";
 import { addHours } from "date-fns";
 import mongoose from "mongoose";
-import { ICustomerModel } from "@models/customer.model";
-import { IBookingModel } from "@models/booking.model";
+import waitForExpect from "wait-for-expect";
 
 jest.mock("@libs/smsdk/smsdk.api", () => {
   return {
     __esModule: true,
     default: {
-      send: jest.fn(async ({ receiver, message, scheduled }: SendProps) =>
+      send: jest.fn(() =>
+        Promise.resolve({
+          status: "success",
+          result: {
+            batchId: faker.random.numeric(10),
+          },
+        })
+      ),
+      cancel: jest.fn(() =>
         Promise.resolve({
           status: "success",
           result: {
@@ -65,8 +73,8 @@ describe("admin-notification controller", () => {
       body: {
         productId,
         customerId: customer.customerId,
-        start: "2023-01-29T11:15:00.000Z",
-        end: "2023-01-29T12:15:00.000Z",
+        start: "2023-11-29T11:15:00.000Z",
+        end: "2023-11-29T12:15:00.000Z",
         staff: staff._id.toString(),
       },
     });
@@ -86,16 +94,24 @@ describe("admin-notification controller", () => {
     expect(notifications.length).toBe(3);
   });
 
-  it("When updating booking, must cancel all previous scheduled notifications and send 2 scheduled notifications", async () => {
-    (smsdkApi.send as any).mockReset();
+  it("When updating booking, must cancel all previous scheduled notifications and send 2 new scheduled notifications", async () => {
+    (smsdkApi.send as any).mockClear();
 
     await bookingController.update({
       query: { shop: global.shop, id: booking._id },
       body: {
-        start: "2023-01-29T12:15:00.000Z",
-        end: "2023-01-29T13:15:00.000Z",
+        start: "2023-11-15T12:15:00.000Z",
+        end: "2023-11-15T13:15:00.000Z",
         staff: staff._id.toString(),
       },
+    });
+
+    await waitForExpect(() => {
+      expect(smsdkApi.cancel).toHaveBeenCalledTimes(2);
+    });
+
+    await waitForExpect(() => {
+      expect(smsdkApi.send).toHaveBeenCalledTimes(3);
     });
 
     const notifications = await notificationController.get({
@@ -106,10 +122,10 @@ describe("admin-notification controller", () => {
       },
     });
 
-    await waitForExpect(() => {
-      expect(smsdkApi.send).toHaveBeenCalledTimes(0);
-    });
+    expect(notifications.filter((n) => n.status === "cancelled").length).toBe(
+      2
+    );
 
-    expect(notifications.length).toBe(3);
+    expect(notifications.filter((n) => n.status === "pending").length).toBe(2);
   });
 });

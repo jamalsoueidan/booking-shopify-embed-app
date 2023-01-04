@@ -4,6 +4,7 @@ interface NotificationTemplate {
   message: string;
   senderName: string;
   shop: string;
+  language: string;
 }
 
 interface NotificationTemplateBodyUpdate

@@ -132,6 +132,7 @@ interface UpdateProps {
 }
 
 const update = async ({ filter, body }: UpdateProps) => {
+  const shop = filter.shop;
   const booking = await BookingModel.findOne(filter);
   if (!booking) {
     throw new Error("Not found");
@@ -140,7 +141,28 @@ const update = async ({ filter, body }: UpdateProps) => {
   booking.start = new Date(body.start);
   booking.end = new Date(body.end);
   booking.isEdit = true;
-  // TODO: Send notification to customer and staff about new changes to this booking, delete schedule from sms.dk
+
+  await notificationService.cancelAll({
+    orderId: booking.orderId,
+    lineItemId: booking.lineItemId,
+    shop,
+  });
+
+  await notificationService.sendBookingUpdateCustomer({
+    booking: booking,
+    shop,
+  });
+
+  await notificationService.sendBookingReminderStaff({
+    bookings: [booking],
+    shop,
+  });
+
+  await notificationService.sendBookingReminderCustomer({
+    bookings: [booking],
+    shop,
+  });
+
   return await booking.save();
 };
 

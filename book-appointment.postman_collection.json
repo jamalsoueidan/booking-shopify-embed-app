@@ -22,7 +22,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"webhook\" : {\n\t\t\t\"topic\" : \"customers/update\",\n\t\t\t\"address\": \"https://ae511afdd320.eu.ngrok.io/webhooks\",\n\t\t\t\"format\": \"json\"\n\t}\n}",
+							"raw": "{\n\t\"webhook\" : {\n\t\t\t\"topic\" : \"customers/create\",\n\t\t\t\"address\": \"https://book-appointment-shopify-app.herokuapp.com/api/webhooks\",\n\t\t\t\"format\": \"json\"\n\t}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -103,7 +103,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"webhook\" : {\n\t\t\"address\": \"https://0bd2a57d24d6.eu.ngrok.io/api/webhooks\"\n\t}\n}",
+							"raw": "{\n\t\"webhook\" : {\n\t\t\"address\": \"https://2fb3-176-89-142-71.eu.ngrok.io/api/webhooks\"\n\t}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -604,6 +604,37 @@
 									"response": []
 								},
 								{
+									"name": "get all products",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Shopify-Access-Token",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{url}}/api/admin/products?shop={{shop}}",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"admin",
+												"products"
+											],
+											"query": [
+												{
+													"key": "shop",
+													"value": "{{shop}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
 									"name": "get product from shopify",
 									"request": {
 										"method": "GET",
@@ -643,7 +674,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"duration\": 45,\n    \"buffertime\": 15,\n    \"staff\": [\n        {\n        \"_id\": \"636b75a18f6e30e6f8686c63\",\n        \"tag\": \"adw\"\n        }\n    ]\n}",
+											"raw": "{\n    \"duration\": 45,\n    \"buffertime\": 15,\n    \"staff\": [\n        {\n        \"_id\": \"63835ea7eead8d1319828518\",\n        \"tag\": \"adw\"\n        }\n    ]\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -677,7 +708,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{url}}/api/admin/products/635d299999e6dbf1b249689f/staff?shop={{shop}}",
+											"raw": "{{url}}/api/admin/products/63835ea7eead8d1319828518/staff?shop={{shop}}",
 											"host": [
 												"{{url}}"
 											],
@@ -685,7 +716,7 @@
 												"api",
 												"admin",
 												"products",
-												"635d299999e6dbf1b249689f",
+												"63835ea7eead8d1319828518",
 												"staff"
 											],
 											"query": [
@@ -713,7 +744,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"selection\": [\"gid://shopify/Collection/425290039613\", \"gid://shopify/Collection/425845817661\"]\n}",
+									"raw": "{\n    \"selections\": [\"gid://shopify/Collection/425290039613\",\"gid://shopify/Collection/425845817661\"]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -796,6 +827,76 @@
 				{
 					"name": "settings",
 					"item": [
+						{
+							"name": "notification-templates",
+							"item": [
+								{
+									"name": "update notifications template",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "[\n    {\n        \"_id\": \"63b219979981a6f2886d7078\",\n        \"name\": \"BOOKING_CONFIRMATION\",\n        \"message\": \"ge2t\",\n        \"language\": \"da-DK\",\n        \"shop\": \"testeriphone.myshopify.com\"\n    },\n    {\n        \"_id\": \"63b219979981a6f2886d7079\",\n        \"name\": \"BOOKING_REMINDER_CUSTOMER\",\n        \"message\": \"sd3f\",\n        \"language\": \"da-DK\",\n        \"shop\": \"testeriphone.myshopify.com\"\n    },\n    {\n        \"_id\": \"63b219979981a6f2886d707a\",\n        \"name\": \"BOOKING_REMINDER_STAFF\",\n        \"message\": \"egger\",\n        \"language\": \"da-DK\",\n        \"shop\": \"testeriphone.myshopify.com\"\n    }\n]",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/api/admin/setting/notification-templates?shop={{shop}}",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"admin",
+												"setting",
+												"notification-templates"
+											],
+											"query": [
+												{
+													"key": "shop",
+													"value": "{{shop}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get notifications template",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{url}}/api/admin/setting/notification-templates?shop={{shop}}&language=da-DK",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"admin",
+												"setting",
+												"notification-templates"
+											],
+											"query": [
+												{
+													"key": "shop",
+													"value": "{{shop}}"
+												},
+												{
+													"key": "language",
+													"value": "da-DK"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
 						{
 							"name": "get settings",
 							"request": {
@@ -928,6 +1029,46 @@
 							"response": []
 						},
 						{
+							"name": "cancel notifications",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"orderId\": 5226781344061,\n    \"lineItemId\": 13699077734717,\n    \"message\": \"hej med dig\",\n    \"to\": \"staff\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/admin/notifications/63b1941ef10eab5ca1dbe420?shop={{shop}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"notifications",
+										"63b1941ef10eab5ca1dbe420"
+									],
+									"query": [
+										{
+											"key": "shop",
+											"value": "{{shop}}"
+										},
+										{
+											"key": "",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "resend notification",
 							"request": {
 								"method": "POST",
@@ -1001,7 +1142,7 @@
 							"response": []
 						},
 						{
-							"name": "bookings by staff id",
+							"name": "get all bookings for staff",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -1038,7 +1179,7 @@
 							"response": []
 						},
 						{
-							"name": "bookings by id",
+							"name": "get one booking by id",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -1092,6 +1233,80 @@
 										{
 											"key": "shop",
 											"value": "{{shop}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create new custom booking",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"productId\": 7971304571197,\n    \"customerId\": 6731215307069,\n    \"start\": \"2022-12-29T11:15:00.000Z\",\n    \"end\": \"2022-12-29T12:15:00.000Z\",\n    \"staff\": \"6384c36547b612b2165a6044\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/admin/bookings?shop={{shop}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"bookings"
+									],
+									"query": [
+										{
+											"key": "shop",
+											"value": "{{shop}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "customers",
+					"item": [
+						{
+							"name": "get customers",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Shopify-Access-Token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/admin/customers?shop={{shop}}&name=soue",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"customers"
+									],
+									"query": [
+										{
+											"key": "shop",
+											"value": "{{shop}}"
+										},
+										{
+											"key": "name",
+											"value": "soue"
 										}
 									]
 								}

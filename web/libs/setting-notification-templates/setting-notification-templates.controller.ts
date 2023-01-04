@@ -5,11 +5,11 @@ export enum ControllerMethods {
   update = "update",
 }
 
-interface GetQuery extends Pick<NotificationTemplate, "shop"> {}
+interface GetQuery extends Pick<NotificationTemplate, "shop" | "language"> {}
 
 const get = ({ query }: { query: GetQuery }) => {
-  const shop = query.shop;
-  return NotificationTemplateModel.find({ shop });
+  const { shop, language } = query;
+  return NotificationTemplateModel.find({ shop, language });
 };
 
 interface CreateQuery {
@@ -29,7 +29,7 @@ const update = async ({
 
   const updateMany = body.map((n) => ({
     updateOne: {
-      filter: { _id: n._id, shop, name: n.name },
+      filter: { _id: n._id, shop, name: n.name, language: n.language },
       update: { message: n.message },
     },
   }));
