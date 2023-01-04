@@ -7,7 +7,17 @@ export enum ControllerMethods {
   cancel = "cancel",
 }
 
-const get = ({ query }) => {
+interface GetQuery {
+  shop: string;
+  orderId: number;
+  lineItemId: number;
+}
+
+interface GetProps {
+  query: GetQuery;
+}
+
+const get = ({ query }: GetProps) => {
   return NotificationService.get(query);
 };
 
