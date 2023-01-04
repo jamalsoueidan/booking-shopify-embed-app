@@ -1,27 +1,43 @@
 import { faker } from "@faker-js/faker";
+import customerModel from "@models/customer.model";
 import ProductModel from "@models/product.model";
 import ProductService from "@services/product.service";
 import ScheduleService from "@services/schedule.service";
 import StaffService from "@services/staff.service";
 import { addHours } from "date-fns";
 
-export const createStaff = async () => {
-  return await StaffService.create({
+export const createCustomer = () => {
+  const customer = new customerModel({
+    customerId: parseInt(faker.random.numeric(10)),
+    firstName: faker.name.firstName(),
+    lastName: faker.name.lastName(),
+    email: faker.internet.email(),
+    phone: "+4531317411",
+    shop: global.shop,
+  });
+  return customer.save();
+};
+
+export const createStaff = () => {
+  return StaffService.create({
     shop: global.shop,
     fullname: faker.name.fullName(),
     email: faker.internet.email(),
     phone: "+4531317411",
     avatar: "http://",
     position: "2",
+    postal: 8000,
+    address: "asdiojdsajioadsoji",
+    active: true,
   });
 };
 
-export const createProduct = async ({
+export const createProduct = ({
   productId,
   duration = 45,
   buffertime = 15,
 }) => {
-  return await ProductModel.create({
+  return ProductModel.create({
     shop: global.shop,
     collectionId: parseInt(faker.random.numeric(10)),
     productId,
