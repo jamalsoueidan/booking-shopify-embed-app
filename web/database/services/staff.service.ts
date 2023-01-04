@@ -1,6 +1,6 @@
 import StaffModel from "@models/staff.model";
 
-const create = (document) => {
+const create = (document: Omit<Staff, "_id">) => {
   const newStaff = new StaffModel(document);
   return newStaff.save();
 };

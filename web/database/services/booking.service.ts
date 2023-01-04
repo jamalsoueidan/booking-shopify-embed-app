@@ -24,10 +24,21 @@ const create = async (body: CreateProps) => {
       isSelfBooked: true,
     });
 
-    notificationService.sendBookingReminderStaff({
+    await notificationService.sendBookingConfirmationCustomer({
+      booking,
+      shop: body.shop,
+    });
+
+    await notificationService.sendBookingReminderStaff({
       bookings: [booking],
       shop: body.shop,
     });
+
+    await notificationService.sendBookingReminderCustomer({
+      bookings: [booking],
+      shop: body.shop,
+    });
+
     return booking;
   } else {
     throw new Error("no product found");
@@ -128,9 +139,7 @@ const update = async ({ filter, body }: UpdateProps) => {
   booking.staff = body.staff;
   booking.start = new Date(body.start);
   booking.end = new Date(body.end);
-  if (booking.orderId) {
-    booking.isEdit = true;
-  }
+  booking.isEdit = true;
   // TODO: Send notification to customer and staff about new changes to this booking, delete schedule from sms.dk
   return await booking.save();
 };

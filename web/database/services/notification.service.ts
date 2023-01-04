@@ -180,6 +180,29 @@ const send = async ({
     isStaff,
   });
 
+  const notifications = await NotificationModel.find({
+    orderId,
+    lineItemId,
+    template,
+    createdAt: {
+      $gte: new Date(),
+    },
+  }).lean();
+
+  notifications.forEach((n) => smsdkApi.cancel(n.batchId));
+
+  const updated = await NotificationModel.updateMany(
+    {
+      orderId,
+      lineItemId,
+      template,
+      createdAt: {
+        $gte: new Date(),
+      },
+    },
+    { status: "cancelled" }
+  );
+
   const response = await smsdkApi.send({
     receiver,
     message,
@@ -201,7 +224,9 @@ const sendBookingConfirmationCustomer = async ({
   booking,
   shop,
 }: SendBookingConfirmationCustomerProps) => {
-  const customer = await customerModel.findOne({ _id: booking.customerId });
+  const customer = await customerModel.findOne({
+    customerId: booking.customerId,
+  });
   if (!customer.phone) {
     return;
   }
@@ -218,7 +243,7 @@ const sendBookingConfirmationCustomer = async ({
     receiver: customer,
   });
 
-  send({
+  return send({
     orderId: booking.orderId,
     shop,
     receiver: customer.phone?.replace("+", ""),
@@ -237,7 +262,9 @@ const sendBookingReminderCustomer = async ({
   bookings,
   shop,
 }: SendBookingReminderCustomerProps) => {
-  const receiver = await customerModel.findOne({ _id: bookings[0].customerId });
+  const receiver = await customerModel.findOne({
+    customerId: bookings[0].customerId,
+  });
   if (!receiver.phone) {
     return;
   }
@@ -249,13 +276,13 @@ const sendBookingReminderCustomer = async ({
       shop,
     });
 
-  return bookings.forEach((booking) => {
+  for (let booking of bookings) {
     const message = notificationTemplateService.replace(notificationTemplate, {
       booking,
       receiver,
     });
 
-    send({
+    await send({
       shop,
       orderId: booking.orderId,
       lineItemId: booking.lineItemId,
@@ -268,7 +295,7 @@ const sendBookingReminderCustomer = async ({
       ),
       isStaff: false,
     });
-  });
+  }
 };
 
 interface SendBookingReminderStaffProps {
@@ -287,14 +314,14 @@ const sendBookingReminderStaff = async ({
       shop,
     });
 
-  return bookings.forEach(async (booking) => {
+  for (let booking of bookings) {
     const receiver = await StaffModel.findById(booking.staff);
     const message = notificationTemplateService.replace(notificationTemplate, {
       booking,
       receiver,
     });
 
-    send({
+    await send({
       shop,
       orderId: booking.orderId,
       lineItemId: booking.lineItemId,
@@ -307,7 +334,7 @@ const sendBookingReminderStaff = async ({
       template,
       isStaff: true,
     });
-  });
+  }
 };
 
 interface CancelProps {
