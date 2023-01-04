@@ -22,7 +22,7 @@ import axios, { AxiosResponse } from "axios";
     }
   */
 
-module SMSDK {
+export module SMSDK {
   export interface Accepted {
     receiver: string;
     country: string;
@@ -36,20 +36,20 @@ module SMSDK {
   }
 
   export interface Result {
-    totalCreditSum: number;
-    messageSize: number;
+    totalCreditSum?: number;
+    messageSize?: number;
     batchId: string;
-    report: Report;
+    report?: Report;
   }
 
   export interface Response {
     status: string;
-    messageCode: number;
+    messageCode?: number;
     result: Result;
   }
 }
 
-interface SendProps {
+export interface SendProps {
   receiver: string | number;
   message: string;
   scheduled: Date;
