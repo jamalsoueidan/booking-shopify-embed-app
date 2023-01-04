@@ -2,6 +2,7 @@ const { pathsToModuleNameMapper } = require("ts-jest");
 const { compilerOptions } = require("./tsconfig");
 
 module.exports = {
+  testSequencer: "./jest/testSequencer.js",
   globalSetup: "./jest/setup",
   globalTeardown: "./jest/teardown.js",
   testEnvironment: "./jest/mongo-environment.js",
