@@ -2,6 +2,7 @@ import { FormErrors } from '@components/FormErrors';
 import LoadingSpinner from '@components/LoadingSpinner';
 import { useExtendForm } from '@hooks/useExtendForm';
 import { useTranslation } from '@hooks/useTranslation';
+import { useSettings } from '@providers/settings';
 import { useToast } from '@providers/toast';
 import {
   useNotificationTemplates,
@@ -20,7 +21,8 @@ import {
 import { FieldDictionary, useDynamicList } from '@shopify/react-form';
 
 export default () => {
-  const { data } = useNotificationTemplates();
+  const { language } = useSettings();
+  const { data } = useNotificationTemplates({ language });
   const { show } = useToast();
   const { update } = useNotificationTemplatesUpdate();
   const { t } = useTranslation('settings', { keyPrefix: 'notifications' });

@@ -2,11 +2,12 @@ import { useFetch } from '@hooks';
 import { useCallback } from 'react';
 import { useQuery } from 'react-query';
 
-export const useNotificationTemplates = () => {
+export const useNotificationTemplates = ({ language }: any) => {
   const { get } = useFetch();
   const { data, ...rest } = useQuery<ApiResponse<Array<NotificationTemplate>>>({
     queryKey: ['notification-templates'],
-    queryFn: () => get(`/api/admin/setting/notification-templates`),
+    queryFn: () =>
+      get(`/api/admin/setting/notification-templates?language=${language}`),
     refetchOnWindowFocus: false,
   });
 

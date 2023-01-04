@@ -71,7 +71,7 @@ export default memo(({ collection }: CollectionProps) => {
           {item.staff?.length > 0 && (
             <Box paddingBlockStart="2">
               <Stack spacing="extraTight">
-                {item.staff.sort(sortStrings('fullname')).map((staff) => {
+                {[...item.staff].sort(sortStrings('fullname')).map((staff) => {
                   return (
                     <Avatar
                       key={staff._id}

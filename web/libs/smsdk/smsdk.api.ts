@@ -22,7 +22,7 @@ import axios, { AxiosResponse } from "axios";
     }
   */
 
-export module SMSDK {
+export namespace SMSDK {
   export interface Accepted {
     receiver: string;
     country: string;

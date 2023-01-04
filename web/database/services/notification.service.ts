@@ -1,3 +1,4 @@
+import { beginningOfDay } from "@helpers/date";
 import smsdkApi from "@libs/smsdk/smsdk.api";
 import BookingModel from "@models/booking.model";
 import {
@@ -10,8 +11,6 @@ import { subDays, subMinutes } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
 import mongoose from "mongoose";
 import notificationTemplateService from "./notification-template.service";
-import { id } from "date-fns/locale";
-import { beginningOfDay } from "@helpers/date";
 
 interface SendProps {
   orderId: number;
