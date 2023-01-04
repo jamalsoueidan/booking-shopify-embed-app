@@ -62,36 +62,46 @@ Shopify Extension (react)
 ## Application screens
 
 <table>
- <tr>
- <td>
+  <tr>
+    <td>
       <img src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/bookings.png?raw=true" width="300" />
     </td>
     <td>
       <img src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/product-view.png?raw=true" width="300" />
     </td>
-     <td>
-     <img  src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/settings.png?raw=true"  width="300" />
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td>
+      <img  src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/settings.png?raw=true"  width="300" />
     </td>
     <td>
-     <img  src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-list.png?raw=true"  width="300" />
+      <img  src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-list.png?raw=true"  width="300" />
     </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
     <td>
       <img  src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-view.png?raw=true"  width="300" />
     </td>
- </tr>
+  </tr>
 </table>
 
 ## Widget screen
 
 <table>
- <tr>
+  <tr>
     <td>
       <img src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/extension1.png?raw=true" width="300"/>
     </td>
     <td>
-     <img src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/extension2.png?raw=true" width="300"/>
+      <img src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/extension2.png?raw=true" width="300"/>
     </td>
- </tr>
+  </tr>
 </table>
 
 ## Tech Stack
