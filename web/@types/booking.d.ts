@@ -25,7 +25,7 @@ interface BookingAggreate extends Booking {
   end: string;
 }
 
-interface BookingBodyUpdate extends Pick<Booking, "staff" | "isEdit"> {
+interface BookingBodyUpdate extends Pick<Booking, "staff"> {
   start: string;
   end: string;
 }

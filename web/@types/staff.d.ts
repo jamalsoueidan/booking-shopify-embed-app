@@ -12,3 +12,4 @@ interface Staff {
 }
 
 interface StaffBodyUpdate extends Partial<Omit<Staff, "_id" | "shop">> {}
+interface StaffBodyCreate extends Omit<Staff, "_id" | "shop"> {}
