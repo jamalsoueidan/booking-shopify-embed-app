@@ -25,7 +25,7 @@ const create = ({
   body,
 }: {
   query: CreateQuery;
-  body: StaffBodyUpdate;
+  body: StaffBodyCreate;
 }) => {
   const shop = query.shop;
   return StaffService.create({ shop, ...body });

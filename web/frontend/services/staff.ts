@@ -30,7 +30,7 @@ export const useStaffGet = ({ userId }: UseStaffGetProps) => {
   };
 };
 
-type UseStaffCreateFetch = (body: StaffBodyUpdate) => Promise<Staff>;
+type UseStaffCreateFetch = (body: StaffBodyCreate) => Promise<Staff>;
 
 export const useStaffCreate = () => {
   const { post, mutate } = useFetch();
