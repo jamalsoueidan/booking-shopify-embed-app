@@ -1,13 +1,31 @@
+import { faker } from "@faker-js/faker";
 import adminBookingController from "@libs/booking/booking.controller";
 import { createProduct } from "@libs/jest-helpers";
+import { SendProps } from "@libs/smsdk/smsdk.api";
 import * as OrderWebhook from "@libs/webhooks/order/order.webhook";
 import { IProductModel } from "@models/product.model";
 import ShopifySessions from "@models/shopify-sessions.model";
 import { differenceInMinutes, isAfter, isBefore } from "date-fns";
 import mongoose from "mongoose";
 import mockCreate from "./mock.create";
-import mockOneFullfilledOneOnHold from "./mock.oneFullfilled-oneOnHold";
 import mockOneFullfiledOneRefund from "./mock.oneFullfiled-oneRefund";
+import mockOneFullfilledOneOnHold from "./mock.oneFullfilled-oneOnHold";
+
+jest.mock("@libs/smsdk/smsdk.api", () => {
+  return {
+    __esModule: true,
+    default: {
+      send: jest.fn(async ({ receiver, message, scheduled }: SendProps) =>
+        Promise.resolve({
+          status: "success",
+          result: {
+            batchId: faker.random.numeric(10),
+          },
+        })
+      ),
+    },
+  };
+});
 
 const productId = 7961951273277; //refere to the product in the orderJSON
 let product: IProductModel;

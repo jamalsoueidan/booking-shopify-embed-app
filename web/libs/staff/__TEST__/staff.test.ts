@@ -13,12 +13,15 @@ describe("Admin-staff controller", () => {
       shop: global.shop,
     };
 
-    const body = {
+    const body: StaffBodyCreate = {
       fullname: "jamasdeidan",
       email: "test@test.com",
       phone: "+4531317428",
       avatar: "https://test.dk/test.png",
       position: "1",
+      postal: 8000,
+      address: "asdpkads 12",
+      active: true,
     };
 
     const createSetting = await staffController.create({ query, body });

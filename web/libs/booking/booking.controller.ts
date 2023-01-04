@@ -16,7 +16,8 @@ const get = ({ query }: GetQuery) => {
   return BookingService.getBookings(query);
 };
 
-interface CreateProps extends GetQuery {
+interface CreateProps {
+  query: { shop: string };
   body: BookingBodyCreate;
 }
 
@@ -29,7 +30,12 @@ const getById = async ({ query, body }) => {
   return await BookingService.getById(query);
 };
 
-const update = async ({ query, body }) => {
+interface UpdateProps {
+  query: { id: string; shop: string };
+  body: BookingBodyUpdate;
+}
+
+const update = async ({ query, body }: UpdateProps) => {
   const { shop, id } = query;
   return await BookingService.update({ filter: { shop, _id: id }, body });
 };

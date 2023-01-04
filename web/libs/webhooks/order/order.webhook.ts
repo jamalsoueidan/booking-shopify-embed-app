@@ -49,7 +49,7 @@ export const modify = async ({
     }
   });
 
-  const customer = await CustomerService.findCustomerAndUpdate({
+  await CustomerService.findCustomerAndUpdate({
     shop,
     customerId: body.customer.id,
     customerGraphqlApiId: body.customer.admin_graphql_api_id,
