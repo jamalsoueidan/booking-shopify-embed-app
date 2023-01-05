@@ -87,7 +87,7 @@ export const StaffForm = ({
 
   const changePostal = useCallback(
     (value: string) => fields.postal.onChange(parseInt(value)),
-    []
+    [fields.postal.onChange]
   );
 
   return (

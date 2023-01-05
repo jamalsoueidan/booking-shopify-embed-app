@@ -32,7 +32,7 @@ export const useTranslation = (
 
       return i18n.translate(tKey, { ...secondOptions, ...replacements });
     },
-    []
+    [i18n.translate]
   );
   return {
     t,
