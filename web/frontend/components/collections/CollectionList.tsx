@@ -9,7 +9,7 @@ interface CollectionListProps {
 export default memo(({ collections }: CollectionListProps) => {
   const sortedCollections = useMemo(
     () => [...collections].sort(sortStrings('title')),
-    []
+    [collections]
   );
 
   return (

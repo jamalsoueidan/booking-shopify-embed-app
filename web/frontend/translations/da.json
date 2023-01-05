@@ -154,7 +154,7 @@
 					"placeholder": "Eksempel: Kristina Larsen"
 				},
 				"phone": {
-					"help": "Vi bruger denne mobilnummer til at informere dig om fremtidige aftaler.",
+					"help": "Vi bruger denne mobilnummer til at informere dig om fremtidige bestillinger.",
 					"label": "Mobilnummer",
 					"placeholder": "Eksempel: +4531311234"
 				},

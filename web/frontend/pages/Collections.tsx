@@ -1,5 +1,4 @@
 import { useCollection } from '@services';
-
 import CollectionList from '@components/collections/CollectionList';
 import ResourcePicker from '@components/collections/ResourcePicker';
 import { useTranslation } from '@hooks/useTranslation';
