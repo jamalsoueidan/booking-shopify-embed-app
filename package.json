@@ -5,9 +5,9 @@
   "license": "UNLICENSED",
   "scripts": {
     "shopify": "shopify",
-    "build": "shopify app build",
-    "dev": "shopify app dev -t Sense",
-    "info": "shopify app info",
+    "build": "shopify app build --path shopify-embed-app",
+    "dev": "shopify app dev -t Sense --path shopify-embed-app",
+    "info": "shopify app info --path shopify-embed-app",
     "generate": "shopify app generate",
     "deploy": "shopify app deploy"
   },
