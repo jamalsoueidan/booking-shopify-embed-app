@@ -52,6 +52,14 @@ export const useExtendForm = <T extends FieldBag, D extends DynamicListBag>(
   }, []);
 
   useEffect(() => {
+    return () => {
+      // case we redirect in onSubmit
+      setIsSubmitting(false);
+      saveBar.setForm({ dirty: false, submitting: false });
+    };
+  }, []);
+
+  useEffect(() => {
     const isValidNew = isSubmitted && customForm.submitErrors.length === 0;
     if (isValidNew !== isValid) {
       setIsValid(isValidNew);

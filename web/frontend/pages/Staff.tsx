@@ -11,7 +11,7 @@ import {
   ResourceList,
   Text,
 } from '@shopify/polaris';
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 
 export default () => {
   const navigate = useNavigate();
@@ -22,9 +22,8 @@ export default () => {
     (item: Staff) => {
       const { _id, fullname, active, avatar, position } = item;
       const url = '/Staff/' + _id;
-      const media = useMemo(
-        () => <Avatar customer size="medium" name={fullname} source={avatar} />,
-        [fullname, avatar]
+      const media = (
+        <Avatar customer size="medium" name={fullname} source={avatar} />
       );
 
       return (
