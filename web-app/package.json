@@ -1,0 +1,18 @@
+{
+  "name": "web-app",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "start": "clear && concurrently 'cd ./frontend/ && npm run dev' 'node index.js'",
+    "dev": "clear && concurrently 'cd ./frontend/ && npm run dev' 'nodemon index.js'",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "express": "^4.17.3"
+  },
+  "devDependencies": {
+    "concurrently": "^7.6.0",
+    "nodemon": "^2.0.15"
+  }
+}
