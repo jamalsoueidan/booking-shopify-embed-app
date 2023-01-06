@@ -8,13 +8,6 @@
   </head>
   <body>
     <div id="app"></div>
-    <script type="module">
-      import RefreshRuntime from "http://localhost:3000/@react-refresh";
-      RefreshRuntime.injectIntoGlobalHook(window);
-      window.$RefreshReg$ = () => {};
-      window.$RefreshSig$ = () => (type) => type;
-      window.__vite_plugin_react_preamble_installed__ = true;
-    </script>
-    <script type="module" src="http://localhost:3000/main.tsx"></script>
+    <script type="module" src="./main.tsx"></script>
   </body>
 </html>

@@ -10,6 +10,7 @@ logs
 
 # vite build output
 dist/
+stats.html
 
 # Partners can use npm, yarn or pnpm with the CLI.
 # We ignore lock files so they don't get a package manager mis-match
