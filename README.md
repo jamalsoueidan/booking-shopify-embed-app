@@ -21,9 +21,9 @@ There are numerous showcase/example React projects available, but the majority o
 
 The project includes Shopify Extension and the Shopify Application.
 
-You must run the ./react-extension application when testing the extension, it will build the react application and move the files automatically to the ./extension/book-appointment-ext, for the extension to work, you also must run the root project.
+You must run the ./shopify-extension-app application when testing the extension, it will build the react application and move the files automatically to the ./extension/book-appointment-ext, for the extension to work, you also must run the root project.
 
-Run react-extension
+Run shopify-extension-app
 
 ```shell
 npm start
@@ -44,8 +44,8 @@ For the extension to be able to request the apis in your shopify storefront, you
 
 This is because the ngrok create new url everytime it boots up the shopify application.
 
-If you want to test the extension in the react-extension you must update the api url in the:
-./react-extension/public/index.html
+If you want to test the extension in the shopify-extension-app you must update the api url in the:
+./shopify-extension-app/public/index.html
 
 ```javascript
 Shopify.api = "https://5284fdeca23c.eu.ngrok.io";
@@ -54,10 +54,10 @@ Shopify.api = "https://5284fdeca23c.eu.ngrok.io";
 The structur of this project is follows:
 
 Shopify Application
-./web
+./shopify-embed-app
 
 Shopify Extension (react)
-./react-extension
+./shopify-extension-app
 
 ## Application screens
 
@@ -110,7 +110,7 @@ The following Shopify tools complement these third-party tools to ease app devel
 
 ### Shopify Extension (react)
 
-./react-extension
+./shopify-extension-app
 
 - [easepick](https://easepick.com) Date picker - tiny size, no dependencies.
 - [emotion](https://emotion.sh/docs/introduction) Emotion is a library designed for writing css styles with JavaScript.
@@ -119,7 +119,7 @@ The following Shopify tools complement these third-party tools to ease app devel
 
 ### Shopify Application (express + react)
 
-./web
+./shopify-embed-app
 
 Backend
 
@@ -177,7 +177,7 @@ Open the URL generated in your console. Once you grant permission to the app, yo
 The frontend is a single page app. It requires the `SHOPIFY_API_KEY`, which you can find on the page for your app in your partners dashboard. Paste your app’s key in the command for the package manager of your choice:
 
 ```shell
-cd web/frontend/ && SHOPIFY_API_KEY=REPLACE_ME npm run build
+cd shopify-embed-app/frontend/ && SHOPIFY_API_KEY=REPLACE_ME npm run build
 ```
 
 You do not need to build the backend.
