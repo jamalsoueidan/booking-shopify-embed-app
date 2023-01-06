@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "target": "es6",
+    "outDir": "dist",
+    "allowJs": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@models/*": ["database/models/*"],
+      "@services/*": ["database/services/*"],
+      "@libs/*": ["libs/*"],
+      "@helpers/*": ["helpers/*"]
+    }
+  },
+  "exclude": ["node_modules", "frontend", "dist"]
+}

@@ -1,9 +1,8 @@
-const express = require("express");
-const path = require("path");
+import express from "express";
+import path from "path";
+import assetsRouter from "./assets-router";
 
 const app = express();
-
-const assetsRouter = require("./assets-router");
 
 app.use("/", assetsRouter);
 
@@ -15,7 +14,7 @@ app.get("/api/v1", (req, res) => {
 });
 
 app.get("/*", (_req, res) => {
-  res.sendFile(path.join(__dirname, "frontend", "index.html"));
+  res.sendFile(path.join(__dirname, "..", "frontend", "index.html"));
 });
 
 const { PORT = 8000 } = process.env;

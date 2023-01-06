@@ -1,4 +1,4 @@
-const express = require("express");
+import express from "express";
 
 const router = express.Router();
 
@@ -9,4 +9,4 @@ router.get(imageRegex, (req, res) => {
   res.redirect(303, `http://localhost:3000/${filePath}`);
 });
 
-module.exports = router;
+export default router;
