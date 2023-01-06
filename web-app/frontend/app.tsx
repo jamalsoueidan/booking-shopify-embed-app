@@ -5,6 +5,7 @@ import { AppPage } from "components/AppPage";
 import { AppTopBar } from "components/AppTopBar";
 import { PolarisProvider } from "providers/PolarisProvider";
 import { useCallback, useState } from "react";
+import logo from "./logo.svg";
 
 const i18nManager = new I18nManager({
   locale: "en-US",
@@ -21,10 +22,9 @@ export default () => {
     []
   );
 
-  const logo = {
+  const logoOptions = {
     width: 124,
-    topBarSource:
-      "https://cdn.shopify.com/s/files/1/0446/6937/files/jaded-pixel-logo-color.svg?6215648040070010999",
+    topBarSource: logo,
     contextualSaveBarSource:
       "https://cdn.shopify.com/s/files/1/0446/6937/files/jaded-pixel-logo-gray.svg?6215648040070010999",
     url: "http://jadedpixel.com",
@@ -35,7 +35,7 @@ export default () => {
     <I18nContext.Provider value={i18nManager}>
       <PolarisProvider>
         <Frame
-          logo={logo}
+          logo={logoOptions}
           topBar={<AppTopBar toggleNavigation={setMobileNavigationActive} />}
           navigation={<AppNavigation />}
           showMobileNavigation={mobileNavigationActive}
