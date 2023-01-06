@@ -6,9 +6,7 @@
     "debug": "node --inspect-brk index.js",
     "dev": "clear && concurrently 'cd ./frontend/ && npm run dev' 'npx tsc --watch --preserveWatchOutput --project tsconfig.json' 'npx tsc-alias -w -p tsconfig.json' 'cross-env NODE_ENV=development nodemon dist/index.js --delay 1'",
     "preserve": "concurrently 'npx tsc --preserveWatchOutput --project tsconfig.json' 'npx tsc-alias -p tsconfig.json'",
-    "serve": "cross-env NODE_ENV=production TS_NODE_BASEURL=./dist node -r tsconfig-paths/register dist/index.js",
-    "build": "vite build",
-    "preview": "vite preview"
+    "serve": "cross-env NODE_ENV=production TS_NODE_BASEURL=./dist node -r tsconfig-paths/register dist/index.js"
   },
   "dependencies": {
     "@shopify/shopify-api": "^5.3.0",
