@@ -1,59 +1,49 @@
-import { useState, useEffect } from "react";
-import logo from "./logo.svg";
-import "./app.css";
+import { Frame } from "@shopify/polaris";
+import { I18nContext, I18nManager } from "@shopify/react-i18n";
+import { AppNavigation } from "components/AppNavigation";
+import { AppPage } from "components/AppPage";
+import { AppTopBar } from "components/AppTopBar";
+import { PolarisProvider } from "providers/PolarisProvider";
+import { useCallback, useState } from "react";
 
-export function App() {
-  const [count, setCount] = useState(0);
-  const [apiInfo, setApiInfo] = useState(null);
+const i18nManager = new I18nManager({
+  locale: "en-US",
+});
 
-  useEffect(() => {
-    fetch("/api/v1")
-      .then((data) => data.json())
-      .then((data) => setApiInfo(data));
-  }, []);
+export default () => {
+  const [mobileNavigationActive, setMobileNavigationActive] = useState(false);
+
+  const toggleMobileNavigationActive = useCallback(
+    () =>
+      setMobileNavigationActive(
+        (mobileNavigationActive) => !mobileNavigationActive
+      ),
+    []
+  );
+
+  const logo = {
+    width: 124,
+    topBarSource:
+      "https://cdn.shopify.com/s/files/1/0446/6937/files/jaded-pixel-logo-color.svg?6215648040070010999",
+    contextualSaveBarSource:
+      "https://cdn.shopify.com/s/files/1/0446/6937/files/jaded-pixel-logo-gray.svg?6215648040070010999",
+    url: "http://jadedpixel.com",
+    accessibilityLabel: "Jaded Pixel",
+  };
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>app.jsx</code> and save to test HMR updates.
-        </p>
-        {apiInfo && (
-          <ul>
-            {Object.keys(apiInfo).map((key) => (
-              <li key={key}>
-                {key.toUpperCase()}: {apiInfo[key]}
-              </li>
-            ))}
-          </ul>
-        )}
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {" | "}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
+    <I18nContext.Provider value={i18nManager}>
+      <PolarisProvider>
+        <Frame
+          logo={logo}
+          topBar={<AppTopBar toggleNavigation={setMobileNavigationActive} />}
+          navigation={<AppNavigation />}
+          showMobileNavigation={mobileNavigationActive}
+          onNavigationDismiss={toggleMobileNavigationActive}
+        >
+          <AppPage />
+        </Frame>
+      </PolarisProvider>
+    </I18nContext.Provider>
   );
-}
+};
