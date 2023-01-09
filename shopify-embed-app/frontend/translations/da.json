@@ -153,6 +153,11 @@
 					"label": "Fuldnavn",
 					"placeholder": "Eksempel: Kristina Larsen"
 				},
+				"group": {
+					"help": "Læg bruger ind i samme gruppe hvis de skal have adgang til hinanden tid",
+					"label": "Gruppe",
+					"placeholder": "Angive gruppe"
+				},
 				"phone": {
 					"help": "Vi bruger denne mobilnummer til at informere dig om fremtidige bestillinger.",
 					"label": "Mobilnummer",

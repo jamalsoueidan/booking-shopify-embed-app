@@ -153,6 +153,11 @@
 					"label": "Full name",
 					"placeholder": "Example: Kristina Larsen"
 				},
+				"group": {
+					"help": "Put users in the same group if they need to share booking timeline",
+					"label": "Group",
+					"placeholder": "Write group"
+				},
 				"phone": {
 					"help": "We’ll use this phone number to inform you about future appointments.",
 					"label": "Phone number",

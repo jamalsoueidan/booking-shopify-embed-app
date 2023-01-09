@@ -22,6 +22,7 @@ describe("Admin-staff controller", () => {
       postal: 8000,
       address: "asdpkads 12",
       active: true,
+      group: "a",
     };
 
     const createSetting = await staffController.create({ query, body });

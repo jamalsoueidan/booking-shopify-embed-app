@@ -73,6 +73,10 @@ export const StaffForm = ({
         value: data?.address || '',
         validates: [notEmpty('postal must be filled')],
       }),
+      group: useField({
+        value: data?.group || '',
+        validates: [notEmpty('group must be filled')],
+      }),
       active: useField({
         value: data?.active || true,
         validates: [],
@@ -152,6 +156,14 @@ export const StaffForm = ({
                   label={t('staff.position.label')}
                   options={options}
                   {...fields.position}
+                />
+                <TextField
+                  label={t('staff.group.label')}
+                  type="text"
+                  autoComplete="false"
+                  placeholder={t('staff.group.placeholder')}
+                  helpText={<span>{t('staff.group.help')}</span>}
+                  {...fields.group}
                 />
               </FormLayout>
             </Card>

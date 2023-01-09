@@ -24,6 +24,11 @@ const StaffSchema = new Schema({
   avatar: { type: String, required: true },
   position: { type: String, required: true },
   active: { type: Boolean, default: true },
+  group: {
+    type: String,
+    index: true,
+    default: "all", //should be changed later to null, nobody can see each other till they are part of group
+  },
 });
 
 export default mongoose.model<IStaffModel>("staff", StaffSchema, "Staff");

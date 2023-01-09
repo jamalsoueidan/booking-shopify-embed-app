@@ -29,6 +29,7 @@ export const createStaff = () => {
     postal: 8000,
     address: "asdiojdsajioadsoji",
     active: true,
+    group: "all",
   });
 };
 
