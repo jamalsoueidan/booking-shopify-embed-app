@@ -4,6 +4,8 @@
   <img src="https://github.com/jamalsoueidan/book-appointment-app/blob/main/screens/staff-view-schedule.png?raw=true" width="600"/>
 </p>
 
+The staff use another application outside shopify: [Booking Shopify External App](https://github.com/jamalsoueidan/booking-shopify-external-app)
+
 ## What is this and who is it for 🤷‍♀️
 
 Frontend consulting is what I do! Angular and React, and this is a showcase product I made in my spare time. It is an excellent example of a modern, real-world React codebase and it integrate with the Shopify Admin, uses Shopify Polaris UI Framework, and extensions that are built into the Shopify theme.
