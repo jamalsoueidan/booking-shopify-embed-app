@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.prettierrc.js
+.eslintrc.js
+env.d.ts
+.DS_Store
+logs
+*.log
+stats.html
+package-lock.json
