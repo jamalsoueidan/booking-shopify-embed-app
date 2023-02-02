@@ -2,6 +2,7 @@ import { useTranslation } from "@hooks";
 import { LoadingPage } from "@jamalsoueidan/bsf.bsf-pkg";
 import { useCollection, useCollectionCreate } from "@services";
 import { ResourcePicker, useNavigate } from "@shopify/app-bridge-react";
+import { SelectPayload } from "@shopify/app-bridge/actions/ResourcePicker";
 import { Card, EmptyState, Page } from "@shopify/polaris";
 import { useCallback, useMemo, useState } from "react";
 
@@ -13,7 +14,7 @@ export default () => {
   const { data } = useCollection();
 
   const handleSelection = useCallback(
-    (resources: Resources) => {
+    (resources: SelectPayload) => {
       const selections = resources.selection.map((s) => s.id);
       create({ selections });
       setOpen(false);
