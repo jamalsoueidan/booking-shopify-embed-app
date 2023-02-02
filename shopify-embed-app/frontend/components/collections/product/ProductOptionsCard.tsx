@@ -1,4 +1,5 @@
 import { useTranslation } from '@hooks';
+import { Product } from '@jamalsoueidan/bsb.mongodb.types';
 import {
   Button,
   ButtonGroup,

@@ -1,4 +1,5 @@
 import { usePositions, useTagOptions, useTranslation } from '@hooks';
+import { ProductAddStaff, ProductStaffAggreate } from '@jamalsoueidan/bsb.mongodb.types';
 import { useProductStaff } from '@services';
 import { Modal, OptionList, Spinner, Text } from '@shopify/polaris';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';

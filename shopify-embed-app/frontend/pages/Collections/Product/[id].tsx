@@ -4,6 +4,7 @@ import ProductBanner from "@components/collections/product/ProductBanner";
 import ProductOptionsCard from "@components/collections/product/ProductOptionsCard";
 import ProductStaff from "@components/collections/product/ProductStaff";
 import { useExtendForm } from "@hooks";
+import { ProductStaffAggreate } from "@jamalsoueidan/bsb.mongodb.types";
 import { LoadingPage } from "@jamalsoueidan/bsf.bsf-pkg";
 import { useProductGet, useProductUpdate } from "@services";
 import { Badge, Form, Grid, Page, PageActions } from "@shopify/polaris";

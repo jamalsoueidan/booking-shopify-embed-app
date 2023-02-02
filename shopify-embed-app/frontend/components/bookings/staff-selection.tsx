@@ -1,4 +1,5 @@
 import { useTranslation } from "@hooks";
+import { Staff } from "@jamalsoueidan/bsb.mongodb.types";
 import { LoadingSpinner } from "@jamalsoueidan/bsf.bsf-pkg";
 import { useStaff } from "@services";
 import { Avatar, Button, Stack } from "@shopify/polaris";

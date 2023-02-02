@@ -1,6 +1,7 @@
 import { FormErrors } from "@components/FormErrors";
 import { useExtendForm } from "@hooks/useExtendForm";
 import { useTranslation } from "@hooks/useTranslation";
+import { NotificationTemplate } from "@jamalsoueidan/bsb.mongodb.types";
 import { LoadingSpinner } from "@jamalsoueidan/bsf.bsf-pkg";
 import { useSettings } from "@providers/settings";
 import { useToast } from "@providers/toast";

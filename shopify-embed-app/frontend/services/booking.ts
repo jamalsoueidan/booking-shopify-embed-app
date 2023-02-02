@@ -1,10 +1,11 @@
 import { useFetch } from '@hooks';
+import { ApiResponse, BookingBodyCreateRequest, BookingBodyUpdateRequest, BookingQuery, BookingResponse } from '@jamalsoueidan/bsb.mongodb.types';
 import { useCallback } from 'react';
 import { useQuery } from 'react-query';
 
 export const useBookings = ({ start, end, staff }: BookingQuery) => {
   const { get } = useFetch();
-  const { data, isLoading } = useQuery<ApiResponse<Array<BookingAggreate>>>({
+  const { data, isLoading } = useQuery<ApiResponse<Array<BookingResponse>>>({
     queryKey: ['bookings', { start, end, staff }],
     queryFn: () =>
       get(
@@ -25,7 +26,7 @@ interface UseBookingUpdateProps {
   id: string;
 }
 
-type UseBookingUpdateFetch = (body: BookingBodyUpdate) => void;
+type UseBookingUpdateFetch = (body: BookingBodyUpdateRequest) => void;
 
 export const useBookingUpdate = ({ id }: UseBookingUpdateProps) => {
   const { put, mutate } = useFetch();
@@ -44,15 +45,15 @@ export const useBookingUpdate = ({ id }: UseBookingUpdateProps) => {
 };
 
 type UseBookingCreateFetch = (
-  body: BookingBodyCreate
-) => Promise<ApiResponse<BookingAggreate>>;
+  body: BookingBodyCreateRequest
+) => Promise<ApiResponse<BookingResponse>>;
 
 export const useBookingCreate = () => {
   const { post, mutate } = useFetch();
 
   const create: UseBookingCreateFetch = useCallback(
     async (body) => {
-      const response: ApiResponse<BookingAggreate> = await post(
+      const response: ApiResponse<BookingResponse> = await post(
         '/api/admin/bookings',
         body
       );
@@ -75,7 +76,7 @@ interface UseBookingGetProps {
 export const useBookingGet = ({ id }: UseBookingGetProps) => {
   const { get } = useFetch();
 
-  const { data } = useQuery<ApiResponse<BookingAggreate>>(['booking', id], () =>
+  const { data } = useQuery<ApiResponse<BookingResponse>>(['booking', id], () =>
     get(`/api/admin/bookings/${id}`)
   );
 

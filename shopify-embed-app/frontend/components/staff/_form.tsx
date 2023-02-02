@@ -1,5 +1,6 @@
 import { FormErrors } from '@components/FormErrors';
 import { useExtendForm, usePositions, useTranslation } from '@hooks';
+import { Staff, StaffBodyUpdate } from '@jamalsoueidan/bsb.mongodb.types';
 import isEmail from '@libs/validators/isEmail';
 import isPhoneNumber from '@libs/validators/isPhoneNumber';
 import { useToast } from '@providers/toast';

@@ -1,3 +1,4 @@
+import { Notification } from '@jamalsoueidan/bsb.mongodb.types';
 import { useToast } from '@providers/toast';
 import { useNotification, useResendNotification } from '@services';
 import {
@@ -83,7 +84,7 @@ export default ({ info }: BookingModalProps) => {
       emptyState={emptyStateMarkup}
       items={data.reverse()}
       loading={!data}
-      renderItem={renderItem}
+      renderItem={renderItem as any}
     />
   );
 };

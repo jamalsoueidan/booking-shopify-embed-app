@@ -2,6 +2,7 @@ import StaffSelection from "@components/bookings/staff-selection";
 import { DatesSetArg, EventClickArg } from "@fullcalendar/core";
 import FullCalendar from "@fullcalendar/react";
 import { useDate, useFulfillment, useTranslation } from "@hooks";
+import { BookingResponse } from "@jamalsoueidan/bsb.mongodb.types";
 import { LoadingModal, LoadingSpinner } from "@jamalsoueidan/bsf.bsf-pkg";
 import { useBookings } from "@services";
 import { useNavigate } from "@shopify/app-bridge-react";
@@ -57,7 +58,7 @@ export default () => {
   );
 
   const eventContent = useCallback((arg: any) => {
-    const booking: BookingAggreate = arg.event.extendedProps;
+    const booking: BookingResponse = arg.event.extendedProps;
     const extendHour = (
       <i>
         {padTo2Digits(arg.event.start.getHours()) +

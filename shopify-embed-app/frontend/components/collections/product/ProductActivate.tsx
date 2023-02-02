@@ -1,4 +1,5 @@
 import { useTranslation } from '@hooks';
+import { Product } from '@jamalsoueidan/bsb.mongodb.types';
 import { Card, Select } from '@shopify/polaris';
 import { FieldDictionary } from '@shopify/react-form';
 import { memo, useCallback, useMemo } from 'react';

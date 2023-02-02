@@ -7,6 +7,7 @@ import {
 import { DateClickArg } from '@fullcalendar/interaction';
 import FullCalendar from '@fullcalendar/react';
 import { useDate, useTagOptions } from '@hooks';
+import { Schedule } from '@jamalsoueidan/bsb.mongodb.types';
 import { format } from 'date-fns';
 import { createRef, useCallback, useEffect } from 'react';
 

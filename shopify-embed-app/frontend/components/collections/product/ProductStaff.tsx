@@ -1,4 +1,5 @@
 import { useTranslation } from '@hooks';
+import { Product, ProductAggreate, ProductStaffAggreate } from '@jamalsoueidan/bsb.mongodb.types';
 import { Card } from '@shopify/polaris';
 import { DynamicList } from '@shopify/react-form/build/ts/hooks/list/dynamiclist';
 import { Suspense, lazy, memo, useCallback, useState } from 'react';

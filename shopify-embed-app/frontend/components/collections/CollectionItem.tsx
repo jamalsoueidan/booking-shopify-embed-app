@@ -1,5 +1,6 @@
 import ModalConfirm from '@components/modals/ModalConfirm';
 import { useTranslation } from '@hooks';
+import { CollectionAggreate, Product, ProductStaffAggreate } from '@jamalsoueidan/bsb.mongodb.types';
 import { sortStrings } from '@libs/sortStrings';
 import { useCollectionDestroy } from '@services';
 import {

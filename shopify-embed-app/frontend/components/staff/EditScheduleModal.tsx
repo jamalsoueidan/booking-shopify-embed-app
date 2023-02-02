@@ -1,4 +1,5 @@
 import { useDate, useTagOptions } from '@hooks';
+import { ScheduleBodyUpdate } from '@jamalsoueidan/bsb.mongodb.types';
 import { useToast } from '@providers/toast';
 import { useStaffScheduleDestroy, useStaffScheduleUpdate } from '@services';
 import {
@@ -70,7 +71,7 @@ export default ({ info, setInfo }: Props) => {
       const start = toUtc(`${extendedProps.start.substr(0, 10)} ${startTime}`);
       const end = toUtc(`${extendedProps.end.substr(0, 10)} ${endTime}`);
 
-      const body: ScheduleBody = {
+      const body: ScheduleBodyUpdate = {
         start: start.toISOString(),
         end: end.toISOString(),
         tag,

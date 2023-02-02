@@ -1,3 +1,4 @@
+import { Setting } from '@jamalsoueidan/bsb.mongodb.types';
 import { useContext } from 'react';
 import { SettingsContext } from './Settings.context';
 

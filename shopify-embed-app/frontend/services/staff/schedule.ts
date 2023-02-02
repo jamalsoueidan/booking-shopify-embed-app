@@ -1,8 +1,9 @@
 import { useFetch } from "@hooks";
+import { ApiResponse, Schedule, ScheduleBodyUpdate, ScheduleBodyUpdateOrCreate, ScheduleGetQuery, ScheduleUpdateOrDestroyQuery } from "@jamalsoueidan/bsb.mongodb.types";
 import { useCallback, useState } from "react";
 import { useQuery } from "react-query";
 
-export const useStaffSchedule = ({ staff, start, end }: ScheduleQuery) => {
+export const useStaffSchedule = ({ staff, start, end }: ScheduleGetQuery) => {
   const { get } = useFetch();
   const { data } = useQuery<ApiResponse<Array<Schedule>>>({
     enabled: !!start && !!end,
@@ -18,7 +19,7 @@ interface UseStaffScheduleCreateProps {
   staff: string;
 }
 
-type UseStaffScheduleCreateFunction = (body: ScheduleOrSchedules) => void;
+type UseStaffScheduleCreateFunction = (body: ScheduleBodyUpdateOrCreate) => void;
 
 export const useStaffScheduleCreate = ({
   staff,
@@ -69,7 +70,7 @@ export const useStaffScheduleDestroy = ({
   };
 };
 
-type UseStaffScheduleUpdateFetch = (body: ScheduleBody) => void;
+type UseStaffScheduleUpdateFetch = (body: ScheduleBodyUpdate) => void;
 
 export const useStaffScheduleUpdate = ({
   staff,

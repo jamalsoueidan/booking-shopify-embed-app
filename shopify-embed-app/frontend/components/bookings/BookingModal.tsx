@@ -1,16 +1,17 @@
+import { BookingResponse } from '@jamalsoueidan/bsb.mongodb.types';
 import { ModalProvider } from '@providers/modal';
 import { Card, Tabs } from '@shopify/polaris';
+import { isAfter } from 'date-fns';
 import { useCallback, useMemo, useState } from 'react';
 import BookingModalCustomer from './BookingModalCustomer';
 import BookingModalNotification from './BookingModalNotification';
 import BookingModalProduct from './BookingModalProduct';
 import BookingModalSendNotification from './BookingModalSendNotification';
-import { isAfter } from 'date-fns';
 
 interface BookingModalProps {
   show: boolean;
   toggle: any;
-  info: BookingAggreate;
+  info: BookingResponse;
 }
 
 export default ({ show, toggle, info }: BookingModalProps) => {

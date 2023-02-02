@@ -1,6 +1,7 @@
 import EmptyStaff from '@components/staff/EmptyStaff';
 import Metadata from '@components/staff/Metadata';
 import { usePositions } from '@hooks';
+import { Staff } from '@jamalsoueidan/bsb.mongodb.types';
 import { useStaff } from '@services';
 import { useNavigate } from '@shopify/app-bridge-react';
 import {

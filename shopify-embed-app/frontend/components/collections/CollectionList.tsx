@@ -1,3 +1,4 @@
+import { CollectionAggreate } from '@jamalsoueidan/bsb.mongodb.types';
 import { sortStrings } from '@libs/sortStrings';
 import { memo, useMemo } from 'react';
 import CollectionItem from './CollectionItem';

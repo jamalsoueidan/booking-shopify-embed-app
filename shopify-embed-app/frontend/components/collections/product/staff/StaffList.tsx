@@ -1,4 +1,5 @@
 import { usePositions, useTagOptions, useTranslation } from '@hooks';
+import { ProductStaffAggreate } from '@jamalsoueidan/bsb.mongodb.types';
 import {
   Avatar,
   Button,
