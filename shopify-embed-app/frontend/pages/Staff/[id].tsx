@@ -1,25 +1,27 @@
-import LoadingModal from '@components/LoadingModal';
-import LoadingPage from '@components/LoadingPage';
-import LoadingSpinner from '@components/LoadingSpinner';
-import Metadata from '@components/staff/Metadata';
-import { EventClickArg } from '@fullcalendar/core';
-import { DateClickArg } from '@fullcalendar/interaction';
-import { useStaffGet, useStaffSchedule } from '@services';
-import { useNavigate } from '@shopify/app-bridge-react';
-import { Card, Page } from '@shopify/polaris';
-import { Suspense, lazy, useCallback, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import Metadata from "@components/staff/Metadata";
+import { EventClickArg } from "@fullcalendar/core";
+import { DateClickArg } from "@fullcalendar/interaction";
+import {
+  LoadingModal,
+  LoadingPage,
+  LoadingSpinner,
+} from "@jamalsoueidan/bsf.bsf-pkg";
+import { useStaffGet, useStaffSchedule } from "@services";
+import { useNavigate } from "@shopify/app-bridge-react";
+import { Card, Page } from "@shopify/polaris";
+import { Suspense, lazy, useCallback, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const StaffCalendar = lazy(
-  () => import('../../components/staff/StaffCalendar')
+  () => import("../../components/staff/StaffCalendar"),
 );
 
 const CreateScheduleModal = lazy(
-  () => import('../../components/staff/CreateScheduleModal')
+  () => import("../../components/staff/CreateScheduleModal"),
 );
 
 const EditScheduleModal = lazy(
-  () => import('../../components/staff/EditScheduleModal')
+  () => import("../../components/staff/EditScheduleModal"),
 );
 
 export default () => {
@@ -29,9 +31,9 @@ export default () => {
   const { data: staff } = useStaffGet({ userId: params.id });
 
   const { data: calendar } = useStaffSchedule({
+    end: rangeDate?.end,
     staff: params.id,
     start: rangeDate?.start,
-    end: rangeDate?.end,
   });
 
   const [showCreate, setShowCreate] = useState(null);
@@ -39,12 +41,12 @@ export default () => {
 
   const createSchedule = useCallback(
     (info: DateClickArg) => setShowCreate(info),
-    []
+    [],
   );
 
   const editSchedule = useCallback(
     (info: EventClickArg) => setShowEdit(info),
-    []
+    [],
   );
 
   const onChangeDate = useCallback(
@@ -53,13 +55,13 @@ export default () => {
         setRangeDate(props);
       }
     },
-    [rangeDate]
+    [rangeDate],
   );
 
   if (!staff || !calendar) {
     return (
       <LoadingPage
-        title={!staff ? 'Loading staff data...' : 'Loading schedules data...'}
+        title={!staff ? "Loading staff data..." : "Loading schedules data..."}
       />
     );
   }
@@ -71,10 +73,10 @@ export default () => {
       fullWidth
       title={fullname}
       titleMetadata={<Metadata active={active} />}
-      breadcrumbs={[{ content: 'Staff', url: '/Staff' }]}
+      breadcrumbs={[{ content: "Staff", url: "/Staff" }]}
       primaryAction={{
-        content: 'Redigere ' + fullname,
-        onAction: () => navigate('/Staff/Edit/' + _id),
+        content: "Redigere " + fullname,
+        onAction: () => navigate("/Staff/Edit/" + _id),
       }}>
       {showCreate && (
         <Suspense fallback={<LoadingModal />}>

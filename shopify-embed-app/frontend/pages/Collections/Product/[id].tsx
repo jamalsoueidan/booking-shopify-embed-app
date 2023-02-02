@@ -1,14 +1,14 @@
-import { FormErrors } from '@components/FormErrors';
-import LoadingPage from '@components/LoadingPage';
-import ProductActivate from '@components/collections/product/ProductActivate';
-import ProductBanner from '@components/collections/product/ProductBanner';
-import ProductOptionsCard from '@components/collections/product/ProductOptionsCard';
-import ProductStaff from '@components/collections/product/ProductStaff';
-import { useExtendForm } from '@hooks';
-import { useProductGet, useProductUpdate } from '@services';
-import { Badge, Form, Grid, Page, PageActions } from '@shopify/polaris';
-import { useDynamicList, useField } from '@shopify/react-form';
-import { useParams } from 'react-router-dom';
+import { FormErrors } from "@components/FormErrors";
+import ProductActivate from "@components/collections/product/ProductActivate";
+import ProductBanner from "@components/collections/product/ProductBanner";
+import ProductOptionsCard from "@components/collections/product/ProductOptionsCard";
+import ProductStaff from "@components/collections/product/ProductStaff";
+import { useExtendForm } from "@hooks";
+import { LoadingPage } from "@jamalsoueidan/bsf.bsf-pkg";
+import { useProductGet, useProductUpdate } from "@services";
+import { Badge, Form, Grid, Page, PageActions } from "@shopify/polaris";
+import { useDynamicList, useField } from "@shopify/react-form";
+import { useParams } from "react-router-dom";
 
 export default () => {
   const params = useParams();
@@ -42,7 +42,7 @@ export default () => {
     dynamicLists: {
       staff: useDynamicList<ProductStaffAggreate>(
         product?.staff || [],
-        (staff: ProductStaffAggreate) => staff
+        (staff: ProductStaffAggreate) => staff,
       ),
     },
     onSubmit: async (fieldValues) => {
@@ -52,7 +52,7 @@ export default () => {
         active: fieldValues.active,
         staff: fieldValues.staff,
       });
-      return { status: 'success' };
+      return { status: "success" };
     },
   });
 
@@ -66,11 +66,11 @@ export default () => {
         fullWidth
         title={product?.title}
         titleMetadata={
-          <Badge status={product.active ? 'attention' : 'info'}>
-            {product.active ? 'Active' : 'Deactive'}
+          <Badge status={product.active ? "attention" : "info"}>
+            {product.active ? "Active" : "Deactive"}
           </Badge>
         }
-        breadcrumbs={[{ content: 'Collections', url: '/Collections' }]}>
+        breadcrumbs={[{ content: "Collections", url: "/Collections" }]}>
         <FormErrors errors={submitErrors} />
         {product.staff.length === 0 && <ProductBanner></ProductBanner>}
         <Grid>

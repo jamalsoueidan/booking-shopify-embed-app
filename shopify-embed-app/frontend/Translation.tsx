@@ -1,9 +1,9 @@
-import LoadingPage from '@components/LoadingPage';
-import { useSettings } from '@providers/settings';
-import { I18nContext, I18nManager, useI18n } from '@shopify/react-i18n';
-import { useContext, useEffect } from 'react';
-import en from './translations/en.json';
-import da from './translations/da.json';
+import { LoadingPage } from "@jamalsoueidan/bsf.bsf-pkg";
+import { useSettings } from "@providers/settings";
+import { I18nContext, I18nManager, useI18n } from "@shopify/react-i18n";
+import { useContext, useEffect } from "react";
+import da from "./translations/da.json";
+import en from "./translations/en.json";
 
 export default ({ children }: { children: JSX.Element }) => {
   const { language } = useSettings();
@@ -11,10 +11,10 @@ export default ({ children }: { children: JSX.Element }) => {
   const i18nManager = useContext<I18nManager>(I18nContext);
 
   const [i18n, ShareTranslations] = useI18n({
-    id: 'Application',
+    id: "Application",
     fallback: en,
     translations(locale: string) {
-      return locale === 'en-US' ? en : da;
+      return locale === "en-US" ? en : da;
     },
   });
 

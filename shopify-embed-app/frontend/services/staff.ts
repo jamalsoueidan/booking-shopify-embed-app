@@ -1,14 +1,14 @@
-import { useFetch } from '@hooks';
-import { useCallback } from 'react';
-import { useQuery } from 'react-query';
+import { useFetch } from "@hooks";
+import { useCallback } from "react";
+import { useQuery } from "react-query";
 
 export const useStaff = () => {
   const { get } = useFetch();
 
   const { data } = useQuery<ApiResponse<Array<Staff>>>(
-    ['staff'],
-    () => get('/api/admin/staff'),
-    { suspense: true }
+    ["staff"],
+    () => get("/api/admin/staff"),
+    { suspense: true },
   );
 
   return { data: data?.payload };
@@ -21,8 +21,8 @@ interface UseStaffGetProps {
 export const useStaffGet = ({ userId }: UseStaffGetProps) => {
   const { get } = useFetch();
 
-  const { data } = useQuery<ApiResponse<Staff>>(['staff', userId], () =>
-    get(`/api/admin/staff/${userId}`)
+  const { data } = useQuery<ApiResponse<Staff>>(["staff", userId], () =>
+    get(`/api/admin/staff/${userId}`),
   );
 
   return {
@@ -31,7 +31,7 @@ export const useStaffGet = ({ userId }: UseStaffGetProps) => {
 };
 
 type UseStaffCreateFetch = (
-  body: StaffBodyCreate
+  body: StaffBodyCreate,
 ) => Promise<ApiResponse<Staff>>;
 
 export const useStaffCreate = () => {
@@ -39,11 +39,11 @@ export const useStaffCreate = () => {
 
   const create: UseStaffCreateFetch = useCallback(
     async (body) => {
-      const response: ApiResponse<Staff> = await post('/api/admin/staff', body);
-      await mutate(['staff']);
+      const response: ApiResponse<Staff> = await post("/api/admin/staff", body);
+      await mutate(["staff"]);
       return response;
     },
-    [post, mutate]
+    [post, mutate],
   );
 
   return {
@@ -56,7 +56,7 @@ interface UseStaffUpdateProps {
 }
 
 type UseStaffUpdateFetch = (
-  body: StaffBodyUpdate
+  body: StaffBodyUpdate,
 ) => Promise<ApiResponse<Staff>>;
 
 export const useStaffUpdate = ({ userId }: UseStaffUpdateProps) => {
@@ -65,13 +65,13 @@ export const useStaffUpdate = ({ userId }: UseStaffUpdateProps) => {
   const update: UseStaffUpdateFetch = useCallback(
     async (body) => {
       const response: ApiResponse<Staff> = await put(
-        '/api/admin/staff/' + userId,
-        body
+        "/api/admin/staff/" + userId,
+        body,
       );
-      await mutate(['staff']);
+      await mutate(["staff"]);
       return response;
     },
-    [put, mutate]
+    [put, userId, mutate],
   );
 
   return {

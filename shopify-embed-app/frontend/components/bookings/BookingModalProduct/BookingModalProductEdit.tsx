@@ -1,17 +1,17 @@
-import { FormErrors } from '@components/FormErrors';
-import LoadingSpinner from '@components/LoadingSpinner';
-import { useExtendForm, useTranslation } from '@hooks';
-import { useBookingUpdate, useWidgetStaff } from '@services';
-import { Form, FormLayout, Modal, Text } from '@shopify/polaris';
-import { notEmpty, useField } from '@shopify/react-form';
+import { FormErrors } from "@components/FormErrors";
+import { useExtendForm, useTranslation } from "@hooks";
+import { LoadingSpinner } from "@jamalsoueidan/bsf.bsf-pkg";
+import { useModal } from "@providers/modal";
+import { useToast } from "@providers/toast";
+import { useBookingUpdate, useWidgetStaff } from "@services";
+import { Form, FormLayout, Modal, Text } from "@shopify/polaris";
+import { notEmpty, useField } from "@shopify/react-form";
+import { useEffect } from "react";
 import {
   ScheduleDateSelect,
   ScheduleStaffSelect,
   ScheduleTimerSelect,
-} from '../BookingForm';
-import { useModal } from '@providers/modal';
-import { useEffect } from 'react';
-import { useToast } from '@providers/toast';
+} from "../BookingForm";
 
 export default ({ info, toggle }: BookingModalProductChildProps) => {
   const { data: staffOptions } = useWidgetStaff({
@@ -19,18 +19,18 @@ export default ({ info, toggle }: BookingModalProductChildProps) => {
   });
 
   const { update } = useBookingUpdate({ id: info._id });
-  const { t } = useTranslation('bookings.modal.product.edit');
+  const { t } = useTranslation("bookings.modal.product.edit");
   const { show } = useToast();
   const { setPrimaryAction, setSecondaryActions } = useModal();
 
   useEffect(() => {
     setPrimaryAction({
-      content: 'Ændre dato/tid',
+      content: "Ændre dato/tid",
       onAction: submit,
     });
     setSecondaryActions([
       {
-        content: 'Annullere',
+        content: "Annullere",
         onAction: toggle,
       },
     ]);
@@ -44,19 +44,19 @@ export default ({ info, toggle }: BookingModalProductChildProps) => {
   const { fields, submit, submitErrors, isSubmitted, isValid } = useExtendForm({
     fields: {
       staff: useField<string>({
-        value: info.staff._id || '',
-        validates: [notEmpty('staff is required')],
+        value: info.staff._id || "",
+        validates: [notEmpty("staff is required")],
       }),
       date: useField<Date>({
         value: new Date(info.start) || undefined,
-        validates: [notEmpty('date is required')],
+        validates: [notEmpty("date is required")],
       }),
       time: useField<{ start: string; end: string }>({
         value: {
           start: info.start || undefined,
           end: info.end || undefined,
         },
-        validates: [notEmpty('time is required')],
+        validates: [notEmpty("time is required")],
       }),
     },
     onSubmit: async (fieldValues: any) => {
@@ -66,8 +66,8 @@ export default ({ info, toggle }: BookingModalProductChildProps) => {
         staff: fieldValues.staff,
       });
       toggle();
-      show({ content: t('toast') });
-      return { status: 'success' };
+      show({ content: t("toast") });
+      return { status: "success" };
     },
     enableSaveBar: false,
   });

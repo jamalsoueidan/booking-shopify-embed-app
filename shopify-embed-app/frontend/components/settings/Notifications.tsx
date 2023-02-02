@@ -1,13 +1,13 @@
-import { FormErrors } from '@components/FormErrors';
-import LoadingSpinner from '@components/LoadingSpinner';
-import { useExtendForm } from '@hooks/useExtendForm';
-import { useTranslation } from '@hooks/useTranslation';
-import { useSettings } from '@providers/settings';
-import { useToast } from '@providers/toast';
+import { FormErrors } from "@components/FormErrors";
+import { useExtendForm } from "@hooks/useExtendForm";
+import { useTranslation } from "@hooks/useTranslation";
+import { LoadingSpinner } from "@jamalsoueidan/bsf.bsf-pkg";
+import { useSettings } from "@providers/settings";
+import { useToast } from "@providers/toast";
 import {
   useNotificationTemplates,
   useNotificationTemplatesUpdate,
-} from '@services';
+} from "@services";
 import {
   Box,
   Card,
@@ -17,15 +17,15 @@ import {
   Page,
   PageActions,
   TextField,
-} from '@shopify/polaris';
-import { FieldDictionary, useDynamicList } from '@shopify/react-form';
+} from "@shopify/polaris";
+import { FieldDictionary, useDynamicList } from "@shopify/react-form";
 
 export default () => {
   const { language } = useSettings();
   const { data } = useNotificationTemplates({ language });
   const { show } = useToast();
   const { update } = useNotificationTemplatesUpdate();
-  const { t } = useTranslation('settings', { keyPrefix: 'notifications' });
+  const { t } = useTranslation("settings", { keyPrefix: "notifications" });
 
   const {
     submit,
@@ -37,13 +37,13 @@ export default () => {
     dynamicLists: {
       notificationTemplates: useDynamicList<NotificationTemplate>(
         data || [],
-        (nt: NotificationTemplate) => nt
+        (nt: NotificationTemplate) => nt,
       ),
     },
     onSubmit: async (fieldValues) => {
       await update(fieldValues.notificationTemplates);
-      show({ content: 'Notification has been updated' });
-      return { status: 'success' };
+      show({ content: "Notification has been updated" });
+      return { status: "success" };
     },
   });
 
@@ -60,27 +60,27 @@ export default () => {
               <DescriptionList
                 items={[
                   {
-                    term: '{fullname}',
+                    term: "{fullname}",
                     description:
-                      'Fuldnavn på kunde eller medarbejder, eksempel: jamal soueidan',
+                      "Fuldnavn på kunde eller medarbejder, eksempel: jamal soueidan",
                   },
                   {
-                    term: '{title}',
-                    description: 'Behandlinger title, eksempel: hårfarve',
+                    term: "{title}",
+                    description: "Behandlinger title, eksempel: hårfarve",
                   },
                   {
-                    term: '{time}',
+                    term: "{time}",
                     description:
-                      'Tid tilbage til behandling start, eksempel: imorgen kl 12:00',
+                      "Tid tilbage til behandling start, eksempel: imorgen kl 12:00",
                   },
                   {
-                    term: '{date}',
+                    term: "{date}",
                     description:
-                      'Dato til behandling tid, eksempel: 2. Januar - 11:23',
+                      "Dato til behandling tid, eksempel: 2. Januar - 11:23",
                   },
                   {
-                    term: '{total}',
-                    description: 'Antal behandlinger, eksempel: 2',
+                    term: "{total}",
+                    description: "Antal behandlinger, eksempel: 2",
                   },
                 ]}
               />
@@ -97,7 +97,7 @@ export default () => {
                   key={field._id.value}
                   title={t(`${field.name.value.toLowerCase()}.title`)}
                   description={t(
-                    `${field.name.value.toLowerCase()}.description`
+                    `${field.name.value.toLowerCase()}.description`,
                   )}>
                   <Card sectioned>
                     <TextField
@@ -107,7 +107,7 @@ export default () => {
                     />
                   </Card>
                 </Layout.AnnotatedSection>
-              )
+              ),
             )
           )}
         </Layout>

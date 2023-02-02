@@ -1,29 +1,29 @@
-import { useCollection } from '@services';
-import CollectionList from '@components/collections/CollectionList';
-import ResourcePicker from '@components/collections/ResourcePicker';
-import { useTranslation } from '@hooks/useTranslation';
-import { useNavigate } from '@shopify/app-bridge-react';
-import { Page } from '@shopify/polaris';
-import { Suspense, useState } from 'react';
-import LoadingSpinner from '@components/LoadingSpinner';
+import CollectionList from "@components/collections/CollectionList";
+import ResourcePicker from "@components/collections/ResourcePicker";
+import { useTranslation } from "@hooks/useTranslation";
+import { LoadingSpinner } from "@jamalsoueidan/bsf.bsf-pkg";
+import { useCollection } from "@services";
+import { useNavigate } from "@shopify/app-bridge-react";
+import { Page } from "@shopify/polaris";
+import { Suspense, useState } from "react";
 
 export default () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const { data } = useCollection();
-  const { t } = useTranslation('collections');
+  const { t } = useTranslation("collections");
 
   if (data?.length === 0) {
-    navigate('/collections/empty');
+    navigate("/collections/empty");
     return <></>;
   }
 
   return (
     <Page
       fullWidth
-      title={t('title')}
+      title={t("title")}
       primaryAction={{
-        content: t('add_collection'),
+        content: t("add_collection"),
         onAction: () => setOpen(true),
       }}>
       <ResourcePicker open={open} setOpen={setOpen} />

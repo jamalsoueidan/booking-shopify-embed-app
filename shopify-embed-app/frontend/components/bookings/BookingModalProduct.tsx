@@ -1,9 +1,9 @@
-import LoadingSpinner from '@components/LoadingSpinner';
-import { useBookingGet } from '@services';
-import { Modal } from '@shopify/polaris';
-import { useCallback, useState } from 'react';
-import BookingModalProductEdit from './BookingModalProduct/BookingModalProductEdit';
-import BookingModalProductView from './BookingModalProduct/BookingModalProductView';
+import { LoadingSpinner } from "@jamalsoueidan/bsf.bsf-pkg";
+import { useBookingGet } from "@services";
+import { Modal } from "@shopify/polaris";
+import { useCallback, useState } from "react";
+import BookingModalProductEdit from "./BookingModalProduct/BookingModalProductEdit";
+import BookingModalProductView from "./BookingModalProduct/BookingModalProductView";
 
 export default ({ info }: BookingModalProps) => {
   const [isEditing, setIsEditing] = useState(false);

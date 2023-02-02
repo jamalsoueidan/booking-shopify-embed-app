@@ -1,11 +1,10 @@
-import LoadingModal from '@components/LoadingModal';
-import LoadingSpinner from '@components/LoadingSpinner';
-import StaffSelection from '@components/bookings/staff-selection';
-import { DatesSetArg, EventClickArg } from '@fullcalendar/core';
-import FullCalendar from '@fullcalendar/react';
-import { useDate, useFulfillment, useTranslation } from '@hooks';
-import { useBookings } from '@services';
-import { useNavigate } from '@shopify/app-bridge-react';
+import StaffSelection from "@components/bookings/staff-selection";
+import { DatesSetArg, EventClickArg } from "@fullcalendar/core";
+import FullCalendar from "@fullcalendar/react";
+import { useDate, useFulfillment, useTranslation } from "@hooks";
+import { LoadingModal, LoadingSpinner } from "@jamalsoueidan/bsf.bsf-pkg";
+import { useBookings } from "@services";
+import { useNavigate } from "@shopify/app-bridge-react";
 import {
   Avatar,
   Badge,
@@ -13,12 +12,12 @@ import {
   FooterHelp,
   Page,
   Tooltip,
-} from '@shopify/polaris';
-import { padTo2Digits } from 'helpers/pad2Digits';
-import { Suspense, lazy, useCallback, useMemo, useRef, useState } from 'react';
+} from "@shopify/polaris";
+import { padTo2Digits } from "helpers/pad2Digits";
+import { Suspense, lazy, useCallback, useMemo, useRef, useState } from "react";
 
-const Calendar = lazy(() => import('../components/Calendar'));
-const BookingModal = lazy(() => import('../components/bookings/BookingModal'));
+const Calendar = lazy(() => import("../components/Calendar"));
+const BookingModal = lazy(() => import("../components/bookings/BookingModal"));
 
 export default () => {
   const navigate = useNavigate();
@@ -28,30 +27,33 @@ export default () => {
   const [staff, setStaff] = useState(null);
 
   const ref = useRef<FullCalendar>();
-  const { t } = useTranslation('bookings');
+  const { t } = useTranslation("bookings");
   const { getColor, options } = useFulfillment();
   const { toTimeZone } = useDate();
 
-  const { data: bookings, isLoading } = useBookings({ start, end, staff });
+  const { data: bookings, isLoading } = useBookings({ end, staff, start });
 
-  const dateChanged = useCallback((props: DatesSetArg) => {
-    if (props.start !== start || props.end !== end) {
-      setStart(props.start.toISOString().slice(0, 10));
-      setEnd(props.end.toISOString().slice(0, 10));
-    }
-  }, []);
+  const dateChanged = useCallback(
+    (props: DatesSetArg) => {
+      if (props.start !== start || props.end !== end) {
+        setStart(props.start.toISOString().slice(0, 10));
+        setEnd(props.end.toISOString().slice(0, 10));
+      }
+    },
+    [end, start],
+  );
 
   const events = useMemo(
     () =>
       bookings?.map((d) => ({
         ...d,
-        start: toTimeZone(new Date(d.start)),
-        end: toTimeZone(new Date(d.end)),
         backgroundColor: getColor(d.fulfillmentStatus),
         color: getColor(d.fulfillmentStatus),
-        textColor: '#202223',
+        end: toTimeZone(new Date(d.end)),
+        start: toTimeZone(new Date(d.start)),
+        textColor: "#202223",
       })) || [],
-    [bookings]
+    [bookings, getColor, toTimeZone],
   );
 
   const eventContent = useCallback((arg: any) => {
@@ -59,32 +61,32 @@ export default () => {
     const extendHour = (
       <i>
         {padTo2Digits(arg.event.start.getHours()) +
-          ':' +
-          padTo2Digits(arg.event.start.getMinutes())}{' '}
+          ":" +
+          padTo2Digits(arg.event.start.getMinutes())}{" "}
         -
         {padTo2Digits(arg.event.end.getHours()) +
-          ':' +
+          ":" +
           padTo2Digits(arg.event.end.getMinutes())}
       </i>
     );
 
-    const fulfillmentStatus = booking.fulfillmentStatus || 'In progress';
+    const fulfillmentStatus = booking.fulfillmentStatus || "In progress";
 
     return (
       <Tooltip content={fulfillmentStatus} dismissOnMouseOut>
         <div
-          style={{ cursor: 'pointer', padding: '4px', position: 'relative' }}>
+          style={{ cursor: "pointer", padding: "4px", position: "relative" }}>
           <div>{extendHour}</div>
           <div
             style={{
-              position: 'absolute',
-              top: 0,
+              alignItems: "center",
               bottom: 0,
+              display: "flex",
+              justifyContent: "flex-end",
               left: 0,
-              right: '4px',
-              display: 'flex',
-              justifyContent: 'flex-end',
-              alignItems: 'center',
+              position: "absolute",
+              right: "4px",
+              top: 0,
             }}>
             <Avatar
               size="small"
@@ -95,7 +97,7 @@ export default () => {
           </div>
           <div
             style={{
-              overflow: 'hidden',
+              overflow: "hidden",
             }}>
             {arg.event.title}
           </div>
@@ -107,8 +109,8 @@ export default () => {
   const showBooking = useCallback(({ event }: EventClickArg) => {
     setInfo({
       ...event._def.extendedProps,
-      start: event.startStr,
       end: event.endStr,
+      start: event.startStr,
       title: event.title,
     });
   }, []);
@@ -119,19 +121,19 @@ export default () => {
         <Badge key={o.label} status={o.status} progress="complete">
           {o.label
             ? o.label.charAt(0).toUpperCase() + o.label.slice(1)
-            : 'In progress'}
+            : "In progress"}
         </Badge>
       )),
-    [options]
+    [options],
   );
 
   return (
     <Page
       fullWidth
-      title={t('title')}
+      title={t("title")}
       primaryAction={{
-        content: 'Opret en bestilling',
-        onAction: () => navigate('/Bookings/New'),
+        content: "Opret en bestilling",
+        onAction: () => navigate("/Bookings/New"),
       }}>
       {info ? (
         <Suspense fallback={<LoadingModal />}>
@@ -144,7 +146,8 @@ export default () => {
           <StaffSelection
             isLoading={isLoading}
             staff={staff}
-            onSelect={setStaff}></StaffSelection>
+            onSelect={setStaff}
+          />
         </Card.Section>
         <Card.Section>
           <Suspense fallback={<LoadingSpinner />}>

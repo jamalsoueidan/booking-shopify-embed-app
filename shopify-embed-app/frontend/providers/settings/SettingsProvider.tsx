@@ -1,12 +1,12 @@
-import LoadingPage from '@components/LoadingPage';
-import { useSetting } from '@services/setting';
-import { SettingsContext } from './Settings.context';
+import { LoadingPage } from "@jamalsoueidan/bsf.bsf-pkg";
+import { useSetting } from "@services/setting";
+import { SettingsContext } from "./Settings.context";
 
 export const SettingsProvider = ({ children }: any) => {
   const { data } = useSetting();
 
   if (!data) {
-    return <LoadingPage title="Loading application settings"></LoadingPage>;
+    return <LoadingPage title="Loading application settings" />;
   }
 
   return (

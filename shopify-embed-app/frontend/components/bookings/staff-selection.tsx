@@ -1,8 +1,8 @@
-import LoadingSpinner from '@components/LoadingSpinner';
-import { useTranslation } from '@hooks';
-import { useStaff } from '@services';
-import { Avatar, Button, Stack } from '@shopify/polaris';
-import { memo, useCallback, useMemo } from 'react';
+import { useTranslation } from "@hooks";
+import { LoadingSpinner } from "@jamalsoueidan/bsf.bsf-pkg";
+import { useStaff } from "@services";
+import { Avatar, Button, Stack } from "@shopify/polaris";
+import { memo, useCallback, useMemo } from "react";
 
 interface Props {
   staff: string;
@@ -12,7 +12,7 @@ interface Props {
 
 export default ({ staff, onSelect, isLoading }: Props) => {
   const { data } = useStaff();
-  const { t } = useTranslation('bookings');
+  const { t } = useTranslation("bookings");
 
   const onClick = useCallback(() => {
     onSelect(null);
@@ -29,7 +29,7 @@ export default ({ staff, onSelect, isLoading }: Props) => {
           isLoading={isLoading}
         />
       )),
-    [data, staff, onSelect, isLoading]
+    [data, staff, onSelect, isLoading],
   );
 
   if (!data) {
@@ -44,7 +44,7 @@ export default ({ staff, onSelect, isLoading }: Props) => {
         onClick={onClick}
         pressed={staff === null}
         loading={staff === null ? isLoading : false}>
-        {t('all')}
+        {t("all")}
       </Button>
       {buttons}
     </Stack>
@@ -75,5 +75,5 @@ const StaffButton = memo(
         {staff.fullname}
       </Button>
     );
-  }
+  },
 );

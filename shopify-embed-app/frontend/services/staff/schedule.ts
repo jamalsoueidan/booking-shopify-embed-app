@@ -1,14 +1,14 @@
-import { useFetch } from '@hooks';
-import { useCallback, useState } from 'react';
-import { useQuery } from 'react-query';
+import { useFetch } from "@hooks";
+import { useCallback, useState } from "react";
+import { useQuery } from "react-query";
 
 export const useStaffSchedule = ({ staff, start, end }: ScheduleQuery) => {
   const { get } = useFetch();
   const { data } = useQuery<ApiResponse<Array<Schedule>>>({
-    queryKey: ['staff', staff, 'schedules', start, end],
+    enabled: !!start && !!end,
     queryFn: () =>
       get(`/api/admin/staff/${staff}/schedules?start=${start}&end=${end}`),
-    enabled: !!start && !!end,
+    queryKey: ["staff", staff, "schedules", start, end],
   });
 
   return { data: data?.payload || [] };
@@ -25,20 +25,23 @@ export const useStaffScheduleCreate = ({
 }: UseStaffScheduleCreateProps) => {
   const [isCreating, setIsCreating] = useState<boolean>();
   const { post, mutate } = useFetch();
-  const create: UseStaffScheduleCreateFunction = useCallback(async (body) => {
-    setIsCreating(true);
-    await post(`/api/admin/staff/${staff}/schedules`, body);
-    await mutate(['staff', staff]);
-    setIsCreating(false);
-  }, []);
+  const create: UseStaffScheduleCreateFunction = useCallback(
+    async (body) => {
+      setIsCreating(true);
+      await post(`/api/admin/staff/${staff}/schedules`, body);
+      await mutate(["staff", staff]);
+      setIsCreating(false);
+    },
+    [mutate, post, staff],
+  );
 
   return {
-    isCreating,
     create,
+    isCreating,
   };
 };
 
-type UseStaffScheduleDestroyFetch = (body: Pick<Schedule, 'groupId'>) => void;
+type UseStaffScheduleDestroyFetch = (body: Pick<Schedule, "groupId">) => void;
 
 export const useStaffScheduleDestroy = ({
   staff,
@@ -51,13 +54,13 @@ export const useStaffScheduleDestroy = ({
       setIsDestroying(true);
       await fetch.destroy(
         `/api/admin/staff/${staff}/schedules/${schedule}${
-          body.groupId ? '/group/' + body.groupId : ''
-        }`
+          body.groupId ? "/group/" + body.groupId : ""
+        }`,
       );
-      await fetch.mutate(['staff', staff]);
+      await fetch.mutate(["staff", staff]);
       setIsDestroying(false);
     },
-    [setIsDestroying, fetch]
+    [fetch, staff, schedule],
   );
 
   return {
@@ -79,18 +82,18 @@ export const useStaffScheduleUpdate = ({
       setIsUpdating(true);
       await put(
         `/api/admin/staff/${staff}/schedules/${schedule}${
-          body.groupId ? '/group/' + body.groupId : ''
+          body.groupId ? "/group/" + body.groupId : ""
         }`,
-        body
+        body,
       );
-      await mutate(['staff', staff]);
+      await mutate(["staff", staff]);
       setIsUpdating(false);
     },
-    [setIsUpdating, mutate, put]
+    [put, staff, schedule, mutate],
   );
 
   return {
-    update,
     isUpdating,
+    update,
   };
 };

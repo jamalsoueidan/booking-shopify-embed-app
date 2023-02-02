@@ -1,15 +1,15 @@
-import LoadingPage from '@components/LoadingPage';
-import { useTranslation } from '@hooks';
-import { useCollection, useCollectionCreate } from '@services';
-import { ResourcePicker, useNavigate } from '@shopify/app-bridge-react';
-import { Card, EmptyState, Page } from '@shopify/polaris';
-import { useCallback, useMemo, useState } from 'react';
+import { useTranslation } from "@hooks";
+import { LoadingPage } from "@jamalsoueidan/bsf.bsf-pkg";
+import { useCollection, useCollectionCreate } from "@services";
+import { ResourcePicker, useNavigate } from "@shopify/app-bridge-react";
+import { Card, EmptyState, Page } from "@shopify/polaris";
+import { useCallback, useMemo, useState } from "react";
 
 export default () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { create, isFetching, isFetched } = useCollectionCreate();
-  const { t } = useTranslation('collections');
+  const { t } = useTranslation("collections");
   const { data } = useCollection();
 
   const handleSelection = useCallback(
@@ -18,17 +18,17 @@ export default () => {
       create({ selections });
       setOpen(false);
     },
-    [create, setOpen]
+    [create, setOpen],
   );
 
   const onCancel = useCallback(() => setOpen(false), []);
 
   const action = useMemo(
     () => ({
-      content: t('empty.choose_collections'),
+      content: t("empty.choose_collections"),
       onAction: () => setOpen(true),
     }),
-    []
+    [],
   );
 
   if (isFetching) {
@@ -36,12 +36,12 @@ export default () => {
   }
 
   if (data?.length > 0 || isFetched) {
-    navigate('/Collections');
+    navigate("/Collections");
     return <></>;
   }
 
   return (
-    <Page fullWidth title={t('title')}>
+    <Page fullWidth title={t("title")}>
       <ResourcePicker
         resourceType="Collection"
         open={open}
@@ -51,9 +51,9 @@ export default () => {
       <Card sectioned>
         <EmptyState
           image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
-          heading={t('empty.title')}
+          heading={t("empty.title")}
           action={action}>
-          <p>{t('empty.text')} 🚀</p>
+          <p>{t("empty.text")} 🚀</p>
         </EmptyState>
       </Card>
     </Page>
