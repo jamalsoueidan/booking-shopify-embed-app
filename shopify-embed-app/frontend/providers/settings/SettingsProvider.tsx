@@ -1,15 +1,29 @@
-import { LoadingPage } from "@jamalsoueidan/bsf.bsf-pkg";
+import { SettingsProvider } from "@jamalsoueidan/bsf.bsf-pkg";
 import { useSetting } from "@services/setting";
-import { SettingsContext } from "./Settings.context";
+import ApplicationRoutes from "Routes";
+import { setDefaultOptions } from "date-fns";
+import da from "date-fns/locale/da";
+import { useMemo } from "react";
+import { BrowserRouter } from "react-router-dom";
 
-export const SettingsProvider = ({ children }: any) => {
+export default () => {
   const { data } = useSetting();
 
-  if (!data) {
-    return <LoadingPage title="Loading application settings" />;
-  }
+  const value = useMemo(
+    () => ({
+      language: data?.language || "da",
+      timeZone: data?.timeZone || "Europe/Copenhagen",
+    }),
+    [data],
+  );
+
+  setDefaultOptions({ locale: value.language === "da" ? da : undefined });
 
   return (
-    <SettingsContext.Provider value={data}>{children}</SettingsContext.Provider>
+    <SettingsProvider value={value}>
+      <BrowserRouter>
+        <ApplicationRoutes />
+      </BrowserRouter>
+    </SettingsProvider>
   );
 };

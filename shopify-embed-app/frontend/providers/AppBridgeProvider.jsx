@@ -1,7 +1,7 @@
-import { useMemo, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import { Provider } from "@shopify/app-bridge-react";
 import { Banner, Layout, Page } from "@shopify/polaris";
+import { useMemo, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 /**
  * A component to configure App Bridge.
@@ -21,12 +21,12 @@ export function AppBridgeProvider({ children }) {
         navigate(path, { replace: true });
       },
     }),
-    [navigate]
+    [navigate],
   );
 
   const routerConfig = useMemo(
     () => ({ history, location }),
-    [history, location]
+    [history, location],
   );
 
   // The host may be present initially, but later removed by navigation.
@@ -42,16 +42,15 @@ export function AppBridgeProvider({ children }) {
     window.__SHOPIFY_DEV_HOST = host;
 
     return {
-      host,
       apiKey: process.env.SHOPIFY_API_KEY,
       forceRedirect: true,
+      host,
     };
   });
 
   if (!process.env.SHOPIFY_API_KEY || !appBridgeConfig.host) {
     const bannerProps = !process.env.SHOPIFY_API_KEY
       ? {
-          title: "Missing Shopify API Key",
           children: (
             <>
               Your app is running without the SHOPIFY_API_KEY environment
@@ -59,9 +58,9 @@ export function AppBridgeProvider({ children }) {
               your React app.
             </>
           ),
+          title: "Missing Shopify API Key",
         }
       : {
-          title: "Missing host query argument",
           children: (
             <>
               Your app can only load if the URL has a <b>host</b> argument.
@@ -69,6 +68,7 @@ export function AppBridgeProvider({ children }) {
               Partners Dashboard <b>Test your app</b> feature
             </>
           ),
+          title: "Missing host query argument",
         };
 
     return (

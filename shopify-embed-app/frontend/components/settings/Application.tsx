@@ -1,8 +1,12 @@
 import { FormErrors } from "@components/FormErrors";
-import { TimeZoneSelect } from "@components/settings/TimeZoneSelect";
-import { useExtendForm, useTranslation } from "@hooks";
-import { LoadingPage } from "@jamalsoueidan/bsf.bsf-pkg";
-import { useToast } from "@providers/toast";
+import {
+  InputLanguage,
+  InputTimeZone,
+  LoadingPage,
+  useForm,
+  useToast,
+  useTranslation,
+} from "@jamalsoueidan/bsf.bsf-pkg";
 import { useSetting, useSettingUpdate } from "@services";
 import {
   Card,
@@ -11,7 +15,6 @@ import {
   Layout,
   Page,
   PageActions,
-  Select,
   SettingToggle,
   Text,
 } from "@shopify/polaris";
@@ -21,35 +24,24 @@ export default () => {
   const { data } = useSetting();
   const { update } = useSettingUpdate();
 
-  const { t } = useTranslation("settings");
+  const { t } = useTranslation({ id: "settings-application", locales });
 
   const { show } = useToast();
 
-  const languageOptions = [
-    {
-      label: t("store_settings.language.options.english"),
-      value: "en-US",
-    },
-    {
-      label: t("store_settings.language.options.danish"),
-      value: "da-DK",
-    },
-  ];
-
   //https://codesandbox.io/s/1wpxz?file=/src/MyForm.tsx:2457-2473
-  const { fields, submit, submitErrors, primaryAction } = useExtendForm({
+  const { fields, submit, submitErrors, primaryAction } = useForm({
     fields: {
-      timeZone: useField<string>({
-        value: data?.timeZone,
-        validates: [],
-      }),
       language: useField<string>({
-        value: data?.language || "en-US",
         validates: [],
+        value: data?.language || "en-US",
       }),
       status: useField<boolean>({
-        value: data?.status,
         validates: [],
+        value: data?.status,
+      }),
+      timeZone: useField<string>({
+        validates: [],
+        value: data?.timeZone,
       }),
     },
     onSubmit: async (fieldValues) => {
@@ -73,15 +65,8 @@ export default () => {
             description={t("store_settings.subtitle")}>
             <Card sectioned>
               <FormLayout>
-                <TimeZoneSelect
-                  label={t("store_settings.timezone.label")}
-                  {...fields.timeZone}
-                />
-                <Select
-                  label={t("store_settings.language.label")}
-                  options={languageOptions}
-                  {...fields.language}
-                />
+                <InputTimeZone {...fields.timeZone} />
+                <InputLanguage {...fields.language} />
               </FormLayout>
             </Card>
           </Layout.AnnotatedSection>
@@ -93,16 +78,16 @@ export default () => {
                 <SettingToggle
                   action={{
                     content: fields.status.value
-                      ? t("store_status.status.disable")
-                      : t("store_status.status.enable"),
+                      ? t("status.disable")
+                      : t("status.enable"),
                     onAction: () =>
                       fields.status.onChange(!fields.status.value),
                   }}
                   enabled={fields.status.value}>
                   <Text variant="bodyMd" fontWeight="bold" as="span">
                     {fields.status.value
-                      ? t("store_status.status.enabled")
-                      : t("store_status.status.disabled")}
+                      ? t("status.enabled")
+                      : t("status.disabled")}
                   </Text>
                   .
                 </SettingToggle>
@@ -115,4 +100,43 @@ export default () => {
       </Page>
     </Form>
   );
+};
+
+const locales = {
+  da: {
+    status: {
+      disable: "Deaktivere",
+      disabled: "App er deaktiveret",
+      enable: "Aktivere",
+      enabled: "App er aktiveret",
+    },
+    store_settings: {
+      subtitle: "Tidszone og sprog",
+      title: "Butiksindstillinger",
+    },
+    store_status: {
+      subtitle: "Deaktiver reservationer på online butik.",
+      title: "App Status",
+    },
+    title: "Indstillinger",
+    toast: "Indstillinger er opdateret",
+  },
+  en: {
+    status: {
+      disable: "Disable",
+      disabled: "App is disabled",
+      enable: "Enable",
+      enabled: "App is enabled",
+    },
+    store_settings: {
+      subtitle: "Time zone and locale",
+      title: "Store settings",
+    },
+    store_status: {
+      subtitle: "Disable bookings on the storefront.",
+      title: "App Status",
+    },
+    title: "Settings",
+    toast: "Settings has been updated",
+  },
 };

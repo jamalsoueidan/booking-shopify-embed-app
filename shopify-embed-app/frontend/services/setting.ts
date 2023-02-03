@@ -1,13 +1,17 @@
-import { useFetch } from '@hooks';
-import { ApiResponse, Setting, SettingBodyUpdate } from '@jamalsoueidan/bsb.mongodb.types';
-import { useCallback } from 'react';
-import { useQuery } from 'react-query';
+import { useFetch } from "@hooks";
+import {
+  ApiResponse,
+  Setting,
+  SettingBodyUpdate,
+} from "@jamalsoueidan/bsb.mongodb.types";
+import { useCallback } from "react";
+import { useQuery } from "react-query";
 
 export const useSetting = () => {
   const { get } = useFetch();
   const { data, ...rest } = useQuery<ApiResponse<Setting>>({
-    queryKey: ['setting'],
     queryFn: () => get(`/api/admin/setting`),
+    queryKey: ["setting"],
     refetchOnWindowFocus: false,
   });
 
@@ -18,7 +22,7 @@ export const useSetting = () => {
 };
 
 type UseSettingUpdateFetch = (
-  body: SettingBodyUpdate
+  body: SettingBodyUpdate,
 ) => Promise<ApiResponse<Setting>>;
 
 export const useSettingUpdate = () => {
@@ -28,12 +32,12 @@ export const useSettingUpdate = () => {
     async (body) => {
       const response: ApiResponse<Setting> = await put(
         `/api/admin/setting`,
-        body
+        body,
       );
-      await mutate(['setting']);
+      await mutate(["setting"]);
       return response;
     },
-    [put, mutate]
+    [put, mutate],
   );
 
   return {

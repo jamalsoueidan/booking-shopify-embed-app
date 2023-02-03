@@ -1,7 +1,9 @@
-import { useDate, useTagOptions } from '@hooks';
-import { ScheduleBodyUpdate } from '@jamalsoueidan/bsb.mongodb.types';
-import { useToast } from '@providers/toast';
-import { useStaffScheduleDestroy, useStaffScheduleUpdate } from '@services';
+import { ScheduleBodyUpdate } from "@jamalsoueidan/bsb.mongodb.types";
+import { useDate, useTag, useToast } from "@jamalsoueidan/bsf.bsf-pkg";
+import {
+  useStaffScheduleDestroy,
+  useStaffScheduleUpdate,
+} from "@services/staff/schedule";
 import {
   Button,
   Checkbox,
@@ -9,121 +11,135 @@ import {
   Modal,
   Select,
   TextField,
-} from '@shopify/polaris';
-import { format } from 'date-fns';
-import { useCallback, useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
+} from "@shopify/polaris";
+import { format } from "date-fns";
+import { useCallback, useMemo, useState } from "react";
+import { useParams } from "react-router-dom";
 
-interface Props {
-  info: any;
-  setInfo: any;
+interface EditShiftModalProps {
+  info: {
+    event: Record<string, any>;
+  };
+  setInfo: (value: object | null) => void;
 }
 
-export default ({ info, setInfo }: Props) => {
-  const { options } = useTagOptions();
-  const params = useParams();
+export const EditShiftModal = ({ info, setInfo }: EditShiftModalProps) => {
+  const { options } = useTag();
   const { show } = useToast();
-  const toggleActive = () => setInfo(null);
+  const toggleActive = useCallback(() => setInfo(null), [setInfo]);
   const { toTimeZone, toUtc } = useDate();
+  const params = useParams();
 
   const extendedProps = info.event._def.extendedProps;
   const [startTime, setStartTime] = useState<string>(
-    format(toTimeZone(extendedProps.start), 'HH:mm')
+    format(toTimeZone(extendedProps.start), "HH:mm"),
   );
   const [endTime, setEndTime] = useState<string>(
-    format(toTimeZone(extendedProps.end), 'HH:mm')
+    format(toTimeZone(extendedProps.end), "HH:mm"),
   );
   const [tag, setTag] = useState(extendedProps.tag || options[0].value);
   const [available, setAvailable] = useState(extendedProps.available || false);
 
   const { isUpdating, update: updateSchedule } = useStaffScheduleUpdate({
-    staff: params.id,
     schedule: extendedProps._id,
+    staff: params.id,
   });
 
   const { isUpdating: isUpdatingAll, update: updateScheduleAll } =
     useStaffScheduleUpdate({
-      staff: params.id,
       schedule: extendedProps._id,
+      staff: params.id,
     });
 
   const { isDestroying, destroy: destroySchedule } = useStaffScheduleDestroy({
-    staff: params.id,
     schedule: extendedProps._id,
+    staff: params.id,
   });
 
   const { isDestroying: isDestroyingAll, destroy: destroyScheduleAll } =
     useStaffScheduleDestroy({
-      staff: params.id,
       schedule: extendedProps._id,
+      staff: params.id,
     });
 
   const handleStart = useCallback((value: string) => setStartTime(value), []);
   const handleTag = useCallback((value: string) => setTag(value), []);
   const handleAvailable = useCallback(
     (newChecked: boolean) => setAvailable(newChecked),
-    []
+    [],
   );
   const handleEnd = useCallback((value: string) => setEndTime(value), []);
 
   const updateDate = useCallback(
-    async (type: 'all' | null) => {
+    async (type: "all" | null) => {
       const start = toUtc(`${extendedProps.start.substr(0, 10)} ${startTime}`);
       const end = toUtc(`${extendedProps.end.substr(0, 10)} ${endTime}`);
 
       const body: ScheduleBodyUpdate = {
-        start: start.toISOString(),
         end: end.toISOString(),
+        start: start.toISOString(),
         tag,
-        ...(type === 'all' ? { groupId: extendedProps.groupId } : null),
+        ...(type === "all" ? { groupId: extendedProps.groupId } : null),
       };
 
-      type == 'all' ? updateScheduleAll(body) : updateSchedule(body);
+      type == "all" ? updateScheduleAll(body) : updateSchedule(body);
       setInfo(null);
       show({
         content:
-          type === 'all'
-            ? 'Schedules has been updated'
-            : 'Schedule has been updated',
+          type === "all"
+            ? "Schedules has been updated"
+            : "Schedule has been updated",
       });
     },
-    [toUtc, updateSchedule, updateScheduleAll, setInfo]
+    [
+      toUtc,
+      extendedProps.start,
+      extendedProps.end,
+      extendedProps.groupId,
+      startTime,
+      endTime,
+      tag,
+      updateScheduleAll,
+      updateSchedule,
+      setInfo,
+      show,
+    ],
   );
 
   const deleteDate = useCallback(
-    (type: 'all' | null) => {
+    (type: "all" | null) => {
       const body = {
-        ...(type === 'all' ? { groupId: extendedProps.groupId } : null),
+        ...(type === "all" ? { groupId: extendedProps.groupId } : null),
       };
 
-      type == 'all' ? destroyScheduleAll(body) : destroySchedule(body);
+      type == "all" ? destroyScheduleAll(body) : destroySchedule(body);
       setInfo(null);
       show({
         content:
-          type === 'all' ? 'Schedules is deleted' : 'Schedule is deleted',
+          type === "all" ? "Schedules is deleted" : "Schedule is deleted",
       });
     },
-    [destroyScheduleAll, destroySchedule, setInfo]
+    [extendedProps.groupId, destroyScheduleAll, destroySchedule, setInfo, show],
   );
 
-  const formatDate = format(new Date(extendedProps.start), 'MM/dd/yyyy');
+  const formatDate = format(new Date(extendedProps.start), "MM/dd/yyyy");
 
   const secondaryActions = useMemo(
     () => [
       {
-        content: 'Luk',
+        content: "Luk",
         onAction: toggleActive,
       },
     ],
-    [toggleActive]
+    [toggleActive],
   );
 
   const onClose = useCallback(() => toggleActive(), [toggleActive]);
 
   const updateDateOne = useCallback(() => updateDate(null), [updateDate]);
   const deleteDateOne = useCallback(() => deleteDate(null), [deleteDate]);
-  const updateDateAll = useCallback(() => updateDate('all'), [updateDate]);
-  const deleteDateAll = useCallback(() => deleteDate('all'), [deleteDate]);
+  const updateDateAll = useCallback(() => updateDate("all"), [updateDate]);
+  const deleteDateAll = useCallback(() => deleteDate("all"), [deleteDate]);
 
   return (
     <Modal

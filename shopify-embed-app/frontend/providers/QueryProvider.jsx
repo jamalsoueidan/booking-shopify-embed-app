@@ -1,9 +1,9 @@
 import {
+  MutationCache,
+  QueryCache,
   QueryClient,
   QueryClientProvider,
-  QueryCache,
-  MutationCache,
-} from 'react-query';
+} from "react-query";
 
 /**
  * Sets up the QueryClientProvider from react-query.
@@ -11,13 +11,13 @@ import {
  */
 export function QueryProvider({ children }) {
   const client = new QueryClient({
-    queryCache: new QueryCache(),
-    mutationCache: new MutationCache(),
     defaultOptions: {
+      refetchOnMount: false,
       refetchOnReconnect: false,
       refetchOnWindowFocus: false,
-      refetchOnMount: false,
     },
+    mutationCache: new MutationCache(),
+    queryCache: new QueryCache(),
   });
 
   return <QueryClientProvider client={client}>{children}</QueryClientProvider>;
