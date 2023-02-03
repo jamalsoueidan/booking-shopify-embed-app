@@ -1,7 +1,6 @@
-import CollectionList from "@components/collections/CollectionList";
-import ResourcePicker from "@components/collections/ResourcePicker";
-import { useTranslation } from "@hooks/useTranslation";
-import { LoadingSpinner } from "@jamalsoueidan/bsf.bsf-pkg";
+import CollectionList from "@components/collections/collection-list";
+import ResourcePicker from "@components/collections/resource-picker";
+import { LoadingSpinner, useTranslation } from "@jamalsoueidan/bsf.bsf-pkg";
 import { useCollection } from "@services";
 import { useNavigate } from "@shopify/app-bridge-react";
 import { Page } from "@shopify/polaris";
@@ -11,7 +10,7 @@ export default () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const { data } = useCollection();
-  const { t } = useTranslation("collections");
+  const { t } = useTranslation({ id: "collections", locales });
 
   if (data?.length === 0) {
     navigate("/collections/empty");
@@ -32,4 +31,15 @@ export default () => {
       </Suspense>
     </Page>
   );
+};
+
+const locales = {
+  da: {
+    add_collection: "Tilføj kategori",
+    title: "Kategorier",
+  },
+  en: {
+    add_collection: "Add Category",
+    title: "Categories",
+  },
 };

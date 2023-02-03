@@ -1,6 +1,6 @@
 import { FormErrors } from "@components/FormErrors";
-import { useExtendForm, useTranslation } from "@hooks";
-import { LoadingSpinner } from "@jamalsoueidan/bsf.bsf-pkg";
+import { useTranslation } from "@hooks";
+import { LoadingSpinner, useForm } from "@jamalsoueidan/bsf.bsf-pkg";
 import { useModal } from "@providers/modal";
 import { useToast } from "@providers/toast";
 import { useBookingUpdate, useWidgetStaff } from "@services";
@@ -23,6 +23,37 @@ export default ({ info, toggle }: BookingModalProductChildProps) => {
   const { show } = useToast();
   const { setPrimaryAction, setSecondaryActions } = useModal();
 
+  const { fields, submit, submitErrors, isSubmitted, isValid } = useForm({
+    enableSaveBar: false,
+    fields: {
+      date: useField<Date>({
+        validates: [notEmpty("date is required")],
+        value: new Date(info.start) || undefined,
+      }),
+      staff: useField<string>({
+        validates: [notEmpty("staff is required")],
+        value: info.staff._id || "",
+      }),
+      time: useField<{ start: string; end: string }>({
+        validates: [notEmpty("time is required")],
+        value: {
+          end: info.end || undefined,
+          start: info.start || undefined,
+        },
+      }),
+    },
+    onSubmit: async (fieldValues: any) => {
+      update({
+        end: fieldValues.time.end,
+        staff: fieldValues.staff,
+        start: fieldValues.time.start,
+      });
+      toggle();
+      show({ content: t("toast") });
+      return { status: "success" };
+    },
+  });
+
   useEffect(() => {
     setPrimaryAction({
       content: "Ændre dato/tid",
@@ -39,38 +70,7 @@ export default ({ info, toggle }: BookingModalProductChildProps) => {
       setSecondaryActions(null);
       setPrimaryAction(null);
     };
-  }, [setPrimaryAction, setPrimaryAction]);
-
-  const { fields, submit, submitErrors, isSubmitted, isValid } = useExtendForm({
-    fields: {
-      staff: useField<string>({
-        value: info.staff._id || "",
-        validates: [notEmpty("staff is required")],
-      }),
-      date: useField<Date>({
-        value: new Date(info.start) || undefined,
-        validates: [notEmpty("date is required")],
-      }),
-      time: useField<{ start: string; end: string }>({
-        value: {
-          start: info.start || undefined,
-          end: info.end || undefined,
-        },
-        validates: [notEmpty("time is required")],
-      }),
-    },
-    onSubmit: async (fieldValues: any) => {
-      update({
-        start: fieldValues.time.start,
-        end: fieldValues.time.end,
-        staff: fieldValues.staff,
-      });
-      toggle();
-      show({ content: t("toast") });
-      return { status: "success" };
-    },
-    enableSaveBar: false,
-  });
+  }, [setPrimaryAction, setSecondaryActions, submit, toggle]);
 
   if (!staffOptions) {
     return (

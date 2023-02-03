@@ -4,12 +4,12 @@ import {
   ScheduleDateSelect,
   ScheduleStaffSelect,
   ScheduleTimerSelect,
-} from '@components/bookings/BookingForm';
-import { useExtendForm, useTranslation } from '@hooks';
-import { notEmptyObject } from '@libs/validators/notEmptyObject';
-import { useToast } from '@providers/toast';
-import { useBookingCreate } from '@services/booking';
-import { useNavigate } from '@shopify/app-bridge-react';
+} from "@components/bookings/BookingForm";
+import { useTranslation } from "@hooks";
+import { useForm, useToast } from "@jamalsoueidan/bsf.bsf-pkg";
+import { notEmptyObject } from "@libs/validators/notEmptyObject";
+import { useBookingCreate } from "@services/booking";
+import { useNavigate } from "@shopify/app-bridge-react";
 import {
   Card,
   Form,
@@ -17,55 +17,55 @@ import {
   Layout,
   Page,
   PageActions,
-} from '@shopify/polaris';
-import { notEmpty, useField } from '@shopify/react-form';
+} from "@shopify/polaris";
+import { notEmpty, useField } from "@shopify/react-form";
 
 export default () => {
   const navigate = useNavigate();
   const { create } = useBookingCreate();
   const { show } = useToast();
-  const { t } = useTranslation('bookings', { keyPrefix: 'new' });
+  const { t } = useTranslation("bookings", { keyPrefix: "new" });
   //https://codesandbox.io/s/1wpxz?file=/src/MyForm.tsx:2457-2473
-  const { fields, submit, primaryAction } = useExtendForm({
+  const { fields, submit, primaryAction } = useForm({
     fields: {
-      productId: useField<number>({
-        value: undefined,
-        validates: [notEmpty('Der er ikke valgt produkt')],
-      }),
       customer: useField<{ customerId: number; fullName: string }>({
+        validates: [notEmptyObject("Du mangler vælg kunde")],
         value: {
           customerId: undefined,
           fullName: undefined,
         },
-        validates: [notEmptyObject('Du mangler vælg kunde')],
-      }),
-      staff: useField<string>({
-        value: undefined,
-        validates: [notEmpty('Du mangler vælg medarbejder')],
       }),
       date: useField<Date>({
+        validates: [notEmpty("Du mangler vælg dato")],
         value: undefined,
-        validates: [notEmpty('Du mangler vælg dato')],
+      }),
+      productId: useField<number>({
+        validates: [notEmpty("Der er ikke valgt produkt")],
+        value: undefined,
+      }),
+      staff: useField<string>({
+        validates: [notEmpty("Du mangler vælg medarbejder")],
+        value: undefined,
       }),
       time: useField<{ start: string; end: string }>({
+        validates: [notEmptyObject("Du mangler vælg tid")],
         value: {
-          start: undefined,
           end: undefined,
+          start: undefined,
         },
-        validates: [notEmptyObject('Du mangler vælg tid')],
       }),
     },
     onSubmit: async (fieldValues) => {
       await create({
-        productId: fieldValues.productId,
         customerId: fieldValues.customer.customerId,
+        end: fieldValues.time.end,
+        productId: fieldValues.productId,
         staff: fieldValues.staff,
         start: fieldValues.time.start,
-        end: fieldValues.time.end,
       });
-      show({ content: 'Booking created' });
+      show({ content: "Booking created" });
       navigate(`/bookings`);
-      return { status: 'success' };
+      return { status: "success" };
     },
   });
 
@@ -73,23 +73,23 @@ export default () => {
     <Form onSubmit={submit}>
       <Page
         fullWidth
-        title={t('title')}
-        breadcrumbs={[{ content: 'Bookings', url: '/Bookings' }]}>
+        title={t("title")}
+        breadcrumbs={[{ content: "Bookings", url: "/Bookings" }]}>
         <Layout>
-          <Layout.AnnotatedSection title={'Produkt'}>
+          <Layout.AnnotatedSection title={"Produkt"}>
             <Card sectioned>
               <FormLayout>
                 <ProductSelect {...fields.productId} />
               </FormLayout>
             </Card>
           </Layout.AnnotatedSection>
-          <Layout.AnnotatedSection title={'Kunde'}>
+          <Layout.AnnotatedSection title={"Kunde"}>
             <Card sectioned>
-              <CustomerAutocomplete {...fields.customer}></CustomerAutocomplete>
+              <CustomerAutocomplete {...fields.customer} />
             </Card>
           </Layout.AnnotatedSection>
           <Layout.AnnotatedSection
-            title={'Tidsbestilling'}
+            title={"Tidsbestilling"}
             description="Vælg medarbejder, dato og tid">
             <Card sectioned>
               <FormLayout>

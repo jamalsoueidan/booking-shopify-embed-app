@@ -1,16 +1,17 @@
-import { useTranslation } from "@hooks";
 import {
   Product,
   ProductAggreate,
   ProductStaffAggreate,
 } from "@jamalsoueidan/bsb.mongodb.types";
+import { useTranslation } from "@jamalsoueidan/bsf.bsf-pkg";
 import { Card } from "@shopify/polaris";
 import { DynamicList } from "@shopify/react-form/build/ts/hooks/list/dynamiclist";
 import { Suspense, lazy, memo, useCallback, useState } from "react";
-import FormContext from "./staff/FormContext";
-import StaffList from "./staff/StaffList";
+import FormContext from "./staff/form-context";
+import { StaffList } from "./staff/staff-list";
 
-const StaffModal = lazy(() => import("./staff/StaffModal"));
+const StaffModal = lazy(() => import("./staff/staff-modal"));
+
 interface StaffCardProps {
   product: Product | ProductAggreate;
   form: DynamicList<ProductStaffAggreate>;
@@ -18,7 +19,17 @@ interface StaffCardProps {
 
 export default memo(({ product, form }: StaffCardProps) => {
   const [showModal, setShowModal] = useState(false);
-  const { t } = useTranslation("collections", { keyPrefix: "product.staff" });
+  const { t } = useTranslation({
+    id: "product-staff",
+    locales: {
+      da: {
+        title: "Tilføj medarbejder",
+      },
+      en: {
+        title: "Add staff",
+      },
+    },
+  });
 
   const show = useCallback(() => setShowModal(() => true), []);
   const hide = useCallback(() => setShowModal(() => false), []);

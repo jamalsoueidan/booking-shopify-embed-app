@@ -36,7 +36,7 @@ export default () => {
             {fullname} <Metadata active={active} />
           </Text>
           <div>
-            {select(position as any)}
+            {select(position)}
             <br />
           </div>
         </ResourceItem>

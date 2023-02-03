@@ -1,11 +1,11 @@
-import { useProducts } from '@services/product';
-import { Select, SelectOption } from '@shopify/polaris';
-import { Field } from '@shopify/react-form';
-import { useCallback, useMemo } from 'react';
+import { useProducts } from "@services/product";
+import { Select, SelectOption } from "@shopify/polaris";
+import { Field } from "@shopify/react-form";
+import { useCallback, useMemo } from "react";
 
 const defaultOption: SelectOption = {
-  key: 'vælg produkt',
-  label: 'Vælg produkt',
+  key: "vælg produkt",
+  label: "Vælg produkt",
   value: undefined,
 } as any;
 
@@ -27,7 +27,7 @@ export const ProductSelect = (field: Field<number>) => {
     (selected: string) => {
       field.onChange(parseInt(selected));
     },
-    [field.onChange]
+    [field],
   );
 
   return (

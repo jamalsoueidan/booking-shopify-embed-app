@@ -28,7 +28,7 @@ export default () => {
   const { data } = useNotificationTemplates({ language });
   const { show } = useToast();
   const { update } = useNotificationTemplatesUpdate();
-  const { t } = useTranslation({ id: "settings-notification", locales });
+  const { tdynamic } = useTranslation({ id: "settings-notification", locales });
 
   const {
     submit,
@@ -97,14 +97,14 @@ export default () => {
               (field: FieldDictionary<NotificationTemplate>) => (
                 <Layout.AnnotatedSection
                   key={field._id.value}
-                  title={t(`${field.name.value.toLowerCase()}.title` as any)}
-                  description={t(
-                    `${field.name.value.toLowerCase()}.description` as any,
+                  title={tdynamic(`${field.name.value.toLowerCase()}.title`)}
+                  description={tdynamic(
+                    `${field.name.value.toLowerCase()}.description`,
                   )}>
                   <Card sectioned>
                     <TextField
-                      label={t(
-                        `${field.name.value.toLowerCase()}.label` as any,
+                      label={tdynamic(
+                        `${field.name.value.toLowerCase()}.label`,
                       )}
                       autoComplete="false"
                       {...field.message}

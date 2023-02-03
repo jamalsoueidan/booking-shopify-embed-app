@@ -1,11 +1,9 @@
-import { FormErrors } from "@components/FormErrors";
-import ProductActivate from "@components/collections/product/ProductActivate";
-import ProductBanner from "@components/collections/product/ProductBanner";
-import ProductOptionsCard from "@components/collections/product/ProductOptionsCard";
-import ProductStaff from "@components/collections/product/ProductStaff";
-import { useExtendForm } from "@hooks";
+import ProductActivate from "@components/collections/product/product-activate";
+import ProductBanner from "@components/collections/product/product-banner";
+import ProductOptionsCard from "@components/collections/product/product-options-card";
+import ProductStaff from "@components/collections/product/product-staff";
 import { ProductStaffAggreate } from "@jamalsoueidan/bsb.mongodb.types";
-import { LoadingPage } from "@jamalsoueidan/bsf.bsf-pkg";
+import { FormErrors, LoadingPage, useForm } from "@jamalsoueidan/bsf.bsf-pkg";
 import { useProductGet, useProductUpdate } from "@services";
 import { Badge, Form, Grid, Page, PageActions } from "@shopify/polaris";
 import { useDynamicList, useField } from "@shopify/react-form";
@@ -25,32 +23,32 @@ export default () => {
     submitErrors,
     dynamicLists: { staff },
     primaryAction,
-  } = useExtendForm({
-    fields: {
-      buffertime: useField({
-        value: product?.buffertime,
-        validates: [],
-      }),
-      duration: useField({
-        value: product?.duration,
-        validates: [],
-      }),
-      active: useField({
-        value: product?.active,
-        validates: [],
-      }),
-    },
+  } = useForm({
     dynamicLists: {
       staff: useDynamicList<ProductStaffAggreate>(
         product?.staff || [],
         (staff: ProductStaffAggreate) => staff,
       ),
     },
+    fields: {
+      active: useField({
+        validates: [],
+        value: product?.active,
+      }),
+      buffertime: useField({
+        validates: [],
+        value: product?.buffertime,
+      }),
+      duration: useField({
+        validates: [],
+        value: product?.duration,
+      }),
+    },
     onSubmit: async (fieldValues) => {
       await update({
+        active: fieldValues.active,
         buffertime: fieldValues.buffertime,
         duration: fieldValues.duration,
-        active: fieldValues.active,
         staff: fieldValues.staff,
       });
       return { status: "success" };
@@ -71,19 +69,20 @@ export default () => {
             {product.active ? "Active" : "Deactive"}
           </Badge>
         }
-        breadcrumbs={[{ content: "Collections", url: "/Collections" }]}>
+        breadcrumbs={[{ content: "Collections", url: "/collections" }]}>
         <FormErrors errors={submitErrors} />
-        {product.staff.length === 0 && <ProductBanner></ProductBanner>}
+        {product.staff.length === 0 && <ProductBanner />}
         <Grid>
-          <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 4, lg: 8, xl: 8 }}>
-            <ProductStaff product={product} form={staff}></ProductStaff>
+          <Grid.Cell columnSpan={{ lg: 8, md: 4, sm: 6, xl: 8, xs: 6 }}>
+            <ProductStaff product={product} form={staff} />
           </Grid.Cell>
-          <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 2, lg: 4, xl: 4 }}>
+          <Grid.Cell columnSpan={{ lg: 4, md: 2, sm: 6, xl: 4, xs: 6 }}>
             <ProductActivate
               active={fields.active}
-              staffLength={product.staff.length}></ProductActivate>
+              staffLength={product.staff.length}
+            />
 
-            <ProductOptionsCard fields={fields}></ProductOptionsCard>
+            <ProductOptionsCard fields={fields} />
           </Grid.Cell>
         </Grid>
         <br />

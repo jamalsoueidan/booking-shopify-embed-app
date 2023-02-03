@@ -1,5 +1,5 @@
-import { useTranslation } from '@hooks';
-import { Product } from '@jamalsoueidan/bsb.mongodb.types';
+import { Product } from "@jamalsoueidan/bsb.mongodb.types";
+import { useTranslation } from "@jamalsoueidan/bsf.bsf-pkg";
 import {
   Button,
   ButtonGroup,
@@ -9,32 +9,33 @@ import {
   Select,
   Stack,
   Text,
-} from '@shopify/polaris';
-import { ClockMajor } from '@shopify/polaris-icons';
-import { FieldDictionary } from '@shopify/react-form';
-import { memo, useCallback, useMemo } from 'react';
+} from "@shopify/polaris";
+import { ClockMajor } from "@shopify/polaris-icons";
+import { FieldDictionary } from "@shopify/react-form";
+import { memo, useCallback, useMemo } from "react";
 
 export default memo(
   ({
     fields,
   }: {
-    fields: FieldDictionary<Pick<Product, 'buffertime' | 'duration'>>;
+    fields: FieldDictionary<Pick<Product, "buffertime" | "duration">>;
   }) => {
-    const { t } = useTranslation('collections', {
-      keyPrefix: 'product.options',
+    const { t } = useTranslation({
+      id: "collections-product-options",
+      locales,
     });
 
     const options = useMemo(
       () => [
-        { label: '0 min', value: '0' },
-        { label: '5 min', value: '5' },
-        { label: '10 min', value: '10' },
-        { label: '15 min', value: '15' },
-        { label: '20 min', value: '20' },
-        { label: '25 min', value: '25' },
-        { label: '30 min', value: '30' },
+        { label: "0 min", value: "0" },
+        { label: "5 min", value: "5" },
+        { label: "10 min", value: "10" },
+        { label: "15 min", value: "15" },
+        { label: "20 min", value: "20" },
+        { label: "25 min", value: "25" },
+        { label: "30 min", value: "30" },
       ],
-      []
+      [],
     );
 
     const selectLabel = useMemo(
@@ -43,20 +44,20 @@ export default memo(
           <Stack.Item>
             <Icon source={ClockMajor} />
           </Stack.Item>
-          <Stack.Item>{t('buffertime.label')}</Stack.Item>
+          <Stack.Item>{t("buffertime.label")}</Stack.Item>
         </Stack>
       ),
-      []
+      [t],
     );
 
     const onChangeSelect = useCallback(
       (value: string) => fields.buffertime.onChange(parseInt(value)),
-      [fields.buffertime.onChange]
+      [fields.buffertime],
     );
 
     const onChange = useCallback(
       (value: number) => () => fields.duration.onChange(value),
-      [fields.duration.onChange]
+      [fields.duration],
     );
 
     return (
@@ -64,7 +65,7 @@ export default memo(
         <Card sectioned>
           <FormLayout>
             <Text variant="headingSm" as="h6">
-              {t('duration.label')}
+              {t("duration.label")}
             </Text>
             <ButtonGroup segmented>
               <Button
@@ -88,12 +89,12 @@ export default memo(
         <Card sectioned>
           <FormLayout>
             <Text variant="headingXs" as="h6">
-              {t('duration.help')}
+              {t("duration.help")}
             </Text>
             <Select
               label={selectLabel}
               options={options}
-              helpText={t('buffertime.help')}
+              helpText={t("buffertime.help")}
               value={fields.buffertime.value?.toString()}
               onChange={onChangeSelect}
             />
@@ -101,5 +102,32 @@ export default memo(
         </Card>
       </>
     );
-  }
+  },
 );
+
+const locales = {
+  da: {
+    buffertime: {
+      help: "Pause tid mellem møderne",
+      label: "Pausetid",
+    },
+    description: "Ændre indstillinger for dette product?",
+    duration: {
+      help: "Hvor længe kommer behandling til at tag tid?",
+      label: "Behandlingstid",
+    },
+    title: "Indstillinger",
+  },
+  en: {
+    buffertime: {
+      help: "Free time between meetings",
+      label: "Buffertime",
+    },
+    description: "Change options for this product?",
+    duration: {
+      help: "How long should your meeting last?",
+      label: "Meeting duration",
+    },
+    title: "Settings",
+  },
+};

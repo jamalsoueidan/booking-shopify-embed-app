@@ -1,9 +1,16 @@
-import { usePositions, useTagOptions, useTranslation } from '@hooks';
-import { ProductAddStaff, ProductStaffAggreate } from '@jamalsoueidan/bsb.mongodb.types';
-import { useProductStaff } from '@services';
-import { Modal, OptionList, Spinner, Text } from '@shopify/polaris';
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import FormContext from './FormContext';
+import {
+  ProductAddStaff,
+  ProductStaffAggreate,
+} from "@jamalsoueidan/bsb.mongodb.types";
+import {
+  usePosition,
+  useTag,
+  useTranslation,
+} from "@jamalsoueidan/bsf.bsf-pkg";
+import { useProductStaff } from "@services";
+import { Modal, OptionList, Spinner, Text } from "@shopify/polaris";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import FormContext from "./form-context";
 
 interface StaffModalProps {
   productId: string;
@@ -12,8 +19,20 @@ interface StaffModalProps {
 }
 
 export default ({ productId, show, close }: StaffModalProps) => {
-  const { t } = useTranslation('collections', {
-    keyPrefix: 'product.staff.modal',
+  const { t } = useTranslation({
+    id: "collection-staff-modal",
+    locales: {
+      da: {
+        close: "Luk",
+        done: "Færdig",
+        title: "Medarbejder",
+      },
+      en: {
+        close: "Close",
+        done: "Done",
+        title: "Staff",
+      },
+    },
   });
 
   const { data } = useProductStaff({ productId: show ? productId : null });
@@ -30,12 +49,12 @@ export default ({ productId, show, close }: StaffModalProps) => {
       }
       setSelected(() => newSelected);
     },
-    [selected, setSelected]
+    [selected, setSelected],
   );
 
   const didChange = useMemo(
     () => JSON.stringify(value) !== JSON.stringify(selected),
-    [value, selected]
+    [value, selected],
   );
 
   const submit = useCallback(() => {
@@ -44,7 +63,7 @@ export default ({ productId, show, close }: StaffModalProps) => {
       selected.forEach((s) => addItem(s));
     }
     close();
-  }, [didChange, removeItems, selected, addItem]);
+  }, [didChange, close, removeItems, fields, selected, addItem]);
 
   // onOpen update selected to correspond to the useForm
   useEffect(() => {
@@ -71,15 +90,15 @@ export default ({ productId, show, close }: StaffModalProps) => {
     <Modal
       open={show}
       onClose={close}
-      title={t('title')}
+      title={t("title")}
       primaryAction={{
-        content: t('done'),
-        onAction: submit,
+        content: t("done"),
         disabled: !didChange,
+        onAction: submit,
       }}
       secondaryActions={[
         {
-          content: t('close'),
+          content: t("close"),
           onAction: close,
         },
       ]}>
@@ -93,7 +112,7 @@ export default ({ productId, show, close }: StaffModalProps) => {
         )}
         {!choices && (
           <Modal.Section>
-            <div style={{ textAlign: 'center' }}>
+            <div style={{ textAlign: "center" }}>
               <Spinner accessibilityLabel="Spinner example" size="large" />
             </div>
           </Modal.Section>
@@ -111,18 +130,16 @@ interface ChoiceStaffProps {
 }
 
 const ChoiceStaff = ({ staff, selected, toggle }: ChoiceStaffProps) => {
-  const { select: selectTag } = useTagOptions();
-  const { select: selectPosition } = usePositions();
+  const { select: selectTag } = useTag();
+  const { select: selectPosition } = usePosition();
 
   const choices = useMemo(
     () =>
-      [...staff.tags].sort().map((t) => {
-        return {
-          value: t,
-          label: selectTag(t),
-        };
-      }),
-    [staff.tags]
+      [...staff.tags].sort().map((t) => ({
+        label: selectTag(t as any),
+        value: t,
+      })),
+    [selectTag, staff.tags],
   );
 
   const handleChange = useCallback(
@@ -131,7 +148,7 @@ const ChoiceStaff = ({ staff, selected, toggle }: ChoiceStaffProps) => {
       const { tags, ...spreadStaff } = staff;
       toggle({ ...spreadStaff, tag: value[0] });
     },
-    [toggle, staff]
+    [toggle, staff],
   );
 
   const choiceSelected = selected
@@ -140,7 +157,7 @@ const ChoiceStaff = ({ staff, selected, toggle }: ChoiceStaffProps) => {
 
   return (
     <OptionList
-      title={staff.fullname + ', ' + selectPosition(staff.position)}
+      title={staff.fullname + ", " + selectPosition(staff.position)}
       options={choices}
       selected={choiceSelected}
       onChange={handleChange}
