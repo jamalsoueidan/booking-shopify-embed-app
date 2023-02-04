@@ -1,6 +1,6 @@
 import { Badge } from "@shopify/polaris";
 
-export default ({ active }: { active: boolean }) =>
+export const MetaData = ({ active }: { active: boolean }) =>
   active ? (
     <Badge status="success">Active</Badge>
   ) : (

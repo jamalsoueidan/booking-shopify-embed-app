@@ -1,4 +1,4 @@
-import Metadata from "@components/staff/Metadata";
+import { MetaData } from "@components/staff/meta-data";
 import { LoadingPage, LoadingSpinner } from "@jamalsoueidan/bsf.bsf-pkg";
 import { useStaffGet, useStaffSchedule } from "@services";
 import { useNavigate } from "@shopify/app-bridge-react";
@@ -7,7 +7,7 @@ import { Suspense, lazy, useState } from "react";
 import { useParams } from "react-router-dom";
 
 const ScheduleCalendar = lazy(() =>
-  import("../../components/staff/ScheduleCalendar").then((module) => ({
+  import("../../components/staff/schedule-calendar").then((module) => ({
     default: module.ScheduleCalendar,
   })),
 );
@@ -38,7 +38,7 @@ export default () => {
     <Page
       fullWidth
       title={fullname}
-      titleMetadata={<Metadata active={active} />}
+      titleMetadata={<MetaData active={active} />}
       breadcrumbs={[{ content: "Staff", onAction: () => navigate("/staff") }]}
       primaryAction={{
         content: "Redigere " + fullname,

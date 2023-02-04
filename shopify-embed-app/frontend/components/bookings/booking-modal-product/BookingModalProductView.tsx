@@ -1,14 +1,15 @@
-import { FulfillmentStatus, useDate } from '@hooks';
-import { useModal } from '@providers/modal';
-import { Banner, Link, Modal, TextContainer } from '@shopify/polaris';
-import { differenceInHours, format, formatRelative, isAfter } from 'date-fns';
-import da from 'date-fns/locale/da';
-import { useEffect } from 'react';
+import { BookingFulfillmentStatus } from "@jamalsoueidan/bsb.mongodb.types";
+import { useDate } from "@jamalsoueidan/bsf.bsf-pkg";
+import { useModal } from "@providers/modal";
+import { Banner, Link, Modal, TextContainer } from "@shopify/polaris";
+import { differenceInHours, format, formatRelative, isAfter } from "date-fns";
+import da from "date-fns/locale/da";
+import { useEffect } from "react";
 
 export default ({ info, toggle }: BookingModalProductChildProps) => {
-  const orderUrl = 'https://' + info.shop + '/admin/orders/' + info.orderId;
+  const orderUrl = "https://" + info.shop + "/admin/orders/" + info.orderId;
   const productUrl =
-    'https://' + info.shop + '/admin/products/' + info.productId;
+    "https://" + info.shop + "/admin/products/" + info.productId;
 
   const { toTimeZone } = useDate();
   const { setSecondaryActions } = useModal();
@@ -17,7 +18,7 @@ export default ({ info, toggle }: BookingModalProductChildProps) => {
     if (!!info.fulfillmentStatus && isAfter(new Date(info.start), new Date())) {
       setSecondaryActions([
         {
-          content: 'Ændre dato/tid',
+          content: "Ændre dato/tid",
           onAction: toggle,
         },
       ]);
@@ -30,14 +31,14 @@ export default ({ info, toggle }: BookingModalProductChildProps) => {
 
   return (
     <>
-      {info.fulfillmentStatus === FulfillmentStatus.CANCELLED && (
+      {info.fulfillmentStatus === BookingFulfillmentStatus.CANCELLED && (
         <Modal.Section>
           <Banner title="Behandling annulleret">
             <p>Dette behandling er blevet annulleret.</p>
           </Banner>
         </Modal.Section>
       )}
-      {info.fulfillmentStatus === FulfillmentStatus.REFUNDED && (
+      {info.fulfillmentStatus === BookingFulfillmentStatus.REFUNDED && (
         <Modal.Section>
           <Banner title="Behandling refunderet" status="critical">
             <p>Dette behandling er blevet refunderet.</p>
@@ -45,15 +46,15 @@ export default ({ info, toggle }: BookingModalProductChildProps) => {
         </Modal.Section>
       )}
       {info.isEdit &&
-        info.fulfillmentStatus !== FulfillmentStatus.CANCELLED &&
-        info.fulfillmentStatus !== FulfillmentStatus.REFUNDED && (
+        info.fulfillmentStatus !== BookingFulfillmentStatus.CANCELLED &&
+        info.fulfillmentStatus !== BookingFulfillmentStatus.REFUNDED && (
           <Modal.Section>
             <Banner title="Behandling har skiftet dato" status="info">
               <p>Dette behandlingtid er blevet ændret.</p>
             </Banner>
           </Modal.Section>
         )}
-      {info.fulfillmentStatus === FulfillmentStatus.FULFILLED && (
+      {info.fulfillmentStatus === BookingFulfillmentStatus.FULFILLED && (
         <Modal.Section>
           <Banner title="Behandling er gennemført" status="success">
             <p>Dette behandling er blevet gennemført.</p>
@@ -67,7 +68,7 @@ export default ({ info, toggle }: BookingModalProductChildProps) => {
           </Banner>
         </Modal.Section>
       )}
-      {info.fulfillmentStatus === FulfillmentStatus.BOOKED && (
+      {info.fulfillmentStatus === BookingFulfillmentStatus.BOOKED && (
         <Modal.Section>
           <Banner title="Behandling er booket af medarbejder">
             <p>Dette behandling er blevet booket af medarbejder</p>
@@ -76,20 +77,20 @@ export default ({ info, toggle }: BookingModalProductChildProps) => {
       )}
       <Modal.Section>
         <TextContainer>
-          <strong>Ordre:</strong>{' '}
+          <strong>Ordre:</strong>{" "}
           {info.orderId ? (
             <Link url={orderUrl} external>
               {info.orderId}
             </Link>
           ) : (
-            'Booket af medarbejder'
+            "Booket af medarbejder"
           )}
         </TextContainer>
       </Modal.Section>
 
       <Modal.Section>
         <TextContainer>
-          <strong>Behandling:</strong>{' '}
+          <strong>Behandling:</strong>{" "}
           <Link url={productUrl} external>
             {info.product.title}
           </Link>
@@ -98,10 +99,10 @@ export default ({ info, toggle }: BookingModalProductChildProps) => {
 
       <Modal.Section>
         <TextContainer>
-          <strong>Dato:</strong>{' '}
-          {format(toTimeZone(info.start), 'd. MMM yyyy', {
+          <strong>Dato:</strong>{" "}
+          {format(toTimeZone(info.start), "d. MMM yyyy", {
             locale: da,
-          })}{' '}
+          })}{" "}
           <i>
             (
             {formatRelative(toTimeZone(info.start), new Date(), {
@@ -114,8 +115,8 @@ export default ({ info, toggle }: BookingModalProductChildProps) => {
 
       <Modal.Section>
         <TextContainer>
-          <strong>Tidspunkt:</strong> {format(toTimeZone(info.start), 'HH:mm')}{' '}
-          - {format(toTimeZone(info.end), 'HH:mm')} (
+          <strong>Tidspunkt:</strong> {format(toTimeZone(info.start), "HH:mm")}{" "}
+          - {format(toTimeZone(info.end), "HH:mm")} (
           <i>
             {differenceInHours(new Date(info.end), new Date(info.start))} time)
           </i>
@@ -124,7 +125,7 @@ export default ({ info, toggle }: BookingModalProductChildProps) => {
 
       <Modal.Section>
         <TextContainer>
-          <strong>Hos:</strong> {info.staff?.fullname}{' '}
+          <strong>Hos:</strong> {info.staff?.fullname}{" "}
           {info.anyAvailable && <i>(Enhver tilgængelig)</i>}
         </TextContainer>
       </Modal.Section>

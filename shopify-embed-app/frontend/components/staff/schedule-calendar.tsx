@@ -5,7 +5,7 @@ import { LoadingModal, LoadingSpinner } from "@jamalsoueidan/bsf.bsf-pkg";
 import { Card } from "@shopify/polaris";
 import { Suspense, lazy, useCallback, useState } from "react";
 
-const StaffCalendar = lazy(() => import("./StaffCalendar"));
+const StaffCalendar = lazy(() => import("./staff-calendar"));
 
 const CreateScheduleModal = lazy(() =>
   import("./modals/create-shift-modal").then((module) => ({

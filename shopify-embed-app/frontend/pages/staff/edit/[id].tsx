@@ -1,4 +1,4 @@
-import Metadata from "@components/staff/Metadata";
+import { MetaData } from "@components/staff/meta-data";
 import { StaffForm } from "@jamalsoueidan/bsf.bsf-pkg";
 import { useStaffGet, useStaffUpdate } from "@services";
 import { useNavigate } from "@shopify/app-bridge-react";
@@ -31,7 +31,7 @@ export default () => {
       breadcrumbs={[
         { content: "Staff", onAction: () => navigate("/staff/" + staff._id) },
       ]}
-      titleMetadata={<Metadata active={staff.active} />}
+      titleMetadata={<MetaData active={staff.active} />}
     />
   );
 };

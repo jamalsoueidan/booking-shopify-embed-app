@@ -1,5 +1,5 @@
-import EmptyStaff from "@components/staff/EmptyStaff";
-import Metadata from "@components/staff/Metadata";
+import { EmptyStaff } from "@components/staff/empty-staff";
+import { MetaData } from "@components/staff/meta-data";
 import { Staff } from "@jamalsoueidan/bsb.mongodb.types";
 import { usePosition } from "@jamalsoueidan/bsf.bsf-pkg";
 import { useStaff } from "@services";
@@ -33,7 +33,7 @@ export default () => {
           media={media}
           accessibilityLabel={`View details for ${fullname}`}>
           <Text variant="headingSm" as="h6">
-            {fullname} <Metadata active={active} />
+            {fullname} <MetaData active={active} />
           </Text>
           <div>
             {select(position)}

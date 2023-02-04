@@ -1,131 +1,88 @@
-import StaffSelection from "@components/bookings/staff-selection";
-import { DatesSetArg, EventClickArg } from "@fullcalendar/core";
-import FullCalendar from "@fullcalendar/react";
-import { useDate, useFulfillment, useTranslation } from "@hooks";
-import { BookingResponse } from "@jamalsoueidan/bsb.mongodb.types";
-import { LoadingModal, LoadingSpinner } from "@jamalsoueidan/bsf.bsf-pkg";
-import { useBookings } from "@services";
-import { useNavigate } from "@shopify/app-bridge-react";
+import { BookingRequest, Staff } from "@jamalsoueidan/bsb.mongodb.types";
 import {
-  Avatar,
-  Badge,
-  Card,
-  FooterHelp,
-  Page,
-  Tooltip,
-} from "@shopify/polaris";
-import { padTo2Digits } from "helpers/pad2Digits";
-import { Suspense, lazy, useCallback, useMemo, useRef, useState } from "react";
+  BookingCalendarEvent,
+  LoadingModal,
+  LoadingSpinner,
+  useFulfillment,
+  useTranslation,
+} from "@jamalsoueidan/bsf.bsf-pkg";
+import { useBookings, useStaff } from "@services";
+import { useNavigate } from "@shopify/app-bridge-react";
+import { Badge, Card, FooterHelp, Page } from "@shopify/polaris";
+import Routes from "Routes";
+import { Suspense, lazy, useCallback, useMemo, useState } from "react";
+import { Route } from "react-router-dom";
 
-const Calendar = lazy(() => import("../components/Calendar"));
-const BookingModal = lazy(() => import("../components/bookings/BookingModal"));
+const locales = {
+  da: {
+    create: "Opret en ny behandlingstid",
+    footer_help:
+      "Kan ikke ændre i bookinger der er refunderet eller oprettet tidligere end dagens dato.",
+    in_progress: "I process",
+    title: "Behandlinger",
+  },
+  en: {
+    create: "Create new booking",
+    footer_help:
+      "You can't edit bookings that are refunded or created before today.",
+    in_progress: "In progress",
+    title: "Bookings",
+  },
+};
+
+const BookingModal = lazy(() =>
+  import("../components/booking/booking-modal/booking-modal").then(
+    (module) => ({
+      default: module.BookingModal,
+    }),
+  ),
+);
+
+const StaffSelection = lazy(() =>
+  import("@jamalsoueidan/bsf.bsf-pkg").then((module) => ({
+    default: module.BookingStaff,
+  })),
+);
+
+const BookingCalendar = lazy(() =>
+  import("@jamalsoueidan/bsf.bsf-pkg").then((module) => ({
+    default: module.BookingCalendar,
+  })),
+);
 
 export default () => {
   const navigate = useNavigate();
-  const [info, setInfo] = useState(null);
-  const [start, setStart] = useState(null);
-  const [end, setEnd] = useState(null);
-  const [staff, setStaff] = useState(null);
+  const [staff, setStaff] = useState<Staff>();
+  const [date, setDate] = useState<Pick<BookingRequest, "start" | "end">>();
 
-  const ref = useRef<FullCalendar>();
-  const { t } = useTranslation("bookings");
-  const { getColor, options } = useFulfillment();
-  const { toTimeZone } = useDate();
+  const { t } = useTranslation({ id: "bookings", locales });
 
-  const { data: bookings, isLoading } = useBookings({ end, staff, start });
+  const { options } = useFulfillment();
 
-  const dateChanged = useCallback(
-    (props: DatesSetArg) => {
-      if (props.start !== start || props.end !== end) {
-        setStart(props.start.toISOString().slice(0, 10));
-        setEnd(props.end.toISOString().slice(0, 10));
-      }
-    },
-    [end, start],
-  );
-
-  const events = useMemo(
-    () =>
-      bookings?.map((d) => ({
-        ...d,
-        backgroundColor: getColor(d.fulfillmentStatus),
-        color: getColor(d.fulfillmentStatus),
-        end: toTimeZone(new Date(d.end)),
-        start: toTimeZone(new Date(d.start)),
-        textColor: "#202223",
-      })) || [],
-    [bookings, getColor, toTimeZone],
-  );
-
-  const eventContent = useCallback((arg: any) => {
-    const booking: BookingResponse = arg.event.extendedProps;
-    const extendHour = (
-      <i>
-        {padTo2Digits(arg.event.start.getHours()) +
-          ":" +
-          padTo2Digits(arg.event.start.getMinutes())}{" "}
-        -
-        {padTo2Digits(arg.event.end.getHours()) +
-          ":" +
-          padTo2Digits(arg.event.end.getMinutes())}
-      </i>
-    );
-
-    const fulfillmentStatus = booking.fulfillmentStatus || "In progress";
-
-    return (
-      <Tooltip content={fulfillmentStatus} dismissOnMouseOut>
-        <div
-          style={{ cursor: "pointer", padding: "4px", position: "relative" }}>
-          <div>{extendHour}</div>
-          <div
-            style={{
-              alignItems: "center",
-              bottom: 0,
-              display: "flex",
-              justifyContent: "flex-end",
-              left: 0,
-              position: "absolute",
-              right: "4px",
-              top: 0,
-            }}>
-            <Avatar
-              size="small"
-              name={booking.staff?.fullname}
-              shape="square"
-              source={booking.staff?.avatar}
-            />
-          </div>
-          <div
-            style={{
-              overflow: "hidden",
-            }}>
-            {arg.event.title}
-          </div>
-        </div>
-      </Tooltip>
-    );
-  }, []);
-
-  const showBooking = useCallback(({ event }: EventClickArg) => {
-    setInfo({
-      ...event._def.extendedProps,
-      end: event.endStr,
-      start: event.startStr,
-      title: event.title,
-    });
-  }, []);
+  const { data: staffier } = useStaff();
+  const { data: bookings, isLoading } = useBookings({
+    end: date?.end,
+    staff: staff?._id,
+    start: date?.start,
+  });
 
   const badges = useMemo(
     () =>
-      options.map((o) => (
-        <Badge key={o.label} status={o.status} progress="complete">
+      options.map((o, _) => (
+        <Badge key={_} status={o.bannerStatus as any} progress="complete">
           {o.label
             ? o.label.charAt(0).toUpperCase() + o.label.slice(1)
-            : "In progress"}
+            : t("in_progress")}
         </Badge>
       )),
-    [options],
+    [options, t],
+  );
+
+  const onClickBooking = useCallback(
+    (state: BookingCalendarEvent) => {
+      navigate(state.booking._id);
+    },
+    [navigate],
   );
 
   return (
@@ -133,39 +90,41 @@ export default () => {
       fullWidth
       title={t("title")}
       primaryAction={{
-        content: "Opret en bestilling",
-        onAction: () => navigate("/Bookings/New"),
+        content: t("create"),
+        onAction: () => navigate("new"),
       }}>
-      {info ? (
-        <Suspense fallback={<LoadingModal />}>
-          <BookingModal show={true} toggle={setInfo} info={info} />
-        </Suspense>
-      ) : null}
+      <Routes>
+        <Route
+          path="/:id/*"
+          element={
+            <Suspense fallback={<LoadingModal />}>
+              <BookingModal />
+            </Suspense>
+          }
+        />
+      </Routes>
       <Card sectioned>
         <Card.Section title={badges}>
-          <br />
-          <StaffSelection
-            isLoading={isLoading}
-            staff={staff}
-            onSelect={setStaff}
-          />
+          <Suspense fallback={<LoadingSpinner />}>
+            <StaffSelection
+              isLoadingBookings={isLoading}
+              data={staffier}
+              selected={staff}
+              onSelect={setStaff}
+            />
+          </Suspense>
         </Card.Section>
         <Card.Section>
           <Suspense fallback={<LoadingSpinner />}>
-            <Calendar
-              ref={ref}
-              events={events}
-              eventContent={eventContent}
-              datesSet={dateChanged}
-              eventClick={showBooking}
+            <BookingCalendar
+              data={bookings}
+              onChangeDate={setDate}
+              onClickBooking={onClickBooking}
             />
           </Suspense>
         </Card.Section>
       </Card>
-      <FooterHelp>
-        Kan ikke ændre i bookinger der er refunderet eller oprettet tidligere
-        end dagens dato.
-      </FooterHelp>
+      <FooterHelp>{t("footer_help")}</FooterHelp>
     </Page>
   );
 };

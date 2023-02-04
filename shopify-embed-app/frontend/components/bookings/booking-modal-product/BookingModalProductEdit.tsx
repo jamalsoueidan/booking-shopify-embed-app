@@ -11,7 +11,7 @@ import {
   ScheduleDateSelect,
   ScheduleStaffSelect,
   ScheduleTimerSelect,
-} from "../BookingForm";
+} from "../bookingForm";
 
 export default ({ info, toggle }: BookingModalProductChildProps) => {
   const { data: staffOptions } = useWidgetStaff({

@@ -4,7 +4,7 @@ import {
   ScheduleDateSelect,
   ScheduleStaffSelect,
   ScheduleTimerSelect,
-} from "@components/bookings/BookingForm";
+} from "@components/bookings/bookingForm";
 import { useTranslation } from "@hooks";
 import { useForm, useToast } from "@jamalsoueidan/bsf.bsf-pkg";
 import { notEmptyObject } from "@libs/validators/notEmptyObject";
