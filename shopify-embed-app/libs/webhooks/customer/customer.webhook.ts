@@ -1,4 +1,4 @@
-import CustomerModel from "@models/customer.model";
+import { CustomerModel } from "@jamalsoueidan/bsb.bsb-pkg";
 
 interface CreateReturn {
   acknowledged: boolean;

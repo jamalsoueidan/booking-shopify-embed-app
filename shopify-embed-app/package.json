@@ -13,6 +13,7 @@
     "node": ">=14.13.1"
   },
   "dependencies": {
+    "@jamalsoueidan/bsb.bsb-pkg": "^0.0.21",
     "@shopify/shopify-api": "^5.3.0",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
@@ -20,7 +21,7 @@
     "date-fns": "^2.29.3",
     "express": "^4.18.2",
     "express-validator": "^6.14.2",
-    "mongoose": "^6.8.2",
+    "mongoose": "6.8.4",
     "multer": "^1.4.5-lts.1",
     "serve-static": "^1.15.0"
   },

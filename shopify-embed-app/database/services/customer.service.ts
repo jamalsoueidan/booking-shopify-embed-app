@@ -1,5 +1,4 @@
-import CustomerModel from "@models/customer.model";
-import ShopifySessions from "@models/shopify-sessions.model";
+import { CustomerModel, ShopifySessionsModel } from "@jamalsoueidan/bsb.bsb-pkg";
 import Shopify from "@shopify/shopify-api";
 
 const getCustomerQuery = `
@@ -25,7 +24,7 @@ const findCustomerAndUpdate = async ({
   customerId,
 }: FindCustomerAndUpdateProps) => {
   // customer saving
-  const session = await ShopifySessions.findOne({ shop: shop });
+  const session = await ShopifySessionsModel.findOne({ shop: shop });
 
   const client = new Shopify.Clients.Graphql(session.shop, session.accessToken);
   const customerData: any = await client.query({

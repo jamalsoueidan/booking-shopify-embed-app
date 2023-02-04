@@ -1,4 +1,4 @@
-import ScheduleModel from "@models/schedule.model";
+import { ScheduleModel } from "@jamalsoueidan/bsb.bsb-pkg";
 import ScheduleService from "@services/schedule.service";
 import StaffService from "@services/staff.service";
 import {

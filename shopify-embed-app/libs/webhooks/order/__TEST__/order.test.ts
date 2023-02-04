@@ -1,10 +1,8 @@
 import { faker } from "@faker-js/faker";
+import { IProductModel, ShopifySessionsModel } from "@jamalsoueidan/bsb.bsb-pkg";
 import adminBookingController from "@libs/booking/booking.controller";
 import { createProduct } from "@libs/jest-helpers";
-import { SendProps } from "@libs/smsdk/smsdk.api";
 import * as OrderWebhook from "@libs/webhooks/order/order.webhook";
-import { IProductModel } from "@models/product.model";
-import ShopifySessions from "@models/shopify-sessions.model";
 import { differenceInMinutes, isAfter, isBefore } from "date-fns";
 import mongoose from "mongoose";
 import mockCreate from "./mock.create";
@@ -15,7 +13,7 @@ jest.mock("@libs/smsdk/smsdk.api", () => {
   return {
     __esModule: true,
     default: {
-      send: jest.fn(async ({ receiver, message, scheduled }: SendProps) =>
+      send: jest.fn(async ({ receiver, message, scheduled }) =>
         Promise.resolve({
           status: "success",
           result: {
@@ -60,7 +58,7 @@ describe("webhooks order", () => {
   });
 
   it("Should create booking", async () => {
-    await ShopifySessions.create({
+    await ShopifySessionsModel.create({
       id: "offline_testeriphone.myshopify.com",
       shop: "testeriphone.myshopify.com",
       state: "offline_095054804630505",

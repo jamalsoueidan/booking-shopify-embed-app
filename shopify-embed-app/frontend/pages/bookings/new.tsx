@@ -1,14 +1,18 @@
+import { CustomerInputAutoComplete } from "@components/booking/booking-form/CustomerInputAutoComplete";
+import { ProductSelect } from "@components/booking/booking-form/ProductSelect";
 import {
-  CustomerAutocomplete,
-  ProductSelect,
-  ScheduleDateSelect,
-  ScheduleStaffSelect,
-  ScheduleTimerSelect,
-} from "@components/bookings/bookingForm";
-import { useTranslation } from "@hooks";
-import { useForm, useToast } from "@jamalsoueidan/bsf.bsf-pkg";
-import { notEmptyObject } from "@libs/validators/notEmptyObject";
+  InputDateDrop,
+  InputStaff,
+  InputStaffField,
+  InputTimerDivider,
+  InputTimerDividerField,
+  Validators,
+  useForm,
+  useToast,
+  useTranslation,
+} from "@jamalsoueidan/bsf.bsf-pkg";
 import { useBookingCreate } from "@services/booking";
+import { useWidgetDate, useWidgetStaff } from "@services/widget";
 import { useNavigate } from "@shopify/app-bridge-react";
 import {
   Card,
@@ -17,42 +21,47 @@ import {
   Layout,
   Page,
   PageActions,
+  Range,
 } from "@shopify/polaris";
 import { notEmpty, useField } from "@shopify/react-form";
+import { endOfMonth, isSameDay } from "date-fns";
+import { useMemo, useState } from "react";
 
 export default () => {
   const navigate = useNavigate();
   const { create } = useBookingCreate();
   const { show } = useToast();
-  const { t } = useTranslation("bookings", { keyPrefix: "new" });
+  const { t } = useTranslation({ id: "booking-new", locales });
+  const [{ start, end }, dateChange] = useState<Range>({
+    end: endOfMonth(new Date()),
+    start: new Date(),
+  });
+
   //https://codesandbox.io/s/1wpxz?file=/src/MyForm.tsx:2457-2473
   const { fields, submit, primaryAction } = useForm({
     fields: {
       customer: useField<{ customerId: number; fullName: string }>({
-        validates: [notEmptyObject("Du mangler vælg kunde")],
+        validates: [Validators.notEmptyObject(t("customer.error_select"))],
         value: {
           customerId: undefined,
           fullName: undefined,
         },
       }),
       date: useField<Date>({
-        validates: [notEmpty("Du mangler vælg dato")],
+        validates: [notEmpty(t("date.error_select"))],
         value: undefined,
       }),
       productId: useField<number>({
-        validates: [notEmpty("Der er ikke valgt produkt")],
+        validates: [notEmpty(t("product.error_empty"))],
         value: undefined,
       }),
-      staff: useField<string>({
-        validates: [notEmpty("Du mangler vælg medarbejder")],
+      staff: useField<InputStaffField>({
+        validates: [notEmpty(t("staff.error_select"))],
         value: undefined,
       }),
-      time: useField<{ start: string; end: string }>({
-        validates: [notEmptyObject("Du mangler vælg tid")],
-        value: {
-          end: undefined,
-          start: undefined,
-        },
+      time: useField<InputTimerDividerField>({
+        validates: [Validators.notEmptyObject(t("time.error_select"))],
+        value: undefined,
       }),
     },
     onSubmit: async (fieldValues) => {
@@ -60,53 +69,78 @@ export default () => {
         customerId: fieldValues.customer.customerId,
         end: fieldValues.time.end,
         productId: fieldValues.productId,
-        staff: fieldValues.staff,
+        staff: fieldValues.staff.staff,
         start: fieldValues.time.start,
       });
-      show({ content: "Booking created" });
+      show({ content: t("submit.sucess") });
       navigate(`/bookings`);
       return { status: "success" };
     },
   });
+
+  const { data: staffOptions } = useWidgetStaff({
+    productId: fields.productId.value,
+  });
+
+  const { data: schedules } = useWidgetDate({
+    end: end.toJSON(),
+    productId: fields.productId.value,
+    staff: fields.staff.value?.staff,
+    start: start.toJSON(),
+  });
+
+  const selectedDate = useMemo(() => {
+    if (!fields.date.value) {
+      return;
+    }
+
+    return schedules?.find((s) =>
+      isSameDay(new Date(s.date), new Date(fields.date.value)),
+    );
+  }, [schedules, fields.date.value]);
 
   return (
     <Form onSubmit={submit}>
       <Page
         fullWidth
         title={t("title")}
-        breadcrumbs={[{ content: "Bookings", url: "/Bookings" }]}>
+        breadcrumbs={[{ content: "Bookings", url: "/bookings" }]}>
         <Layout>
-          <Layout.AnnotatedSection title={"Produkt"}>
+          <Layout.AnnotatedSection
+            title={t("product.title")}
+            description={t("product.desc")}>
             <Card sectioned>
               <FormLayout>
                 <ProductSelect {...fields.productId} />
               </FormLayout>
             </Card>
           </Layout.AnnotatedSection>
-          <Layout.AnnotatedSection title={"Kunde"}>
+          <Layout.AnnotatedSection
+            title={t("customer.title")}
+            description={t("customer.desc")}>
             <Card sectioned>
-              <CustomerAutocomplete {...fields.customer} />
+              <CustomerInputAutoComplete field={fields.customer} />
             </Card>
           </Layout.AnnotatedSection>
           <Layout.AnnotatedSection
-            title={"Tidsbestilling"}
-            description="Vælg medarbejder, dato og tid">
+            title={t("staff.title")}
+            description={t("staff.desc")}>
             <Card sectioned>
               <FormLayout>
-                <ScheduleStaffSelect
+                <InputStaff
                   field={fields.staff}
-                  productId={fields.productId.value}
+                  data={staffOptions}
+                  input={{ disabled: !staffOptions }}
                 />
-                <ScheduleDateSelect
+                <InputDateDrop
                   field={fields.date}
-                  staff={fields.staff.value}
-                  productId={fields.productId.value}
+                  data={schedules}
+                  input={{ disabled: !schedules }}
+                  onMonthChange={dateChange}
                 />
-                <ScheduleTimerSelect
+                <InputTimerDivider
                   field={fields.time}
-                  staff={fields.staff.value}
-                  date={fields.date.value}
-                  productId={fields.productId.value}
+                  data={selectedDate?.hours}
                 />
               </FormLayout>
             </Card>
@@ -117,4 +151,61 @@ export default () => {
       </Page>
     </Form>
   );
+};
+
+const locales = {
+  da: {
+    customer: {
+      desc: "Hvem er behandlingen til?",
+      error_select: "Du mangler vælg kunde",
+      title: "2. Vælg en kunde",
+    },
+    date: {
+      error_select: "Du mangler vælg dato",
+    },
+    product: {
+      desc: "Efter  du har valgt et produkt, har du mulighed for at vælg medarbejder.",
+      error_empty: "Der er ikke valgt produkt",
+      title: "1. Vælg et product",
+    },
+    staff: {
+      desc: "Når du har valgt medarbejder kan du vælge dato og efterfølgende tid.",
+      error_select: "Du mangler vælg medarbejder",
+      title: "3. Vælg medarbejder, dato og tid.",
+    },
+    submit: {
+      sucess: "Behandlingstid oprettet",
+    },
+    time: {
+      error_select: "Du mangler vælg tid",
+    },
+    title: "Opret en ny behandlingstid",
+  },
+  en: {
+    customer: {
+      desc: "Assign customer to booking.",
+      error_select: "You didn't pick a customer",
+      title: "2. Choose a Customer",
+    },
+    date: {
+      error_select: "You didn't pick a date",
+    },
+    product: {
+      desc: "Choose a product so staff, date and time gets enabled.",
+      error_empty: "You didn't pick a product",
+      title: "1. Choose a Product",
+    },
+    staff: {
+      desc: "When you select staff the date will be enabled and then pick date to get time",
+      error_select: "You didn't pick a staff",
+      title: "3. Choose staff, then date and afterwards time.",
+    },
+    submit: {
+      sucess: "Booking created",
+    },
+    time: {
+      error_select: "You didn't pick time",
+    },
+    title: "Bookings",
+  },
 };

@@ -1,4 +1,4 @@
-import { IProductModel } from "@models/product.model";
+import { IProductModel } from "@jamalsoueidan/bsb.bsb-pkg";
 import { GetCartsByStaffReturn } from "@services/cart.service";
 import {
   addMinutes,

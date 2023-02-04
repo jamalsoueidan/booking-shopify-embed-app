@@ -1,12 +1,11 @@
 import { faker } from "@faker-js/faker";
+import { BookingModel, CartModel } from "@jamalsoueidan/bsb.bsb-pkg";
 import {
   createProduct,
   createStaffAndUpdateProduct,
   createStaffWithSchedule,
 } from "@libs/jest-helpers";
 import widgetController from "@libs/widget/widget.controller";
-import BookingModel from "@models/booking.model";
-import cartModel from "@models/cart.model";
 import productService from "@services/product.service";
 import staffService from "@services/staff.service";
 import { addDays, format } from "date-fns";
@@ -140,7 +139,7 @@ describe("admin-widget controller", () => {
     let availabilityDay = availability.at(0);
     const schedule = availabilityDay.hours.at(3);
 
-    await cartModel.create({
+    await CartModel.create({
       cartId: "asd",
       staff: schedule.staff._id,
       start: schedule.start,

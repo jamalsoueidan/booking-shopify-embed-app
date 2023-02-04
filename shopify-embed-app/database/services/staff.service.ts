@@ -1,4 +1,4 @@
-import StaffModel from "@models/staff.model";
+import { StaffModel } from "@jamalsoueidan/bsb.bsb-pkg";
 
 const create = (document: Omit<Staff, "_id">) => {
   const newStaff = new StaffModel(document);

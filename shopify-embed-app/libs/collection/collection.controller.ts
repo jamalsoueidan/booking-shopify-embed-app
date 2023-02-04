@@ -1,5 +1,4 @@
-import CollectionModel from "@models/collection.model";
-import ProductModel, { IProductModel } from "@models/product.model";
+import { CollectionModel, IProductModel, ProductModel } from "@jamalsoueidan/bsb.bsb-pkg";
 import CollectionService from "@services/collection.service";
 import { Session } from "@shopify/shopify-api/dist/auth/session";
 import { getCollection } from "./collection.helpers";

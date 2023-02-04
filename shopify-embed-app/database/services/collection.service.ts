@@ -1,4 +1,4 @@
-import CollectionModel from "@models/collection.model";
+import { CollectionModel } from "@jamalsoueidan/bsb.bsb-pkg";
 
 const findAll = () => {
   return CollectionModel.aggregate<CollectionAggreate>([

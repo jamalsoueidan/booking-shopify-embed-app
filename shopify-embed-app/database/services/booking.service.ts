@@ -1,8 +1,7 @@
 import { beginningOfDay, closeOfDay } from "@helpers/date";
+import { BookingModel, ProductModel } from '@jamalsoueidan/bsb.bsb-pkg';
 import { GetBookingsProps } from "@libs/booking/booking.types";
-import productModel from "@models/product.model";
 import mongoose, { Types } from "mongoose";
-import BookingModel from "../models/booking.model";
 import notificationService from "./notification.service";
 
 interface CreateProps extends BookingBodyCreate {
@@ -10,7 +9,7 @@ interface CreateProps extends BookingBodyCreate {
 }
 
 const create = async (body: CreateProps) => {
-  const product = await productModel
+  const product = await ProductModel
     .findOne({ productId: body.productId })
     .lean();
   if (product) {

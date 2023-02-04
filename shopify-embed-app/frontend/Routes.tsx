@@ -1,6 +1,6 @@
 import { LoadingPage } from "@jamalsoueidan/bsf.bsf-pkg";
 import { Suspense, lazy } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 const Bookings = lazy(() => import("./pages/bookings"));
 const BookingsCreate = lazy(() => import("./pages/bookings/new"));
@@ -28,7 +28,6 @@ export default () => (
       <Route path="/staff/new" element={<StaffCreate />} />
       <Route path="/staff/edit/:id" element={<StaffEdit />} />
       <Route path="/staff/:id" element={<StaffView />} />
-      <Route path="*" element={<Navigate to="/staff" replace />} />
     </Routes>
   </Suspense>
 );

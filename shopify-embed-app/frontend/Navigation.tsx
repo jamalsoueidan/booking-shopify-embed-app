@@ -14,7 +14,23 @@ export default ({ children }: any) => {
     predicate: (query: Query) => query.state.isFetching,
   });
 
-  const { t } = useTranslation({ id: "tabs", locales });
+  const { t } = useTranslation({
+    id: "tabs",
+    locales: {
+      da: {
+        bookings: "Bestillinger",
+        collections: "Kategorier",
+        settings: "Indstillinger",
+        staff: "Medarbejder",
+      },
+      en: {
+        bookings: "Bookings",
+        collections: "Categories",
+        settings: "Settings",
+        staff: "Staff",
+      },
+    },
+  });
 
   const matcher = useCallback(
     (link: NavigationLink, location: Location) =>
@@ -27,7 +43,7 @@ export default ({ children }: any) => {
       <NavigationMenu
         navigationLinks={[
           {
-            destination: "/bookings",
+            destination: "/bookings/",
             label: t("bookings"),
           },
           {
@@ -53,19 +69,4 @@ export default ({ children }: any) => {
       </Frame>
     </>
   );
-};
-
-const locales = {
-  da: {
-    bookings: "Bestillinger",
-    collections: "Kategorier",
-    settings: "Indstillinger",
-    staff: "Medarbejder",
-  },
-  en: {
-    bookings: "Bookings",
-    collections: "Categories",
-    settings: "Settings",
-    staff: "Staff",
-  },
 };

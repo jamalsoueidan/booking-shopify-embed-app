@@ -1,4 +1,4 @@
-import CartModel, { ICartModel } from "@models/cart.model";
+import { CartModel, ICartModel } from "@jamalsoueidan/bsb.bsb-pkg";
 import { Types } from "mongoose";
 
 export interface GetCartsByStaffReturn {

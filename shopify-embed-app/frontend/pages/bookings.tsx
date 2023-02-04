@@ -80,7 +80,8 @@ export default () => {
 
   const onClickBooking = useCallback(
     (state: BookingCalendarEvent) => {
-      navigate(state.booking._id);
+      console.log("navigate");
+      navigate(`bookings/${state.booking._id}`);
     },
     [navigate],
   );
@@ -91,7 +92,7 @@ export default () => {
       title={t("title")}
       primaryAction={{
         content: t("create"),
-        onAction: () => navigate("new"),
+        url: "/bookings/new",
       }}>
       <Routes>
         <Route

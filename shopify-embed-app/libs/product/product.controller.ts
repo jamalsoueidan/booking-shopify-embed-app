@@ -1,5 +1,4 @@
-import ProductModel from "@models/product.model";
-import ScheduleModel from "@models/schedule.model";
+import { ProductModel, ScheduleModel } from "@jamalsoueidan/bsb.bsb-pkg";
 import ProductService from "@services/product.service";
 import Shopify from "@shopify/shopify-api";
 import { Session } from "@shopify/shopify-api/dist/auth/session";

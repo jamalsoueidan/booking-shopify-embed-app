@@ -1,10 +1,24 @@
-import { useTranslation } from "@hooks";
+import { useTranslation } from "@jamalsoueidan/bsf.bsf-pkg";
 import { useNavigate } from "@shopify/app-bridge-react";
 import { Card, EmptyState } from "@shopify/polaris";
 
 export const EmptyStaff = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation("staff", { keyPrefix: "empty" });
+  const { t } = useTranslation({
+    id: "empty-staff",
+    locales: {
+      da: {
+        add: "Tilføj medarbejder",
+        heading: "Gå igang med at oprette medarbejder!",
+        text: "Tilføj nye medarbejder. Efterfølgende kan du tilføje timer, og tilføje medarbejder til behandlinger.",
+      },
+      en: {
+        add: "Add Staff",
+        heading: "Team up and do even more!",
+        text: "Add new staff. Then you'll be able to manage member profiles, working hours and who's doing what service.",
+      },
+    },
+  });
 
   const props = { onAction: () => navigate("/Staff/New") };
 

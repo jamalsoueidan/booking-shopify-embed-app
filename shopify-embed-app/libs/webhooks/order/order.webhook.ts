@@ -1,4 +1,4 @@
-import BookingModel from "@models/booking.model";
+import { BookingModel } from "@jamalsoueidan/bsb.bsb-pkg";
 import CustomerService from "@services/customer.service";
 import NotificationService from "@services/notification.service";
 

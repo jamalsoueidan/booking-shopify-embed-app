@@ -1,4 +1,4 @@
-import ProductModel, { IProductModel } from "@models/product.model";
+import { IProductModel, ProductModel } from "@jamalsoueidan/bsb.bsb-pkg";
 import mongoose from "mongoose";
 
 export interface GetProductReturn extends IProductModel {}

@@ -1,5 +1,5 @@
 import { beginningOfDay, closeOfDay } from "@helpers/date";
-import ScheduleModel, { IScheduleModel } from "@models/schedule.model";
+import { IScheduleModel, ScheduleModel } from "@jamalsoueidan/bsb.bsb-pkg";
 import StaffService from "@services/staff.service";
 import { parseISO, setMilliseconds, setSeconds } from "date-fns";
 import mongoose, { Types } from "mongoose";

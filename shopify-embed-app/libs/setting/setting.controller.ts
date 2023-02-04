@@ -1,4 +1,4 @@
-import SettingModel from "@models/setting.models";
+import { SettingModel } from "@jamalsoueidan/bsb.bsb-pkg";
 
 export enum ControllerMethods {
   get = "get",

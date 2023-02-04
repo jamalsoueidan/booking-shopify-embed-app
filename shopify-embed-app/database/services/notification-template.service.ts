@@ -1,7 +1,4 @@
-import { ICustomerModel } from "@models/customer.model";
-import NotificationTemplateModel from "@models/notification-template.model";
-import SettingModels from "@models/setting.models";
-import { IStaffModel } from "@models/staff.model";
+import { ICustomerModel, IStaffModel, NotificationTemplateModel, SettingModel } from "@jamalsoueidan/bsb.bsb-pkg";
 import { format, formatRelative, subDays } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
 import da from "date-fns/locale/da";
@@ -17,7 +14,7 @@ const getNotificationTemplate = async ({
   type,
   shop,
 }: GetMessageProps): Promise<GetMessageReturn> => {
-  const setting = await SettingModels.findOne({ shop }).lean();
+  const setting = await SettingModel.findOne({ shop }).lean();
   const template = await NotificationTemplateModel.findOne({
     shop,
     name: type,

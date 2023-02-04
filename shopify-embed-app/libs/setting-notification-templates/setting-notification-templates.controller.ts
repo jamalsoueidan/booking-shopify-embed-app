@@ -1,4 +1,4 @@
-import NotificationTemplateModel from "@models/notification-template.model";
+import { NotificationTemplateModel } from "@jamalsoueidan/bsb.bsb-pkg";
 
 export enum ControllerMethods {
   get = "get",

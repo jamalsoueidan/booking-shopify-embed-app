@@ -1,12 +1,5 @@
 import { beginningOfDay } from "@helpers/date";
-import smsdkApi from "@libs/smsdk/smsdk.api";
-import BookingModel from "@models/booking.model";
-import {
-  default as CustomerModel,
-  default as customerModel,
-} from "@models/customer.model";
-import NotificationModel from "@models/notification.model";
-import StaffModel from "@models/staff.model";
+import { BookingModel, CustomerModel, NotificationModel, SmsDkApiCancel, SmsDkApiSend, StaffModel } from "@jamalsoueidan/bsb.bsb-pkg";
 import { subDays, subMinutes } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
 import mongoose from "mongoose";
@@ -46,7 +39,7 @@ const send = async ({
     isStaff,
   });
 
-  const response = await smsdkApi.send({
+  const response = await SmsDkApiSend({
     receiver,
     message,
     scheduled,
@@ -202,7 +195,7 @@ const sendBookingConfirmationCustomer = async ({
   booking,
   shop,
 }: SendBookingConfirmationCustomerProps) => {
-  const customer = await customerModel.findOne({
+  const customer = await CustomerModel.findOne({
     customerId: booking.customerId,
   });
   if (!customer.phone) {
@@ -240,7 +233,7 @@ const sendBookingUpdateCustomer = async ({
   booking,
   shop,
 }: SendBookingConfirmationCustomerProps) => {
-  const customer = await customerModel.findOne({
+  const customer = await CustomerModel.findOne({
     customerId: booking.customerId,
   });
   if (!customer.phone) {
@@ -278,7 +271,7 @@ const sendBookingReminderCustomer = async ({
   bookings,
   shop,
 }: SendBookingReminderCustomerProps) => {
-  const receiver = await customerModel.findOne({
+  const receiver = await CustomerModel.findOne({
     customerId: bookings[0].customerId,
   });
   if (!receiver.phone) {
@@ -369,7 +362,7 @@ const cancel = async ({ id: _id, shop }: CancelProps) => {
     }
   );
 
-  smsdkApi.cancel(notification.batchId);
+  SmsDkApiCancel(notification.batchId);
 
   return notification;
 };
@@ -390,7 +383,7 @@ const cancelAll = async ({ orderId, lineItemId, shop }: CancelAllProps) => {
   }).lean();
 
   for (let notification of notifications) {
-    smsdkApi.cancel(notification.batchId);
+    SmsDkApiCancel(notification.batchId);
   }
 
   return NotificationModel.updateMany(

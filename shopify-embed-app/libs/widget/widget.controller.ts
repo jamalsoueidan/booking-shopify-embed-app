@@ -1,9 +1,9 @@
+import { SettingModel } from "@jamalsoueidan/bsb.bsb-pkg";
 import BookingService from "@services/booking.service";
 import CartService from "@services/cart.service";
-import WidgetService from "@services/widget.service";
 import ScheduleService from "@services/schedule.service";
+import WidgetService from "@services/widget.service";
 import helpers from "./widget.helpers";
-import SettingModels from "@models/setting.models";
 
 export enum ControllerMethods {
   staff = "staff",
@@ -72,7 +72,7 @@ const availability = async ({
 };
 
 const settings = () => {
-  return SettingModels.findOne({}, "language status timeZone");
+  return SettingModel.findOne({}, "language status timeZone");
 };
 
 export default {

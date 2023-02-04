@@ -1,4 +1,4 @@
-import ProductModel from "@models/product.model";
+import { ProductModel } from "@jamalsoueidan/bsb.bsb-pkg";
 import mongoose from "mongoose";
 
 interface UpdateQuery {

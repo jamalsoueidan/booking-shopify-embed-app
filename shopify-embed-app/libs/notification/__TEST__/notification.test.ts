@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import { IBookingModel, ICustomerModel, IProductModel, IStaffModel, SmsDkApiCancel, SmsDkApiSend } from "@jamalsoueidan/bsb.bsb-pkg";
 import bookingController from "@libs/booking/booking.controller";
 import {
   createCustomer,
@@ -7,15 +8,11 @@ import {
   createStaff,
 } from "@libs/jest-helpers";
 import notificationController from "@libs/notification/notification.controller";
-import smsdkApi from "@libs/smsdk/smsdk.api";
-import { IBookingModel } from "@models/booking.model";
-import { ICustomerModel } from "@models/customer.model";
-import { IProductModel } from "@models/product.model";
-import { IStaffModel } from "@models/staff.model";
 import { addHours } from "date-fns";
 import mongoose from "mongoose";
 import waitForExpect from "wait-for-expect";
 
+// TODO: Fix mock of
 jest.mock("@libs/smsdk/smsdk.api", () => {
   return {
     __esModule: true,
@@ -88,14 +85,14 @@ describe("admin-notification controller", () => {
     });
 
     await waitForExpect(() => {
-      expect(smsdkApi.send).toHaveBeenCalledTimes(3);
+      expect(SmsDkApiSend).toHaveBeenCalledTimes(3);
     });
 
     expect(notifications.length).toBe(3);
   });
 
   it("When updating booking, must cancel all previous scheduled notifications and send 2 new scheduled notifications", async () => {
-    (smsdkApi.send as any).mockClear();
+    (SmsDkApiSend as any).mockClear();
 
     await bookingController.update({
       query: { shop: global.shop, id: booking._id },
@@ -107,11 +104,11 @@ describe("admin-notification controller", () => {
     });
 
     await waitForExpect(() => {
-      expect(smsdkApi.cancel).toHaveBeenCalledTimes(2);
+      expect(SmsDkApiCancel).toHaveBeenCalledTimes(2);
     });
 
     await waitForExpect(() => {
-      expect(smsdkApi.send).toHaveBeenCalledTimes(3);
+      expect(SmsDkApiSend).toHaveBeenCalledTimes(3);
     });
 
     const notifications = await notificationController.get({

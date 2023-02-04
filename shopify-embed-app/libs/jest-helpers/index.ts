@@ -1,13 +1,12 @@
 import { faker } from "@faker-js/faker";
-import customerModel from "@models/customer.model";
-import ProductModel from "@models/product.model";
+import { CustomerModel, ProductModel } from "@jamalsoueidan/bsb.bsb-pkg";
 import ProductService from "@services/product.service";
 import ScheduleService from "@services/schedule.service";
 import StaffService from "@services/staff.service";
 import { addHours } from "date-fns";
 
 export const createCustomer = () => {
-  const customer = new customerModel({
+  const customer = new CustomerModel({
     customerId: parseInt(faker.random.numeric(10)),
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),

@@ -1,8 +1,7 @@
-import adminProductController from "@libs/product/product.controller";
+import { IProductModel, ShopifySessionsModel } from "@jamalsoueidan/bsb.bsb-pkg";
 import { createProduct, createSchedule, createStaff } from "@libs/jest-helpers";
+import adminProductController from "@libs/product/product.controller";
 import * as CartWebhook from "@libs/webhooks/cart/cart.webhook";
-import { IProductModel } from "@models/product.model";
-import ShopifySessions from "@models/shopify-sessions.model";
 import { addHours, setMilliseconds, setSeconds, startOfDay } from "date-fns";
 import mongoose from "mongoose";
 import body from "./cart.mock";
@@ -17,7 +16,7 @@ describe("webhooks order", () => {
   afterAll(() => mongoose.disconnect());
 
   it("Should create cart item when we recieve data from cart/create or cart/update", async () => {
-    await ShopifySessions.create({
+    await ShopifySessionsModel.create({
       id: "offline_testeriphone.myshopify.com",
       shop: "testeriphone.myshopify.com",
       state: "offline_095054804630505",
