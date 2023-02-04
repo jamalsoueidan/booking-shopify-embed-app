@@ -1,5 +1,5 @@
-import Application from "@components/settings/Application";
-import Notifications from "@components/settings/Notifications";
+import { SettingsApplication } from "@components/settings/settings-application";
+import { SettingsNotifications } from "@components/settings/settings-notifications";
 import { ActionList, Card, Grid, Page } from "@shopify/polaris";
 import { NotificationMajor, SettingsMajor } from "@shopify/polaris-icons";
 import { useState } from "react";
@@ -9,9 +9,9 @@ export default () => {
 
   let Component;
   if (current === "application") {
-    Component = Application;
+    Component = SettingsApplication;
   } else {
-    Component = Notifications;
+    Component = SettingsNotifications;
   }
 
   return (

@@ -20,7 +20,7 @@ import {
 } from "@shopify/polaris";
 import { useField } from "@shopify/react-form";
 
-export default () => {
+export const SettingsApplication = () => {
   const { data } = useSetting();
   const { update } = useSettingUpdate();
 

@@ -23,7 +23,7 @@ import {
 } from "@shopify/polaris";
 import { FieldDictionary, useDynamicList } from "@shopify/react-form";
 
-export default () => {
+export const SettingsNotifications = () => {
   const { language } = useSettings();
   const { data } = useNotificationTemplates({ language });
   const { show } = useToast();
