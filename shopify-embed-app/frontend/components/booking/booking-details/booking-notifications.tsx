@@ -1,11 +1,24 @@
-import { BookingResponse, Notification } from "@jamalsoueidan/bsb.mongodb.types";
+import {
+  BookingResponse,
+  Notification,
+} from "@jamalsoueidan/bsb.mongodb.types";
 import { useToast } from "@jamalsoueidan/bsf.bsf-pkg";
 import { useNotification, useResendNotification } from "@services/notification";
-import { Badge, EmptyState, ResourceItem, ResourceList, Text } from "@shopify/polaris";
+import {
+  Badge,
+  EmptyState,
+  ResourceItem,
+  ResourceList,
+  Text,
+} from "@shopify/polaris";
 import { format } from "date-fns";
 import { useCallback } from "react";
 
-export const BookingNotifications = ({ booking }: { booking: BookingResponse }) => {
+export const BookingNotifications = ({
+  booking,
+}: {
+  booking: BookingResponse;
+}) => {
   const { data } = useNotification({
     lineItemId: booking.lineItemId,
     orderId: booking.orderId,
@@ -42,10 +55,12 @@ export const BookingNotifications = ({ booking }: { booking: BookingResponse }) 
               onAction: () => wrapResend(_id),
             },
           ]}
-          persistActions
-        >
+          persistActions>
           <Text variant="bodySm" as="p">
-            <b>Phone:</b> {receiver} <Badge size="small">{isStaff ? "Til medarbejder" : "Til kunde"}</Badge>
+            <b>Phone:</b> {receiver}{" "}
+            <Badge size="small">
+              {isStaff ? "Til medarbejder" : "Til kunde"}
+            </Badge>
           </Text>
           <Text variant="bodySm" as="p">
             <b>Send:</b> {format(new Date(createdAt), "yyyy-MM-dd HH:mm")}
@@ -69,13 +84,18 @@ export const BookingNotifications = ({ booking }: { booking: BookingResponse }) 
     data?.length === 0 ? (
       <>
         <br />
-        <EmptyState heading="Notification empty" image={null}>
+        <EmptyState heading="Notification empty" image={""}>
           <p>No notification is send yet!</p>
         </EmptyState>
       </>
     ) : undefined;
 
   return (
-    <ResourceList emptyState={emptyStateMarkup} items={data.reverse()} loading={!data} renderItem={renderItem as any} />
+    <ResourceList
+      emptyState={emptyStateMarkup}
+      items={data.reverse()}
+      loading={!data}
+      renderItem={renderItem as any}
+    />
   );
 };

@@ -76,14 +76,16 @@ export const useBookingCreate = () => {
 };
 
 interface UseBookingGetProps {
-  id: string;
+  id?: string;
 }
 
 export const useBookingGet = ({ id }: UseBookingGetProps) => {
   const { get } = useFetch();
 
-  const { data } = useQuery<ApiResponse<BookingResponse>>(["booking", id], () =>
-    get(`/api/admin/bookings/${id}`),
+  const { data } = useQuery<ApiResponse<BookingResponse>>(
+    ["booking", id],
+    () => get(`/api/admin/bookings/${id}`),
+    { enabled: !!id },
   );
 
   return {

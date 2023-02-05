@@ -9,7 +9,7 @@ import { Frame, Loading } from "@shopify/polaris";
 import { useCallback } from "react";
 import { Query, useIsFetching } from "react-query";
 
-export default ({ children }: any) => {
+export const ApplicationNavigation = ({ children }: any) => {
   const isFetching = useIsFetching({
     predicate: (query: Query) => query.state.isFetching,
   });

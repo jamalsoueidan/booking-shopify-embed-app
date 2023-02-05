@@ -2,12 +2,20 @@ import { LoadingSpinner } from "@jamalsoueidan/bsf.bsf-pkg";
 import { ModalProvider } from "@providers/modal";
 import { useBookingGet } from "@services/booking";
 import { Card, Tabs } from "@shopify/polaris";
+import { isAfter } from "date-fns";
 import { useCallback, useMemo } from "react";
-import { Route, Routes, useLocation, useNavigate, useParams } from "react-router-dom";
+import {
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import { BookingCustomer } from "../booking-details/booking-customer";
 import { BookingDetailsEdit } from "../booking-details/booking-details-edit";
 import { BookingDetailsView } from "../booking-details/booking-details-view";
 import { BookingNotifications } from "../booking-details/booking-notifications";
+import { BookingSendNotification } from "../booking-details/booking-send-notification";
 
 export const BookingModal = () => {
   const navigate = useNavigate();
@@ -24,7 +32,7 @@ export const BookingModal = () => {
     const t = [
       {
         content: "Behandling",
-        id: null,
+        id: "",
       },
       {
         content: "Kunde",
@@ -36,8 +44,18 @@ export const BookingModal = () => {
       },
     ];
 
+    if (
+      (!data?.fulfillmentStatus || data?.isSelfBooked) &&
+      isAfter(new Date(data?.start || ""), new Date())
+    ) {
+      t.push({
+        content: "Send Meddelelser",
+        id: "send",
+      });
+    }
+
     return t;
-  }, []);
+  }, [data]);
 
   const handleTabChange = useCallback(
     (selectedTabIndex: number) => {
@@ -49,7 +67,10 @@ export const BookingModal = () => {
     [navigate, tabs],
   );
 
-  const selected = useMemo(() => tabs.findIndex((t) => t.id === location.state), [tabs, location]);
+  const selected = useMemo(
+    () => tabs.findIndex((t) => t.id === location.state),
+    [tabs, location],
+  );
 
   return (
     <ModalProvider large open={true} onClose={onClose} title={data?.title}>
@@ -60,9 +81,22 @@ export const BookingModal = () => {
           ) : (
             <Routes>
               <Route index element={<BookingDetailsView booking={data} />} />
-              <Route path="edit" element={<BookingDetailsEdit booking={data} />} />
-              <Route path="customer" element={<BookingCustomer booking={data} />} />
-              <Route path="notifications" element={<BookingNotifications booking={data} />} />
+              <Route
+                path="edit"
+                element={<BookingDetailsEdit booking={data} />}
+              />
+              <Route
+                path="customer"
+                element={<BookingCustomer booking={data} />}
+              />
+              <Route
+                path="notifications"
+                element={<BookingNotifications booking={data} />}
+              />
+              <Route
+                path="send"
+                element={<BookingSendNotification booking={data} />}
+              />
             </Routes>
           )}
         </Tabs>

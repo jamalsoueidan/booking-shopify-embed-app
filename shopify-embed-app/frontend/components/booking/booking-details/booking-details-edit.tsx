@@ -1,7 +1,17 @@
-import { Columns, Form, FormLayout, Modal, Range, Text } from "@shopify/polaris";
+import {
+  Columns,
+  Form,
+  FormLayout,
+  Modal,
+  Range,
+  Text,
+} from "@shopify/polaris";
 import { notEmpty, useField } from "@shopify/react-form";
 
-import { BookingResponse, WidgetHourRange } from "@jamalsoueidan/bsb.mongodb.types";
+import {
+  BookingResponse,
+  WidgetHourRange,
+} from "@jamalsoueidan/bsb.mongodb.types";
 
 import {
   FormErrors,
@@ -22,7 +32,11 @@ import { endOfMonth, isSameDay, startOfMonth } from "date-fns";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const BookingDetailsEdit = ({ booking }: { booking: BookingResponse }) => {
+export const BookingDetailsEdit = ({
+  booking,
+}: {
+  booking: BookingResponse;
+}) => {
   const { data: staffOptions } = useWidgetStaff({
     productId: booking.productId,
   });
@@ -48,7 +62,12 @@ export const BookingDetailsEdit = ({ booking }: { booking: BookingResponse }) =>
       staff: useField<InputStaffField>({
         validates: [notEmpty(t("staff.error_select"))],
         value: booking.staff
-          ? { avatar: booking.staff.avatar, fullname: booking.staff.fullname, staff: booking.staff._id, tag: "" }
+          ? {
+              avatar: booking.staff.avatar,
+              fullname: booking.staff.fullname,
+              staff: booking.staff._id,
+              tag: "",
+            }
           : undefined,
       }),
       time: useField<InputTimerDividerField>({
@@ -86,8 +105,8 @@ export const BookingDetailsEdit = ({ booking }: { booking: BookingResponse }) =>
     ]);
 
     return () => {
-      setSecondaryActions(null);
-      setPrimaryAction(null);
+      setSecondaryActions([]);
+      setPrimaryAction(undefined);
     };
   }, [setPrimaryAction, setSecondaryActions, navigate, t, submit]);
 
@@ -99,19 +118,25 @@ export const BookingDetailsEdit = ({ booking }: { booking: BookingResponse }) =>
   });
 
   const hours: WidgetHourRange[] = useMemo(() => {
+    if (!fields) {
+      return [];
+    }
+
     const bookingDefault = {
       end: booking.end,
       start: booking.start,
     };
 
-    const schedule = schedules?.find((s) => isSameDay(new Date(s.date), fields.date.value));
+    const schedule = schedules?.find((s) =>
+      isSameDay(new Date(s.date), fields.date.value),
+    );
 
     if (!schedule) {
       return [];
     }
 
     return [bookingDefault, ...schedule.hours];
-  }, [schedules, fields.date.value, booking.end, booking.start]);
+  }, [schedules, fields, booking.end, booking.start]);
 
   if (!staffOptions) {
     return (
@@ -138,7 +163,11 @@ export const BookingDetailsEdit = ({ booking }: { booking: BookingResponse }) =>
           {isSubmitted && !isValid && <FormErrors errors={submitErrors} />}
           <InputStaff field={fields.staff} data={staffOptions} />
           <Columns columns={{ xs: 2 }}>
-            <InputDateFlat field={fields.date} data={schedules} onMonthChange={dateChange} />
+            <InputDateFlat
+              field={fields.date}
+              data={schedules}
+              onMonthChange={dateChange}
+            />
             <InputTimerDivider field={fields.time} data={hours} />
           </Columns>
           {!booking.isSelfBooked ? (
@@ -157,7 +186,8 @@ const locales = {
     date: {
       error_select: "Du mangler vælg dato",
     },
-    shopify: "ATTENTION: Når du opdatere dette behandlingstid, så bliver den afkoblet fra shopify!",
+    shopify:
+      "ATTENTION: Når du opdatere dette behandlingstid, så bliver den afkoblet fra shopify!",
     staff: {
       error_empty:
         "Der er ingen medarbejder længere tilknyttet til dette produkt, gå til produkt og tilføj medarbejder.",
@@ -177,7 +207,8 @@ const locales = {
     date: {
       error_select: "You didn't pick a date",
     },
-    shopify: "ATTENTION: When you update this booking it will get deattached from shopify order.",
+    shopify:
+      "ATTENTION: When you update this booking it will get deattached from shopify order.",
     staff: {
       error_empty: "No staff belong to this product yet!",
       error_select: "You didn't pick a staff",

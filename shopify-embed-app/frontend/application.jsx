@@ -3,8 +3,8 @@ import { setDefaultOptions } from "date-fns";
 import da from "date-fns/locale/da";
 import { useMemo } from "react";
 import { BrowserRouter } from "react-router-dom";
-import Navigation from "./Navigation";
-import Routes from "./Routes";
+import { ApplicationNavigation } from "./application-navigation";
+import { ApplicationRoutes } from "./application-routes";
 import { AppBridgeProvider, QueryProvider } from "./providers";
 import { AppBridgeLink } from "./providers/PolarisProvider";
 import { useSetting } from "./services/setting";
@@ -15,9 +15,9 @@ export default function App() {
       <AppBridgeProvider>
         <QueryProvider>
           <Provider>
-            <Navigation>
-              <Routes />
-            </Navigation>
+            <ApplicationNavigation>
+              <ApplicationRoutes />
+            </ApplicationNavigation>
           </Provider>
         </QueryProvider>
       </AppBridgeProvider>

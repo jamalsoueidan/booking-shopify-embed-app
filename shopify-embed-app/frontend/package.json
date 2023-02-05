@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@jamalsoueidan/bsf.bsf-pkg": "^0.0.76",
+    "@jamalsoueidan/bsb.mongodb.types": "^0.0.8",
     "@shopify/app-bridge": "^3.1.0",
     "@shopify/app-bridge-react": "^3.1.0",
     "@shopify/app-bridge-utils": "^3.1.0",
@@ -29,7 +30,6 @@
     "react-router-dom": "^6.6.1"
   },
   "devDependencies": {
-    "@jamalsoueidan/bsb.mongodb.types": "^0.0.8",
     "@rollup/plugin-dynamic-import-vars": "^2.0.2",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.10",

@@ -1,4 +1,4 @@
-import { LoadingPage } from "@jamalsoueidan/bsf.bsf-pkg";
+import { LoadingModal, LoadingPage } from "@jamalsoueidan/bsf.bsf-pkg";
 import { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 
@@ -15,11 +15,26 @@ const StaffEdit = lazy(() => import("./pages/staff/edit/[id]"));
 const StaffView = lazy(() => import("./pages/staff/[id]"));
 const StaffCreate = lazy(() => import("./pages/staff/new"));
 
-export default () => (
+const BookingModal = lazy(() =>
+  import("./components/booking/booking-modal/booking-modal").then((module) => ({
+    default: module.BookingModal,
+  })),
+);
+
+export const ApplicationRoutes = () => (
   <Suspense fallback={<LoadingPage title="Loading page..." />}>
     <Routes>
       <Route path="/bookings/new" element={<BookingsCreate />} />
-      <Route path="/bookings/*" element={<Bookings />} />
+      <Route path="/bookings/*" element={<Bookings />}>
+        <Route
+          path=":id/*"
+          element={
+            <Suspense fallback={<LoadingModal />}>
+              <BookingModal />
+            </Suspense>
+          }
+        />
+      </Route>
       <Route path="/collections" element={<Collections />} />
       <Route path="/collections/empty" element={<CollectionEmpty />} />
       <Route path="/collections/product/:id" element={<CollectionView />} />

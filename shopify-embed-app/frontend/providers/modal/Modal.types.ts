@@ -1,6 +1,6 @@
-import { ComplexAction, ModalProps } from '@shopify/polaris';
+import { ComplexAction, ModalProps } from "@shopify/polaris";
 
 export interface ModalContextProps extends ModalProps {
-  setPrimaryAction: (value: ComplexAction) => void;
-  setSecondaryActions: (value: ComplexAction[]) => void;
+  setPrimaryAction: (value: ComplexAction | undefined) => void;
+  setSecondaryActions: (value: ComplexAction[] | undefined) => void;
 }

@@ -1,7 +1,6 @@
 import { BookingRequest, Staff } from "@jamalsoueidan/bsb.mongodb.types";
 import {
   BookingCalendarEvent,
-  LoadingModal,
   LoadingSpinner,
   useFulfillment,
   useTranslation,
@@ -9,9 +8,8 @@ import {
 import { useBookings, useStaff } from "@services";
 import { useNavigate } from "@shopify/app-bridge-react";
 import { Badge, Card, FooterHelp, Page } from "@shopify/polaris";
-import Routes from "Routes";
 import { Suspense, lazy, useCallback, useMemo, useState } from "react";
-import { Route } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 const locales = {
   da: {
@@ -29,14 +27,6 @@ const locales = {
     title: "Bookings",
   },
 };
-
-const BookingModal = lazy(() =>
-  import("../components/booking/booking-modal/booking-modal").then(
-    (module) => ({
-      default: module.BookingModal,
-    }),
-  ),
-);
 
 const StaffSelection = lazy(() =>
   import("@jamalsoueidan/bsf.bsf-pkg").then((module) => ({
@@ -80,8 +70,7 @@ export default () => {
 
   const onClickBooking = useCallback(
     (state: BookingCalendarEvent) => {
-      console.log("navigate");
-      navigate(`bookings/${state.booking._id}`);
+      navigate(`/bookings/${state.booking._id}`);
     },
     [navigate],
   );
@@ -94,16 +83,7 @@ export default () => {
         content: t("create"),
         url: "/bookings/new",
       }}>
-      <Routes>
-        <Route
-          path="/:id/*"
-          element={
-            <Suspense fallback={<LoadingModal />}>
-              <BookingModal />
-            </Suspense>
-          }
-        />
-      </Routes>
+      <Outlet />
       <Card sectioned>
         <Card.Section title={badges}>
           <Suspense fallback={<LoadingSpinner />}>

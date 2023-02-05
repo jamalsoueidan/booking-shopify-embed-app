@@ -1,16 +1,19 @@
-import { FormErrors } from "@components/FormErrors";
-import { useForm } from "@jamalsoueidan/bsf.bsf-pkg";
+import { BookingResponse } from "@jamalsoueidan/bsb.mongodb.types";
+import { FormErrors, useForm, useToast } from "@jamalsoueidan/bsf.bsf-pkg";
 import { useModal } from "@providers/modal";
-import { useToast } from "@providers/toast";
 import { useSendCustomNotification } from "@services";
 import { Form, Modal, Select, Stack, TextField } from "@shopify/polaris";
 import { lengthMoreThan, notEmpty, useField } from "@shopify/react-form";
 import { useEffect, useMemo } from "react";
 
-export default ({ info }: BookingModalProps) => {
+export const BookingSendNotification = ({
+  booking,
+}: {
+  booking: BookingResponse;
+}) => {
   const { send } = useSendCustomNotification({
-    lineItemId: info.lineItemId,
-    orderId: info.orderId,
+    lineItemId: booking.lineItemId,
+    orderId: booking.orderId,
   });
 
   const { setPrimaryAction } = useModal();

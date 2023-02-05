@@ -1,4 +1,7 @@
-import { BookingFulfillmentStatus, BookingResponse } from "@jamalsoueidan/bsb.mongodb.types";
+import {
+  BookingFulfillmentStatus,
+  BookingResponse,
+} from "@jamalsoueidan/bsb.mongodb.types";
 import { useDate } from "@jamalsoueidan/bsf.bsf-pkg";
 import { useModal } from "@providers/modal";
 import { Banner, Link, Modal, TextContainer } from "@shopify/polaris";
@@ -6,16 +9,25 @@ import { differenceInHours, format, formatRelative, isAfter } from "date-fns";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const BookingDetailsView = ({ booking }: { booking: BookingResponse }) => {
-  const orderUrl = "https://" + booking.shop + "/admin/orders/" + booking.orderId;
-  const productUrl = "https://" + booking.shop + "/admin/products/" + booking.productId;
+export const BookingDetailsView = ({
+  booking,
+}: {
+  booking: BookingResponse;
+}) => {
+  const orderUrl =
+    "https://" + booking.shop + "/admin/orders/" + booking.orderId;
+  const productUrl =
+    "https://" + booking.shop + "/admin/products/" + booking.productId;
 
   const navigate = useNavigate();
   const { toTimeZone } = useDate();
   const { setSecondaryActions } = useModal();
 
   useEffect(() => {
-    if (!!booking.fulfillmentStatus && isAfter(new Date(booking.start), new Date())) {
+    if (
+      !!booking.fulfillmentStatus &&
+      isAfter(new Date(booking.start), new Date())
+    ) {
       setSecondaryActions([
         {
           content: "Ændre dato/tid",
@@ -108,15 +120,20 @@ export const BookingDetailsView = ({ booking }: { booking: BookingResponse }) =>
 
       <Modal.Section>
         <TextContainer>
-          <strong>Tidspunkt:</strong> {format(toTimeZone(booking.start), "HH:mm")} -{" "}
+          <strong>Tidspunkt:</strong>{" "}
+          {format(toTimeZone(booking.start), "HH:mm")} -{" "}
           {format(toTimeZone(booking.end), "HH:mm")} (
-          <i>{differenceInHours(new Date(booking.end), new Date(booking.start))} time)</i>
+          <i>
+            {differenceInHours(new Date(booking.end), new Date(booking.start))}{" "}
+            time)
+          </i>
         </TextContainer>
       </Modal.Section>
 
       <Modal.Section>
         <TextContainer>
-          <strong>Hos:</strong> {booking.staff?.fullname} {booking.anyAvailable && <i>(Enhver tilgængelig)</i>}
+          <strong>Hos:</strong> {booking.staff?.fullname}{" "}
+          {booking.anyAvailable && <i>(Enhver tilgængelig)</i>}
         </TextContainer>
       </Modal.Section>
 
@@ -131,7 +148,10 @@ export const BookingDetailsView = ({ booking }: { booking: BookingResponse }) =>
       {booking.lineItemTotal > 0 && (
         <Modal.Section>
           <TextContainer>
-            <strong>Kunden har bestilt {booking.lineItemTotal} behandlinger i dette ordre.</strong>
+            <strong>
+              Kunden har bestilt {booking.lineItemTotal} behandlinger i dette
+              ordre.
+            </strong>
           </TextContainer>
         </Modal.Section>
       )}
