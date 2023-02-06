@@ -1,5 +1,12 @@
-import { useFetch } from "@hooks";
-import { ApiResponse, Schedule, ScheduleBodyUpdate, ScheduleBodyUpdateOrCreate, ScheduleGetQuery, ScheduleUpdateOrDestroyQuery } from "@jamalsoueidan/bsb.mongodb.types";
+import { useFetch } from "@hooks/use-fetch";
+import {
+  ApiResponse,
+  Schedule,
+  ScheduleBodyUpdate,
+  ScheduleBodyUpdateOrCreate,
+  ScheduleGetQuery,
+  ScheduleUpdateOrDestroyQuery,
+} from "@jamalsoueidan/bsb.mongodb.types";
 import { useCallback, useState } from "react";
 import { useQuery } from "react-query";
 
@@ -19,7 +26,9 @@ interface UseStaffScheduleCreateProps {
   staff: string;
 }
 
-type UseStaffScheduleCreateFunction = (body: ScheduleBodyUpdateOrCreate) => void;
+type UseStaffScheduleCreateFunction = (
+  body: ScheduleBodyUpdateOrCreate,
+) => void;
 
 export const useStaffScheduleCreate = ({
   staff,

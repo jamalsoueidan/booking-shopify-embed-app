@@ -22,10 +22,10 @@ import {
   InputTimerDividerField,
   LoadingSpinner,
   useForm,
+  useModal,
   useToast,
   useTranslation,
 } from "@jamalsoueidan/bsf.bsf-pkg";
-import { useModal } from "@providers/modal";
 import { useBookingUpdate } from "@services/booking";
 import { useWidgetDate, useWidgetStaff } from "@services/widget";
 import { endOfMonth, isSameDay, startOfMonth } from "date-fns";

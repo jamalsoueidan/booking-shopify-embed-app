@@ -1,16 +1,20 @@
-import { useFetch } from '@hooks';
-import { ApiResponse, NotificationBody, NotificationQuery } from '@jamalsoueidan/bsb.mongodb.types';
-import { useCallback } from 'react';
-import { useQuery } from 'react-query';
+import { useFetch } from "@hooks/use-fetch";
+import {
+  ApiResponse,
+  NotificationBody,
+  NotificationQuery,
+} from "@jamalsoueidan/bsb.mongodb.types";
+import { useCallback } from "react";
+import { useQuery } from "react-query";
 
 export const useNotification = ({ orderId, lineItemId }: NotificationQuery) => {
   const { get } = useFetch();
 
   const { data, isLoading } = useQuery<ApiResponse<Array<Notification>>>({
-    queryKey: ['notification', orderId, lineItemId],
+    queryKey: ["notification", orderId, lineItemId],
     queryFn: () =>
       get(
-        `/api/admin/notifications?orderId=${orderId}&lineItemId=${lineItemId}`
+        `/api/admin/notifications?orderId=${orderId}&lineItemId=${lineItemId}`,
       ),
     enabled: !!orderId && !!lineItemId,
   });
@@ -22,7 +26,7 @@ export const useNotification = ({ orderId, lineItemId }: NotificationQuery) => {
 };
 
 type UseSendCustomerNotificaionCreate = (
-  body: NotificationBody
+  body: NotificationBody,
 ) => Promise<ApiResponse<Notification>>;
 
 export const useSendCustomNotification = ({
@@ -33,7 +37,7 @@ export const useSendCustomNotification = ({
   const send: UseSendCustomerNotificaionCreate = useCallback(
     (body) =>
       post(`/api/admin/notifications`, { ...body, orderId, lineItemId }),
-    [post]
+    [post],
   );
 
   return {
@@ -53,7 +57,7 @@ export const useResendNotification = () => {
   const { post } = useFetch();
   const resend: UseResendNotificaionCreate = useCallback(
     ({ id }) => post(`/api/admin/notifications/${id}`),
-    [post]
+    [post],
   );
 
   return {

@@ -1,14 +1,18 @@
-import { useFetch } from '@hooks';
-import { ApiResponse, CollectionAggreate, CollectionBodyCreate } from '@jamalsoueidan/bsb.mongodb.types';
-import { useCallback, useState } from 'react';
-import { useQuery } from 'react-query';
+import { useFetch } from "@hooks/use-fetch";
+import {
+  ApiResponse,
+  CollectionAggreate,
+  CollectionBodyCreate,
+} from "@jamalsoueidan/bsb.mongodb.types";
+import { useCallback, useState } from "react";
+import { useQuery } from "react-query";
 
 export const useCollection = () => {
   const { get } = useFetch();
   const { data } = useQuery<ApiResponse<Array<CollectionAggreate>>>(
-    ['collections'],
-    () => get('/api/admin/collections'),
-    { suspense: true }
+    ["collections"],
+    () => get("/api/admin/collections"),
+    { suspense: true },
   );
 
   return {
@@ -27,15 +31,15 @@ export const useCollectionCreate = () => {
     async ({ selections }) => {
       setIsFetching(true);
       const response: ApiResponse<CollectionAggreate> = await post(
-        '/api/admin/collections',
-        { selections }
+        "/api/admin/collections",
+        { selections },
       );
-      mutate(['collections']);
+      mutate(["collections"]);
       setIsFetching(false);
       setIsFetched(true);
       return response;
     },
-    [mutate, post]
+    [mutate, post],
   );
 
   return {
@@ -58,7 +62,7 @@ export const useCollectionDestroy = ({
 
   const destroy: UseCollectionDestroyFetch = useCallback(async () => {
     await fetch.destroy(`/api/admin/collections/${collectionId}`);
-    fetch.mutate(['collections']);
+    fetch.mutate(["collections"]);
   }, [fetch]);
 
   return {

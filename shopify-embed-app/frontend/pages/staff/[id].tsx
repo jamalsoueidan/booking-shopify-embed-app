@@ -1,14 +1,31 @@
 import { MetaData } from "@components/staff/meta-data";
-import { LoadingPage, LoadingSpinner } from "@jamalsoueidan/bsf.bsf-pkg";
+import { Schedule } from "@jamalsoueidan/bsb.mongodb.types";
+import {
+  LoadingModal,
+  LoadingPage,
+  LoadingSpinner,
+} from "@jamalsoueidan/bsf.bsf-pkg";
 import { useStaffGet, useStaffSchedule } from "@services";
 import { useNavigate } from "@shopify/app-bridge-react";
 import { Card, Page } from "@shopify/polaris";
-import { Suspense, lazy, useState } from "react";
+import { Suspense, lazy, useCallback, useState } from "react";
 import { useParams } from "react-router-dom";
 
 const ScheduleCalendar = lazy(() =>
-  import("../../components/staff/schedule-calendar").then((module) => ({
+  import("@jamalsoueidan/bsf.bsf-pkg").then((module) => ({
     default: module.ScheduleCalendar,
+  })),
+);
+
+const CreateScheduleModal = lazy(() =>
+  import("./modals/create-shift-modal").then((module) => ({
+    default: module.CreateShiftModal,
+  })),
+);
+
+const EditScheduleModal = lazy(() =>
+  import("./modals/edit-shift-modal").then((module) => ({
+    default: module.EditShiftModal,
   })),
 );
 
@@ -16,6 +33,21 @@ export default () => {
   const params = useParams();
   const navigate = useNavigate();
   const [rangeDate, setRangeDate] = useState<CalendarDateChangeProps>();
+  const [date, setDate] = useState<Date>();
+  const [schedule, setSchedule] = useState<Schedule>();
+
+  const createSchedule = useCallback((date: Date) => setDate(date), []);
+
+  const editSchedule = useCallback(
+    (schedule: Schedule) => setSchedule(schedule),
+    [],
+  );
+
+  const close = useCallback(() => {
+    setDate(null);
+    setSchedule(null);
+  }, []);
+
   const { data: staff } = useStaffGet({ userId: params.id });
 
   const { data: calendar } = useStaffSchedule({
@@ -45,9 +77,27 @@ export default () => {
         onAction: () => navigate("/staff/edit/" + _id),
       }}>
       <Card sectioned>
-        <Suspense fallback={<LoadingSpinner />}>
-          <ScheduleCalendar events={calendar} onChangeDate={setRangeDate} />
-        </Suspense>
+        {date && (
+          <Suspense fallback={<LoadingModal />}>
+            <CreateScheduleModal selectedDate={date} close={close} />
+          </Suspense>
+        )}
+        {schedule && (
+          <Suspense fallback={<LoadingModal />}>
+            <EditScheduleModal schedule={schedule} close={close} />
+          </Suspense>
+        )}
+
+        <Card sectioned>
+          <Suspense fallback={<LoadingSpinner />}>
+            <ScheduleCalendar
+              onChangeDate={setRangeDate}
+              data={calendar}
+              onClick={createSchedule}
+              onClickSchedule={editSchedule}
+            />
+          </Suspense>
+        </Card>
       </Card>
     </Page>
   );

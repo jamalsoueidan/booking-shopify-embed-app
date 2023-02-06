@@ -1,4 +1,4 @@
-import { useFetch } from "@hooks";
+import { useFetch } from "@hooks/use-fetch";
 import {
   ApiResponse,
   BookingBodyCreateRequest,

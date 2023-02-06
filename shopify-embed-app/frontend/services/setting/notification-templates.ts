@@ -1,12 +1,16 @@
-import { useFetch } from '@hooks';
-import { ApiResponse, NotificationTemplate, NotificationTemplateBodyUpdate } from '@jamalsoueidan/bsb.mongodb.types';
-import { useCallback } from 'react';
-import { useQuery } from 'react-query';
+import { useFetch } from "@hooks/use-fetch";
+import {
+  ApiResponse,
+  NotificationTemplate,
+  NotificationTemplateBodyUpdate,
+} from "@jamalsoueidan/bsb.mongodb.types";
+import { useCallback } from "react";
+import { useQuery } from "react-query";
 
 export const useNotificationTemplates = ({ language }: any) => {
   const { get } = useFetch();
   const { data, ...rest } = useQuery<ApiResponse<Array<NotificationTemplate>>>({
-    queryKey: ['notification-templates'],
+    queryKey: ["notification-templates"],
     queryFn: () =>
       get(`/api/admin/setting/notification-templates?language=${language}`),
     refetchOnWindowFocus: false,
@@ -19,7 +23,7 @@ export const useNotificationTemplates = ({ language }: any) => {
 };
 
 type UseNotificationTemplatesUpdateFetch = (
-  body: NotificationTemplateBodyUpdate[]
+  body: NotificationTemplateBodyUpdate[],
 ) => Promise<any>;
 
 export const useNotificationTemplatesUpdate = () => {
@@ -29,12 +33,12 @@ export const useNotificationTemplatesUpdate = () => {
     async (body) => {
       const response = await put(
         `/api/admin/setting/notification-templates`,
-        body
+        body,
       );
-      await mutate(['notification-templates']);
+      await mutate(["notification-templates"]);
       return response;
     },
-    [put, mutate]
+    [put, mutate],
   );
 
   return {

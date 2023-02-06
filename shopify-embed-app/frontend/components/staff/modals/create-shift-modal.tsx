@@ -1,4 +1,8 @@
-import { CreateManyShiftsRefMethod, CreateOneShiftRefMethod, LoadingSpinner } from "@jamalsoueidan/bsf.bsf-pkg";
+import {
+  CreateManyShiftsRefMethod,
+  CreateOneShiftRefMethod,
+  LoadingSpinner,
+} from "@jamalsoueidan/bsf.bsf-pkg";
 import { Modal, Tabs } from "@shopify/polaris";
 import { Suspense, lazy, useCallback, useRef, useState } from "react";
 
@@ -15,27 +19,30 @@ const CreateOneShiftForm = lazy(() =>
 );
 
 interface CreateShiftModalProps {
-  info: {
-    dateStr: string;
-  };
-  setInfo: (value: object | null) => void;
+  selectedDate: Date;
+  close: () => void;
 }
 
-export const CreateShiftModal = ({ info, setInfo }: CreateShiftModalProps) => {
+export const CreateShiftModal = ({
+  selectedDate,
+  close,
+}: CreateShiftModalProps) => {
   const ref = useRef<CreateManyShiftsRefMethod | CreateOneShiftRefMethod>();
-  const toggleActive = useCallback(() => setInfo(null), [setInfo]);
   const [loading, setLoading] = useState<boolean>(false);
   const [selected, setSelected] = useState(0);
 
-  const handleTabChange = useCallback((selectedTabIndex: number) => setSelected(selectedTabIndex), []);
+  const handleTabChange = useCallback(
+    (selectedTabIndex: number) => setSelected(selectedTabIndex),
+    [],
+  );
 
   const submit = useCallback(() => {
     const noErrors = ref.current.submit().length === 0;
     setLoading(true);
     if (noErrors) {
-      setInfo(null);
+      close();
     }
-  }, [setInfo]);
+  }, [close]);
 
   const tabs = [
     {
@@ -51,7 +58,7 @@ export const CreateShiftModal = ({ info, setInfo }: CreateShiftModalProps) => {
   return (
     <Modal
       open={true}
-      onClose={toggleActive}
+      onClose={close}
       title="New availability"
       primaryAction={{
         content: `${tabs[selected].content}`,
@@ -61,19 +68,18 @@ export const CreateShiftModal = ({ info, setInfo }: CreateShiftModalProps) => {
       secondaryActions={[
         {
           content: "Luk",
-          onAction: toggleActive,
+          onAction: () => close(),
         },
-      ]}
-    >
+      ]}>
       <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange}>
         <Modal.Section>
           {tabs[selected].id === "create-day" ? (
             <Suspense fallback={<LoadingSpinner />}>
-              <CreateOneShiftForm ref={ref} date={info.dateStr} />
+              <CreateOneShiftForm ref={ref} selectedDate={selectedDate} />
             </Suspense>
           ) : (
             <Suspense fallback={<LoadingSpinner />}>
-              <CreateManyShiftsForm ref={ref} date={info.dateStr} />
+              <CreateManyShiftsForm ref={ref} selectedDate={selectedDate} />
             </Suspense>
           )}
         </Modal.Section>

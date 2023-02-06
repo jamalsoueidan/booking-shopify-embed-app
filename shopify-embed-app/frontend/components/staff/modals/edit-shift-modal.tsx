@@ -1,89 +1,75 @@
-import { ScheduleBodyUpdate } from "@jamalsoueidan/bsb.mongodb.types";
+import { Schedule, ScheduleBodyUpdate } from "@jamalsoueidan/bsb.mongodb.types";
 import { useDate, useTag, useToast } from "@jamalsoueidan/bsf.bsf-pkg";
 import {
   useStaffScheduleDestroy,
   useStaffScheduleUpdate,
 } from "@services/staff/schedule";
-import {
-  Button,
-  Checkbox,
-  Layout,
-  Modal,
-  Select,
-  TextField,
-} from "@shopify/polaris";
+import { Button, Layout, Modal, Select, TextField } from "@shopify/polaris";
 import { format } from "date-fns";
 import { useCallback, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 
 interface EditShiftModalProps {
-  info: {
-    event: Record<string, any>;
-  };
-  setInfo: (value: object | null) => void;
+  schedule: Schedule;
+  close: () => void;
 }
 
-export const EditShiftModal = ({ info, setInfo }: EditShiftModalProps) => {
+export const EditShiftModal = ({ schedule, close }: EditShiftModalProps) => {
   const { options } = useTag();
   const { show } = useToast();
-  const toggleActive = useCallback(() => setInfo(null), [setInfo]);
   const { toTimeZone, toUtc } = useDate();
   const params = useParams();
 
-  const extendedProps = info.event._def.extendedProps;
   const [startTime, setStartTime] = useState<string>(
-    format(toTimeZone(extendedProps.start), "HH:mm"),
+    format(toTimeZone(schedule.start), "HH:mm"),
   );
   const [endTime, setEndTime] = useState<string>(
-    format(toTimeZone(extendedProps.end), "HH:mm"),
+    format(toTimeZone(schedule.end), "HH:mm"),
   );
-  const [tag, setTag] = useState(extendedProps.tag || options[0].value);
-  const [available, setAvailable] = useState(extendedProps.available || false);
+  const [tag, setTag] = useState(schedule.tag || options[0].value);
 
   const { isUpdating, update: updateSchedule } = useStaffScheduleUpdate({
-    schedule: extendedProps._id,
+    schedule: schedule._id,
     staff: params.id,
   });
 
   const { isUpdating: isUpdatingAll, update: updateScheduleAll } =
     useStaffScheduleUpdate({
-      schedule: extendedProps._id,
+      schedule: schedule._id,
       staff: params.id,
     });
 
   const { isDestroying, destroy: destroySchedule } = useStaffScheduleDestroy({
-    schedule: extendedProps._id,
+    schedule: schedule._id,
     staff: params.id,
   });
 
   const { isDestroying: isDestroyingAll, destroy: destroyScheduleAll } =
     useStaffScheduleDestroy({
-      schedule: extendedProps._id,
+      schedule: schedule._id,
       staff: params.id,
     });
 
   const handleStart = useCallback((value: string) => setStartTime(value), []);
   const handleTag = useCallback((value: string) => setTag(value), []);
-  const handleAvailable = useCallback(
-    (newChecked: boolean) => setAvailable(newChecked),
-    [],
-  );
   const handleEnd = useCallback((value: string) => setEndTime(value), []);
 
   const updateDate = useCallback(
     async (type: "all" | null) => {
-      const start = toUtc(`${extendedProps.start.substr(0, 10)} ${startTime}`);
-      const end = toUtc(`${extendedProps.end.substr(0, 10)} ${endTime}`);
+      const start = toUtc(
+        `${schedule.start.toJSON().substr(0, 10)} ${startTime}`,
+      );
+      const end = toUtc(`${schedule.end.toJSON().substr(0, 10)} ${endTime}`);
 
       const body: ScheduleBodyUpdate = {
         end: end.toISOString(),
         start: start.toISOString(),
         tag,
-        ...(type === "all" ? { groupId: extendedProps.groupId } : null),
+        ...(type === "all" ? { groupId: schedule.groupId } : null),
       };
 
       type == "all" ? updateScheduleAll(body) : updateSchedule(body);
-      setInfo(null);
+      close();
       show({
         content:
           type === "all"
@@ -93,15 +79,15 @@ export const EditShiftModal = ({ info, setInfo }: EditShiftModalProps) => {
     },
     [
       toUtc,
-      extendedProps.start,
-      extendedProps.end,
-      extendedProps.groupId,
+      schedule.start,
+      schedule.end,
+      schedule.groupId,
       startTime,
       endTime,
       tag,
       updateScheduleAll,
       updateSchedule,
-      setInfo,
+      close,
       show,
     ],
   );
@@ -109,32 +95,30 @@ export const EditShiftModal = ({ info, setInfo }: EditShiftModalProps) => {
   const deleteDate = useCallback(
     (type: "all" | null) => {
       const body = {
-        ...(type === "all" ? { groupId: extendedProps.groupId } : null),
+        ...(type === "all" ? { groupId: schedule.groupId } : null),
       };
 
       type == "all" ? destroyScheduleAll(body) : destroySchedule(body);
-      setInfo(null);
+      close();
       show({
         content:
           type === "all" ? "Schedules is deleted" : "Schedule is deleted",
       });
     },
-    [extendedProps.groupId, destroyScheduleAll, destroySchedule, setInfo, show],
+    [schedule.groupId, destroyScheduleAll, destroySchedule, close, show],
   );
 
-  const formatDate = format(new Date(extendedProps.start), "MM/dd/yyyy");
+  const formatDate = format(new Date(schedule.start), "MM/dd/yyyy");
 
   const secondaryActions = useMemo(
     () => [
       {
         content: "Luk",
-        onAction: toggleActive,
+        onAction: close,
       },
     ],
-    [toggleActive],
+    [close],
   );
-
-  const onClose = useCallback(() => toggleActive(), [toggleActive]);
 
   const updateDateOne = useCallback(() => updateDate(null), [updateDate]);
   const deleteDateOne = useCallback(() => deleteDate(null), [deleteDate]);
@@ -145,7 +129,7 @@ export const EditShiftModal = ({ info, setInfo }: EditShiftModalProps) => {
     <Modal
       small
       open={true}
-      onClose={onClose}
+      onClose={close}
       title="Edit availability"
       secondaryActions={secondaryActions}>
       <Modal.Section>{formatDate}</Modal.Section>
@@ -170,13 +154,6 @@ export const EditShiftModal = ({ info, setInfo }: EditShiftModalProps) => {
             />
           </Layout.Section>
           <Layout.Section>
-            <Checkbox
-              label="Available"
-              checked={available}
-              onChange={handleAvailable}
-            />
-          </Layout.Section>
-          <Layout.Section>
             <Select
               label="Tag"
               options={options}
@@ -194,14 +171,14 @@ export const EditShiftModal = ({ info, setInfo }: EditShiftModalProps) => {
               Slet pågældende
             </Button>
           </Layout.Section>
-          {extendedProps.groupId && (
+          {schedule.groupId && (
             <Layout.Section>
               <Button primary onClick={updateDateAll} loading={isUpdatingAll}>
                 Redigere alle
               </Button>
             </Layout.Section>
           )}
-          {extendedProps.groupId && (
+          {schedule.groupId && (
             <Layout.Section>
               <Button
                 destructive

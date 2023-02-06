@@ -1,6 +1,9 @@
-import { BookingRequest, Staff } from "@jamalsoueidan/bsb.mongodb.types";
 import {
-  BookingCalendarEvent,
+  BookingRequest,
+  BookingResponse,
+  Staff,
+} from "@jamalsoueidan/bsb.mongodb.types";
+import {
   LoadingSpinner,
   useFulfillment,
   useTranslation,
@@ -69,8 +72,8 @@ export default () => {
   );
 
   const onClickBooking = useCallback(
-    (state: BookingCalendarEvent) => {
-      navigate(`/bookings/${state.booking._id}`);
+    (booking: BookingResponse) => {
+      navigate(`/bookings/${booking._id}`);
     },
     [navigate],
   );

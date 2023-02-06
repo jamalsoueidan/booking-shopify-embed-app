@@ -2,8 +2,7 @@ import {
   BookingFulfillmentStatus,
   BookingResponse,
 } from "@jamalsoueidan/bsb.mongodb.types";
-import { useDate } from "@jamalsoueidan/bsf.bsf-pkg";
-import { useModal } from "@providers/modal";
+import { useDate, useModal } from "@jamalsoueidan/bsf.bsf-pkg";
 import { Banner, Link, Modal, TextContainer } from "@shopify/polaris";
 import { differenceInHours, format, formatRelative, isAfter } from "date-fns";
 import { useEffect } from "react";

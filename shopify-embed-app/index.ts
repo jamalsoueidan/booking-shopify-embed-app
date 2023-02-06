@@ -7,7 +7,7 @@ import express, { Request } from "express";
 import { readFileSync } from "fs";
 import { join } from "path";
 import { AppInstallations } from "./app_installations.js";
-import connect from "./database/database.js";
+import connect from "./database/database";
 import { setupGDPRWebHooks } from "./gdpr.js";
 import redirectToAuth from "./helpers/redirect-to-auth.js";
 import {
@@ -46,7 +46,7 @@ Shopify.Context.initialize({
   // This should be replaced with your preferred storage strategy
   SESSION_STORAGE: new Shopify.Session.MongoDBSessionStorage(
     new URL(process.env.MONGODB_URI),
-    "book-appointment-app"
+    "book-appointment-app",
   ),
   ...(process.env.SHOP_CUSTOM_DOMAIN && {
     CUSTOM_SHOP_DOMAINS: [process.env.SHOP_CUSTOM_DOMAIN],
@@ -139,7 +139,7 @@ setupGDPRWebHooks("/api/webhooks");
 export async function createServer(
   root = process.cwd(),
   isProd = process.env.NODE_ENV === "production",
-  billingSettings = BILLING_SETTINGS
+  billingSettings = BILLING_SETTINGS,
 ) {
   const app = express();
 
@@ -147,7 +147,7 @@ export async function createServer(
     cors({
       origin: /.myshopify\.com$/,
       credentials: true,
-    })
+    }),
   );
   app.set("use-online-tokens", USE_ONLINE_TOKENS);
   app.use(cookieParser(Shopify.Context.API_SECRET_KEY));
@@ -183,7 +183,7 @@ export async function createServer(
     "/api/*",
     verifyRequest(app, {
       billing: billingSettings,
-    })
+    }),
   );
 
   app.use("/api/admin", bookingRoutes(app));
@@ -202,8 +202,8 @@ export async function createServer(
       res.setHeader(
         "Content-Security-Policy",
         `frame-ancestors https://${encodeURIComponent(
-          shop
-        )} https://admin.shopify.com;`
+          shop,
+        )} https://admin.shopify.com;`,
       );
     } else {
       res.setHeader("Content-Security-Policy", `frame-ancestors 'none';`);
@@ -213,10 +213,10 @@ export async function createServer(
 
   if (isProd) {
     const compression = await import("compression").then(
-      ({ default: fn }) => fn
+      ({ default: fn }) => fn,
     );
     const serveStatic = await import("serve-static").then(
-      ({ default: fn }) => fn
+      ({ default: fn }) => fn,
     );
     app.use(compression());
     app.use(serveStatic(PROD_INDEX_PATH, { index: false }));
@@ -242,7 +242,7 @@ export async function createServer(
 
     const htmlFile = join(
       isProd ? PROD_INDEX_PATH : DEV_INDEX_PATH,
-      "index.html"
+      "index.html",
     );
 
     return res

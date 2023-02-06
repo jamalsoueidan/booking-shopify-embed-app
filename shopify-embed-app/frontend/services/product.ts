@@ -1,13 +1,19 @@
-import { useFetch } from '@hooks';
-import { ApiResponse, Product, ProductAddStaff, ProductAggreate, ProductUpdateBody } from '@jamalsoueidan/bsb.mongodb.types';
-import { useCallback } from 'react';
-import { useQuery } from 'react-query';
+import { useFetch } from "@hooks/use-fetch";
+import {
+  ApiResponse,
+  Product,
+  ProductAddStaff,
+  ProductAggreate,
+  ProductUpdateBody,
+} from "@jamalsoueidan/bsb.mongodb.types";
+import { useCallback } from "react";
+import { useQuery } from "react-query";
 
 export const useProducts = () => {
   const { get } = useFetch();
 
   const { data } = useQuery<ApiResponse<Array<Product>>>([`products`], () =>
-    get(`/api/admin/products`)
+    get(`/api/admin/products`),
   );
 
   return {
@@ -27,7 +33,7 @@ export const useProductGet = ({ productId }: UseProductGetProps) => {
     () => get(`/api/admin/products/${productId}`),
     {
       enabled: !!productId,
-    }
+    },
   );
 
   return {
@@ -47,13 +53,13 @@ export const useProductUpdate = ({ productId }: UseProductUpdateProps) => {
     async (body) => {
       const response: ApiResponse<Product> = await put(
         `/api/admin/products/${productId}`,
-        body
+        body,
       );
-      await mutate(['products', productId]);
-      await mutate(['collections']);
+      await mutate(["products", productId]);
+      await mutate(["collections"]);
       return response.payload;
     },
-    [put, mutate]
+    [put, mutate],
   );
 
   return {
@@ -69,9 +75,9 @@ export const useProductStaff = ({ productId }: UseProductStaffListProps) => {
   const { get } = useFetch();
 
   const { data } = useQuery<ApiResponse<Array<ProductAddStaff>>>(
-    [`products`, productId, 'staff'],
+    [`products`, productId, "staff"],
     () => get(`/api/admin/products/${productId}/staff`),
-    { enabled: !!productId }
+    { enabled: !!productId },
   );
 
   return {

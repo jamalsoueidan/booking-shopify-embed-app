@@ -11,7 +11,7 @@ import { Suspense, forwardRef, lazy, useCallback } from "react";
 import { useParams } from "react-router-dom";
 
 interface CreateDayScheduleProps {
-  date: string;
+  selectedDate: Date;
 }
 
 const CreateOneShift = lazy(() =>
@@ -23,7 +23,7 @@ const CreateOneShift = lazy(() =>
 export const CreateOneShiftModal = forwardRef<
   CreateOneShiftRefMethod,
   CreateDayScheduleProps
->(({ date }, ref) => {
+>(({ selectedDate }, ref) => {
   const { show } = useToast();
   const { t } = useTranslation({ id: "create-many-shifts-modal", locales });
   const params = useParams();
@@ -42,7 +42,11 @@ export const CreateOneShiftModal = forwardRef<
 
   return (
     <Suspense fallback={<LoadingSpinner />}>
-      <CreateOneShift selectedDate={date} onSubmit={onSubmit} ref={ref} />
+      <CreateOneShift
+        selectedDate={selectedDate}
+        onSubmit={onSubmit}
+        ref={ref}
+      />
     </Suspense>
   );
 });

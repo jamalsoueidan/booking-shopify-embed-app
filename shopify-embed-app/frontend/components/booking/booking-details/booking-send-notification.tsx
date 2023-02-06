@@ -1,6 +1,10 @@
 import { BookingResponse } from "@jamalsoueidan/bsb.mongodb.types";
-import { FormErrors, useForm, useToast } from "@jamalsoueidan/bsf.bsf-pkg";
-import { useModal } from "@providers/modal";
+import {
+  FormErrors,
+  useForm,
+  useModal,
+  useToast,
+} from "@jamalsoueidan/bsf.bsf-pkg";
 import { useSendCustomNotification } from "@services";
 import { Form, Modal, Select, Stack, TextField } from "@shopify/polaris";
 import { lengthMoreThan, notEmpty, useField } from "@shopify/react-form";

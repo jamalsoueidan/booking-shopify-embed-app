@@ -1,5 +1,5 @@
-import { FormErrors } from "@components/FormErrors";
 import {
+  FormErrors,
   InputLanguage,
   InputTimeZone,
   LoadingPage,
