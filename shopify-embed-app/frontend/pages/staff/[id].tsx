@@ -36,13 +36,6 @@ export default () => {
   const [date, setDate] = useState<Date>();
   const [schedule, setSchedule] = useState<Schedule>();
 
-  const createSchedule = useCallback((date: Date) => setDate(date), []);
-
-  const editSchedule = useCallback(
-    (schedule: Schedule) => setSchedule(schedule),
-    [],
-  );
-
   const close = useCallback(() => {
     setDate(null);
     setSchedule(null);
@@ -93,8 +86,8 @@ export default () => {
             <ScheduleCalendar
               onChangeDate={setRangeDate}
               data={calendar}
-              onClick={createSchedule}
-              onClickSchedule={editSchedule}
+              onClick={setDate}
+              onClickSchedule={setSchedule}
             />
           </Suspense>
         </Card>
