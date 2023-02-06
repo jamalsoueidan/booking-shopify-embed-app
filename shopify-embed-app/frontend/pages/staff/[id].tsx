@@ -18,13 +18,13 @@ const ScheduleCalendar = lazy(() =>
 );
 
 const CreateScheduleModal = lazy(() =>
-  import("./modals/create-shift-modal").then((module) => ({
+  import("../../components/staff/modals/create-shift-modal").then((module) => ({
     default: module.CreateShiftModal,
   })),
 );
 
 const EditScheduleModal = lazy(() =>
-  import("./modals/edit-shift-modal").then((module) => ({
+  import("../../components/staff/modals//edit-shift-modal").then((module) => ({
     default: module.EditShiftModal,
   })),
 );
