@@ -1,7 +1,4 @@
-import {
-  BookingResponse,
-  Notification,
-} from "@jamalsoueidan/bsb.mongodb.types";
+import { BookingResponse, Notification } from "@jamalsoueidan/bsb.types";
 import { useToast } from "@jamalsoueidan/bsf.bsf-pkg";
 import { useNotification, useResendNotification } from "@services/notification";
 import {

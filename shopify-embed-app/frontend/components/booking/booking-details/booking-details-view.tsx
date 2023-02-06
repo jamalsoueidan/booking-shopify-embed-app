@@ -1,7 +1,6 @@
 import {
-  BookingFulfillmentStatus,
-  BookingResponse,
-} from "@jamalsoueidan/bsb.mongodb.types";
+  BookingFulfillmentStatus, BookingResponse
+} from "@jamalsoueidan/bsb.types";
 import { useDate, useModal } from "@jamalsoueidan/bsf.bsf-pkg";
 import { Banner, Link, Modal, TextContainer } from "@shopify/polaris";
 import { differenceInHours, format, formatRelative, isAfter } from "date-fns";

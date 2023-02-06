@@ -1,4 +1,4 @@
-import { BookingResponse } from "@jamalsoueidan/bsb.mongodb.types";
+import { BookingResponse } from "@jamalsoueidan/bsb.types";
 import { Link, Modal, TextContainer } from "@shopify/polaris";
 import { memo } from "react";
 

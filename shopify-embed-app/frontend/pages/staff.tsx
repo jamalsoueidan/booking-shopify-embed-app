@@ -1,6 +1,6 @@
 import { EmptyStaff } from "@components/staff/empty-staff";
 import { MetaData } from "@components/staff/meta-data";
-import { Staff } from "@jamalsoueidan/bsb.mongodb.types";
+import { Staff } from "@jamalsoueidan/bsb.types";
 import { usePosition } from "@jamalsoueidan/bsf.bsf-pkg";
 import { useStaff } from "@services";
 import { useNavigate } from "@shopify/app-bridge-react";

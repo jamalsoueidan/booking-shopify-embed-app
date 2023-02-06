@@ -1,4 +1,4 @@
-import { Schedule, ScheduleBodyUpdate } from "@jamalsoueidan/bsb.mongodb.types";
+import { Schedule, ScheduleBodyUpdate } from "@jamalsoueidan/bsb.types";
 import { useDate, useTag, useToast } from "@jamalsoueidan/bsf.bsf-pkg";
 import {
   useStaffScheduleDestroy,

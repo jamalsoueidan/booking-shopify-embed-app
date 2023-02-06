@@ -8,11 +8,8 @@ import {
 } from "@shopify/polaris";
 import { notEmpty, useField } from "@shopify/react-form";
 
-import {
-  BookingResponse,
-  WidgetHourRange,
-} from "@jamalsoueidan/bsb.mongodb.types";
 
+import { BookingResponse, WidgetHourRange } from "@jamalsoueidan/bsb.types";
 import {
   FormErrors,
   InputDateFlat,

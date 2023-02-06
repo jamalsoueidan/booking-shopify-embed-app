@@ -1,4 +1,4 @@
-import { Customer } from "@jamalsoueidan/bsb.mongodb.types";
+import { Customer } from "@jamalsoueidan/bsb.types";
 import { InputAutoComplete, InputAutoCompleteInput, InputAutoCompleteOption } from "@jamalsoueidan/bsf.bsf-pkg";
 import { useCustomer } from "@services/customer";
 import { Icon } from "@shopify/polaris";

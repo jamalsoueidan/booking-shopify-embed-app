@@ -1,8 +1,4 @@
-import {
-  Product,
-  ProductAggreate,
-  ProductStaffAggreate,
-} from "@jamalsoueidan/bsb.mongodb.types";
+import { Product, ProductAggreate, ProductStaffAggreate } from "@jamalsoueidan/bsb.types";
 import { useTranslation } from "@jamalsoueidan/bsf.bsf-pkg";
 import { Card } from "@shopify/polaris";
 import { DynamicList } from "@shopify/react-form/build/ts/hooks/list/dynamiclist";

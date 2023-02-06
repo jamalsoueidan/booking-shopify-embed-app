@@ -1,4 +1,4 @@
-import { BookingResponse } from "@jamalsoueidan/bsb.mongodb.types";
+import { BookingResponse } from "@jamalsoueidan/bsb.types";
 import {
   FormErrors,
   useForm,

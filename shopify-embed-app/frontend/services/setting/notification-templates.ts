@@ -1,9 +1,5 @@
 import { useFetch } from "@hooks/use-fetch";
-import {
-  ApiResponse,
-  NotificationTemplate,
-  NotificationTemplateBodyUpdate,
-} from "@jamalsoueidan/bsb.mongodb.types";
+import { ApiResponse, NotificationTemplate, NotificationTemplateBodyUpdate } from "@jamalsoueidan/bsb.types";
 import { useCallback } from "react";
 import { useQuery } from "react-query";
 

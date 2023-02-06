@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@jamalsoueidan/bsf.bsf-pkg": "^0.0.79",
-    "@jamalsoueidan/bsb.mongodb.types": "^0.0.8",
+    "@jamalsoueidan/bsb.types": "^0.0.1",
     "@shopify/app-bridge": "^3.1.0",
     "@shopify/app-bridge-react": "^3.1.0",
     "@shopify/app-bridge-utils": "^3.1.0",

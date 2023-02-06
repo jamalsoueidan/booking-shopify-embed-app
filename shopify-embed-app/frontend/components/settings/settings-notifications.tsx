@@ -1,4 +1,4 @@
-import { NotificationTemplate } from "@jamalsoueidan/bsb.mongodb.types";
+import { NotificationTemplate } from "@jamalsoueidan/bsb.types";
 import {
   FormErrors,
   LoadingSpinner,

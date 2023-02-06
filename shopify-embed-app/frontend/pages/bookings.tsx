@@ -1,8 +1,4 @@
-import {
-  BookingRequest,
-  BookingResponse,
-  Staff,
-} from "@jamalsoueidan/bsb.mongodb.types";
+import { BookingRequest, BookingResponse, Staff } from "@jamalsoueidan/bsb.types";
 import {
   LoadingSpinner,
   useFulfillment,

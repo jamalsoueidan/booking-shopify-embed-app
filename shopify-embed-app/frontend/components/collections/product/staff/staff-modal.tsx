@@ -1,7 +1,4 @@
-import {
-  ProductAddStaff,
-  ProductStaffAggreate,
-} from "@jamalsoueidan/bsb.mongodb.types";
+import { ProductAddStaff, ProductStaffAggreate } from "@jamalsoueidan/bsb.types";
 import {
   usePosition,
   useTag,

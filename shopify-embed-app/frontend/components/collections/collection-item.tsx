@@ -1,9 +1,5 @@
 import ModalConfirm from "@components/modals/ModalConfirm";
-import {
-  CollectionAggreate,
-  Product,
-  ProductStaffAggreate,
-} from "@jamalsoueidan/bsb.mongodb.types";
+import { CollectionAggreate, Product, ProductStaffAggreate } from "@jamalsoueidan/bsb.types";
 import { HelperArray, useTranslation } from "@jamalsoueidan/bsf.bsf-pkg";
 import { useCollectionDestroy } from "@services";
 import {

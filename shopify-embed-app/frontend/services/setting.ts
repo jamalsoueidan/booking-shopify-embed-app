@@ -1,9 +1,5 @@
 import { useFetch } from "@hooks/use-fetch";
-import {
-  ApiResponse,
-  Setting,
-  SettingBodyUpdate,
-} from "@jamalsoueidan/bsb.mongodb.types";
+import { ApiResponse, Setting, SettingBodyUpdate } from "@jamalsoueidan/bsb.types";
 import { useCallback } from "react";
 import { useQuery } from "react-query";
 

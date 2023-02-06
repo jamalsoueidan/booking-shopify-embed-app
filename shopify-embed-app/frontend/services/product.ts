@@ -1,11 +1,5 @@
 import { useFetch } from "@hooks/use-fetch";
-import {
-  ApiResponse,
-  Product,
-  ProductAddStaff,
-  ProductAggreate,
-  ProductUpdateBody,
-} from "@jamalsoueidan/bsb.mongodb.types";
+import { ApiResponse, Product, ProductAddStaff, ProductAggreate, ProductUpdateBody } from "@jamalsoueidan/bsb.types";
 import { useCallback } from "react";
 import { useQuery } from "react-query";
 

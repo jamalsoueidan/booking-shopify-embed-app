@@ -1,12 +1,5 @@
 import { useFetch } from "@hooks/use-fetch";
-import {
-  ApiResponse,
-  Schedule,
-  ScheduleBodyUpdate,
-  ScheduleBodyUpdateOrCreate,
-  ScheduleGetQuery,
-  ScheduleUpdateOrDestroyQuery,
-} from "@jamalsoueidan/bsb.mongodb.types";
+import { ApiResponse, Schedule, ScheduleBodyUpdate, ScheduleBodyUpdateOrCreate, ScheduleGetQuery, ScheduleUpdateOrDestroyQuery } from "@jamalsoueidan/bsb.types";
 import { useCallback, useState } from "react";
 import { useQuery } from "react-query";
 
