@@ -1,4 +1,4 @@
-import { ProductStaffAggreate } from '@jamalsoueidan/bsb.mongodb.types';
+import { ProductStaffAggreate } from '@jamalsoueidan/bsb.types';
 import { DynamicList } from '@shopify/react-form/build/ts/hooks/list/dynamiclist';
 import { createContext } from 'react';
 
