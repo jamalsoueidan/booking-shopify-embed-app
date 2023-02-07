@@ -1,32 +1,23 @@
-import { expressHandleRoute } from "@libs/express-helpers/handle-route";
-import { Router } from "express";
 import { checkSchema } from "express-validator";
-import controller, { ControllerMethods } from "./widget.controller";
 
-export const widgetRoutes = (app) => {
-  const router = Router();
+import { handleRoute } from "@jamalsoueidan/bsb.bsb-pkg";
+import { Router } from "express";
+import * as controller from "./widget.controller";
 
-  const handleRoute = expressHandleRoute(app, controller);
+const router = Router();
 
-  router.get("/staff", async (req, res) => {
-    handleRoute(req, res, ControllerMethods.staff);
-  });
+router.get("/staff", handleRoute(controller.staff));
 
-  router.get(
-    "/availability",
-    checkSchema({
-      start: { notEmpty: true },
-      end: { notEmpty: true },
-      productId: { notEmpty: true },
-    }),
-    async (req, res) => {
-      handleRoute(req, res, ControllerMethods.availability);
-    }
-  );
+router.get(
+  "/availability",
+  checkSchema({
+    start: { notEmpty: true },
+    end: { notEmpty: true },
+    productId: { notEmpty: true },
+  }),
+  handleRoute(controller.availability),
+);
 
-  router.get("/settings", async (req, res) => {
-    handleRoute(req, res, ControllerMethods.settings);
-  });
+router.get("/settings", handleRoute(controller.settings));
 
-  return router;
-};
+export { router as widgetRoutes };

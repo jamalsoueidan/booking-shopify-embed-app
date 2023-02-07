@@ -1,14 +1,14 @@
-import mongoose, { Document } from "mongoose";
+import mongoose from "mongoose";
 
-import { IProductModel, IStaffModel } from "@jamalsoueidan/bsb.bsb-pkg";
+import { IProductDocument, IStaffDocument } from "@jamalsoueidan/bsb.bsb-pkg";
 import { createProduct, createSchedule, createStaff } from "@libs/jest-helpers";
 import { addHours, subHours } from "date-fns";
-import productController from "../product.controller";
+import * as productController from "../product.controller";
 
 const productId = 123456789;
 
-interface ICustomProductModel extends IProductModel, Document {}
-interface ICustomStaffModel extends IStaffModel, Document {}
+interface ICustomProductModel extends IProductDocument {}
+interface ICustomStaffModel extends IStaffDocument {}
 
 let product: ICustomProductModel;
 let staff1: ICustomStaffModel;

@@ -1,59 +1,42 @@
-import StaffService from "@services/staff.service";
+import {
+  ControllerProps,
+  ShopQuery,
+  StaffServiceCreate,
+  StaffServiceFindAll,
+  StaffServiceFindByIdAndUpdate,
+  StaffServiceFindOne,
+} from "@jamalsoueidan/bsb.bsb-pkg";
 
-export enum ControllerMethods {
-  get = "get",
-  create = "create",
-  getById = "getById",
-  update = "update",
-}
-
-interface GetQuery {
-  shop: string;
-}
-
-const get = ({ query }: { query: GetQuery }) => {
+export const get = ({ query }: ControllerProps<ShopQuery>) => {
   const shop = query.shop;
-  return StaffService.find(shop);
+  return StaffServiceFindAll(shop);
 };
 
-interface CreateQuery {
-  shop: string;
-}
-
-const create = ({
+export const create = ({
   query,
   body,
-}: {
-  query: CreateQuery;
-  body: StaffBodyCreate;
-}) => {
+}: ControllerProps<ShopQuery, StaffBodyCreate>) => {
   const shop = query.shop;
-  return StaffService.create({ shop, ...body });
+  return StaffServiceCreate({ shop, ...body });
 };
 
 interface GetByIdQuery {
-  shop: string;
   id: string;
 }
 
-const getById = ({ query }: { query: GetByIdQuery }) => {
+export const getById = ({ query }: ControllerProps<GetByIdQuery>) => {
   const { shop, id } = query;
-  return StaffService.findOne(id, { shop });
+  return StaffServiceFindOne({ _id: id, shop });
 };
 
 interface UpdateParams {
   id: string;
 }
 
-const update = ({
+export const update = ({
   body,
   query,
-}: {
-  body: StaffBodyUpdate;
-  query: UpdateParams;
-}) => {
+}: ControllerProps<UpdateParams, StaffBodyUpdate>) => {
   const id = query.id;
-  return StaffService.findByIdAndUpdate(id, body);
+  return StaffServiceFindByIdAndUpdate(id, body);
 };
-
-export default { get, getById, update, create };

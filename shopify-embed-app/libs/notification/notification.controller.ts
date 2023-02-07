@@ -1,11 +1,9 @@
-import NotificationService from "@services/notification.service";
-
-export enum ControllerMethods {
-  get = "get",
-  sendCustom = "sendCustom",
-  resend = "resend",
-  cancel = "cancel",
-}
+import {
+  NotificationServiceCancel,
+  NotificationServiceGet,
+  NotificationServiceResend,
+  NotificationServiceSendCustom,
+} from "@jamalsoueidan/bsb.bsb-pkg";
 
 interface GetQuery {
   shop: string;
@@ -17,20 +15,18 @@ interface GetProps {
   query: GetQuery;
 }
 
-const get = ({ query }: GetProps) => {
-  return NotificationService.get(query);
+export const get = ({ query }: GetProps) => {
+  return NotificationServiceGet(query);
 };
 
-const sendCustom = ({ query, body }) => {
-  return NotificationService.sendCustom({ ...query, ...body });
+export const sendCustom = ({ query, body }) => {
+  return NotificationServiceSendCustom({ ...query, ...body });
 };
 
-const resend = ({ query }) => {
-  return NotificationService.resend(query);
+export const resend = ({ query }) => {
+  return NotificationServiceResend(query);
 };
 
-const cancel = ({ query }) => {
-  return NotificationService.cancel(query);
+export const cancel = ({ query }) => {
+  return NotificationServiceCancel(query);
 };
-
-export default { get, sendCustom, resend, cancel };

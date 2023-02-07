@@ -1,30 +1,22 @@
-import { NotificationTemplateModel } from "@jamalsoueidan/bsb.bsb-pkg";
-
-export enum ControllerMethods {
-  get = "get",
-  update = "update",
-}
+import {
+  ControllerProps,
+  NotificationTemplateModel,
+  ShopQuery,
+} from "@jamalsoueidan/bsb.bsb-pkg";
 
 interface GetQuery extends Pick<NotificationTemplate, "shop" | "language"> {}
 
-const get = ({ query }: { query: GetQuery }) => {
+export const get = ({ query }: ControllerProps<GetQuery>) => {
   const { shop, language } = query;
   return NotificationTemplateModel.find({ shop, language });
 };
 
-interface CreateQuery {
-  shop: string;
-}
-
 interface CreateBody extends Array<NotificationTemplate> {}
 
-const update = async ({
+export const update = async ({
   query,
   body,
-}: {
-  query: CreateQuery;
-  body: CreateBody;
-}) => {
+}: ControllerProps<ShopQuery, CreateBody>) => {
   const shop = query.shop;
 
   const updateMany = body.map((n) => ({
@@ -36,5 +28,3 @@ const update = async ({
 
   return NotificationTemplateModel.bulkWrite(updateMany);
 };
-
-export default { get, update };

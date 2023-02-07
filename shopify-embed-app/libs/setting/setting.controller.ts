@@ -1,27 +1,20 @@
-import { SettingModel } from "@jamalsoueidan/bsb.bsb-pkg";
+import {
+  ControllerProps,
+  SettingModel,
+  ShopQuery,
+} from "@jamalsoueidan/bsb.bsb-pkg";
 
-export enum ControllerMethods {
-  get = "get",
-  create = "create",
-}
-
-interface GetQuery extends Pick<Setting, "shop"> {}
-
-const get = ({ query }: { query: GetQuery }) => {
+export const get = ({ query }: ControllerProps<ShopQuery>) => {
   const shop = query.shop;
   return SettingModel.findOne({ shop });
 };
 
-interface CreateQuery extends Pick<Setting, "shop"> {}
 interface CreateBody extends SettingBodyUpdate {}
 
-const create = async ({
+export const create = async ({
   query,
   body,
-}: {
-  query: CreateQuery;
-  body: CreateBody;
-}): Promise<Setting> => {
+}: ControllerProps<ShopQuery, CreateBody>): Promise<Setting> => {
   const shop = query.shop;
 
   return await SettingModel.findOneAndUpdate({ shop }, body, {
@@ -29,5 +22,3 @@ const create = async ({
     new: true,
   });
 };
-
-export default { get, create };

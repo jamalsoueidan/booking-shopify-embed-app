@@ -1,8 +1,11 @@
 import { faker } from "@faker-js/faker";
-import { CustomerModel, ProductModel } from "@jamalsoueidan/bsb.bsb-pkg";
+import {
+  CustomerModel,
+  ProductModel,
+  ScheduleServiceCreate,
+  StaffServiceCreate,
+} from "@jamalsoueidan/bsb.bsb-pkg";
 import ProductService from "@services/product.service";
-import ScheduleService from "@services/schedule.service";
-import StaffService from "@services/staff.service";
 import { addHours } from "date-fns";
 
 export const createCustomer = () => {
@@ -18,7 +21,7 @@ export const createCustomer = () => {
 };
 
 export const createStaff = () => {
-  return StaffService.create({
+  return StaffServiceCreate({
     shop: global.shop,
     fullname: faker.name.fullName(),
     email: faker.internet.email(),
@@ -59,7 +62,7 @@ export const createSchedule = async ({
   start = new Date(),
   end = addHours(new Date(), 5),
 }: CreateSchedule) => {
-  return await ScheduleService.create({
+  return await ScheduleServiceCreate({
     staff,
     shop: global.shop,
     schedules: {

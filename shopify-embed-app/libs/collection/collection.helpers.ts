@@ -46,7 +46,7 @@ const getCollectionQuery = `
 
 export const getCollection = async (
   session: Partial<Session>,
-  id: string
+  id: string,
 ): Promise<Collection> => {
   const client = new Shopify.Clients.Graphql(session.shop, session.accessToken);
 

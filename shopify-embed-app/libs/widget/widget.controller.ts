@@ -1,29 +1,17 @@
-import { SettingModel } from "@jamalsoueidan/bsb.bsb-pkg";
-import BookingService from "@services/booking.service";
-import CartService from "@services/cart.service";
-import ScheduleService from "@services/schedule.service";
-import WidgetService from "@services/widget.service";
-import helpers from "./widget.helpers";
+import {
+  BookingServiceGetForWidget,
+  CartServiceGetByStaff,
+  ControllerProps,
+  ScheduleServiceGetByStaffAndTag,
+  SettingModel,
+  WidgetServiceCalculator,
+  WidgetServiceGetProduct,
+  WidgetServiceGetStaff,
+} from "@jamalsoueidan/bsb.bsb-pkg";
 
-export enum ControllerMethods {
-  staff = "staff",
-  availability = "availability",
-  settings = "settings",
-}
-
-export interface AvailabilityReturn extends WidgetSchedule {}
-
-interface StaffQuery extends WidgetStaffQuery {
-  shop: string;
-}
-
-const staff = ({
-  query,
-}: {
-  query: StaffQuery;
-}): Promise<Array<WidgetStaff>> => {
+export const staff = ({ query }: ControllerProps<WidgetStaffQuery>) => {
   const { productId, shop } = query;
-  return WidgetService.getStaff({
+  return WidgetServiceGetStaff({
     shop,
     productId: +productId,
   });
@@ -31,52 +19,43 @@ const staff = ({
 
 interface AvailabilityQuery extends Omit<WidgetDateQuery, "staff"> {
   staff?: string;
-  shop: string;
 }
 
-const availability = async ({
+export const availability = async ({
   query,
-}: {
-  query: AvailabilityQuery;
-}): Promise<Array<WidgetSchedule>> => {
+}: ControllerProps<AvailabilityQuery>) => {
   const { staff, start, end, shop, productId } = query;
 
-  const product = await WidgetService.getProduct({
+  const product = await WidgetServiceGetProduct({
     shop,
     productId: +productId,
     staff,
   });
 
-  const schedules = await ScheduleService.getByStaffAndTag({
+  const schedules = await ScheduleServiceGetByStaffAndTag({
     tag: product.staff.map((s) => s.tag),
     staff: product.staff.map((s) => s.staff),
     start,
     end,
   });
 
-  const bookings = await BookingService.getBookingsForWidget({
+  const bookings = await BookingServiceGetForWidget({
     shop,
     staff: product.staff.map((s) => s.staff),
     start: new Date(start),
     end: new Date(end),
   });
 
-  const carts = await CartService.getCartsByStaff({
+  const carts = await CartServiceGetByStaff({
     shop,
     staff: product.staff.map((s) => s.staff),
     start: new Date(start),
     end: new Date(end),
   });
 
-  return helpers.calculate({ schedules, bookings, carts, product });
+  return WidgetServiceCalculator({ schedules, bookings, carts, product });
 };
 
-const settings = () => {
+export const settings = () => {
   return SettingModel.findOne({}, "language status timeZone");
-};
-
-export default {
-  staff,
-  availability,
-  settings,
 };

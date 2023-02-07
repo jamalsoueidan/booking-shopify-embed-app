@@ -1,17 +1,13 @@
-import customerService from "@services/customer.service";
-
-export enum ControllerMethods {
-  get = "get",
-}
+import {
+  ControllerProps,
+  CustomerServiceFind,
+} from "@jamalsoueidan/bsb.bsb-pkg";
 
 interface GetQuery {
-  shop: string;
   name: string;
 }
 
-const get = ({ query }: { query: GetQuery }) => {
+export const get = ({ query }: ControllerProps<GetQuery>) => {
   const { shop, name } = query;
-  return customerService.findCustomer({ shop, name });
+  return CustomerServiceFind({ shop, name });
 };
-
-export default { get };

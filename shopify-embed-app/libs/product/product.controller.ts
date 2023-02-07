@@ -1,25 +1,16 @@
-import { ProductModel, ScheduleModel } from "@jamalsoueidan/bsb.bsb-pkg";
+import {
+  ControllerProps,
+  ProductModel,
+  ScheduleModel,
+  ShopQuery,
+  ShopifyControllerProps,
+} from "@jamalsoueidan/bsb.bsb-pkg";
 import ProductService from "@services/product.service";
 import Shopify from "@shopify/shopify-api";
-import { Session } from "@shopify/shopify-api/dist/auth/session";
 import mongoose from "mongoose";
 
-export enum ControllerMethods {
-  get = "get",
-  getById = "getById",
-  getOrderFromShopify = "getOrderFromShopify",
-  update = "update",
-  getStaff = "getStaff",
-  getStaffToAdd = "getStaffToAdd",
-  addStaff = "addStaff",
-  removeStaff = "removeStaff",
-}
-
 interface GetOrderFromShopify {
-  query: {
-    session: Session;
-    id: string;
-  };
+  id: string;
 }
 
 interface ClientQueryShopifyOrder {
@@ -32,13 +23,14 @@ interface ClientQueryShopifyOrder {
   };
 }
 
-const getOrderFromShopify = async ({
-  query: { session, id },
-}: GetOrderFromShopify) => {
+export const getOrderFromShopify = async ({
+  query,
+  session,
+}: ShopifyControllerProps<GetOrderFromShopify>) => {
   const client = new Shopify.Clients.Graphql(session.shop, session.accessToken);
   const data: ClientQueryShopifyOrder = await client.query({
     data: `query {
-      order(id: "gid://shopify/Order/${id}") {
+      order(id: "gid://shopify/Order/${query.id}") {
         name,
         note,
       }
@@ -48,24 +40,17 @@ const getOrderFromShopify = async ({
   return data?.body?.data?.order;
 };
 
-interface GetQuery {
-  shop: string;
-}
-
-const get = ({ query }: { query: GetQuery }) => {
+export const get = ({ query }: ControllerProps<ShopQuery>) => {
   return ProductModel.find({ shop: query.shop });
 };
 
 interface Query {
-  shop: string;
   id: string;
 }
 
-const getById = async ({
+export const getById = async ({
   query,
-}: {
-  query: Query;
-}): Promise<Product | null> => {
+}: ControllerProps<Query>): Promise<Product | null> => {
   const { shop, id } = query;
 
   const product = await ProductModel.findOne({
@@ -127,18 +112,15 @@ const getById = async ({
   return products.length > 0 ? products[0] : null;
 };
 
-const update = ({
+export const update = ({
   query,
   body,
-}: {
-  query: Query;
-  body: ProductUpdateBody;
-}): Promise<Product> => {
+}: ControllerProps<Query, ProductUpdateBody>): Promise<Product> => {
   return ProductService.update({ query, body });
 };
 
 // @description return all staff that don't belong yet to the product
-const getStaff = ({ query }: { query: Query }) => {
+export const getStaff = ({ query }: ControllerProps<ShopQuery>) => {
   const { shop } = query;
 
   return ScheduleModel.aggregate<ProductAddStaff>([
@@ -201,12 +183,4 @@ const getStaff = ({ query }: { query: Query }) => {
     },
     { $sort: { fullname: 1 } },
   ]);
-};
-
-export default {
-  get,
-  getById,
-  getOrderFromShopify,
-  update,
-  getStaff,
 };

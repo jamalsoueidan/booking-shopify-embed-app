@@ -1,6 +1,12 @@
-import { BookingModel } from "@jamalsoueidan/bsb.bsb-pkg";
+import {
+  BookingModel,
+  IBooking,
+  NotificationServiceSendBookingConfirmationCustomer,
+  NotificationServiceSendBookingReminderCustomer,
+  NotificationServiceSendBookingReminderStaff,
+} from "@jamalsoueidan/bsb.bsb-pkg";
 import CustomerService from "@services/customer.service";
-import NotificationService from "@services/notification.service";
+import mongoose from "mongoose";
 
 interface ModifyProps {
   body: OrderTypes.Order;
@@ -19,7 +25,7 @@ export const modify = async ({
 
   const lineItems = body.line_items.filter(filter);
 
-  let models: Omit<Booking, "_id">[] = lineItems.map((lineItem) => {
+  let models: IBooking[] = lineItems.map((lineItem) => {
     const _data = lineItem.properties.find((p) => p.name === "_data")?.value;
     if (_data) {
       const data: OrderTypes.Data = JSON.parse(_data);
@@ -27,7 +33,7 @@ export const modify = async ({
       const anyAvailable = data.staff.anyAvailable || false;
 
       const refund = !!body.refunds?.find((r) =>
-        r.refund_line_items.find((l) => l.line_item_id === lineItem.id)
+        r.refund_line_items.find((l) => l.line_item_id === lineItem.id),
       );
 
       //TODO: should we validate start, end with the availability?
@@ -36,7 +42,7 @@ export const modify = async ({
         lineItemId: lineItem.id,
         lineItemTotal: lineItems.length,
         productId: lineItem.product_id,
-        staff: staffId,
+        staff: new mongoose.Types.ObjectId(staffId),
         start: new Date(data.start),
         end: new Date(data.end),
         shop,
@@ -56,17 +62,17 @@ export const modify = async ({
   });
 
   if (sendBooking) {
-    NotificationService.sendBookingConfirmationCustomer({
+    NotificationServiceSendBookingConfirmationCustomer({
       booking: models[0],
       shop,
     });
 
-    NotificationService.sendBookingReminderCustomer({
+    NotificationServiceSendBookingReminderCustomer({
       bookings: models,
       shop,
     });
 
-    NotificationService.sendBookingReminderStaff({
+    NotificationServiceSendBookingReminderStaff({
       bookings: models,
       shop,
     });
@@ -120,6 +126,6 @@ interface CancelProps {
 export const cancel = async ({ body, shop }: CancelProps) => {
   return await BookingModel.updateMany(
     { orderId: body.id, shop },
-    { fulfillmentStatus: "cancelled" }
+    { fulfillmentStatus: "cancelled" },
   );
 };

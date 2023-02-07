@@ -1,6 +1,9 @@
 import { faker } from "@faker-js/faker";
-import { IProductModel, ShopifySessionsModel } from "@jamalsoueidan/bsb.bsb-pkg";
-import adminBookingController from "@libs/booking/booking.controller";
+import {
+  IProductDocument,
+  ShopifySessionModel,
+} from "@jamalsoueidan/bsb.bsb-pkg";
+import * as adminBookingController from "@libs/booking/booking.controller";
 import { createProduct } from "@libs/jest-helpers";
 import * as OrderWebhook from "@libs/webhooks/order/order.webhook";
 import { differenceInMinutes, isAfter, isBefore } from "date-fns";
@@ -19,14 +22,14 @@ jest.mock("@libs/smsdk/smsdk.api", () => {
           result: {
             batchId: faker.random.numeric(10),
           },
-        })
+        }),
       ),
     },
   };
 });
 
 const productId = 7961951273277; //refere to the product in the orderJSON
-let product: IProductModel;
+let product: IProductDocument;
 
 const createInterval = (line_items) => {
   return line_items.reduce(
@@ -46,7 +49,7 @@ const createInterval = (line_items) => {
       }
       return previousValue;
     },
-    { start: new Date(), end: new Date() }
+    { start: new Date(), end: new Date() },
   );
 };
 
@@ -58,7 +61,7 @@ describe("webhooks order", () => {
   });
 
   it("Should create booking", async () => {
-    await ShopifySessionsModel.create({
+    await ShopifySessionModel.create({
       id: "offline_testeriphone.myshopify.com",
       shop: "testeriphone.myshopify.com",
       state: "offline_095054804630505",
@@ -88,7 +91,7 @@ describe("webhooks order", () => {
     expect(order1.orderId).toEqual(mockCreate.id);
     expect(order1.productId).toBe(mockCreate.line_items[0].product_id);
     expect(
-      differenceInMinutes(new Date(order1.end), new Date(order1.start))
+      differenceInMinutes(new Date(order1.end), new Date(order1.start)),
     ).toEqual(product.duration + product.buffertime);
 
     const order2 = result[1];
@@ -116,7 +119,7 @@ describe("webhooks order", () => {
         expect.objectContaining({
           fulfillmentStatus: "fulfilled",
         }),
-      ])
+      ]),
     );
   });
 
@@ -141,7 +144,7 @@ describe("webhooks order", () => {
         expect.objectContaining({
           fulfillmentStatus: "refunded",
         }),
-      ])
+      ]),
     );
 
     expect(result).toEqual(
@@ -149,7 +152,7 @@ describe("webhooks order", () => {
         expect.objectContaining({
           fulfillmentStatus: "fulfilled",
         }),
-      ])
+      ]),
     );
   });
 
@@ -174,7 +177,7 @@ describe("webhooks order", () => {
         expect.objectContaining({
           fulfillmentStatus: "cancelled",
         }),
-      ])
+      ]),
     );
   });
 });

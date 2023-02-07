@@ -1,13 +1,16 @@
 import { faker } from "@faker-js/faker";
-import { BookingModel, CartModel } from "@jamalsoueidan/bsb.bsb-pkg";
+import {
+  BookingModel,
+  CartModel,
+  StaffServiceFindByIdAndUpdate,
+} from "@jamalsoueidan/bsb.bsb-pkg";
 import {
   createProduct,
   createStaffAndUpdateProduct,
   createStaffWithSchedule,
 } from "@libs/jest-helpers";
-import widgetController from "@libs/widget/widget.controller";
+import * as widgetController from "@libs/widget/widget.controller";
 import productService from "@services/product.service";
-import staffService from "@services/staff.service";
 import { addDays, format } from "date-fns";
 import mongoose from "mongoose";
 
@@ -28,11 +31,13 @@ describe("admin-widget controller", () => {
       tag,
     });
     const query = {
-      shop: global.shop,
+      shop: global.shop as string,
       productId,
     };
 
-    let allStaff = await widgetController.staff({ query });
+    let allStaff = await widgetController.staff({
+      query,
+    });
     expect(allStaff.length).toEqual(1);
   });
 
@@ -43,7 +48,7 @@ describe("admin-widget controller", () => {
     const product = await createProduct({ productId });
     const { staff } = await createStaffAndUpdateProduct({ product, tag });
 
-    await staffService.findByIdAndUpdate(staff._id, {
+    await StaffServiceFindByIdAndUpdate(staff._id, {
       active: false,
     });
 
@@ -114,7 +119,7 @@ describe("admin-widget controller", () => {
     availability = await widgetController.availability({ query });
     availabilityDay = availability.at(0);
     const hours = availabilityDay.hours.filter(
-      (h) => h.start === schedule.start && h.end === schedule.end
+      (h) => h.start === schedule.start && h.end === schedule.end,
     );
     expect(hours.length).toEqual(0);
   });
@@ -150,7 +155,7 @@ describe("admin-widget controller", () => {
     availability = await widgetController.availability({ query });
     availabilityDay = availability.at(0);
     const hours = availabilityDay.hours.filter(
-      (h) => h.start === schedule.start && h.end === schedule.end
+      (h) => h.start === schedule.start && h.end === schedule.end,
     );
     expect(hours.length).toEqual(0);
   });

@@ -1,13 +1,20 @@
 import { faker } from "@faker-js/faker";
-import { IBookingModel, ICustomerModel, IProductModel, IStaffModel, SmsDkApiCancel, SmsDkApiSend } from "@jamalsoueidan/bsb.bsb-pkg";
-import bookingController from "@libs/booking/booking.controller";
+import {
+  IBookingDocument,
+  ICustomerDocument,
+  IProductDocument,
+  IStaffDocument,
+  SmsDkApiCancel,
+  SmsDkApiSend,
+} from "@jamalsoueidan/bsb.bsb-pkg";
+import * as bookingController from "@libs/booking/booking.controller";
 import {
   createCustomer,
   createProduct,
   createSchedule,
   createStaff,
 } from "@libs/jest-helpers";
-import notificationController from "@libs/notification/notification.controller";
+import * as notificationController from "@libs/notification/notification.controller";
 import { addHours } from "date-fns";
 import mongoose from "mongoose";
 import waitForExpect from "wait-for-expect";
@@ -23,7 +30,7 @@ jest.mock("@libs/smsdk/smsdk.api", () => {
           result: {
             batchId: faker.random.numeric(10),
           },
-        })
+        }),
       ),
       cancel: jest.fn(() =>
         Promise.resolve({
@@ -31,17 +38,17 @@ jest.mock("@libs/smsdk/smsdk.api", () => {
           result: {
             batchId: faker.random.numeric(10),
           },
-        })
+        }),
       ),
     },
   };
 });
 
 const productId = 123456789;
-let product: IProductModel;
-let staff: IStaffModel;
-let customer: ICustomerModel;
-let booking: IBookingModel;
+let product: IProductDocument;
+let staff: IStaffDocument;
+let customer: ICustomerDocument;
+let booking: IBookingDocument;
 const tag = "testerne";
 
 describe("admin-notification controller", () => {
@@ -120,7 +127,7 @@ describe("admin-notification controller", () => {
     });
 
     expect(notifications.filter((n) => n.status === "cancelled").length).toBe(
-      2
+      2,
     );
 
     expect(notifications.filter((n) => n.status === "pending").length).toBe(2);

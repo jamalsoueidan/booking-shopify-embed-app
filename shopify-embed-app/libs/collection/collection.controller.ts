@@ -1,27 +1,17 @@
-import { CollectionModel, IProductModel, ProductModel } from "@jamalsoueidan/bsb.bsb-pkg";
+import {
+  CollectionModel,
+  IProduct,
+  ProductModel,
+  ShopifyControllerProps,
+} from "@jamalsoueidan/bsb.bsb-pkg";
 import CollectionService from "@services/collection.service";
-import { Session } from "@shopify/shopify-api/dist/auth/session";
 import { getCollection } from "./collection.helpers";
 
-export enum ControllerMethods {
-  get = "get",
-  create = "create",
-  remove = "remove",
-}
-
-interface CreateQuery {
-  session: Session;
-  shop: string;
-}
-
-const create = async ({
-  query,
+export const create = async ({
   body,
-}: {
-  query: CreateQuery;
-  body: CollectionBodyCreate;
-}) => {
-  const { session, shop } = query;
+  session,
+}: ShopifyControllerProps<null, CollectionBodyCreate>) => {
+  const { shop } = session;
 
   const selections = body.selections;
   const collections = (
@@ -44,7 +34,7 @@ const create = async ({
     };
   });
 
-  const products = collections?.reduce<Array<Partial<IProductModel>>>(
+  const products = collections?.reduce<Array<Partial<IProduct>>>(
     (products, currentCollection) => {
       currentCollection.products.nodes.forEach((n) => {
         products.push({
@@ -58,20 +48,20 @@ const create = async ({
       });
       return products;
     },
-    []
+    [],
   );
 
   let cleanupProducts = await ProductModel.find(
     { collectionId: { $in: products?.map((p) => p.collectionId) } },
-    "collectionId productId"
+    "collectionId productId",
   );
 
   cleanupProducts = cleanupProducts.filter(
     (p) =>
       !products.find(
-        (pp: IProductModel) =>
-          pp.collectionId === p.collectionId && pp.productId === p.productId
-      )
+        (pp: IProduct) =>
+          pp.collectionId === p.collectionId && pp.productId === p.productId,
+      ),
   );
 
   const productsHide = cleanupProducts.map((product) => {
@@ -107,11 +97,12 @@ const create = async ({
 };
 
 interface DeleteQuery {
-  shop: string;
   id: string;
 }
 
-const remove = async ({ query }: { query: DeleteQuery }) => {
+export const remove = async ({
+  query,
+}: ShopifyControllerProps<DeleteQuery>) => {
   const { shop, id } = query;
 
   const collection = await CollectionService.findOne({ shop, _id: id });
@@ -128,12 +119,10 @@ const remove = async ({ query }: { query: DeleteQuery }) => {
             hidden: true,
             active: false,
           },
-        }
+        },
       ),
     };
   }
 };
 
-const get = () => CollectionService.findAll();
-
-export default { create, get, remove };
+export const get = () => CollectionService.findAll();

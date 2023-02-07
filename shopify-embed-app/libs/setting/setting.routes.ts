@@ -1,19 +1,11 @@
+import { handleRoute } from "@jamalsoueidan/bsb.bsb-pkg";
 import { Router } from "express";
-import { expressHandleRoute } from "../express-helpers/handle-route";
-import controller, { ControllerMethods } from "./setting.controller";
+import * as controller from "./setting.controller";
 
-export const settingRoutes = (app) => {
-  const handleRoute = expressHandleRoute(app, controller);
+const router = Router();
 
-  const router = Router();
+router.get("/setting", handleRoute(controller.get));
 
-  router.get("/setting", async (req, res) => {
-    handleRoute(req, res, ControllerMethods.get);
-  });
+router.put("/setting", handleRoute(controller.create));
 
-  router.put("/setting", async (req, res) => {
-    handleRoute(req, res, ControllerMethods.create);
-  });
-
-  return router;
-};
+export { router as settingRoutes };

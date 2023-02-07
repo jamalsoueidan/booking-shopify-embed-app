@@ -1,47 +1,35 @@
 import { Router } from "express";
 import { query } from "express-validator";
-import { expressHandleRoute } from "../express-helpers/handle-route";
-import controller, { ControllerMethods } from "./staff-schedule.controller";
 
-export const staffScheduleRoutes = (app) => {
-  const router = Router();
+import { handleRoute } from "@jamalsoueidan/bsb.bsb-pkg";
+import * as controller from "./staff-schedule.controller";
 
-  const handleRoute = expressHandleRoute(app, controller);
+const router = Router();
 
-  router.get(
-    "/staff/:staff/schedules",
-    query("start").notEmpty(),
-    query("end").notEmpty(),
-    async (req, res) => {
-      handleRoute(req, res, ControllerMethods.get);
-    }
-  );
+router.get(
+  "/staff/:staff/schedules",
+  query("start").notEmpty(),
+  query("end").notEmpty(),
+  handleRoute(controller.get),
+);
 
-  router.post("/staff/:staff/schedules", async (req, res) => {
-    handleRoute(req, res, ControllerMethods.create);
-  });
+router.post("/staff/:staff/schedules", handleRoute(controller.create));
 
-  router.put("/staff/:staff/schedules", async (req, res) => {
-    handleRoute(req, res, ControllerMethods.update);
-  });
+router.put("/staff/:staff/schedules", handleRoute(controller.update));
 
-  router.delete("/staff/:staff/schedules/:schedule", async (req, res) => {
-    handleRoute(req, res, ControllerMethods.destroy);
-  });
+router.delete(
+  "/staff/:staff/schedules/:schedule",
+  handleRoute(controller.destroy),
+);
 
-  router.put(
-    "/staff/:staff/schedules/:schedule/group/:groupId",
-    async (req, res) => {
-      handleRoute(req, res, ControllerMethods.updateGroup);
-    }
-  );
+router.put(
+  "/staff/:staff/schedules/:schedule/group/:groupId",
+  handleRoute(controller.updateGroup),
+);
 
-  router.delete(
-    "/staff/:staff/schedules/:schedule/group/:groupId",
-    async (req, res) => {
-      handleRoute(req, res, ControllerMethods.destroyGroup);
-    }
-  );
+router.delete(
+  "/staff/:staff/schedules/:schedule/group/:groupId",
+  handleRoute(controller.destroyGroup),
+);
 
-  return router;
-};
+export { router as staffScheduleRoutes };

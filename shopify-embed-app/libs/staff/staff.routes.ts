@@ -1,34 +1,22 @@
+import { handleRoute } from "@jamalsoueidan/bsb.bsb-pkg";
 import { Router } from "express";
 import { checkSchema } from "express-validator";
-import { expressHandleRoute } from "../express-helpers/handle-route";
-import controller, { ControllerMethods } from "./staff.controller";
+import * as controller from "./staff.controller";
 
-export const staffRoutes = (app) => {
-  const router = Router();
+const router = Router();
 
-  const handleRoute = expressHandleRoute(app, controller);
+router.get("/staff", handleRoute(controller.get));
 
-  router.get("/staff", async (req, res) => {
-    handleRoute(req, res, ControllerMethods.get);
-  });
+router.post("/staff", handleRoute(controller.create));
 
-  router.post("/staff", async (req, res) => {
-    handleRoute(req, res, ControllerMethods.create);
-  });
+router.get(
+  "/staff/:id",
+  checkSchema({
+    id: { notEmpty: true },
+  }),
+  handleRoute(controller.getById),
+);
 
-  router.get(
-    "/staff/:id",
-    checkSchema({
-      id: { notEmpty: true },
-    }),
-    async (req, res) => {
-      handleRoute(req, res, ControllerMethods.getById);
-    }
-  );
+router.put("/staff/:id", handleRoute(controller.update));
 
-  router.put("/staff/:id", async (req, res) => {
-    handleRoute(req, res, ControllerMethods.update);
-  });
-
-  return router;
-};
+export { router as staffRoutes };

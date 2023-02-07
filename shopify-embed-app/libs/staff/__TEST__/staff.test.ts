@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import staffController from "../staff.controller";
+import * as staffController from "../staff.controller";
 
 describe("Admin-staff controller", () => {
   beforeAll(() => mongoose.connect(global.__MONGO_URI__));
@@ -53,6 +53,7 @@ describe("Admin-staff controller", () => {
     const updateStaff = await staffController.update({
       query: {
         id: staff._id,
+        shop: global.shop,
       },
       body,
     });

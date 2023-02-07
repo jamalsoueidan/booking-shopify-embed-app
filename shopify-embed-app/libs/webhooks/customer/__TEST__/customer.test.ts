@@ -1,4 +1,4 @@
-import { IProductModel, ShopifySessionsModel } from '@jamalsoueidan/bsb.bsb-pkg';
+import { IProductModel, ShopifySessionModel } from "@jamalsoueidan/bsb.bsb-pkg";
 import * as CustomerWebhook from "@libs/webhooks/customer/customer.webhook";
 import mongoose from "mongoose";
 import body from "./customer.mock";
@@ -11,7 +11,7 @@ describe("webhooks order", () => {
   afterAll(() => mongoose.disconnect());
 
   it("Should create or update customer when we recieve data from webhook", async () => {
-    await ShopifySessionsModel.create({
+    await ShopifySessionModel.create({
       id: "offline_testeriphone.myshopify.com",
       shop: "testeriphone.myshopify.com",
       state: "offline_095054804630505",
