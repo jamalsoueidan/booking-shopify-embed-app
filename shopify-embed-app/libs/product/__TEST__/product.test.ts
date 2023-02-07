@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 
-import { IProductDocument, IStaffDocument } from "@jamalsoueidan/bsb.bsb-pkg";
+import {
+  IProduct,
+  IProductDocument,
+  IStaffDocument,
+} from "@jamalsoueidan/bsb.bsb-pkg";
 import { createProduct, createSchedule, createStaff } from "@libs/jest-helpers";
 import { addHours, subHours } from "date-fns";
 import * as productController from "../product.controller";
@@ -100,7 +104,7 @@ describe("admin-product controller", () => {
 
     let pickStaff = staffToAdd[0];
 
-    let updatedProduct: Product;
+    let updatedProduct: IProduct;
 
     updatedProduct = await productController.update({
       query,

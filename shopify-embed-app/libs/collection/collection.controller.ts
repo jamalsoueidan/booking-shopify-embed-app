@@ -1,10 +1,12 @@
 import {
+  CollectionBodyCreate,
   CollectionModel,
+  CollectionServiceFindAll,
+  CollectionServiceFindOne,
   IProduct,
   ProductModel,
-  ShopifyControllerProps,
+  ShopifyControllerProps
 } from "@jamalsoueidan/bsb.bsb-pkg";
-import CollectionService from "@services/collection.service";
 import { getCollection } from "./collection.helpers";
 
 export const create = async ({
@@ -105,7 +107,7 @@ export const remove = async ({
 }: ShopifyControllerProps<DeleteQuery>) => {
   const { shop, id } = query;
 
-  const collection = await CollectionService.findOne({ shop, _id: id });
+  const collection = await CollectionServiceFindOne({ shop, _id: id });
 
   if (collection) {
     return {
@@ -125,4 +127,4 @@ export const remove = async ({
   }
 };
 
-export const get = () => CollectionService.findAll();
+export const get = () => CollectionServiceFindAll();

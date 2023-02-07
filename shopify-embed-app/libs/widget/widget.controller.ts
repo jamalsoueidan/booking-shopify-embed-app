@@ -4,9 +4,11 @@ import {
   ControllerProps,
   ScheduleServiceGetByStaffAndTag,
   SettingModel,
+  WidgetDateQuery,
   WidgetServiceCalculator,
   WidgetServiceGetProduct,
   WidgetServiceGetStaff,
+  WidgetStaffQuery,
 } from "@jamalsoueidan/bsb.bsb-pkg";
 
 export const staff = ({ query }: ControllerProps<WidgetStaffQuery>) => {

@@ -1,5 +1,6 @@
 import {
   ControllerProps,
+  NotificationTemplate,
   NotificationTemplateModel,
   ShopQuery,
 } from "@jamalsoueidan/bsb.bsb-pkg";

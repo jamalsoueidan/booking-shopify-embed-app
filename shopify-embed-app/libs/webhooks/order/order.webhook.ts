@@ -5,7 +5,7 @@ import {
   NotificationServiceSendBookingReminderCustomer,
   NotificationServiceSendBookingReminderStaff,
 } from "@jamalsoueidan/bsb.bsb-pkg";
-import CustomerService from "@services/customer.service";
+import * as customerController from "@libs/customer/customer.controller";
 import mongoose from "mongoose";
 
 interface ModifyProps {
@@ -55,10 +55,12 @@ export const modify = async ({
     }
   });
 
-  await CustomerService.findCustomerAndUpdate({
-    shop,
-    customerId: body.customer.id,
-    customerGraphqlApiId: body.customer.admin_graphql_api_id,
+  await customerController.findCustomerAndUpdate({
+    query: {
+      shop,
+      customerId: body.customer.id,
+      customerGraphqlApiId: body.customer.admin_graphql_api_id,
+    },
   });
 
   if (sendBooking) {

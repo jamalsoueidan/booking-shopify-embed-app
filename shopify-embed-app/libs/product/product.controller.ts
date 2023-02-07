@@ -1,11 +1,14 @@
 import {
   ControllerProps,
+  Product,
+  ProductAddStaff,
   ProductModel,
+  ProductServiceUpdate,
+  ProductUpdateBody,
   ScheduleModel,
   ShopQuery,
   ShopifyControllerProps,
 } from "@jamalsoueidan/bsb.bsb-pkg";
-import ProductService from "@services/product.service";
 import Shopify from "@shopify/shopify-api";
 import mongoose from "mongoose";
 
@@ -115,8 +118,8 @@ export const getById = async ({
 export const update = ({
   query,
   body,
-}: ControllerProps<Query, ProductUpdateBody>): Promise<Product> => {
-  return ProductService.update({ query, body });
+}: ControllerProps<Query, ProductUpdateBody>) => {
+  return ProductServiceUpdate({ query, body });
 };
 
 // @description return all staff that don't belong yet to the product

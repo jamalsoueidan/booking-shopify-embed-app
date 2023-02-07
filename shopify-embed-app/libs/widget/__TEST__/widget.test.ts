@@ -2,7 +2,8 @@ import { faker } from "@faker-js/faker";
 import {
   BookingModel,
   CartModel,
-  StaffServiceFindByIdAndUpdate,
+  ProductServiceUpdate,
+  StaffServiceFindByIdAndUpdate
 } from "@jamalsoueidan/bsb.bsb-pkg";
 import {
   createProduct,
@@ -10,7 +11,6 @@ import {
   createStaffWithSchedule,
 } from "@libs/jest-helpers";
 import * as widgetController from "@libs/widget/widget.controller";
-import productService from "@services/product.service";
 import { addDays, format } from "date-fns";
 import mongoose from "mongoose";
 
@@ -169,7 +169,7 @@ describe("admin-widget controller", () => {
     const { staff: staff1 } = await createStaffWithSchedule({ tag });
     const { staff: staff2 } = await createStaffWithSchedule({ tag });
 
-    await productService.update({
+    await ProductServiceUpdate({
       query: {
         shop: global.shop,
         id: product._id,

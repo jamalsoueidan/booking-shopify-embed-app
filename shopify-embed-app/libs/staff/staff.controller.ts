@@ -1,6 +1,8 @@
 import {
   ControllerProps,
   ShopQuery,
+  StaffBodyCreate,
+  StaffBodyUpdate,
   StaffServiceCreate,
   StaffServiceFindAll,
   StaffServiceFindByIdAndUpdate,

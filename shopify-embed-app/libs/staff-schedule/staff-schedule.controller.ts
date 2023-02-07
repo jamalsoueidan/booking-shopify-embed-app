@@ -1,15 +1,19 @@
 import {
   ControllerProps,
+  ScheduleBodyUpdate,
+  ScheduleBodyUpdateOrCreate,
+  ScheduleGetQuery,
   ScheduleModel,
   ScheduleServiceCreate,
   ScheduleServiceDestroy,
   ScheduleServiceFindByIdAndUpdate,
   ScheduleServiceGetByDateRange,
   ScheduleServiceUpdateGroup,
-  StaffServiceFindOne,
+  ScheduleUpdateOrDestroyQuery,
+  StaffServiceFindOne
 } from "@jamalsoueidan/bsb.bsb-pkg";
 
-export const get = ({ query }: ControllerProps<ScheduleQuery>) => {
+export const get = ({ query }: ControllerProps<ScheduleGetQuery>) => {
   const { shop, staff, start, end } = query;
   return ScheduleServiceGetByDateRange({ shop, staff, start, end });
 };
@@ -21,7 +25,7 @@ interface CreateQuery {
 export const create = ({
   query,
   body,
-}: ControllerProps<CreateQuery, ScheduleOrSchedules>) => {
+}: ControllerProps<CreateQuery, ScheduleBodyUpdateOrCreate>) => {
   const { shop, staff } = query;
 
   return ScheduleServiceCreate({ shop, staff, schedules: body });
@@ -30,7 +34,7 @@ export const create = ({
 export const update = async ({
   query,
   body,
-}: ControllerProps<ScheduleUpdateOrDestroyQuery, ScheduleBody>) => {
+}: ControllerProps<ScheduleUpdateOrDestroyQuery, ScheduleBodyUpdate>) => {
   const { shop, staff, schedule } = query;
 
   const exists = await StaffServiceFindOne({ _id: staff, shop });
@@ -60,7 +64,7 @@ interface UpdateGroupQuery extends ScheduleUpdateOrDestroyQuery {
 export const updateGroup = async ({
   query,
   body,
-}: ControllerProps<UpdateGroupQuery, ScheduleBody>) => {
+}: ControllerProps<UpdateGroupQuery, ScheduleBodyUpdate>) => {
   const { schedule, groupId, staff, shop } = query;
 
   ScheduleServiceUpdateGroup({

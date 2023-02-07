@@ -1,5 +1,7 @@
 import {
   ControllerProps,
+  Setting,
+  SettingBodyUpdate,
   SettingModel,
   ShopQuery,
 } from "@jamalsoueidan/bsb.bsb-pkg";
@@ -9,12 +11,11 @@ export const get = ({ query }: ControllerProps<ShopQuery>) => {
   return SettingModel.findOne({ shop });
 };
 
-interface CreateBody extends SettingBodyUpdate {}
 
 export const create = async ({
   query,
   body,
-}: ControllerProps<ShopQuery, CreateBody>): Promise<Setting> => {
+}: ControllerProps<ShopQuery, SettingBodyUpdate>): Promise<Setting> => {
   const shop = query.shop;
 
   return await SettingModel.findOneAndUpdate({ shop }, body, {

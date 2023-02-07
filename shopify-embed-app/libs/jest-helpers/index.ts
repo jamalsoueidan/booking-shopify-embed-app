@@ -2,10 +2,10 @@ import { faker } from "@faker-js/faker";
 import {
   CustomerModel,
   ProductModel,
+  ProductServiceUpdate,
   ScheduleServiceCreate,
-  StaffServiceCreate,
+  StaffServiceCreate
 } from "@jamalsoueidan/bsb.bsb-pkg";
-import ProductService from "@services/product.service";
 import { addHours } from "date-fns";
 
 export const createCustomer = () => {
@@ -84,7 +84,7 @@ export const createStaffWithSchedule = async ({ tag }) => {
 
 export const createStaffAndUpdateProduct = async ({ product, tag }) => {
   const { staff, schedule } = await createStaffWithSchedule({ tag });
-  const updateProduct = await ProductService.update({
+  const updateProduct = await ProductServiceUpdate({
     query: {
       shop: global.shop,
       id: product._id,

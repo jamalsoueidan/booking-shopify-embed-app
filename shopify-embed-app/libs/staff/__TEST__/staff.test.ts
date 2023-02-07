@@ -1,3 +1,4 @@
+import { StaffBodyCreate } from "@jamalsoueidan/bsb.bsb-pkg";
 import mongoose from "mongoose";
 import * as staffController from "../staff.controller";
 
