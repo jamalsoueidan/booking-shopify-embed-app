@@ -150,16 +150,6 @@ Frontend
 1. You must [create a Shopify partner account](https://partners.shopify.com/signup) if you don’t have one.
 1. You must [create a development store](https://help.shopify.com/en/partners/dashboard/development-stores#create-a-development-store) if you don’t have one.
 
-### Installing the template
-
-This template can be installed using your preferred package manager:
-
-```shell
-npm init @shopify/app@latest
-```
-
-This will clone the template and install the required dependencies.
-
 #### Local Development
 
 [The Shopify CLI](https://shopify.dev/apps/tools/cli) connects to an app in your Partners dashboard. It provides environment variables, runs commands in parallel, and updates application URLs for easier development.
@@ -174,26 +164,41 @@ Open the URL generated in your console. Once you grant permission to the app, yo
 
 ## Deployment
 
+To push the update extension changes?
+
+```shell
+npm run deploy -- --reset
+```
+
+To push the shopify appl changes?
+
+```shell
+git push heroku main
+```
+
+or setup heroku for CLI github.
+
 ### Build
 
-The frontend is a single page app. It requires the `SHOPIFY_API_KEY`, which you can find on the page for your app in your partners dashboard. Paste your app’s key in the command for the package manager of your choice:
+The frontend is a single page app. It requires the following keys:
+
+```json
+{
+  "HOST": "https://book-appointment-shopify-app.herokuapp.com",
+  "MONGODB_URI": "mongodb+srv://book-appointment-app",
+  "NODE_OPTIONS": "--max_old_space_size=2560",
+  "SCOPES": "unauthenticated_read_product_listings,read_products,read_orders,read_customers",
+  "SHOPIFY_API_KEY": "XXX",
+  "SHOPIFY_API_SECRET": "XXX",
+  "SMSDK_SECRET": "XXX"
+}
+```
+To build the frontend app:
+
 
 ```shell
 cd shopify-embed-app/frontend/ && SHOPIFY_API_KEY=REPLACE_ME npm run build
 ```
-
-You do not need to build the backend.
-
-## Developer resources
-
-- [Introduction to Shopify apps](https://shopify.dev/apps/getting-started)
-- [App authentication](https://shopify.dev/apps/auth)
-- [Shopify CLI](https://shopify.dev/apps/tools/cli)
-- [Shopify API Library documentation](https://github.com/Shopify/shopify-api-node/tree/main/docs)
-
-## Contributing
-
-I will not be accepting PR's on this repository. Feel free to fork and maintain your own version.
 
 ## License
 
