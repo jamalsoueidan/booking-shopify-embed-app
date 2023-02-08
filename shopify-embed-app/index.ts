@@ -11,10 +11,10 @@ import express, { Request } from "express";
 import { readFileSync } from "fs";
 import { join } from "path";
 import { AppInstallations } from "./app_installations.js";
-import connect from "./database/database";
 import { setupGDPRWebHooks } from "./gdpr.js";
 import redirectToAuth from "./helpers/redirect-to-auth.js";
 
+import { NotificationTemplateModel, mongodb } from "@jamalsoueidan/bsb.bsb-pkg";
 import { customerRoutes } from "@libs/customer/customer.routes";
 import { notificationRoutes } from "@libs/notification/notification.routes";
 import { productRoutes } from "@libs/product/product.routes";
@@ -33,7 +33,7 @@ const PORT = parseInt(process.env.BACKEND_PORT || process.env.PORT, 10) || 8000;
 const DEV_INDEX_PATH = `${process.cwd()}/frontend/`;
 const PROD_INDEX_PATH = `${process.cwd()}/frontend/dist/`;
 
-connect();
+mongodb.connect(() => NotificationTemplateModel.count());
 
 Shopify.Context.initialize({
   API_KEY: process.env.SHOPIFY_API_KEY,
