@@ -28,8 +28,8 @@ const shopify = shopifyApp({
     path: "/api/webhooks",
   },
   // This should be replaced with your preferred storage strategy
-  sessionStorage: MongoDBSessionStorage(
-    new URL(process.env.MONGODB_URI || ""),
+  sessionStorage: new MongoDBSessionStorage(
+    process.env.MONGODB_URI || "",
     "book-appointment-app",
   ),
 });

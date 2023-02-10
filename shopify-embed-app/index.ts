@@ -6,6 +6,7 @@ import serveStatic from "serve-static";
 import GDPRWebhookHandlers from "./gdpr.js";
 import shopify from "./shopify.js";
 
+import { NotificationTemplateModel, mongodb } from "@jamalsoueidan/pkg.bsb";
 import { bookingRoutes } from "@libs/booking/booking.routes";
 import { collectionRoutes } from "@libs/collection/collection.routes";
 import { customerRoutes } from "@libs/customer/customer.routes";
@@ -22,6 +23,8 @@ const PORT = parseInt(
   process.env.BACKEND_PORT || process.env.PORT || "8000",
   10,
 );
+
+mongodb.connect(() => NotificationTemplateModel.count());
 
 const STATIC_PATH =
   process.env.NODE_ENV === "production"

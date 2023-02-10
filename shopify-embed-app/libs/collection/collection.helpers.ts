@@ -1,3 +1,6 @@
+import { ShopifySession } from "@jamalsoueidan/pkg.bsb";
+import shopify from "../../shopify.js";
+
 interface Product {
   id: string;
   title: string;
@@ -41,12 +44,10 @@ const getCollectionQuery = `
 `;
 
 export const getCollection = async (
-  session: Partial<any>,
+  session: ShopifySession,
   id: string,
 ): Promise<Collection> => {
-  /*const countData = await shopify.api.rest.Collection..count({
-    session: res.locals.shopify.session,
-  });
+  const client = new shopify.api.clients.Graphql({ session } as any);
 
   const payload: GetCollectionQuery = await client.query({
     data: {
@@ -57,6 +58,5 @@ export const getCollection = async (
     },
   });
 
-  return payload.body.data.collection;*/
-  return [] as any;
+  return payload.body.data.collection;
 };

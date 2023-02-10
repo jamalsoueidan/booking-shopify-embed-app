@@ -9,6 +9,7 @@ import {
   ShopifyControllerProps,
 } from "@jamalsoueidan/pkg.bsb";
 import { z } from "zod";
+import shopify from "../../shopify.js";
 
 interface GetOrderFromShopify {
   id: string;
@@ -28,7 +29,7 @@ export const getOrderFromShopify = async ({
   query,
   session,
 }: ShopifyControllerProps<GetOrderFromShopify>) => {
-  /*const client = new Shopify.Clients.Graphql(session.shop, session.accessToken);
+  const client = new shopify.api.clients.Graphql({ session } as any);
   const data: ClientQueryShopifyOrder = await client.query({
     data: `query {
       order(id: "gid://shopify/Order/${query.id}") {
@@ -37,7 +38,7 @@ export const getOrderFromShopify = async ({
       }
     }`,
   });
-  return data?.body?.data?.order;*/
+  return data?.body?.data?.order;
   return [];
 };
 

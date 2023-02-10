@@ -1,8 +1,11 @@
 import {
   ControllerProps,
+  CustomerModel,
   CustomerServiceFind,
+  ShopifyControllerProps,
   ShopifySessionModel,
 } from "@jamalsoueidan/pkg.bsb";
+import shopify from "../../shopify.js";
 
 interface GetQuery {
   name: string;
@@ -32,15 +35,12 @@ interface FindCustomerAndUpdateProps {
 
 export const findCustomerAndUpdate = async ({
   query,
-}: ControllerProps<FindCustomerAndUpdateProps>) => {
+}: ShopifyControllerProps<FindCustomerAndUpdateProps>) => {
+  const session = await ShopifySessionModel.findOne({ shop: query.shop });
+
   const { shop, customerGraphqlApiId, customerId } = query;
   // customer saving
-  const session = await ShopifySessionModel.findOne({ shop: shop });
-
-  /*const client = new Shopify.Clients.Graphql(
-    session?.shop || "",
-    session?.accessToken,
-  );
+  const client = new shopify.api.clients.Graphql({ session } as any);
   const customerData: any = await client.query({
     data: {
       query: getCustomerQuery,
@@ -58,5 +58,5 @@ export const findCustomerAndUpdate = async ({
       ...customerData.body.data.customer,
     },
     { upsert: true, new: true },
-  );*/
+  );
 };

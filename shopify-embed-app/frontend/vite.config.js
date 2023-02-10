@@ -13,7 +13,7 @@ if (
   !process.env.SHOPIFY_API_KEY
 ) {
   console.warn(
-    "\nBuilding the frontend app without an API key. The frontend build will not run without an API key. Set the SHOPIFY_API_KEY environment variable when running the build command.\n"
+    "\nBuilding the frontend app without an API key. The frontend build will not run without an API key. Set the SHOPIFY_API_KEY environment variable when running the build command.\n",
   );
 }
 
@@ -63,10 +63,13 @@ if (process.env.npm_lifecycle_event === "build") {
 export default defineConfig({
   build,
   root: dirname(fileURLToPath(import.meta.url)),
-  plugins: [react(),checker({ typescript: true }),
+  plugins: [
+    react(),
+    checker({ typescript: true }),
     splitVendorChunkPlugin(),
     visualizer(),
-    tsconfigPaths(),],
+    tsconfigPaths(),
+  ],
   define: {
     "process.env.SHOPIFY_API_KEY": JSON.stringify(process.env.SHOPIFY_API_KEY),
   },
