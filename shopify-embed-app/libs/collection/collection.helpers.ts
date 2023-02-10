@@ -1,7 +1,3 @@
-// @ts-check
-import { Shopify } from "@shopify/shopify-api";
-import { Session } from "@shopify/shopify-api/dist/auth/session";
-
 interface Product {
   id: string;
   title: string;
@@ -45,13 +41,12 @@ const getCollectionQuery = `
 `;
 
 export const getCollection = async (
-  session: Partial<Session>,
+  session: Partial<any>,
   id: string,
 ): Promise<Collection> => {
-  const client = new Shopify.Clients.Graphql(
-    session?.shop || "",
-    session.accessToken,
-  );
+  /*const countData = await shopify.api.rest.Collection..count({
+    session: res.locals.shopify.session,
+  });
 
   const payload: GetCollectionQuery = await client.query({
     data: {
@@ -62,5 +57,6 @@ export const getCollection = async (
     },
   });
 
-  return payload.body.data.collection;
+  return payload.body.data.collection;*/
+  return [] as any;
 };
