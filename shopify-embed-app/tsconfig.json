@@ -6,6 +6,7 @@
     "outDir": "dist",
     "allowJs": true,
     "skipLibCheck": true,
+    "strict": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {

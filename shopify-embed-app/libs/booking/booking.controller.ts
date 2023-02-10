@@ -1,42 +1,33 @@
 import {
-  BookingBodyCreateRequest,
-  BookingBodyUpdateRequest,
-  BookingQuery,
   BookingServiceCreate,
+  BookingServiceCreateProps,
   BookingServiceGetAll,
+  BookingServiceGetAllProps,
   BookingServiceGetById,
+  BookingServiceGetByIdProps,
   BookingServiceUpdate,
+  BookingServiceUpdateProps,
   ControllerProps,
   ShopQuery,
-} from "@jamalsoueidan/bsb.bsb-pkg";
+} from "@jamalsoueidan/pkg.bsb";
 
-export interface GetBookingsProps extends BookingQuery {}
-
-export const get = ({ query }: ControllerProps<GetBookingsProps>) => {
-  return BookingServiceGetAll(query);
-};
+export const getAll = ({ query }: ControllerProps<BookingServiceGetAllProps>) =>
+  BookingServiceGetAll(query);
 
 export const create = ({
   query,
   body,
-}: ControllerProps<ShopQuery, BookingBodyCreateRequest>) => {
-  const shop = query.shop;
-  return BookingServiceCreate({ ...body, shop });
-};
+}: ControllerProps<ShopQuery, BookingServiceCreateProps>) =>
+  BookingServiceCreate({ ...body, shop: query.shop });
 
-interface GetByIdProps {
-  id: string;
-  shop: string;
-}
-
-export const getById = ({ query }: ControllerProps<GetByIdProps>) => {
-  return BookingServiceGetById(query);
-};
+export const getById = ({
+  query,
+}: ControllerProps<BookingServiceGetByIdProps>) => BookingServiceGetById(query);
 
 export const update = ({
   query,
   body,
-}: ControllerProps<GetByIdProps, BookingBodyUpdateRequest>) => {
-  const { shop, id } = query;
-  return BookingServiceUpdate({ filter: { shop, _id: id }, body });
-};
+}: ControllerProps<
+  BookingServiceUpdateProps["query"],
+  BookingServiceUpdateProps["body"]
+>) => BookingServiceUpdate(query, body);

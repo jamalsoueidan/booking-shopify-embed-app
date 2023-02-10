@@ -1,5 +1,5 @@
 import { CollectionAggreate } from "@jamalsoueidan/bsb.types";
-import { HelperArray } from "@jamalsoueidan/bsf.bsf-pkg";
+import { HelperArray } from "@jamalsoueidan/pkg.bsf";
 import { memo, useMemo } from "react";
 import CollectionItem from "./collection-item";
 

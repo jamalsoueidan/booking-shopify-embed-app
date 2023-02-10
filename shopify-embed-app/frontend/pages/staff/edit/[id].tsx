@@ -1,5 +1,5 @@
 import { MetaData } from "@components/staff/meta-data";
-import { StaffForm } from "@jamalsoueidan/bsf.bsf-pkg";
+import { StaffForm } from "@jamalsoueidan/pkg.bsf";
 import { useStaffGet, useStaffUpdate } from "@services";
 import { useNavigate } from "@shopify/app-bridge-react";
 import { useCallback } from "react";

@@ -1,5 +1,5 @@
-import { BookingResponse, Notification } from "@jamalsoueidan/bsb.types";
-import { useToast } from "@jamalsoueidan/bsf.bsf-pkg";
+import { Booking, Notification } from "@jamalsoueidan/bsb.types";
+import { useToast } from "@jamalsoueidan/pkg.bsf";
 import { useNotification, useResendNotification } from "@services/notification";
 import {
   Badge,
@@ -11,11 +11,7 @@ import {
 import { format } from "date-fns";
 import { useCallback } from "react";
 
-export const BookingNotifications = ({
-  booking,
-}: {
-  booking: BookingResponse;
-}) => {
+export const BookingNotifications = ({ booking }: { booking: Booking }) => {
   const { data } = useNotification({
     lineItemId: booking.lineItemId,
     orderId: booking.orderId,

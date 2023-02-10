@@ -6,7 +6,7 @@ import {
   useSettings,
   useToast,
   useTranslation,
-} from "@jamalsoueidan/bsf.bsf-pkg";
+} from "@jamalsoueidan/pkg.bsf";
 import {
   useNotificationTemplates,
   useNotificationTemplatesUpdate,

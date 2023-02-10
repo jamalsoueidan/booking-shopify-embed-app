@@ -3,7 +3,7 @@ import {
   CustomerModel,
   CustomerServiceFind,
   ShopifySessionModel,
-} from "@jamalsoueidan/bsb.bsb-pkg";
+} from "@jamalsoueidan/pkg.bsb";
 import Shopify from "@shopify/shopify-api";
 
 interface GetQuery {
@@ -39,7 +39,10 @@ export const findCustomerAndUpdate = async ({
   // customer saving
   const session = await ShopifySessionModel.findOne({ shop: shop });
 
-  const client = new Shopify.Clients.Graphql(session.shop, session.accessToken);
+  const client = new Shopify.Clients.Graphql(
+    session?.shop || "",
+    session?.accessToken,
+  );
   const customerData: any = await client.query({
     data: {
       query: getCustomerQuery,

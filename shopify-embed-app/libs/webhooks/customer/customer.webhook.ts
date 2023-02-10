@@ -1,4 +1,4 @@
-import { CustomerModel } from "@jamalsoueidan/bsb.bsb-pkg";
+import { CustomerModel } from "@jamalsoueidan/pkg.bsb";
 
 interface CreateReturn {
   acknowledged: boolean;
@@ -38,6 +38,6 @@ export const modify = async ({
     },
     {
       upsert: true,
-    }
+    },
   );
 };

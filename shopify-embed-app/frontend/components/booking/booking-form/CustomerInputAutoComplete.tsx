@@ -1,19 +1,28 @@
 import { Customer } from "@jamalsoueidan/bsb.types";
-import { InputAutoComplete, InputAutoCompleteInput, InputAutoCompleteOption } from "@jamalsoueidan/bsf.bsf-pkg";
+import {
+  InputAutoComplete,
+  InputAutoCompleteInput,
+  InputAutoCompleteOption,
+} from "@jamalsoueidan/pkg.bsf";
 import { useCustomer } from "@services/customer";
 import { Icon } from "@shopify/polaris";
 import { CustomersMajor } from "@shopify/polaris-icons";
 import { Field } from "@shopify/react-form";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-export type CustomerAutoDompleteField = { customerId: number; fullName: string };
+export type CustomerAutoDompleteField = {
+  customerId: number;
+  fullName: string;
+};
 
 export interface CustomerAutoCompleteProps {
   field: Field<CustomerAutoDompleteField>;
   input?: InputAutoCompleteInput;
 }
 
-export const CustomerInputAutoComplete = ({ field }: CustomerAutoCompleteProps) => {
+export const CustomerInputAutoComplete = ({
+  field,
+}: CustomerAutoCompleteProps) => {
   const { find } = useCustomer();
   const [options, setOptions] = useState<Array<InputAutoCompleteOption>>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -66,7 +75,11 @@ export const CustomerInputAutoComplete = ({ field }: CustomerAutoCompleteProps) 
       onSelect={onSelect}
       onSearch={onSearch}
       selectedOption={selectedOption}
-      input={{ error: field.error, icon: <Icon source={CustomersMajor} color="base" />, loading }}
+      input={{
+        error: field.error,
+        icon: <Icon source={CustomersMajor} color="base" />,
+        loading,
+      }}
     />
   );
 };

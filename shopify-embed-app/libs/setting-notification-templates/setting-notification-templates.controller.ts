@@ -3,7 +3,7 @@ import {
   NotificationTemplate,
   NotificationTemplateModel,
   ShopQuery,
-} from "@jamalsoueidan/bsb.bsb-pkg";
+} from "@jamalsoueidan/pkg.bsb";
 
 interface GetQuery extends Pick<NotificationTemplate, "shop" | "language"> {}
 

@@ -4,9 +4,11 @@ import {
   ProductModel,
   ProductServiceUpdate,
   ScheduleServiceCreate,
-  StaffServiceCreate
-} from "@jamalsoueidan/bsb.bsb-pkg";
+  StaffServiceCreate,
+} from "@jamalsoueidan/pkg.bsb";
 import { addHours } from "date-fns";
+
+declare var global: Record<string, string>;
 
 export const createCustomer = () => {
   const customer = new CustomerModel({
@@ -36,7 +38,7 @@ export const createStaff = () => {
 };
 
 export const createProduct = ({
-  productId,
+  productId = 0,
   duration = 45,
   buffertime = 15,
 }) => {
@@ -62,18 +64,20 @@ export const createSchedule = async ({
   start = new Date(),
   end = addHours(new Date(), 5),
 }: CreateSchedule) => {
-  return await ScheduleServiceCreate({
-    staff,
-    shop: global.shop,
-    schedules: {
-      tag,
-      start: start.toISOString(),
-      end: end.toISOString(),
+  return await ScheduleServiceCreate(
+    {
+      staff,
+      shop: global.shop,
     },
-  });
+    {
+      tag,
+      start,
+      end,
+    },
+  );
 };
 
-export const createStaffWithSchedule = async ({ tag }) => {
+export const createStaffWithSchedule = async ({ tag }: any) => {
   const staff = await createStaff();
   const schedule = await createSchedule({
     staff: staff._id,
@@ -82,17 +86,17 @@ export const createStaffWithSchedule = async ({ tag }) => {
   return { staff, schedule };
 };
 
-export const createStaffAndUpdateProduct = async ({ product, tag }) => {
+export const createStaffAndUpdateProduct = async ({ product, tag }: any) => {
   const { staff, schedule } = await createStaffWithSchedule({ tag });
-  const updateProduct = await ProductServiceUpdate({
-    query: {
+  const updateProduct = await ProductServiceUpdate(
+    {
       shop: global.shop,
       id: product._id,
     },
-    body: {
+    {
       staff: [{ _id: staff._id, tag }],
     },
-  });
+  );
 
   return { staff, updateProduct, schedule };
 };

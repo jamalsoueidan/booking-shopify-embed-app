@@ -1,16 +1,16 @@
 import { faker } from "@faker-js/faker";
-import {
-  IProductDocument,
-  ShopifySessionModel,
-} from "@jamalsoueidan/bsb.bsb-pkg";
+import { IProductDocument, ShopifySessionModel } from "@jamalsoueidan/pkg.bsb";
 import * as adminBookingController from "@libs/booking/booking.controller";
 import { createProduct } from "@libs/jest-helpers";
 import * as OrderWebhook from "@libs/webhooks/order/order.webhook";
 import { differenceInMinutes, isAfter, isBefore } from "date-fns";
 import mongoose from "mongoose";
+import { Data, LineItem } from "../order.types";
 import mockCreate from "./mock.create";
 import mockOneFullfiledOneRefund from "./mock.oneFullfiled-oneRefund";
 import mockOneFullfilledOneOnHold from "./mock.oneFullfilled-oneOnHold";
+
+declare var global: Record<string, string>;
 
 jest.mock("@libs/smsdk/smsdk.api", () => {
   return {
@@ -31,13 +31,13 @@ jest.mock("@libs/smsdk/smsdk.api", () => {
 const productId = 7961951273277; //refere to the product in the orderJSON
 let product: IProductDocument;
 
-const createInterval = (line_items) => {
+const createInterval = (line_items: LineItem[]) => {
   return line_items.reduce(
     (previousValue, lineItem) => {
       const _data = lineItem.properties.find((p) => p.name === "_data")?.value;
 
       if (_data) {
-        const data: OrderTypes.Data = JSON.parse(_data);
+        const data: Data = JSON.parse(_data);
 
         if (isBefore(new Date(data.start), previousValue.start)) {
           previousValue.start = new Date(data.start);
@@ -77,7 +77,7 @@ describe("webhooks order", () => {
 
     const interval = createInterval(mockCreate.line_items);
 
-    const result = await adminBookingController.get({
+    const result = await adminBookingController.getAll({
       query: {
         shop: global.shop,
         start: interval.start,
@@ -106,7 +106,7 @@ describe("webhooks order", () => {
 
     const interval = createInterval(mockCreate.line_items);
 
-    const result = await adminBookingController.get({
+    const result = await adminBookingController.getAll({
       query: {
         shop: global.shop,
         start: interval.start,
@@ -131,7 +131,7 @@ describe("webhooks order", () => {
 
     const interval = createInterval(mockCreate.line_items);
 
-    const result = await adminBookingController.get({
+    const result = await adminBookingController.getAll({
       query: {
         shop: global.shop,
         start: interval.start,
@@ -164,7 +164,7 @@ describe("webhooks order", () => {
 
     const interval = createInterval(mockCreate.line_items);
 
-    const result = await adminBookingController.get({
+    const result = await adminBookingController.getAll({
       query: {
         shop: global.shop,
         start: interval.start,

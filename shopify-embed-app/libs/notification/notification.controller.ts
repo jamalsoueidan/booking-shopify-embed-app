@@ -3,7 +3,7 @@ import {
   NotificationServiceGet,
   NotificationServiceResend,
   NotificationServiceSendCustom,
-} from "@jamalsoueidan/bsb.bsb-pkg";
+} from "@jamalsoueidan/pkg.bsb";
 
 interface GetQuery {
   shop: string;
@@ -19,14 +19,14 @@ export const get = ({ query }: GetProps) => {
   return NotificationServiceGet(query);
 };
 
-export const sendCustom = ({ query, body }) => {
+export const sendCustom = ({ query, body }: any) => {
   return NotificationServiceSendCustom({ ...query, ...body });
 };
 
-export const resend = ({ query }) => {
+export const resend = ({ query }: any) => {
   return NotificationServiceResend(query);
 };
 
-export const cancel = ({ query }) => {
+export const cancel = ({ query }: any) => {
   return NotificationServiceCancel(query);
 };

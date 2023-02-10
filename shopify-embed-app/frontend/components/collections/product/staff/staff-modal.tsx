@@ -1,9 +1,8 @@
-import { ProductAddStaff, ProductStaffAggreate } from "@jamalsoueidan/bsb.types";
 import {
-  usePosition,
-  useTag,
-  useTranslation,
-} from "@jamalsoueidan/bsf.bsf-pkg";
+  ProductAddStaff,
+  ProductStaffAggreate,
+} from "@jamalsoueidan/bsb.types";
+import { usePosition, useTag, useTranslation } from "@jamalsoueidan/pkg.bsf";
 import { useProductStaff } from "@services";
 import { Modal, OptionList, Spinner, Text } from "@shopify/polaris";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";

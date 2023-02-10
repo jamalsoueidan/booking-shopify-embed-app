@@ -6,7 +6,7 @@ import {
   useForm,
   useToast,
   useTranslation,
-} from "@jamalsoueidan/bsf.bsf-pkg";
+} from "@jamalsoueidan/pkg.bsf";
 import { useSetting, useSettingUpdate } from "@services";
 import {
   Card,

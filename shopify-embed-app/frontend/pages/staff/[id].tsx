@@ -4,7 +4,7 @@ import {
   LoadingModal,
   LoadingPage,
   LoadingSpinner,
-} from "@jamalsoueidan/bsf.bsf-pkg";
+} from "@jamalsoueidan/pkg.bsf";
 import { useStaffGet, useStaffSchedule } from "@services";
 import { useNavigate } from "@shopify/app-bridge-react";
 import { Card, Page } from "@shopify/polaris";
@@ -12,7 +12,7 @@ import { Suspense, lazy, useCallback, useState } from "react";
 import { useParams } from "react-router-dom";
 
 const ScheduleCalendar = lazy(() =>
-  import("@jamalsoueidan/bsf.bsf-pkg").then((module) => ({
+  import("@jamalsoueidan/pkg.bsf").then((module) => ({
     default: module.ScheduleCalendar,
   })),
 );
@@ -32,7 +32,7 @@ const EditScheduleModal = lazy(() =>
 export default () => {
   const params = useParams();
   const navigate = useNavigate();
-  const [rangeDate, setRangeDate] = useState<CalendarDateChangeProps>();
+  const [rangeDate, setRangeDate] = useState<{ start: Date; end: Date }>();
   const [date, setDate] = useState<Date>();
   const [schedule, setSchedule] = useState<Schedule>();
 

@@ -1,4 +1,4 @@
-import { SettingsProvider } from "@jamalsoueidan/bsf.bsf-pkg";
+import { SettingsProvider } from "@jamalsoueidan/pkg.bsf";
 import { setDefaultOptions } from "date-fns";
 import da from "date-fns/locale/da";
 import { useMemo } from "react";

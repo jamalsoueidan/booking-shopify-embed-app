@@ -3,10 +3,9 @@ import {
   CollectionModel,
   CollectionServiceFindAll,
   CollectionServiceFindOne,
-  IProduct,
-  ProductModel,
-  ShopifyControllerProps
-} from "@jamalsoueidan/bsb.bsb-pkg";
+  IProduct, ProductModel,
+  ShopifyControllerProps,
+} from "@jamalsoueidan/pkg.bsb";
 import { getCollection } from "./collection.helpers";
 
 export const create = async ({
@@ -36,22 +35,21 @@ export const create = async ({
     };
   });
 
-  const products = collections?.reduce<Array<Partial<IProduct>>>(
-    (products, currentCollection) => {
-      currentCollection.products.nodes.forEach((n) => {
-        products.push({
-          shop,
-          collectionId: getGid(currentCollection.id),
-          productId: getGid(n.id),
-          title: n.title,
-          imageUrl: n.featuredImage?.url,
-          hidden: false,
-        });
+  const products = collections?.reduce<
+    Array<Omit<IProduct, "buffertime" | "active" | "duration" | "staff">>
+  >((products, currentCollection) => {
+    currentCollection.products.nodes.forEach((n) => {
+      products.push({
+        shop,
+        collectionId: getGid(currentCollection.id),
+        productId: getGid(n.id),
+        title: n.title,
+        imageUrl: n.featuredImage?.url,
+        hidden: false,
       });
-      return products;
-    },
-    [],
-  );
+    });
+    return products;
+  }, []);
 
   let cleanupProducts = await ProductModel.find(
     { collectionId: { $in: products?.map((p) => p.collectionId) } },
@@ -61,7 +59,7 @@ export const create = async ({
   cleanupProducts = cleanupProducts.filter(
     (p) =>
       !products.find(
-        (pp: IProduct) =>
+        (pp) =>
           pp.collectionId === p.collectionId && pp.productId === p.productId,
       ),
   );

@@ -3,7 +3,7 @@ import ProductBanner from "@components/collections/product/product-banner";
 import ProductOptionsCard from "@components/collections/product/product-options-card";
 import ProductStaff from "@components/collections/product/product-staff";
 import { ProductStaffAggreate } from "@jamalsoueidan/bsb.types";
-import { FormErrors, LoadingPage, useForm } from "@jamalsoueidan/bsf.bsf-pkg";
+import { FormErrors, LoadingPage, useForm } from "@jamalsoueidan/pkg.bsf";
 import { useProductGet, useProductUpdate } from "@services";
 import { Badge, Form, Grid, Page, PageActions } from "@shopify/polaris";
 import { useDynamicList, useField } from "@shopify/react-form";

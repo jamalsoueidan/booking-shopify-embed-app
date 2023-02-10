@@ -1,4 +1,4 @@
-import { LoadingPage, useTranslation } from "@jamalsoueidan/bsf.bsf-pkg";
+import { LoadingPage, useTranslation } from "@jamalsoueidan/pkg.bsf";
 import { useCollection, useCollectionCreate } from "@services";
 import { ResourcePicker, useNavigate } from "@shopify/app-bridge-react";
 import { SelectPayload } from "@shopify/app-bridge/actions/ResourcePicker";

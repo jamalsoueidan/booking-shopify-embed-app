@@ -1,5 +1,9 @@
 import { useFetch } from "@hooks/use-fetch";
-import { ApiResponse, CollectionAggreate, CollectionBodyCreate } from "@jamalsoueidan/bsb.types";
+import {
+  ApiResponse,
+  CollectionAggreate,
+  CollectionBodyCreate,
+} from "@jamalsoueidan/bsb.types";
 import { useCallback, useState } from "react";
 import { useQuery } from "react-query";
 
@@ -40,8 +44,8 @@ export const useCollectionCreate = () => {
 
   return {
     create,
-    isFetching,
     isFetched,
+    isFetching,
   };
 };
 
@@ -59,7 +63,7 @@ export const useCollectionDestroy = ({
   const destroy: UseCollectionDestroyFetch = useCallback(async () => {
     await fetch.destroy(`/api/admin/collections/${collectionId}`);
     fetch.mutate(["collections"]);
-  }, [fetch]);
+  }, [collectionId, fetch]);
 
   return {
     destroy,

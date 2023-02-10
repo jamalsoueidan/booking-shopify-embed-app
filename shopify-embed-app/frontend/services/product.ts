@@ -1,5 +1,11 @@
 import { useFetch } from "@hooks/use-fetch";
-import { ApiResponse, Product, ProductAddStaff, ProductAggreate, ProductUpdateBody } from "@jamalsoueidan/bsb.types";
+import {
+  ApiResponse,
+  Product,
+  ProductAddStaff,
+  ProductAggreate,
+  ProductUpdateBody,
+} from "@jamalsoueidan/bsb.types";
 import { useCallback } from "react";
 import { useQuery } from "react-query";
 
@@ -53,7 +59,7 @@ export const useProductUpdate = ({ productId }: UseProductUpdateProps) => {
       await mutate(["collections"]);
       return response.payload;
     },
-    [put, mutate],
+    [put, productId, mutate],
   );
 
   return {

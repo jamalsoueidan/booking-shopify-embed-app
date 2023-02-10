@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { query } from "express-validator";
 
-import { handleRoute } from "@jamalsoueidan/bsb.bsb-pkg";
+import { handleRoute } from "@jamalsoueidan/pkg.bsb";
 import * as controller from "./staff-schedule.controller";
 
 const router = Router();
@@ -13,13 +13,9 @@ router.get(
   handleRoute(controller.get),
 );
 
-router.post("/staff/:staff/schedules", handleRoute(controller.create));
-
-router.put("/staff/:staff/schedules", handleRoute(controller.update));
-
-router.delete(
-  "/staff/:staff/schedules/:schedule",
-  handleRoute(controller.destroy),
+router.post(
+  "/staff/:staff/schedules/group",
+  handleRoute(controller.createGroup),
 );
 
 router.put(
@@ -30,6 +26,14 @@ router.put(
 router.delete(
   "/staff/:staff/schedules/:schedule/group/:groupId",
   handleRoute(controller.destroyGroup),
+);
+
+router.post("/staff/:staff/schedules", handleRoute(controller.create));
+router.put("/staff/:staff/schedules", handleRoute(controller.update));
+
+router.delete(
+  "/staff/:staff/schedules/:schedule",
+  handleRoute(controller.destroy),
 );
 
 export { router as staffScheduleRoutes };

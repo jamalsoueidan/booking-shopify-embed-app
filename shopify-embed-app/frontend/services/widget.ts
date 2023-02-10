@@ -1,5 +1,11 @@
 import { useFetch } from "@hooks/use-fetch";
-import { ApiResponse, WidgetDateQuery, WidgetSchedule, WidgetStaff, WidgetStaffQuery } from "@jamalsoueidan/bsb.types";
+import {
+  ApiResponse,
+  WidgetDateQuery,
+  WidgetSchedule,
+  WidgetStaff,
+  WidgetStaffQuery,
+} from "@jamalsoueidan/bsb.types";
 import { useQuery } from "react-query";
 
 export const useWidgetStaff = ({ productId }: WidgetStaffQuery) => {
@@ -9,7 +15,7 @@ export const useWidgetStaff = ({ productId }: WidgetStaffQuery) => {
     enabled: productId > 0,
     queryFn: async () => {
       mutate(["widget", "availability"]);
-      return get(`/api/widget/staff?productId=${productId}`);
+      return get(`/api/admin/widget/staff?productId=${productId}`);
     },
     queryKey: ["widget", "staff", productId],
   });
@@ -17,7 +23,7 @@ export const useWidgetStaff = ({ productId }: WidgetStaffQuery) => {
   return { data: data?.payload };
 };
 
-export const useWidgetDate = ({
+export const useWidgetAvailability = ({
   staff,
   productId,
   start,
@@ -28,7 +34,7 @@ export const useWidgetDate = ({
     enabled: !!staff && !!productId && !!start && !!end,
     queryFn: () =>
       get(
-        `/api/widget/availability?productId=${productId}&start=${start}&end=${end}${
+        `/api/admin/widget/availability?productId=${productId}&start=${start}&end=${end}${
           staff ? `&staff=${staff}` : ""
         }`,
       ),

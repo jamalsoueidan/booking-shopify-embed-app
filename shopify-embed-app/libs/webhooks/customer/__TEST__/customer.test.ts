@@ -1,10 +1,9 @@
-import { IProductModel, ShopifySessionModel } from "@jamalsoueidan/bsb.bsb-pkg";
+import { ShopifySessionModel } from "@jamalsoueidan/pkg.bsb";
 import * as CustomerWebhook from "@libs/webhooks/customer/customer.webhook";
 import mongoose from "mongoose";
 import body from "./customer.mock";
 
-const productId = 7961951273277; //refere to the product in the orderJSON
-let product: IProductModel;
+declare var global: Record<string, string>;
 
 describe("webhooks order", () => {
   beforeAll(() => mongoose.connect(global.__MONGO_URI__));

@@ -5,7 +5,7 @@ import {
   LoadingSpinner,
   useToast,
   useTranslation,
-} from "@jamalsoueidan/bsf.bsf-pkg";
+} from "@jamalsoueidan/pkg.bsf";
 import { useStaffScheduleCreate } from "@services/staff/schedule";
 import { Suspense, forwardRef, lazy, useCallback } from "react";
 import { useParams } from "react-router-dom";
@@ -15,7 +15,7 @@ interface CreateDayScheduleProps {
 }
 
 const CreateOneShift = lazy(() =>
-  import("@jamalsoueidan/bsf.bsf-pkg").then((module) => ({
+  import("@jamalsoueidan/pkg.bsf").then((module) => ({
     default: module.CreateOneShift,
   })),
 );
@@ -33,7 +33,7 @@ export const CreateOneShiftModal = forwardRef<
 
   const onSubmit = useCallback(
     (fieldValues: CreateOneShiftBody): CreateOneShiftSubmitResult => {
-      create(fieldValues);
+      create(fieldValues as any);
       show({ content: t("success") });
       return { status: "success" };
     },

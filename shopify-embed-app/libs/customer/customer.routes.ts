@@ -1,4 +1,4 @@
-import { handleRoute } from "@jamalsoueidan/bsb.bsb-pkg";
+import { handleRoute } from "@jamalsoueidan/pkg.bsb";
 import { Router } from "express";
 import { query } from "express-validator";
 import * as controller from "./customer.controller";

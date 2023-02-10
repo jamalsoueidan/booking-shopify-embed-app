@@ -1,9 +1,9 @@
-import { BookingRequest, BookingResponse, Staff } from "@jamalsoueidan/bsb.types";
+import { Booking, Staff } from "@jamalsoueidan/bsb.types";
 import {
   LoadingSpinner,
   useFulfillment,
   useTranslation,
-} from "@jamalsoueidan/bsf.bsf-pkg";
+} from "@jamalsoueidan/pkg.bsf";
 import { useBookings, useStaff } from "@services";
 import { useNavigate } from "@shopify/app-bridge-react";
 import { Badge, Card, FooterHelp, Page } from "@shopify/polaris";
@@ -28,13 +28,13 @@ const locales = {
 };
 
 const StaffSelection = lazy(() =>
-  import("@jamalsoueidan/bsf.bsf-pkg").then((module) => ({
+  import("@jamalsoueidan/pkg.bsf").then((module) => ({
     default: module.BookingStaff,
   })),
 );
 
 const BookingCalendar = lazy(() =>
-  import("@jamalsoueidan/bsf.bsf-pkg").then((module) => ({
+  import("@jamalsoueidan/pkg.bsf").then((module) => ({
     default: module.BookingCalendar,
   })),
 );
@@ -42,7 +42,7 @@ const BookingCalendar = lazy(() =>
 export default () => {
   const navigate = useNavigate();
   const [staff, setStaff] = useState<Staff>();
-  const [date, setDate] = useState<Pick<BookingRequest, "start" | "end">>();
+  const [date, setDate] = useState<{ start: Date; end: Date }>();
 
   const { t } = useTranslation({ id: "bookings", locales });
 
@@ -68,7 +68,7 @@ export default () => {
   );
 
   const onClickBooking = useCallback(
-    (booking: BookingResponse) => {
+    (booking: Booking) => {
       navigate(`/bookings/${booking._id}`);
     },
     [navigate],

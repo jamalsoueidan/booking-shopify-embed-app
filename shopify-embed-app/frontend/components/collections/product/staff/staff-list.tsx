@@ -4,7 +4,7 @@ import {
   usePosition,
   useTag,
   useTranslation,
-} from "@jamalsoueidan/bsf.bsf-pkg";
+} from "@jamalsoueidan/pkg.bsf";
 import {
   Avatar,
   Button,

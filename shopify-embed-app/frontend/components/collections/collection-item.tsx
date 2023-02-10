@@ -1,6 +1,10 @@
 import ModalConfirm from "@components/modals/ModalConfirm";
-import { CollectionAggreate, Product, ProductStaffAggreate } from "@jamalsoueidan/bsb.types";
-import { HelperArray, useTranslation } from "@jamalsoueidan/bsf.bsf-pkg";
+import {
+  CollectionAggreate,
+  Product,
+  ProductStaffAggreate,
+} from "@jamalsoueidan/bsb.types";
+import { HelperArray, useTranslation } from "@jamalsoueidan/pkg.bsf";
 import { useCollectionDestroy } from "@services";
 import {
   Avatar,

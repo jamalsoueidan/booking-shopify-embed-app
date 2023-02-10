@@ -1,20 +1,16 @@
-import { BookingResponse } from "@jamalsoueidan/bsb.types";
+import { Booking } from "@jamalsoueidan/bsb.types";
 import {
   FormErrors,
   useForm,
   useModal,
   useToast,
-} from "@jamalsoueidan/bsf.bsf-pkg";
+} from "@jamalsoueidan/pkg.bsf";
 import { useSendCustomNotification } from "@services";
 import { Form, Modal, Select, Stack, TextField } from "@shopify/polaris";
 import { lengthMoreThan, notEmpty, useField } from "@shopify/react-form";
 import { useEffect, useMemo } from "react";
 
-export const BookingSendNotification = ({
-  booking,
-}: {
-  booking: BookingResponse;
-}) => {
+export const BookingSendNotification = ({ booking }: { booking: Booking }) => {
   const { send } = useSendCustomNotification({
     lineItemId: booking.lineItemId,
     orderId: booking.orderId,

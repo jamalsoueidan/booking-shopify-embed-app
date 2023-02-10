@@ -1,4 +1,4 @@
-import { LoadingSpinner, ModalProvider } from "@jamalsoueidan/bsf.bsf-pkg";
+import { LoadingSpinner, ModalProvider } from "@jamalsoueidan/pkg.bsf";
 import { useBookingGet } from "@services/booking";
 import { Card, Tabs } from "@shopify/polaris";
 import { isAfter } from "date-fns";

@@ -4,12 +4,13 @@ import {
   NotificationServiceSendBookingConfirmationCustomer,
   NotificationServiceSendBookingReminderCustomer,
   NotificationServiceSendBookingReminderStaff,
-} from "@jamalsoueidan/bsb.bsb-pkg";
+} from "@jamalsoueidan/pkg.bsb";
 import * as customerController from "@libs/customer/customer.controller";
 import mongoose from "mongoose";
+import { Data, LineItem, Order } from "./order.types";
 
 interface ModifyProps {
-  body: OrderTypes.Order;
+  body: Order;
   shop: string;
   sendBooking?: boolean;
 }
@@ -20,15 +21,16 @@ export const modify = async ({
   sendBooking,
 }: ModifyProps): Promise<any> => {
   const orderId = body.id;
-  const filter = (lineItem) =>
+  const filter = (lineItem: LineItem) =>
     lineItem.properties.find((property) => property.name === "_data");
 
   const lineItems = body.line_items.filter(filter);
 
-  let models: IBooking[] = lineItems.map((lineItem) => {
+  const models: IBooking[] = [];
+  lineItems.forEach((lineItem) => {
     const _data = lineItem.properties.find((p) => p.name === "_data")?.value;
     if (_data) {
-      const data: OrderTypes.Data = JSON.parse(_data);
+      const data: Data = JSON.parse(_data);
       const staffId = data.staff._id;
       const anyAvailable = data.staff.anyAvailable || false;
 
@@ -37,7 +39,7 @@ export const modify = async ({
       );
 
       //TODO: should we validate start, end with the availability?
-      return {
+      models.push({
         orderId,
         lineItemId: lineItem.id,
         lineItemTotal: lineItems.length,
@@ -51,7 +53,7 @@ export const modify = async ({
         customerId: body.customer.id,
         title: lineItem.title,
         timeZone: data.timeZone,
-      };
+      });
     }
   });
 
@@ -103,7 +105,7 @@ export const modify = async ({
 };
 
 interface CreateProps {
-  body: OrderTypes.Order;
+  body: Order;
   shop: string;
 }
 
@@ -112,7 +114,7 @@ export const create = ({ body, shop }: CreateProps) => {
 };
 
 interface UpdateProps {
-  body: OrderTypes.Order;
+  body: Order;
   shop: string;
 }
 
@@ -121,7 +123,7 @@ export const update = ({ body, shop }: UpdateProps) => {
 };
 
 interface CancelProps {
-  body: OrderTypes.Order;
+  body: Order;
   shop: string;
 }
 

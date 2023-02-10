@@ -1,7 +1,4 @@
-import {
-  IProductDocument,
-  ShopifySessionModel,
-} from "@jamalsoueidan/bsb.bsb-pkg";
+import { IProductDocument, ShopifySessionModel } from "@jamalsoueidan/pkg.bsb";
 import { createProduct, createSchedule, createStaff } from "@libs/jest-helpers";
 import * as adminProductController from "@libs/product/product.controller";
 import * as CartWebhook from "@libs/webhooks/cart/cart.webhook";
@@ -11,6 +8,8 @@ import body from "./cart.mock";
 
 const productId = 8006173360445; //refere to the product in the orderJSON
 let product: IProductDocument;
+
+declare var global: Record<string, string>;
 
 const tag = "testerne";
 

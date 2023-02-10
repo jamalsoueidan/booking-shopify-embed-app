@@ -4,13 +4,12 @@ import {
   SettingBodyUpdate,
   SettingModel,
   ShopQuery,
-} from "@jamalsoueidan/bsb.bsb-pkg";
+} from "@jamalsoueidan/pkg.bsb";
 
 export const get = ({ query }: ControllerProps<ShopQuery>) => {
   const shop = query.shop;
   return SettingModel.findOne({ shop });
 };
-
 
 export const create = async ({
   query,

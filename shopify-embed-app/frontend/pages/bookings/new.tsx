@@ -10,9 +10,9 @@ import {
   useForm,
   useToast,
   useTranslation,
-} from "@jamalsoueidan/bsf.bsf-pkg";
+} from "@jamalsoueidan/pkg.bsf";
 import { useBookingCreate } from "@services/booking";
-import { useWidgetDate, useWidgetStaff } from "@services/widget";
+import { useWidgetAvailability, useWidgetStaff } from "@services/widget";
 import { useNavigate } from "@shopify/app-bridge-react";
 import {
   Card,
@@ -67,10 +67,9 @@ export default () => {
     onSubmit: async (fieldValues) => {
       await create({
         customerId: fieldValues.customer.customerId,
-        end: fieldValues.time.end,
         productId: fieldValues.productId,
         staff: fieldValues.staff.staff,
-        start: fieldValues.time.start,
+        ...fieldValues.time,
       });
       show({ content: t("submit.sucess") });
       navigate(`/bookings`);
@@ -82,11 +81,11 @@ export default () => {
     productId: fields.productId.value,
   });
 
-  const { data: schedules } = useWidgetDate({
-    end: end.toJSON(),
+  const { data: schedules } = useWidgetAvailability({
+    end,
     productId: fields.productId.value,
     staff: fields.staff.value?.staff,
-    start: start.toJSON(),
+    start,
   });
 
   const selectedDate = useMemo(() => {

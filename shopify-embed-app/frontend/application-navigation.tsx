@@ -2,7 +2,7 @@ import {
   SaveBarProvider,
   ToastProvider,
   useTranslation,
-} from "@jamalsoueidan/bsf.bsf-pkg";
+} from "@jamalsoueidan/pkg.bsf";
 import { NavigationMenu } from "@shopify/app-bridge-react";
 import { NavigationLink } from "@shopify/app-bridge-react/components/NavigationMenu/NavigationMenu";
 import { Frame, Loading } from "@shopify/polaris";

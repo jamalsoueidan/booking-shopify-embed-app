@@ -1,33 +1,34 @@
+import { NotificationTemplateModel, mongodb } from "@jamalsoueidan/pkg.bsb";
+
 // @ts-check
 import { bookingRoutes } from "@libs/booking/booking.routes";
 import { collectionRoutes } from "@libs/collection/collection.routes";
+import { customerRoutes } from "@libs/customer/customer.routes";
+import { notificationRoutes } from "@libs/notification/notification.routes";
+import { productRoutes } from "@libs/product/product.routes";
+import { settingNotificationTemplatesRoutes } from "@libs/setting-notification-templates/setting-notification-templates.routes";
+import { settingRoutes } from "@libs/setting/setting.routes";
 import { shopifyMiddleware } from "@libs/shopify/shopify.middleware";
+import { staffScheduleRoutes } from "@libs/staff-schedule/staff-schedule.routes";
+import { staffRoutes } from "@libs/staff/staff.routes";
 import { CartWebhook, CustomerWebhook, OrderWebhook } from "@libs/webhooks/";
 import { widgetRoutes } from "@libs/widget/widget.routes";
 import { LATEST_API_VERSION, Shopify } from "@shopify/shopify-api";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { Request } from "express";
+import { queryParser } from "express-query-parser";
 import { readFileSync } from "fs";
 import { join } from "path";
 import { AppInstallations } from "./app_installations.js";
 import { setupGDPRWebHooks } from "./gdpr.js";
 import redirectToAuth from "./helpers/redirect-to-auth.js";
-
-import { NotificationTemplateModel, mongodb } from "@jamalsoueidan/bsb.bsb-pkg";
-import { customerRoutes } from "@libs/customer/customer.routes";
-import { notificationRoutes } from "@libs/notification/notification.routes";
-import { productRoutes } from "@libs/product/product.routes";
-import { settingNotificationTemplatesRoutes } from "@libs/setting-notification-templates/setting-notification-templates.routes";
-import { settingRoutes } from "@libs/setting/setting.routes";
-import { staffScheduleRoutes } from "@libs/staff-schedule/staff-schedule.routes";
-import { staffRoutes } from "@libs/staff/staff.routes";
 import applyAuthMiddleware from "./middleware/auth.js";
 import verifyRequest from "./middleware/verify-request.js";
 
 const USE_ONLINE_TOKENS = false;
 
-const PORT = parseInt(process.env.BACKEND_PORT || process.env.PORT, 10) || 8000;
+const PORT = process.env.PORT || "8000";
 
 // TODO: There should be provided by env vars
 const DEV_INDEX_PATH = `${process.cwd()}/frontend/`;
@@ -36,16 +37,16 @@ const PROD_INDEX_PATH = `${process.cwd()}/frontend/dist/`;
 mongodb.connect(() => NotificationTemplateModel.count());
 
 Shopify.Context.initialize({
-  API_KEY: process.env.SHOPIFY_API_KEY,
-  API_SECRET_KEY: process.env.SHOPIFY_API_SECRET,
-  SCOPES: process.env.SCOPES?.split(","),
-  HOST_NAME: process.env.HOST?.replace(/https?:\/\//, ""),
+  API_KEY: process.env.SHOPIFY_API_KEY || "",
+  API_SECRET_KEY: process.env.SHOPIFY_API_SECRET || "",
+  SCOPES: process.env.SCOPES?.split(",") || [],
+  HOST_NAME: process.env.HOST?.replace(/https?:\/\//, "") || "https://",
   HOST_SCHEME: process.env.HOST?.split("://")[0],
   API_VERSION: LATEST_API_VERSION,
   IS_EMBEDDED_APP: true,
   // This should be replaced with your preferred storage strategy
   SESSION_STORAGE: new Shopify.Session.MongoDBSessionStorage(
-    new URL(process.env.MONGODB_URI),
+    new URL(process.env.MONGODB_URI || ""),
     "book-appointment-app",
   ),
   ...(process.env.SHOP_CUSTOM_DOMAIN && {
@@ -160,11 +161,12 @@ export async function createServer(
   // Shopify.Webhooks.Registry.process().
   // See https://github.com/Shopify/shopify-api-node/blob/main/docs/usage/webhooks.md#note-regarding-use-of-body-parsers
   // for more details.
+
   app.post("/api/webhooks", async (req, res) => {
     try {
       await Shopify.Webhooks.Registry.process(req, res);
       console.log(`Webhook processed, returned status code 200`);
-    } catch (e) {
+    } catch (e: any) {
       console.log(`Failed to process webhook: ${e.message}`);
       if (!res.headersSent) {
         res.status(500).send(e.message);
@@ -176,7 +178,16 @@ export async function createServer(
   // attribute, as a result of the express.json() middleware
   app.use(express.json({ limit: "1mb", extended: true } as any));
 
-  app.use("/api/widget", widgetRoutes);
+  app.use(
+    queryParser({
+      parseNull: true,
+      parseUndefined: true,
+      parseBoolean: true,
+      parseNumber: true,
+    }),
+  );
+
+  app.use("/api", widgetRoutes);
 
   // All endpoints after this point will require an active session
   app.use(
@@ -186,7 +197,7 @@ export async function createServer(
     }),
   );
 
-  app.use("/api/*", shopifyMiddleware(app));
+  app.use("/api/*", shopifyMiddleware(app) as any);
 
   app.use("/api/admin", bookingRoutes);
   app.use("/api/admin", collectionRoutes);
@@ -197,6 +208,7 @@ export async function createServer(
   app.use("/api/admin", settingNotificationTemplatesRoutes);
   app.use("/api/admin", staffRoutes);
   app.use("/api/admin", staffScheduleRoutes);
+  app.use("/api/admin", widgetRoutes);
 
   app.use((req: Request<{}, {}, {}, { shop: string }>, res, next) => {
     const shop = Shopify.Utils.sanitizeShop(req.query.shop);
@@ -256,4 +268,4 @@ export async function createServer(
   return { app };
 }
 
-createServer().then(({ app }) => app.listen(PORT));
+createServer().then(({ app }) => app.listen(Number(PORT)));
