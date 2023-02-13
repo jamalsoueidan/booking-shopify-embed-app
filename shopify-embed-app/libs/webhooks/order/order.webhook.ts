@@ -63,6 +63,12 @@ export const modify = async ({
       customerId: body.customer.id,
       customerGraphqlApiId: body.customer.admin_graphql_api_id,
     },
+    session: {
+      id: "a",
+      shop: "a",
+      state: "a",
+      isOnline: true,
+    },
   });
 
   if (sendBooking) {

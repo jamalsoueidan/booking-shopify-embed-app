@@ -1,14 +1,14 @@
 import { useFetch } from "@hooks/use-fetch";
 import {
   ApiResponse,
-  WidgetDateQuery,
   WidgetSchedule,
+  WidgetServiceAvailabilityProps,
+  WidgetServiceGetStaffProps,
   WidgetStaff,
-  WidgetStaffQuery,
 } from "@jamalsoueidan/bsb.types";
 import { useQuery } from "react-query";
 
-export const useWidgetStaff = ({ productId }: WidgetStaffQuery) => {
+export const useWidgetStaff = ({ productId }: WidgetServiceGetStaffProps) => {
   const { get, mutate } = useFetch();
 
   const { data } = useQuery<ApiResponse<Array<WidgetStaff>>>({
@@ -28,13 +28,13 @@ export const useWidgetAvailability = ({
   productId,
   start,
   end,
-}: WidgetDateQuery) => {
+}: WidgetServiceAvailabilityProps) => {
   const { get } = useFetch();
   const { data } = useQuery<ApiResponse<Array<WidgetSchedule>>>({
     enabled: !!staff && !!productId && !!start && !!end,
     queryFn: () =>
       get(
-        `/api/admin/widget/availability?productId=${productId}&start=${start}&end=${end}${
+        `/api/admin/widget/availability?productId=${productId}&start=${start.toJSON()}&end=${end.toJSON()}${
           staff ? `&staff=${staff}` : ""
         }`,
       ),

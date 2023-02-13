@@ -1,6 +1,6 @@
 import {
-  ProductAddStaff,
-  ProductStaffAggreate,
+  ProductServiceGetAvailableStaffReturn,
+  ProductServiceUpdateBodyStaffProperty,
 } from "@jamalsoueidan/bsb.types";
 import { usePosition, useTag, useTranslation } from "@jamalsoueidan/pkg.bsf";
 import { useProductStaff } from "@services";
@@ -14,7 +14,7 @@ interface StaffModalProps {
   close: () => void;
 }
 
-export default ({ productId, show, close }: StaffModalProps) => {
+export default ({ show, close }: StaffModalProps) => {
   const { t } = useTranslation({
     id: "collection-staff-modal",
     locales: {
@@ -31,12 +31,14 @@ export default ({ productId, show, close }: StaffModalProps) => {
     },
   });
 
-  const { data } = useProductStaff({ productId: show ? productId : null });
+  const { data } = useProductStaff();
   const { value, fields, addItem, removeItems } = useContext(FormContext);
-  const [selected, setSelected] = useState<Array<ProductStaffAggreate>>([]);
+  const [selected, setSelected] = useState<
+    Array<ProductServiceUpdateBodyStaffProperty>
+  >([]);
 
   const toggle = useCallback(
-    (value: ProductStaffAggreate) => {
+    (value: ProductServiceUpdateBodyStaffProperty) => {
       // first we remove the selected Staff
       const newSelected = selected.filter((s) => s._id !== value._id);
       // then if tag is NOT null, we the selected staff
@@ -120,9 +122,9 @@ export default ({ productId, show, close }: StaffModalProps) => {
 };
 
 interface ChoiceStaffProps {
-  staff: ProductAddStaff;
-  selected: Array<ProductStaffAggreate>;
-  toggle: (value: ProductStaffAggreate) => void;
+  staff: ProductServiceGetAvailableStaffReturn;
+  selected: Array<ProductServiceUpdateBodyStaffProperty>;
+  toggle: (value: ProductServiceUpdateBodyStaffProperty) => void;
 }
 
 const ChoiceStaff = ({ staff, selected, toggle }: ChoiceStaffProps) => {

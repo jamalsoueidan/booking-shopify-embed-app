@@ -1,4 +1,4 @@
-import { ProductStaffAggreate } from "@jamalsoueidan/bsb.types";
+import { ProductServiceUpdateBodyStaffProperty } from "@jamalsoueidan/bsb.types";
 import {
   HelperArray,
   usePosition,
@@ -37,7 +37,7 @@ export const StaffList = ({ action }: StaffListProps) => {
   const { value } = useContext(FormContext);
 
   const renderItem = useCallback(
-    (item: ProductStaffAggreate) => {
+    (item: ProductServiceUpdateBodyStaffProperty) => {
       const { _id, fullname, avatar, position } = item;
 
       const media = (

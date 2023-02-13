@@ -18,14 +18,9 @@ if (
 }
 
 const proxyOptions = {
-  changeOrigin: false,
-  configure: (proxy) => {
-    proxy.on("error", (err) => {
-      console.log("proxy error", err);
-    });
-  },
-  secure: true,
   target: `http://127.0.0.1:${process.env.BACKEND_PORT}`,
+  changeOrigin: false,
+  secure: true,
   ws: false,
 };
 
@@ -36,17 +31,17 @@ const host = process.env.HOST
 let hmrConfig;
 if (host === "localhost") {
   hmrConfig = {
-    clientPort: 64999,
+    protocol: "ws",
     host: "localhost",
     port: 64999,
-    protocol: "ws",
+    clientPort: 64999,
   };
 } else {
   hmrConfig = {
-    clientPort: 443,
+    protocol: "wss",
     host: host,
     port: process.env.FRONTEND_PORT,
-    protocol: "wss",
+    clientPort: 443,
   };
 }
 
@@ -64,11 +59,10 @@ if (process.env.npm_lifecycle_event === "build") {
     },
   };
 }
+
 export default defineConfig({
   build,
-  define: {
-    "process.env.SHOPIFY_API_KEY": JSON.stringify(process.env.SHOPIFY_API_KEY),
-  },
+  root: dirname(fileURLToPath(import.meta.url)),
   plugins: [
     react(),
     checker({ typescript: true }),
@@ -76,14 +70,16 @@ export default defineConfig({
     visualizer(),
     tsconfigPaths(),
   ],
+  define: {
+    "process.env.SHOPIFY_API_KEY": JSON.stringify(process.env.SHOPIFY_API_KEY),
+  },
   resolve: {
     preserveSymlinks: true,
   },
-  root: dirname(fileURLToPath(import.meta.url)),
   server: {
-    hmr: hmrConfig,
     host: "localhost",
     port: process.env.FRONTEND_PORT,
+    hmr: hmrConfig,
     proxy: {
       "^/(\\?.*)?$": proxyOptions,
       "^/api(/|(\\?.*)?$)": proxyOptions,

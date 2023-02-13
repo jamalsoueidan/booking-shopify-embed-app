@@ -1,15 +1,15 @@
 import { useFetch } from "@hooks/use-fetch";
 import {
   ApiResponse,
-  CollectionAggreate,
-  CollectionBodyCreate,
+  CollectionServiceCreateBodyProps,
+  CollectionServiceGetAllReturn,
 } from "@jamalsoueidan/bsb.types";
 import { useCallback, useState } from "react";
 import { useQuery } from "react-query";
 
 export const useCollection = () => {
   const { get } = useFetch();
-  const { data } = useQuery<ApiResponse<Array<CollectionAggreate>>>(
+  const { data } = useQuery<ApiResponse<Array<CollectionServiceGetAllReturn>>>(
     ["collections"],
     () => get("/api/admin/collections"),
     { suspense: true },
@@ -20,24 +20,18 @@ export const useCollection = () => {
   };
 };
 
-type UseCollectionCreateFetch = ({ selections }: CollectionBodyCreate) => void;
-
 export const useCollectionCreate = () => {
   const { post, mutate } = useFetch();
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [isFetched, setIsFetched] = useState<boolean>(false);
 
-  const create: UseCollectionCreateFetch = useCallback(
-    async ({ selections }) => {
+  const create = useCallback(
+    async ({ selections }: CollectionServiceCreateBodyProps) => {
       setIsFetching(true);
-      const response: ApiResponse<CollectionAggreate> = await post(
-        "/api/admin/collections",
-        { selections },
-      );
+      await post("/api/admin/collections", { selections });
       mutate(["collections"]);
       setIsFetching(false);
       setIsFetched(true);
-      return response;
     },
     [mutate, post],
   );
@@ -53,14 +47,12 @@ interface UseCollectionDestroyProps {
   collectionId: string;
 }
 
-type UseCollectionDestroyFetch = () => void;
-
 export const useCollectionDestroy = ({
   collectionId,
 }: UseCollectionDestroyProps) => {
   const fetch = useFetch();
 
-  const destroy: UseCollectionDestroyFetch = useCallback(async () => {
+  const destroy = useCallback(async () => {
     await fetch.destroy(`/api/admin/collections/${collectionId}`);
     fetch.mutate(["collections"]);
   }, [collectionId, fetch]);
