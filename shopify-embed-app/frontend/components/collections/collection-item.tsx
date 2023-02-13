@@ -1,8 +1,8 @@
 import ModalConfirm from "@components/modals/ModalConfirm";
 import {
-  CollectionAggreate,
+  CollectionServiceGetAllReturn,
   Product,
-  ProductStaffAggreate,
+  ProductServiceGetAvailableStaffReturn,
 } from "@jamalsoueidan/bsb.types";
 import { HelperArray, useTranslation } from "@jamalsoueidan/pkg.bsf";
 import { useCollectionDestroy } from "@services";
@@ -22,7 +22,7 @@ import { memo, useCallback, useMemo, useState } from "react";
 import MissingImage from "../MissingImage";
 
 interface CollectionProps {
-  collection: CollectionAggreate;
+  collection: CollectionServiceGetAllReturn;
 }
 
 export default memo(({ collection }: CollectionProps) => {
@@ -43,7 +43,7 @@ export default memo(({ collection }: CollectionProps) => {
   }, [setActive]);
 
   const renderItem = useCallback(
-    (item: Product<ProductStaffAggreate>) => {
+    (item: Product<ProductServiceGetAvailableStaffReturn>) => {
       const { _id, title, active, imageUrl } = item;
 
       const status = active ? "success" : "critical";

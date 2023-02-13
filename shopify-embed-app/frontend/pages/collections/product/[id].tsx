@@ -2,7 +2,7 @@ import ProductActivate from "@components/collections/product/product-activate";
 import ProductBanner from "@components/collections/product/product-banner";
 import ProductOptionsCard from "@components/collections/product/product-options-card";
 import ProductStaff from "@components/collections/product/product-staff";
-import { ProductStaffAggreate } from "@jamalsoueidan/bsb.types";
+import { ProductServiceUpdateBodyStaffProperty } from "@jamalsoueidan/bsb.types/product";
 import { FormErrors, LoadingPage, useForm } from "@jamalsoueidan/pkg.bsf";
 import { useProductGet, useProductUpdate } from "@services";
 import { Badge, Form, Grid, Page, PageActions } from "@shopify/polaris";
@@ -12,9 +12,9 @@ import { useParams } from "react-router-dom";
 export default () => {
   const params = useParams();
 
-  const { data: product } = useProductGet({ productId: params.id });
+  const { data: product } = useProductGet({ id: params.id });
   const { update } = useProductUpdate({
-    productId: params.id,
+    id: params.id,
   });
 
   const {
@@ -25,9 +25,9 @@ export default () => {
     primaryAction,
   } = useForm({
     dynamicLists: {
-      staff: useDynamicList<ProductStaffAggreate>(
+      staff: useDynamicList<ProductServiceUpdateBodyStaffProperty>(
         product?.staff || [],
-        (staff: ProductStaffAggreate) => staff,
+        (staff: ProductServiceUpdateBodyStaffProperty) => staff,
       ),
     },
     fields: {

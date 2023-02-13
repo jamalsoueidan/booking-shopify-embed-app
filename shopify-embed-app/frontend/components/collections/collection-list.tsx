@@ -1,10 +1,10 @@
-import { CollectionAggreate } from "@jamalsoueidan/bsb.types";
+import { CollectionServiceGetAllReturn } from "@jamalsoueidan/bsb.types";
 import { HelperArray } from "@jamalsoueidan/pkg.bsf";
 import { memo, useMemo } from "react";
 import CollectionItem from "./collection-item";
 
 interface CollectionListProps {
-  collections: CollectionAggreate[];
+  collections: CollectionServiceGetAllReturn[];
 }
 
 export default memo(({ collections }: CollectionListProps) => {

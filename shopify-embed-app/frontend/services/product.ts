@@ -2,9 +2,10 @@ import { useFetch } from "@hooks/use-fetch";
 import {
   ApiResponse,
   Product,
-  ProductAddStaff,
-  ProductAggreate,
-  ProductUpdateBody,
+  ProductServiceGetAvailableStaffReturn,
+  ProductServiceUpdateBodyProps,
+  ProductServiceUpdateBodyStaffProperty,
+  ProductServiceUpdateQueryProps,
 } from "@jamalsoueidan/bsb.types";
 import { useCallback } from "react";
 import { useQuery } from "react-query";
@@ -21,45 +22,33 @@ export const useProducts = () => {
   };
 };
 
-interface UseProductGetProps {
-  productId: string;
-}
-
-export const useProductGet = ({ productId }: UseProductGetProps) => {
+export const useProductGet = ({ id }: ProductServiceUpdateQueryProps) => {
   const { get } = useFetch();
 
-  const { data } = useQuery<ApiResponse<ProductAggreate>>(
-    [`products`, productId],
-    () => get(`/api/admin/products/${productId}`),
-    {
-      enabled: !!productId,
-    },
-  );
+  const { data } = useQuery<
+    ApiResponse<Product<ProductServiceUpdateBodyStaffProperty>>
+  >([`products`, id], () => get(`/api/admin/products/${id}`), {
+    enabled: !!id,
+  });
 
   return {
     data: data?.payload,
   };
 };
 
-interface UseProductUpdateProps {
-  productId: string;
-}
-
-type UseProductUpdateFetch = (body: ProductUpdateBody) => Promise<Product>;
-
-export const useProductUpdate = ({ productId }: UseProductUpdateProps) => {
+export const useProductUpdate = ({ id }: ProductServiceUpdateQueryProps) => {
   const { put, mutate } = useFetch();
-  const update: UseProductUpdateFetch = useCallback(
-    async (body) => {
+  const update = useCallback(
+    async (body: ProductServiceUpdateBodyProps) => {
       const response: ApiResponse<Product> = await put(
-        `/api/admin/products/${productId}`,
+        `/api/admin/products/${id}`,
         body,
       );
-      await mutate(["products", productId]);
+      await mutate(["products", id]);
       await mutate(["collections"]);
       return response.payload;
     },
-    [put, productId, mutate],
+    [put, id, mutate],
   );
 
   return {
@@ -67,17 +56,13 @@ export const useProductUpdate = ({ productId }: UseProductUpdateProps) => {
   };
 };
 
-interface UseProductStaffListProps {
-  productId: string;
-}
-
-export const useProductStaff = ({ productId }: UseProductStaffListProps) => {
+export const useProductStaff = () => {
   const { get } = useFetch();
 
-  const { data } = useQuery<ApiResponse<Array<ProductAddStaff>>>(
-    [`products`, productId, "staff"],
-    () => get(`/api/admin/products/${productId}/staff`),
-    { enabled: !!productId },
+  const { data } = useQuery<
+    ApiResponse<Array<ProductServiceGetAvailableStaffReturn>>
+  >([`products`, "staff"], () =>
+    get(`/api/admin/products/staff/get-available`),
   );
 
   return {

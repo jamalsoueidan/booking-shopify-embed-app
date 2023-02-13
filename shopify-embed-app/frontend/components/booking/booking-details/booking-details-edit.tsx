@@ -159,6 +159,7 @@ export const BookingDetailsEdit = ({ booking }: { booking: Booking }) => {
               field={fields.date}
               data={schedules}
               onMonthChange={dateChange}
+              disableDates
             />
             <InputTimerDivider field={fields.time} data={hours} />
           </Columns>

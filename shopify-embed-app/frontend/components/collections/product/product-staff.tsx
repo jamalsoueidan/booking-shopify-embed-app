@@ -1,7 +1,6 @@
 import {
   Product,
-  ProductAggreate,
-  ProductStaffAggreate,
+  ProductServiceUpdateBodyStaffProperty,
 } from "@jamalsoueidan/bsb.types";
 import { useTranslation } from "@jamalsoueidan/pkg.bsf";
 import { Card } from "@shopify/polaris";
@@ -13,8 +12,8 @@ import { StaffList } from "./staff/staff-list";
 const StaffModal = lazy(() => import("./staff/staff-modal"));
 
 interface StaffCardProps {
-  product: Product | ProductAggreate;
-  form: DynamicList<ProductStaffAggreate>;
+  product: Product<ProductServiceUpdateBodyStaffProperty>;
+  form: DynamicList<ProductServiceUpdateBodyStaffProperty>;
 }
 
 export default memo(({ product, form }: StaffCardProps) => {

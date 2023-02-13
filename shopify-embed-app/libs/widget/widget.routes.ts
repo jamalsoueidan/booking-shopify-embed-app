@@ -9,7 +9,11 @@ const router = Router();
 router.get(
   "/widget/staff",
   checkSchema({
-    productId: { notEmpty: true },
+    productId: {
+      notEmpty: true,
+      isInt: true,
+      toInt: true,
+    },
   }),
   handleRoute(controller.staff),
 );
@@ -17,9 +21,9 @@ router.get(
 router.get(
   "/widget/availability",
   checkSchema({
-    start: { notEmpty: true },
-    end: { notEmpty: true },
-    productId: { notEmpty: true },
+    start: { notEmpty: true, toDate: true },
+    end: { notEmpty: true, toDate: true },
+    productId: { notEmpty: true, isInt: true, toInt: true },
   }),
   handleRoute(controller.availability),
 );

@@ -1,14 +1,14 @@
 import {
   ControllerProps,
   ProductModel,
+  ProductServiceGetAvailableStaff,
   ProductServiceGetById,
-  ProductServiceGetStaff,
   ProductServiceUpdate,
-  ProductUpdateBody,
+  ProductServiceUpdateBodyProps,
+  ProductServiceUpdateQueryProps,
   ShopQuery,
   ShopifyControllerProps,
 } from "@jamalsoueidan/pkg.bsb";
-import { z } from "zod";
 import shopify from "../../shopify.js";
 
 interface GetOrderFromShopify {
@@ -56,15 +56,10 @@ export const getById = async ({ query }: ControllerProps<Query>) =>
 export const update = ({
   query,
   body,
-}: ControllerProps<Query, ProductUpdateBody>) =>
-  ProductServiceUpdate(query, body);
+}: ControllerProps<
+  ProductServiceUpdateQueryProps,
+  ProductServiceUpdateBodyProps
+>) => ProductServiceUpdate(query, body);
 
-const BookingServiceUpdateQuerySchema = z.object({
-  _id: z.string(),
-});
-
-type test = z.infer<typeof BookingServiceUpdateQuerySchema>;
-
-// @description return all staff that don't belong yet to the product
-export const getStaff = ({ query }: ControllerProps<ShopQuery>) =>
-  ProductServiceGetStaff(query.shop);
+export const getAvailableStaff = ({ query }: ControllerProps<ShopQuery>) =>
+  ProductServiceGetAvailableStaff(query.shop);

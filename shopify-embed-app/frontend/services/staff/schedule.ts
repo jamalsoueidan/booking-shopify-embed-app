@@ -26,8 +26,10 @@ export const useStaffSchedule = ({
   const { data } = useQuery<ApiResponse<Array<Schedule>>>({
     enabled: !!start && !!end,
     queryFn: () =>
-      get(`/api/admin/staff/${staff}/schedules?start=${start}&end=${end}`),
-    queryKey: ["staff", staff, "schedules", start, end],
+      get(
+        `/api/admin/staff/${staff}/schedules?start=${start.toJSON()}&end=${end.toJSON()}`,
+      ),
+    queryKey: ["staff", staff, "schedules", start.toJSON(), end.toJSON()],
   });
 
   return { data: data?.payload || [] };
