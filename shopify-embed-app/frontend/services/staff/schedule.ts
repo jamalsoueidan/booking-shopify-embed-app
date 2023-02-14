@@ -41,7 +41,7 @@ export const useStaffScheduleCreate = ({
   const [isCreating, setIsCreating] = useState<boolean>();
   const { post, mutate } = useFetch();
   const create = useCallback(
-    async (body: ScheduleServiceCreateProps) => {
+    async (body: ScheduleServiceCreateProps["body"]) => {
       setIsCreating(true);
       await post(`/api/admin/schedules?staff=${staff}`, body);
       await mutate(["staff", staff]);

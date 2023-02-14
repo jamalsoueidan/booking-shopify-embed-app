@@ -35,7 +35,7 @@ export const update = async ({
   query,
   body,
 }: ControllerProps<
-  ScheduleServiceUpdateProps["query"] & { staff: string },
+  ScheduleServiceUpdateProps["query"],
   ScheduleServiceUpdateProps["body"]
 >) => {
   const { shop, staff } = query;

@@ -33,7 +33,7 @@ export const CreateOneShiftModal = forwardRef<
 
   const onSubmit = useCallback(
     (fieldValues: CreateOneShiftBody): CreateOneShiftSubmitResult => {
-      create(fieldValues as any);
+      create(fieldValues);
       show({ content: t("success") });
       return { status: "success" };
     },
