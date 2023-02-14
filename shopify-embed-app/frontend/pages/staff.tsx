@@ -17,7 +17,7 @@ import { useCallback } from "react";
 export default () => {
   const navigate = useNavigate();
   const { data } = useStaff();
-  const { select } = usePosition();
+  const { selectPosition } = usePosition();
 
   const renderItems = useCallback(
     (item: Staff) => {
@@ -36,13 +36,13 @@ export default () => {
             {fullname} <MetaData active={active} />
           </Text>
           <div>
-            {select(position)}
+            {selectPosition(position)}
             <br />
           </div>
         </ResourceItem>
       );
     },
-    [navigate, select],
+    [navigate, selectPosition],
   );
 
   return (

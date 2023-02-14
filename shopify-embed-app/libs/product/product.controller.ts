@@ -39,7 +39,6 @@ export const getOrderFromShopify = async ({
     }`,
   });
   return data?.body?.data?.order;
-  return [];
 };
 
 export const get = ({ query }: ControllerProps<ShopQuery>) => {

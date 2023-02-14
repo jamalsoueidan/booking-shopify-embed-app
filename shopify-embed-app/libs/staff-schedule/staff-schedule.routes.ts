@@ -1,25 +1,52 @@
 import { Router } from "express";
-import { query } from "express-validator";
+import { body, checkSchema, param } from "express-validator";
 
-import { handleRoute } from "@jamalsoueidan/pkg.bsb";
+import {
+  ScheduleServiceCreateGroupBodyProps,
+  handleRoute,
+} from "@jamalsoueidan/pkg.bsb";
+import { isValidObjectId } from "mongoose";
 import * as controller from "./staff-schedule.controller";
 
 const router = Router();
 
 router.get(
   "/staff/:staff/schedules",
-  query("start").notEmpty(),
-  query("end").notEmpty(),
+  param("staff")
+    .custom((value) => isValidObjectId(value))
+    .withMessage("not valid objectId"),
+  checkSchema({
+    start: {
+      notEmpty: true,
+      toDate: true,
+    },
+    end: {
+      notEmpty: true,
+      toDate: true,
+    },
+  }),
   handleRoute(controller.get),
 );
 
 router.post(
   "/staff/:staff/schedules/group",
+  body()
+    .isArray({ min: 1 })
+    .customSanitizer((value: ScheduleServiceCreateGroupBodyProps) =>
+      value.map((v) => ({
+        ...v,
+        start: new Date(v.start),
+        end: new Date(v.end),
+      })),
+    ),
   handleRoute(controller.createGroup),
 );
 
 router.put(
   "/staff/:staff/schedules/:schedule/group/:groupId",
+  body("id")
+    .custom((value) => isValidObjectId(value))
+    .withMessage("not valid objectId"),
   handleRoute(controller.updateGroup),
 );
 

@@ -61,8 +61,8 @@ app.use("/api/admin", notificationRoutes);
 app.use("/api/admin", productRoutes);
 app.use("/api/admin", settingRoutes);
 app.use("/api/admin", settingNotificationTemplatesRoutes);
-app.use("/api/admin", staffRoutes);
 app.use("/api/admin", staffScheduleRoutes);
+app.use("/api/admin", staffRoutes);
 app.use("/api/admin", widgetRoutes);
 
 app.use(serveStatic(STATIC_PATH, { index: false }));

@@ -2,7 +2,7 @@ import { LoadingSpinner, ModalProvider } from "@jamalsoueidan/pkg.bsf";
 import { useBookingGet } from "@services/booking";
 import { Card, Tabs } from "@shopify/polaris";
 import { isAfter } from "date-fns";
-import { useCallback, useMemo } from "react";
+import { lazy, useCallback, useMemo } from "react";
 import {
   Route,
   Routes,
@@ -10,11 +10,21 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
-import { BookingCustomer } from "../booking-details/booking-customer";
 import { BookingDetailsEdit } from "../booking-details/booking-details-edit";
-import { BookingDetailsView } from "../booking-details/booking-details-view";
 import { BookingNotifications } from "../booking-details/booking-notifications";
 import { BookingSendNotification } from "../booking-details/booking-send-notification";
+
+const BookingCustomer = lazy(() =>
+  import("@jamalsoueidan/pkg.bsf").then((module) => ({
+    default: module.BookingCustomer,
+  })),
+);
+
+const BookingDetailsView = lazy(() =>
+  import("@jamalsoueidan/pkg.bsf").then((module) => ({
+    default: module.BookingView,
+  })),
+);
 
 export const BookingModal = () => {
   const navigate = useNavigate();
@@ -79,7 +89,12 @@ export const BookingModal = () => {
             <LoadingSpinner />
           ) : (
             <Routes>
-              <Route index element={<BookingDetailsView booking={data} />} />
+              <Route
+                index
+                element={
+                  <BookingDetailsView booking={data} navigate={navigate} />
+                }
+              />
               <Route
                 path="edit"
                 element={<BookingDetailsEdit booking={data} />}

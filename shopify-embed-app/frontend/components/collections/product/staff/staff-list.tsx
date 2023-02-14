@@ -32,8 +32,8 @@ export const StaffList = ({ action }: StaffListProps) => {
       },
     },
   });
-  const { select: selectTag } = useTag();
-  const { select: selectPosition } = usePosition();
+  const { selectTag } = useTag();
+  const { selectPosition } = usePosition();
   const { value } = useContext(FormContext);
 
   const renderItem = useCallback(

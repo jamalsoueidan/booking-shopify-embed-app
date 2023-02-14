@@ -29,7 +29,7 @@ export const useStaffSchedule = ({
       get(
         `/api/admin/staff/${staff}/schedules?start=${start.toJSON()}&end=${end.toJSON()}`,
       ),
-    queryKey: ["staff", staff, "schedules", start.toJSON(), end.toJSON()],
+    queryKey: ["staff", staff, "schedules", start?.toJSON(), end?.toJSON()],
   });
 
   return { data: data?.payload || [] };

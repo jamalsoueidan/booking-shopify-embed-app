@@ -128,8 +128,8 @@ interface ChoiceStaffProps {
 }
 
 const ChoiceStaff = ({ staff, selected, toggle }: ChoiceStaffProps) => {
-  const { select: selectTag } = useTag();
-  const { select: selectPosition } = usePosition();
+  const { selectTag } = useTag();
+  const { selectPosition } = usePosition();
 
   const choices = useMemo(
     () =>
