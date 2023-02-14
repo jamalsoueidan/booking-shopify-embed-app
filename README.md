@@ -190,7 +190,8 @@ The frontend is a single page app. It requires the following keys:
   "SCOPES": "unauthenticated_read_product_listings,read_products,read_orders,read_customers",
   "SHOPIFY_API_KEY": "XXX",
   "SHOPIFY_API_SECRET": "XXX",
-  "SMSDK_SECRET": "XXX"
+  "SMSDK_SECRET": "XXX",
+  "TZ": "UTC",
 }
 ```
 To build the frontend app:
