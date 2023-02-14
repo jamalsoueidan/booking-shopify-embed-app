@@ -19,7 +19,7 @@ export const useBookings = ({
     enabled: !!start && !!end,
     queryFn: () =>
       get(
-        `/api/admin/bookings?start=${start}&end=${end}${
+        `/api/admin/bookings?start=${start.toJSON()}&end=${end.toJSON()}${
           staff ? "&staff=" + staff : ""
         }`,
       ),

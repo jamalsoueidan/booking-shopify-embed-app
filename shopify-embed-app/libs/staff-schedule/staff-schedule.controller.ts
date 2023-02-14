@@ -50,6 +50,7 @@ export const destroy = ({
   query,
 }: ControllerProps<ScheduleServiceDestroyProps>) => {
   const { shop, staff, schedule } = query;
+  console.log("delete", query);
   return ScheduleServiceDestroy({
     schedule,
     staff,

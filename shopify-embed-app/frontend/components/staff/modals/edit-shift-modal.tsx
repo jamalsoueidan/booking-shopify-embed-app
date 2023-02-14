@@ -38,7 +38,6 @@ export const EditShiftModal = ({ schedule, close }: EditShiftModalProps) => {
   const { isUpdating: isUpdatingAll, updateGroup } =
     useStaffScheduleUpdateGroup({
       groupId: schedule.groupId,
-      schedule: schedule._id,
       staff: params.id,
     });
 
@@ -50,7 +49,6 @@ export const EditShiftModal = ({ schedule, close }: EditShiftModalProps) => {
   const { isDestroying: isDestroyingAll, destroyGroup } =
     useStaffScheduleDestroyGroup({
       groupId: schedule.groupId,
-      schedule: schedule._id,
       staff: params.id,
     });
 

@@ -18,6 +18,7 @@ import { shopifyMiddleware } from "@libs/shopify/shopify.middleware";
 import { staffScheduleRoutes } from "@libs/staff-schedule/staff-schedule.routes";
 import { staffRoutes } from "@libs/staff/staff.routes";
 import { widgetRoutes } from "@libs/widget/widget.routes";
+const morgan = require("morgan");
 
 const PORT = parseInt(
   process.env.BACKEND_PORT || process.env.PORT || "8000",
@@ -52,6 +53,7 @@ app.use("/api", widgetRoutes);
 // All endpoints after this point will require an active session
 app.use("/api/*", shopify.validateAuthenticatedSession());
 
+app.use(morgan("dev"));
 app.use("/api/*", shopifyMiddleware(app) as any);
 
 app.use("/api/admin", bookingRoutes);

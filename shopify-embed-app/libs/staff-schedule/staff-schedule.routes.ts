@@ -1,26 +1,61 @@
 import { Router } from "express";
-import { body, checkSchema, param } from "express-validator";
+import {
+  CustomValidator,
+  Schema,
+  body,
+  checkSchema,
+  param,
+} from "express-validator";
 
 import {
   ScheduleServiceCreateGroupBodyProps,
   handleRoute,
 } from "@jamalsoueidan/pkg.bsb";
+import { ValidatorsSchema } from "express-validator/src/middlewares/schema";
 import { isValidObjectId } from "mongoose";
 import * as controller from "./staff-schedule.controller";
 
 const router = Router();
 
+const isValidObject: ValidatorsSchema["custom"] = {
+  options: (value: CustomValidator) => isValidObjectId(value),
+  errorMessage: "not valid objectId",
+};
+
+const staffSchema: Schema = {
+  staff: {
+    in: ["query"],
+    notEmpty: true,
+    custom: isValidObject,
+  },
+};
+
+const scheduleSchema: Schema = {
+  schedule: {
+    in: ["params"],
+    notEmpty: true,
+    custom: isValidObject,
+  },
+};
+
+const groupSchema: Schema = {
+  groupId: {
+    in: ["params"],
+    notEmpty: true,
+  },
+};
+
 router.get(
-  "/staff/:staff/schedules",
-  param("staff")
-    .custom((value) => isValidObjectId(value))
-    .withMessage("not valid objectId"),
+  "/schedules",
+  checkSchema(staffSchema),
   checkSchema({
     start: {
+      in: ["query"],
       notEmpty: true,
       toDate: true,
     },
     end: {
+      in: ["query"],
       notEmpty: true,
       toDate: true,
     },
@@ -29,7 +64,8 @@ router.get(
 );
 
 router.post(
-  "/staff/:staff/schedules/group",
+  "/schedules/group",
+  checkSchema(staffSchema),
   body()
     .isArray({ min: 1 })
     .customSanitizer((value: ScheduleServiceCreateGroupBodyProps) =>
@@ -43,7 +79,10 @@ router.post(
 );
 
 router.put(
-  "/staff/:staff/schedules/:schedule/group/:groupId",
+  "/schedules/group/:groupId",
+  checkSchema(staffSchema),
+  checkSchema(scheduleSchema),
+  checkSchema(groupSchema),
   body("id")
     .custom((value) => isValidObjectId(value))
     .withMessage("not valid objectId"),
@@ -51,15 +90,35 @@ router.put(
 );
 
 router.delete(
-  "/staff/:staff/schedules/:schedule/group/:groupId",
+  "/schedules/group/:groupId",
+  checkSchema(staffSchema),
+  checkSchema(groupSchema),
   handleRoute(controller.destroyGroup),
 );
 
-router.post("/staff/:staff/schedules", handleRoute(controller.create));
-router.put("/staff/:staff/schedules", handleRoute(controller.update));
+router.post(
+  "/schedules",
+  checkSchema(staffSchema),
+  body("start").notEmpty().toDate(),
+  body("end").notEmpty().toDate(),
+  handleRoute(controller.create),
+);
+
+router.put(
+  "/schedules/:schedule",
+  param("schedule")
+    .notEmpty()
+    .custom((value: CustomValidator) => isValidObjectId(value))
+    .withMessage("invalid objectid"),
+  body("start").notEmpty().toDate(),
+  body("end").notEmpty().toDate(),
+  handleRoute(controller.update),
+);
 
 router.delete(
-  "/staff/:staff/schedules/:schedule",
+  "/schedules/:schedule",
+  checkSchema(scheduleSchema),
+  checkSchema(staffSchema),
   handleRoute(controller.destroy),
 );
 

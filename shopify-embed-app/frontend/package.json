@@ -13,8 +13,8 @@
     "node": ">= 12.16"
   },
   "dependencies": {
-    "@jamalsoueidan/pkg.bsf": "^0.0.17",
-    "@jamalsoueidan/bsb.types": "^0.0.27",
+    "@jamalsoueidan/pkg.bsf": "^0.0.19",
+    "@jamalsoueidan/bsb.types": "^0.0.29",
     "@shopify/app-bridge": "^3.1.0",
     "@shopify/app-bridge-react": "^3.1.0",
     "@shopify/app-bridge-utils": "^3.1.0",
