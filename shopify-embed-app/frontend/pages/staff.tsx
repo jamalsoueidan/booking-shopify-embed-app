@@ -1,7 +1,7 @@
 import { EmptyStaff } from "@components/staff/empty-staff";
 import { MetaData } from "@components/staff/meta-data";
 import { Staff } from "@jamalsoueidan/bsb.types";
-import { usePosition } from "@jamalsoueidan/pkg.bsf";
+import { usePosition, useTranslation } from "@jamalsoueidan/pkg.bsf";
 import { useStaff } from "@services";
 import { useNavigate } from "@shopify/app-bridge-react";
 import {
@@ -15,6 +15,7 @@ import {
 import { useCallback } from "react";
 
 export default () => {
+  const { t } = useTranslation({ id: "staff", locales });
   const navigate = useNavigate();
   const { data } = useStaff();
   const { selectPosition } = usePosition();
@@ -48,19 +49,41 @@ export default () => {
   return (
     <Page
       fullWidth
-      title="Staff"
+      title={t("title")}
       primaryAction={{
-        content: "Add team member",
+        content: t("add"),
         url: "/staff/new",
       }}>
       <Card>
         <ResourceList
           emptyState={<EmptyStaff />}
-          resourceName={{ plural: "customers", singular: "customer" }}
+          resourceName={{
+            plural: t("resource.plural"),
+            singular: t("resource.singular"),
+          }}
           items={data || []}
           renderItem={renderItems}
         />
       </Card>
     </Page>
   );
+};
+
+const locales = {
+  da: {
+    title: "Medarbejder ",
+    add: "Tilføj ny medarbejder",
+    resource: {
+      plural: "medarbejder",
+      singular: "medarbejder",
+    },
+  },
+  en: {
+    title: "Staff",
+    add: "Add staff member",
+    resource: {
+      plural: "customers",
+      singular: "customer",
+    },
+  },
 };

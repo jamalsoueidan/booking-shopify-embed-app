@@ -1,4 +1,4 @@
-import { Schedule } from "@jamalsoueidan/bsb.types";
+import { Schedule, Tag } from "@jamalsoueidan/bsb.types";
 import { useDate, useTag, useToast } from "@jamalsoueidan/pkg.bsf";
 import {
   useStaffScheduleDestroy,
@@ -53,7 +53,7 @@ export const EditShiftModal = ({ schedule, close }: EditShiftModalProps) => {
     });
 
   const handleStart = useCallback((value: string) => setStartTime(value), []);
-  const handleTag = useCallback((value: string) => setTag(value), []);
+  const handleTag = useCallback((value: Tag) => setTag(value), []);
   const handleEnd = useCallback((value: string) => setEndTime(value), []);
 
   const updateDate = useCallback(

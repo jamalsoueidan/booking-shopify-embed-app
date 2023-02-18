@@ -5,6 +5,7 @@ import {
   ProductServiceUpdate,
   ScheduleServiceCreate,
   StaffServiceCreate,
+  Tag,
 } from "@jamalsoueidan/pkg.bsb";
 import { addHours } from "date-fns";
 
@@ -54,7 +55,7 @@ export const createProduct = ({
 
 interface CreateSchedule {
   staff: string;
-  tag: string;
+  tag: Tag;
   start?: Date;
   end?: Date;
 }

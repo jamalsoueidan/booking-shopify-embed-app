@@ -3,15 +3,20 @@ import ProductBanner from "@components/collections/product/product-banner";
 import ProductOptionsCard from "@components/collections/product/product-options-card";
 import ProductStaff from "@components/collections/product/product-staff";
 import { ProductServiceUpdateBodyStaffProperty } from "@jamalsoueidan/bsb.types/product";
-import { FormErrors, LoadingPage, useForm } from "@jamalsoueidan/pkg.bsf";
+import {
+  FormErrors,
+  LoadingPage,
+  useForm,
+  useTranslation,
+} from "@jamalsoueidan/pkg.bsf";
 import { useProductGet, useProductUpdate } from "@services";
 import { Badge, Form, Grid, Page, PageActions } from "@shopify/polaris";
 import { useDynamicList, useField } from "@shopify/react-form";
 import { useParams } from "react-router-dom";
 
 export default () => {
+  const { t } = useTranslation({ id: "product-id", locales });
   const params = useParams();
-
   const { data: product } = useProductGet({ id: params.id });
   const { update } = useProductUpdate({
     id: params.id,
@@ -56,7 +61,7 @@ export default () => {
   });
 
   if (!product) {
-    return <LoadingPage title="Loading product details" />;
+    return <LoadingPage title={t("loading")} />;
   }
 
   return (
@@ -66,7 +71,7 @@ export default () => {
         title={product?.title}
         titleMetadata={
           <Badge status={product.active ? "attention" : "info"}>
-            {product.active ? "Active" : "Deactive"}
+            {product.active ? t("active") : t("deactive")}
           </Badge>
         }
         breadcrumbs={[{ content: "Collections", url: "/collections" }]}>
@@ -90,4 +95,17 @@ export default () => {
       </Page>
     </Form>
   );
+};
+
+const locales = {
+  da: {
+    active: "Aktiv",
+    deactive: "Deaktiv",
+    loading: "Henter produkt detailer",
+  },
+  en: {
+    active: "Active",
+    deactive: "Deactive",
+    loading: "Loading product details",
+  },
 };

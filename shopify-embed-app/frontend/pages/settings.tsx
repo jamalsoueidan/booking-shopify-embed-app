@@ -1,10 +1,12 @@
 import { SettingsApplication } from "@components/settings/settings-application";
 import { SettingsNotifications } from "@components/settings/settings-notifications";
+import { useTranslation } from "@jamalsoueidan/pkg.bsf";
 import { ActionList, Card, Grid, Page } from "@shopify/polaris";
 import { NotificationMajor, SettingsMajor } from "@shopify/polaris-icons";
 import { useState } from "react";
 
 export default () => {
+  const { t } = useTranslation({ id: "settings", locales });
   const [current, setCurrent] = useState<string>("application");
 
   let Component;
@@ -26,7 +28,7 @@ export default () => {
                   items: [
                     {
                       active: current === "application",
-                      content: "Application",
+                      content: t("application"),
                       icon: SettingsMajor,
                       onAction: () => {
                         setCurrent("application");
@@ -34,14 +36,14 @@ export default () => {
                     },
                     {
                       active: current === "notifications",
-                      content: "Notifications",
+                      content: t("notifications"),
                       icon: NotificationMajor,
                       onAction: () => {
                         setCurrent("notifications");
                       },
                     },
                   ],
-                  title: "Settings",
+                  title: t("settings"),
                 },
               ]}
             />
@@ -53,4 +55,17 @@ export default () => {
       </Grid>
     </Page>
   );
+};
+
+const locales = {
+  da: {
+    settings: "Indstillinger",
+    application: "Applikation",
+    notifications: "Meddelser",
+  },
+  en: {
+    settings: "Settings",
+    application: "Application",
+    notifications: "Notifications",
+  },
 };

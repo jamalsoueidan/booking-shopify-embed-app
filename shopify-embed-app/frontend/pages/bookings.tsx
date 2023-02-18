@@ -1,13 +1,9 @@
-import { Booking, Staff } from "@jamalsoueidan/bsb.types";
-import {
-  LoadingSpinner,
-  useFulfillment,
-  useTranslation,
-} from "@jamalsoueidan/pkg.bsf";
+import { Booking } from "@jamalsoueidan/bsb.types";
+import { LoadingSpinner, useTranslation } from "@jamalsoueidan/pkg.bsf";
 import { useBookings, useStaff } from "@services";
 import { useNavigate } from "@shopify/app-bridge-react";
-import { Badge, Card, FooterHelp, Page } from "@shopify/polaris";
-import { Suspense, lazy, useCallback, useMemo, useState } from "react";
+import { Card, FooterHelp, Page } from "@shopify/polaris";
+import { Suspense, lazy, useCallback, useState } from "react";
 import { Outlet } from "react-router-dom";
 
 const locales = {
@@ -27,12 +23,6 @@ const locales = {
   },
 };
 
-const StaffSelection = lazy(() =>
-  import("@jamalsoueidan/pkg.bsf").then((module) => ({
-    default: module.BookingStaff,
-  })),
-);
-
 const BookingCalendar = lazy(() =>
   import("@jamalsoueidan/pkg.bsf").then((module) => ({
     default: module.BookingCalendar,
@@ -41,31 +31,15 @@ const BookingCalendar = lazy(() =>
 
 export default () => {
   const navigate = useNavigate();
-  const [staff, setStaff] = useState<Staff>();
   const [date, setDate] = useState<{ start: Date; end: Date }>();
 
   const { t } = useTranslation({ id: "bookings", locales });
 
-  const { options } = useFulfillment();
-
   const { data: staffier } = useStaff();
-  const { data: bookings, isLoading } = useBookings({
+  const { data: bookings } = useBookings({
     end: date?.end,
-    staff: staff?._id,
     start: date?.start,
   });
-
-  const badges = useMemo(
-    () =>
-      options.map((o, _) => (
-        <Badge key={_} status={o.bannerStatus as any} progress="complete">
-          {o.label
-            ? o.label.charAt(0).toUpperCase() + o.label.slice(1)
-            : t("in_progress")}
-        </Badge>
-      )),
-    [options, t],
-  );
 
   const onClickBooking = useCallback(
     (booking: Booking) => {
@@ -84,20 +58,11 @@ export default () => {
       }}>
       <Outlet />
       <Card sectioned>
-        <Card.Section title={badges}>
-          <Suspense fallback={<LoadingSpinner />}>
-            <StaffSelection
-              isLoadingBookings={isLoading}
-              data={staffier}
-              selected={staff}
-              onSelect={setStaff}
-            />
-          </Suspense>
-        </Card.Section>
         <Card.Section>
           <Suspense fallback={<LoadingSpinner />}>
             <BookingCalendar
               data={bookings}
+              staff={staffier}
               onChangeDate={setDate}
               onClickBooking={onClickBooking}
             />

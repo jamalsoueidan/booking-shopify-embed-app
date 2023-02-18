@@ -8,15 +8,15 @@ import {
 } from "@shopify/polaris";
 import { notEmpty, useField } from "@shopify/react-form";
 
-import { Booking, WidgetHourRange } from "@jamalsoueidan/bsb.types";
+import { Booking, Tag, WidgetHourRange } from "@jamalsoueidan/bsb.types";
 import {
   FormErrors,
   InputDateFlat,
-  InputStaff,
-  InputStaffField,
   InputTimerDivider,
   InputTimerDividerField,
   LoadingSpinner,
+  WidgetInputStaff,
+  WidgetInputStaffField,
   useForm,
   useModal,
   useToast,
@@ -51,14 +51,14 @@ export const BookingDetailsEdit = ({ booking }: { booking: Booking }) => {
         validates: [notEmpty(t("date.error_select"))],
         value: new Date(booking.start) || undefined,
       }),
-      staff: useField<InputStaffField>({
+      staff: useField<WidgetInputStaffField>({
         validates: [notEmpty(t("staff.error_select"))],
         value: booking.staff
           ? {
               avatar: booking.staff.avatar,
               fullname: booking.staff.fullname,
               staff: booking.staff._id,
-              tag: "",
+              tag: Tag.all_day,
             }
           : undefined,
       }),
@@ -153,7 +153,7 @@ export const BookingDetailsEdit = ({ booking }: { booking: Booking }) => {
       <Modal.Section>
         <FormLayout>
           {isSubmitted && !isValid && <FormErrors errors={submitErrors} />}
-          <InputStaff field={fields.staff} data={staffOptions} />
+          <WidgetInputStaff field={fields.staff} data={staffOptions} />
           <Columns columns={{ xs: 2 }}>
             <InputDateFlat
               field={fields.date}

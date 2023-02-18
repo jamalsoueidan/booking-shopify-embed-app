@@ -4,6 +4,7 @@ import {
   LoadingModal,
   LoadingPage,
   LoadingSpinner,
+  useTranslation,
 } from "@jamalsoueidan/pkg.bsf";
 import { useStaffGet, useStaffSchedule } from "@services";
 import { useNavigate } from "@shopify/app-bridge-react";
@@ -30,6 +31,7 @@ const EditScheduleModal = lazy(() =>
 );
 
 export default () => {
+  const { t } = useTranslation({ id: "staff-schedule", locales });
   const params = useParams();
   const navigate = useNavigate();
   const [rangeDate, setRangeDate] = useState<{ start: Date; end: Date }>();
@@ -51,9 +53,7 @@ export default () => {
 
   if (!staff || !calendar) {
     return (
-      <LoadingPage
-        title={!staff ? "Loading staff data..." : "Loading schedules data..."}
-      />
+      <LoadingPage title={!staff ? t("loading.staff") : t("loading.data")} />
     );
   }
 
@@ -62,13 +62,19 @@ export default () => {
   return (
     <Page
       fullWidth
-      title={fullname}
+      title={t("title", { fullname })}
       titleMetadata={<MetaData active={active} />}
-      breadcrumbs={[{ content: "Staff", onAction: () => navigate("/staff") }]}
+      breadcrumbs={[{ content: "staff", onAction: () => navigate("/staff") }]}
       primaryAction={{
-        content: "Redigere " + fullname,
+        content: t("edit", { fullname }),
         onAction: () => navigate("/staff/edit/" + _id),
-      }}>
+      }}
+      secondaryActions={[
+        {
+          content: t("add"),
+          onAction: () => setDate(new Date()),
+        },
+      ]}>
       <Card sectioned>
         {date && (
           <Suspense fallback={<LoadingModal />}>
@@ -94,4 +100,25 @@ export default () => {
       </Card>
     </Page>
   );
+};
+
+const locales = {
+  da: {
+    title: "{fullname} vagtplan",
+    edit: "Redigere bruger",
+    add: "Tilføj vagt",
+    loading: {
+      staff: "Henter medarbejder data",
+      data: "Henter medarbejder vagtplan",
+    },
+  },
+  en: {
+    title: "{fullname} shifts",
+    edit: "Edit staff",
+    add: "Add shift",
+    loading: {
+      staff: "Loading staff data",
+      data: "Loading staff shifts",
+    },
+  },
 };

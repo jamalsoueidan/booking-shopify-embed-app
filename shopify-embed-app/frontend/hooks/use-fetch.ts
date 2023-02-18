@@ -19,8 +19,8 @@ export const useFetch = () => {
   const destroy = useCallback(
     (url: string) =>
       fetch(url, {
-        method: "DELETE",
         headers: { "Content-Type": "application/json" },
+        method: "DELETE",
       }).then((r: Response) => r.json()),
     [fetch],
   );
@@ -40,15 +40,15 @@ export const useFetch = () => {
       fetch(url)
         .then((r: Response) => r.text())
         .then((text: string) => JSON.parse(text)),
-    [],
+    [fetch],
   );
 
   return {
-    fetch,
-    put,
-    post,
     destroy,
+    fetch,
     get,
     mutate: (key: any) => queryClient.invalidateQueries(key),
+    post,
+    put,
   };
 };

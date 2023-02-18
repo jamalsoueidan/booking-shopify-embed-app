@@ -1,4 +1,4 @@
-import { IProductDocument, ShopifySessionModel } from "@jamalsoueidan/pkg.bsb";
+import { IProductDocument, ShopifySessionModel, Tag } from "@jamalsoueidan/pkg.bsb";
 import { createProduct, createSchedule, createStaff } from "@libs/jest-helpers";
 import * as adminProductController from "@libs/product/product.controller";
 import * as CartWebhook from "@libs/webhooks/cart/cart.webhook";
@@ -11,7 +11,7 @@ let product: IProductDocument;
 
 declare var global: Record<string, string>;
 
-const tag = "testerne";
+const tag = Tag.end_of_week;
 
 describe("webhooks order", () => {
   beforeAll(() => mongoose.connect(global.__MONGO_URI__));

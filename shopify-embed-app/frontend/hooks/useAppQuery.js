@@ -16,12 +16,13 @@ import { useAuthenticatedFetch } from "./useAuthenticatedFetch";
  */
 export const useAppQuery = ({ url, fetchInit = {}, reactQueryOptions }) => {
   const authenticatedFetch = useAuthenticatedFetch();
-  const fetch = useMemo(() => {
-    return async () => {
+  const fetch = useMemo(
+    () => async () => {
       const response = await authenticatedFetch(url, fetchInit);
       return response.json();
-    };
-  }, [url, JSON.stringify(fetchInit)]);
+    },
+    [authenticatedFetch, fetchInit, url],
+  );
 
   return useQuery(url, fetch, {
     ...reactQueryOptions,

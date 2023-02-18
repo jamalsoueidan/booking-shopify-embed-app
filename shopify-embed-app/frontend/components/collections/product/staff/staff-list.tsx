@@ -32,7 +32,7 @@ export const StaffList = ({ action }: StaffListProps) => {
       },
     },
   });
-  const { selectTag } = useTag();
+  const { selectTagLabel } = useTag();
   const { selectPosition } = usePosition();
   const { value } = useContext(FormContext);
 
@@ -49,11 +49,11 @@ export const StaffList = ({ action }: StaffListProps) => {
           <Text variant="bodyMd" fontWeight="bold" as="h3">
             {fullname}, {selectPosition(position)}
           </Text>
-          <div>{selectTag(item.tag as any)}</div>
+          <div>{selectTagLabel(item.tag)}</div>
         </ResourceItem>
       );
     },
-    [action, selectPosition, selectTag],
+    [action, selectPosition, selectTagLabel],
   );
 
   const items = useMemo(

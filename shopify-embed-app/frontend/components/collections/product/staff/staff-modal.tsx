@@ -1,6 +1,7 @@
 import {
   ProductServiceGetAvailableStaffReturn,
   ProductServiceUpdateBodyStaffProperty,
+  Tag,
 } from "@jamalsoueidan/bsb.types";
 import { usePosition, useTag, useTranslation } from "@jamalsoueidan/pkg.bsf";
 import { useProductStaff } from "@services";
@@ -128,20 +129,20 @@ interface ChoiceStaffProps {
 }
 
 const ChoiceStaff = ({ staff, selected, toggle }: ChoiceStaffProps) => {
-  const { selectTag } = useTag();
+  const { selectTagLabel } = useTag();
   const { selectPosition } = usePosition();
 
   const choices = useMemo(
     () =>
       [...staff.tags].sort().map((t) => ({
-        label: selectTag(t as any),
+        label: selectTagLabel(t),
         value: t,
       })),
-    [selectTag, staff.tags],
+    [selectTagLabel, staff.tags],
   );
 
   const handleChange = useCallback(
-    (value: string[]) => {
+    (value: Tag[]) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { tags, ...spreadStaff } = staff;
       toggle({ ...spreadStaff, tag: value[0] });

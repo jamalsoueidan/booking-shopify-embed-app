@@ -26,7 +26,6 @@ export const StaffEmptyState = ({ action }: StaffEmptyStateProps) => {
       <EmptyState
         heading={t("title")}
         image="https://cdn.shopify.com/s/files/1/2376/3301/products/emptystate-files.png"
-        imageContained={true}
         fullWidth
         action={{ content: t("browse"), onAction: action }}
       />
