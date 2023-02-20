@@ -1,4 +1,4 @@
-import { Product } from "@jamalsoueidan/bsb.types";
+import { Product } from "@jamalsoueidan/pkg.bsb-types";
 import { useProducts } from "@services/product";
 import { Select } from "@shopify/polaris";
 import { Field } from "@shopify/react-form";

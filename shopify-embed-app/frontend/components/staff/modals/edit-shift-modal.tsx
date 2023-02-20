@@ -1,4 +1,4 @@
-import { Schedule, Tag } from "@jamalsoueidan/bsb.types";
+import { Schedule, Tag } from "@jamalsoueidan/pkg.bsb-types";
 import { useDate, useTag, useToast } from "@jamalsoueidan/pkg.bsf";
 import {
   useStaffScheduleDestroy,

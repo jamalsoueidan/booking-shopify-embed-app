@@ -1,4 +1,4 @@
-import { Product } from "@jamalsoueidan/bsb.types";
+import { Product } from "@jamalsoueidan/pkg.bsb-types";
 import { Card, Select } from "@shopify/polaris";
 import { FieldDictionary } from "@shopify/react-form";
 import { memo, useCallback, useMemo } from "react";

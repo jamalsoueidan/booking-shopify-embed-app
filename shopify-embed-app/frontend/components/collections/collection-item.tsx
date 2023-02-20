@@ -3,7 +3,7 @@ import {
   CollectionServiceGetAllReturn,
   Product,
   ProductServiceGetAvailableStaffReturn,
-} from "@jamalsoueidan/bsb.types";
+} from "@jamalsoueidan/pkg.bsb-types";
 import { HelperArray, useTranslation } from "@jamalsoueidan/pkg.bsf";
 import { useCollectionDestroy } from "@services";
 import {

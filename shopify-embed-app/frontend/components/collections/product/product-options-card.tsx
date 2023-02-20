@@ -1,4 +1,4 @@
-import { Product } from "@jamalsoueidan/bsb.types";
+import { Product } from "@jamalsoueidan/pkg.bsb-types";
 import { useTranslation } from "@jamalsoueidan/pkg.bsf";
 import {
   Button,

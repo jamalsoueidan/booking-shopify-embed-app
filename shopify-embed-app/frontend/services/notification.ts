@@ -3,7 +3,7 @@ import {
   ApiResponse,
   NotificationBody,
   NotificationQuery,
-} from "@jamalsoueidan/bsb.types";
+} from "@jamalsoueidan/pkg.bsb-types";
 import { useCallback } from "react";
 import { useQuery } from "react-query";
 

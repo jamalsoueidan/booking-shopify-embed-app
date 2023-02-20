@@ -1,4 +1,4 @@
-import { Booking, Notification } from "@jamalsoueidan/bsb.types";
+import { Booking, Notification } from "@jamalsoueidan/pkg.bsb-types";
 import { useToast } from "@jamalsoueidan/pkg.bsf";
 import { useNotification, useResendNotification } from "@services/notification";
 import {

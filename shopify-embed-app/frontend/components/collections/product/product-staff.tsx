@@ -1,7 +1,7 @@
 import {
   Product,
   ProductServiceUpdateBodyStaffProperty,
-} from "@jamalsoueidan/bsb.types";
+} from "@jamalsoueidan/pkg.bsb-types";
 import { useTranslation } from "@jamalsoueidan/pkg.bsf";
 import { Card } from "@shopify/polaris";
 import { DynamicList } from "@shopify/react-form/build/ts/hooks/list/dynamiclist";

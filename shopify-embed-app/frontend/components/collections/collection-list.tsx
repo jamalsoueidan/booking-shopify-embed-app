@@ -1,4 +1,4 @@
-import { CollectionServiceGetAllReturn } from "@jamalsoueidan/bsb.types";
+import { CollectionServiceGetAllReturn } from "@jamalsoueidan/pkg.bsb-types";
 import { HelperArray } from "@jamalsoueidan/pkg.bsf";
 import { memo, useMemo } from "react";
 import CollectionItem from "./collection-item";

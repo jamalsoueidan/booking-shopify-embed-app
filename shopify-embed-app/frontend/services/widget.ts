@@ -5,7 +5,7 @@ import {
   WidgetServiceAvailabilityProps,
   WidgetServiceGetStaffProps,
   WidgetStaff,
-} from "@jamalsoueidan/bsb.types";
+} from "@jamalsoueidan/pkg.bsb-types";
 import { useQuery } from "react-query";
 
 export const useWidgetStaff = ({ productId }: WidgetServiceGetStaffProps) => {

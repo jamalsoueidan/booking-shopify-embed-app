@@ -2,7 +2,7 @@ import {
   ProductServiceGetAvailableStaffReturn,
   ProductServiceUpdateBodyStaffProperty,
   Tag,
-} from "@jamalsoueidan/bsb.types";
+} from "@jamalsoueidan/pkg.bsb-types";
 import { usePosition, useTag, useTranslation } from "@jamalsoueidan/pkg.bsf";
 import { useProductStaff } from "@services";
 import { Modal, OptionList, Spinner, Text } from "@shopify/polaris";

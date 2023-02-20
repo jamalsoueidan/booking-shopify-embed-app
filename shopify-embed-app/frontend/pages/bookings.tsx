@@ -1,4 +1,4 @@
-import { Booking } from "@jamalsoueidan/bsb.types";
+import { Booking } from "@jamalsoueidan/pkg.bsb-types";
 import { LoadingSpinner, useTranslation } from "@jamalsoueidan/pkg.bsf";
 import { useBookings, useStaff } from "@services";
 import { useNavigate } from "@shopify/app-bridge-react";

@@ -6,7 +6,7 @@ import {
   ProductServiceUpdateBodyProps,
   ProductServiceUpdateBodyStaffProperty,
   ProductServiceUpdateQueryProps,
-} from "@jamalsoueidan/bsb.types";
+} from "@jamalsoueidan/pkg.bsb-types";
 import { useCallback } from "react";
 import { useQuery } from "react-query";
 

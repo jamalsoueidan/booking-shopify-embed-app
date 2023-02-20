@@ -1,4 +1,4 @@
-import { Booking } from "@jamalsoueidan/bsb.types";
+import { Booking } from "@jamalsoueidan/pkg.bsb-types";
 import {
   FormErrors,
   useForm,

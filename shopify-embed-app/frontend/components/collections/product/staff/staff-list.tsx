@@ -1,4 +1,4 @@
-import { ProductServiceUpdateBodyStaffProperty } from "@jamalsoueidan/bsb.types";
+import { ProductServiceUpdateBodyStaffProperty } from "@jamalsoueidan/pkg.bsb-types";
 import {
   HelperArray,
   usePosition,

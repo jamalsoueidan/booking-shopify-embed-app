@@ -3,7 +3,7 @@ import {
   ApiResponse,
   CollectionServiceCreateBodyProps,
   CollectionServiceGetAllReturn,
-} from "@jamalsoueidan/bsb.types";
+} from "@jamalsoueidan/pkg.bsb-types";
 import { useCallback, useState } from "react";
 import { useQuery } from "react-query";
 

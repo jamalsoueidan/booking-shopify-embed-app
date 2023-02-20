@@ -1,4 +1,4 @@
-import { Customer } from "@jamalsoueidan/bsb.types";
+import { Customer } from "@jamalsoueidan/pkg.bsb-types";
 import {
   InputAutoComplete,
   InputAutoCompleteInput,

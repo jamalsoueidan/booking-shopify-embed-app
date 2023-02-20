@@ -1,6 +1,6 @@
 import { EmptyStaff } from "@components/staff/empty-staff";
 import { MetaData } from "@components/staff/meta-data";
-import { Staff } from "@jamalsoueidan/bsb.types";
+import { Staff } from "@jamalsoueidan/pkg.bsb-types";
 import { usePosition, useTranslation } from "@jamalsoueidan/pkg.bsf";
 import { useStaff } from "@services";
 import { useNavigate } from "@shopify/app-bridge-react";

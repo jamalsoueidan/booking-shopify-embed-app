@@ -1,5 +1,5 @@
 import { MetaData } from "@components/staff/meta-data";
-import { Schedule } from "@jamalsoueidan/bsb.types";
+import { Schedule } from "@jamalsoueidan/pkg.bsb-types";
 import {
   LoadingModal,
   LoadingPage,

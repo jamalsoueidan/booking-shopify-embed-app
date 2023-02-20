@@ -1,4 +1,5 @@
 import { useFetch } from "@hooks/use-fetch";
+import { ScheduleServiceDestroyGroupProps } from "@jamalsoueidan/pkg.bsb";
 import {
   ApiResponse,
   Schedule,
@@ -12,8 +13,7 @@ import {
   ScheduleServiceUpdateGroupBodyProps,
   ScheduleServiceUpdateGroupQueryProps,
   ScheduleServiceUpdateQueryProps,
-} from "@jamalsoueidan/bsb.types";
-import { ScheduleServiceDestroyGroupProps } from "@jamalsoueidan/pkg.bsb";
+} from "@jamalsoueidan/pkg.bsb-types";
 import { useCallback, useState } from "react";
 import { useQuery } from "react-query";
 
