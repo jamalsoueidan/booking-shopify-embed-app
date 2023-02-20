@@ -13,7 +13,7 @@
     "node": ">= 12.16"
   },
   "dependencies": {
-    "@jamalsoueidan/pkg.bsf": "^0.0.45",
+    "@jamalsoueidan/pkg.bsf": "^0.0.49",
     "@jamalsoueidan/pkg.bsb-types": "^0.0.2",
     "@shopify/app-bridge": "^3.1.0",
     "@shopify/app-bridge-react": "^3.1.0",
@@ -27,7 +27,7 @@
     "react-query": "^3.39.2",
     "react-router-dom": "^6.6.1",
     "date-fns": "^2.29.3",
-    "date-fns-tz": "^1.3.7",
+    "date-fns-tz": "^2.0.0",
     "mongoose": "6.8.4"
   },
   "devDependencies": {
