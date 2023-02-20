@@ -2,7 +2,7 @@ import ProductActivate from "@components/collections/product/product-activate";
 import ProductBanner from "@components/collections/product/product-banner";
 import ProductOptionsCard from "@components/collections/product/product-options-card";
 import ProductStaff from "@components/collections/product/product-staff";
-import { ProductServiceUpdateBodyStaffProperty } from "@jamalsoueidan/bsb.types/product";
+import { ProductServiceUpdateBodyStaffProperty } from "@jamalsoueidan/pkg.bsb-types";
 import {
   FormErrors,
   LoadingPage,
