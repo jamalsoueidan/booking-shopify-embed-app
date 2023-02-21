@@ -81,11 +81,23 @@ router.post(
 router.put(
   "/schedules/group/:groupId",
   checkSchema(staffSchema),
-  checkSchema(scheduleSchema),
   checkSchema(groupSchema),
-  body("id")
-    .custom((value) => isValidObjectId(value))
-    .withMessage("not valid objectId"),
+  checkSchema({
+    start: {
+      in: ["body"],
+      notEmpty: true,
+      toDate: true,
+    },
+    end: {
+      in: ["body"],
+      notEmpty: true,
+      toDate: true,
+    },
+    tag: {
+      in: ["body"],
+      notEmpty: true,
+    },
+  }),
   handleRoute(controller.updateGroup),
 );
 

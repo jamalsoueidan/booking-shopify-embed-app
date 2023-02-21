@@ -13,15 +13,14 @@ router.get(
   param("_id")
     .custom((value) => isValidObjectId(value))
     .withMessage("not valid objectId"),
-  body("productId").notEmpty(),
-  body("customerId").notEmpty(),
-  body("start").notEmpty(),
-  body("end").notEmpty(),
-  body("staff").notEmpty(),
   handleRoute(controller.getById),
 );
 
-router.post("/bookings", handleRoute(controller.create));
+router.post("/bookings",   body("productId").notEmpty(),
+  body("customerId").notEmpty(),
+  body("start").notEmpty(),
+  body("end").notEmpty(),
+  body("staff").notEmpty(),handleRoute(controller.create));
 
 router.put(
   "/bookings/:_id",

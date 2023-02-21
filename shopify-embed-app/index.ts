@@ -7,7 +7,7 @@ import GDPRWebhookHandlers from "./gdpr.js";
 import shopify from "./shopify.js";
 
 import { NotificationTemplateModel, mongodb } from "@jamalsoueidan/pkg.bsb";
-import { bookingRoutes } from "@libs/booking/booking.routes";
+import { bookingRouter, widgetRouter } from "@jamalsoueidan/pkg.bsb-routes";
 import { collectionRoutes } from "@libs/collection/collection.routes";
 import { customerRoutes } from "@libs/customer/customer.routes";
 import { notificationRoutes } from "@libs/notification/notification.routes";
@@ -17,7 +17,7 @@ import { settingRoutes } from "@libs/setting/setting.routes";
 import { shopifyMiddleware } from "@libs/shopify/shopify.middleware";
 import { staffScheduleRoutes } from "@libs/staff-schedule/staff-schedule.routes";
 import { staffRoutes } from "@libs/staff/staff.routes";
-import { widgetRoutes } from "@libs/widget/widget.routes";
+
 const morgan = require("morgan");
 
 const PORT = parseInt(
@@ -48,7 +48,7 @@ app.post(
 
 app.use(express.json());
 
-app.use("/api", widgetRoutes);
+app.use("/api", widgetRouter);
 
 // All endpoints after this point will require an active session
 app.use("/api/*", shopify.validateAuthenticatedSession());
@@ -56,7 +56,7 @@ app.use("/api/*", shopify.validateAuthenticatedSession());
 app.use(morgan("dev"));
 app.use("/api/*", shopifyMiddleware(app) as any);
 
-app.use("/api/admin", bookingRoutes);
+app.use("/api/admin", bookingRouter);
 app.use("/api/admin", collectionRoutes);
 app.use("/api/admin", customerRoutes);
 app.use("/api/admin", notificationRoutes);
@@ -65,7 +65,7 @@ app.use("/api/admin", settingRoutes);
 app.use("/api/admin", settingNotificationTemplatesRoutes);
 app.use("/api/admin", staffScheduleRoutes);
 app.use("/api/admin", staffRoutes);
-app.use("/api/admin", widgetRoutes);
+app.use("/api/admin", widgetRouter);
 
 app.use(serveStatic(STATIC_PATH, { index: false }));
 

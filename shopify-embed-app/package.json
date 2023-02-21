@@ -13,7 +13,8 @@
     "node": ">=14.13.1"
   },
   "dependencies": {
-    "@jamalsoueidan/pkg.bsb": "^0.0.38",
+    "@jamalsoueidan/pkg.bsb": "^0.0.48",
+    "@jamalsoueidan/pkg.bsb-routes": "^0.0.2",
     "@shopify/shopify-app-express": "^1.1.0",
     "@shopify/shopify-app-session-storage-mongodb": "^1.0.2",
     "compression": "^1.7.4",

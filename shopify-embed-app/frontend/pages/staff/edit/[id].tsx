@@ -32,6 +32,7 @@ export default () => {
         { content: "Staff", onAction: () => navigate("/staff/" + staff._id) },
       ]}
       titleMetadata={<MetaData active={staff.active} />}
+      allowEditing={{ group: true, active: true, role: true }}
     />
   );
 };
