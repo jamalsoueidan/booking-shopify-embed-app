@@ -68,6 +68,7 @@ export const modify = async ({
       shop: "a",
       state: "a",
       isOnline: true,
+      shopify: null,
     },
   });
 

@@ -1,4 +1,3 @@
-import { useFetch } from "@hooks/use-fetch";
 import {
   ApiResponse,
   Product,
@@ -7,14 +6,15 @@ import {
   ProductServiceUpdateBodyStaffProperty,
   ProductServiceUpdateQueryProps,
 } from "@jamalsoueidan/pkg.bsb-types";
+import { useFetch } from "@jamalsoueidan/pkg.bsf";
 import { useCallback } from "react";
 import { useQuery } from "react-query";
 
 export const useProducts = () => {
   const { get } = useFetch();
 
-  const { data } = useQuery<ApiResponse<Array<Product>>>([`products`], () =>
-    get(`/api/admin/products`),
+  const { data } = useQuery([`products`], () =>
+    get<ApiResponse<Array<Product>>>({ url: "/products" }),
   );
 
   return {
@@ -27,7 +27,7 @@ export const useProductGet = ({ id }: ProductServiceUpdateQueryProps) => {
 
   const { data } = useQuery<
     ApiResponse<Product<ProductServiceUpdateBodyStaffProperty>>
-  >([`products`, id], () => get(`/api/admin/products/${id}`), {
+  >([`products`, id], () => get({ url: `/products/${id}` }), {
     enabled: !!id,
   });
 
@@ -40,10 +40,10 @@ export const useProductUpdate = ({ id }: ProductServiceUpdateQueryProps) => {
   const { put, mutate } = useFetch();
   const update = useCallback(
     async (body: ProductServiceUpdateBodyProps) => {
-      const response: ApiResponse<Product> = await put(
-        `/api/admin/products/${id}`,
+      const response: ApiResponse<Product> = await put({
         body,
-      );
+        url: `/products/${id}`,
+      });
       await mutate(["products", id]);
       await mutate(["collections"]);
       return response.payload;
@@ -59,10 +59,10 @@ export const useProductUpdate = ({ id }: ProductServiceUpdateQueryProps) => {
 export const useProductStaff = () => {
   const { get } = useFetch();
 
-  const { data } = useQuery<
-    ApiResponse<Array<ProductServiceGetAvailableStaffReturn>>
-  >([`products`, "staff"], () =>
-    get(`/api/admin/products/staff/get-available`),
+  const { data } = useQuery([`products`, "staff"], () =>
+    get<ApiResponse<Array<ProductServiceGetAvailableStaffReturn>>>({
+      url: `/products/staff/get-available`,
+    }),
   );
 
   return {

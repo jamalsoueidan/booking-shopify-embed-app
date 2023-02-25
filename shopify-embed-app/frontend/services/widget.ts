@@ -1,4 +1,3 @@
-import { useFetch } from "@hooks/use-fetch";
 import {
   ApiResponse,
   WidgetSchedule,
@@ -6,39 +5,33 @@ import {
   WidgetServiceGetStaffProps,
   WidgetStaff,
 } from "@jamalsoueidan/pkg.bsb-types";
+import { useFetch } from "@jamalsoueidan/pkg.bsf";
 import { useQuery } from "react-query";
 
-export const useWidgetStaff = ({ productId }: WidgetServiceGetStaffProps) => {
+export const useWidgetStaff = (params: WidgetServiceGetStaffProps) => {
   const { get, mutate } = useFetch();
 
   const { data } = useQuery<ApiResponse<Array<WidgetStaff>>>({
-    enabled: productId > 0,
+    enabled: params.productId > 0,
     queryFn: async () => {
       mutate(["widget", "availability"]);
-      return get(`/api/admin/widget/staff?productId=${productId}`);
+      return get({ params, url: `/widget/staff` });
     },
-    queryKey: ["widget", "staff", productId],
+    queryKey: ["widget", "staff", params],
   });
 
   return { data: data?.payload };
 };
 
-export const useWidgetAvailability = ({
-  staff,
-  productId,
-  start,
-  end,
-}: WidgetServiceAvailabilityProps) => {
+export const useWidgetAvailability = (
+  params: WidgetServiceAvailabilityProps,
+) => {
   const { get } = useFetch();
   const { data } = useQuery<ApiResponse<Array<WidgetSchedule>>>({
-    enabled: !!staff && !!productId && !!start && !!end,
-    queryFn: () =>
-      get(
-        `/api/admin/widget/availability?productId=${productId}&start=${start.toJSON()}&end=${end.toJSON()}${
-          staff ? `&staff=${staff}` : ""
-        }`,
-      ),
-    queryKey: ["widget", "availability", staff, start, end, productId],
+    enabled:
+      !!params.staff && !!params.productId && !!params.start && !!params.end,
+    queryFn: () => get({ url: "/widget/availability", params }),
+    queryKey: ["widget", "availability", params],
   });
 
   return { data: data?.payload };

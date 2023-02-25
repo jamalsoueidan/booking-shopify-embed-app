@@ -1,6 +1,9 @@
 import { faker } from "@faker-js/faker";
-import { IProductDocument, ShopifySessionModel } from "@jamalsoueidan/pkg.bsb";
-import * as adminBookingController from "@libs/booking/booking.controller";
+import {
+  BookingServiceGetAll,
+  IProductDocument,
+  ShopifySessionModel,
+} from "@jamalsoueidan/pkg.bsb";
 import { createProduct } from "@libs/jest-helpers";
 import * as OrderWebhook from "@libs/webhooks/order/order.webhook";
 import { differenceInMinutes, isAfter, isBefore } from "date-fns";
@@ -77,12 +80,10 @@ describe("webhooks order", () => {
 
     const interval = createInterval(mockCreate.line_items);
 
-    const result = await adminBookingController.getAll({
-      query: {
-        shop: global.shop,
-        start: interval.start,
-        end: interval.end,
-      },
+    const result = await BookingServiceGetAll({
+      shop: global.shop,
+      start: interval.start,
+      end: interval.end,
     });
 
     expect(result.length).toEqual(mockCreate.line_items.length);
@@ -106,12 +107,10 @@ describe("webhooks order", () => {
 
     const interval = createInterval(mockCreate.line_items);
 
-    const result = await adminBookingController.getAll({
-      query: {
-        shop: global.shop,
-        start: interval.start,
-        end: interval.end,
-      },
+    const result = await BookingServiceGetAll({
+      shop: global.shop,
+      start: interval.start,
+      end: interval.end,
     });
 
     expect(result).toEqual(
@@ -131,12 +130,10 @@ describe("webhooks order", () => {
 
     const interval = createInterval(mockCreate.line_items);
 
-    const result = await adminBookingController.getAll({
-      query: {
-        shop: global.shop,
-        start: interval.start,
-        end: interval.end,
-      },
+    const result = await BookingServiceGetAll({
+      shop: global.shop,
+      start: interval.start,
+      end: interval.end,
     });
 
     expect(result).toEqual(
@@ -164,12 +161,10 @@ describe("webhooks order", () => {
 
     const interval = createInterval(mockCreate.line_items);
 
-    const result = await adminBookingController.getAll({
-      query: {
-        shop: global.shop,
-        start: interval.start,
-        end: interval.end,
-      },
+    const result = await BookingServiceGetAll({
+      shop: global.shop,
+      start: interval.start,
+      end: interval.end,
     });
 
     expect(result).toEqual(

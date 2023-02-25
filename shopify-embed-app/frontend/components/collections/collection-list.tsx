@@ -8,10 +8,10 @@ interface CollectionListProps {
 }
 
 export default memo(({ collections }: CollectionListProps) => {
-  const sortedCollections = useMemo(
-    () => [...collections].sort(HelperArray.soryTextBy("title")),
-    [collections],
-  );
+  const sortedCollections = useMemo(() => {
+    if (!collections) return [];
+    return [...collections].sort(HelperArray.soryTextBy("title"));
+  }, [collections]);
 
   return (
     <>

@@ -4,9 +4,10 @@ import {
   LoadingModal,
   LoadingPage,
   LoadingSpinner,
+  useStaffSchedule,
   useTranslation,
 } from "@jamalsoueidan/pkg.bsf";
-import { useStaffGet, useStaffSchedule } from "@services";
+import { useStaffGet } from "@services";
 import { useNavigate } from "@shopify/app-bridge-react";
 import { Card, Page } from "@shopify/polaris";
 import { Suspense, lazy, useCallback, useState } from "react";
@@ -98,7 +99,11 @@ export default () => {
       <Card sectioned>
         {date && (
           <Suspense fallback={<LoadingModal />}>
-            <CreateScheduleModal selectedDate={date} close={close} />
+            <CreateScheduleModal
+              selectedDate={date}
+              close={close}
+              staff={staff._id}
+            />
           </Suspense>
         )}
         {editOneSchedule && (
@@ -128,21 +133,21 @@ export default () => {
 
 const locales = {
   da: {
-    title: "{fullname} vagtplan",
-    edit: "Redigere bruger",
     add: "Tilføj vagt",
+    edit: "Redigere bruger",
     loading: {
-      staff: "Henter medarbejder data",
       data: "Henter medarbejder vagtplan",
+      staff: "Henter medarbejder data",
     },
+    title: "{fullname} vagtplan",
   },
   en: {
-    title: "{fullname} shifts",
-    edit: "Edit staff",
     add: "Add shift",
+    edit: "Edit staff",
     loading: {
-      staff: "Loading staff data",
       data: "Loading staff shifts",
+      staff: "Loading staff data",
     },
+    title: "{fullname} shifts",
   },
 };

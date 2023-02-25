@@ -11,7 +11,7 @@ import {
 
 export const get = ({ query }: ControllerProps<ShopQuery>) => {
   const shop = query.shop;
-  return StaffServiceFindAll(shop);
+  return StaffServiceFindAll({ shop });
 };
 
 export const create = ({

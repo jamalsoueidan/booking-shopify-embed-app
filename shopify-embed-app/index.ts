@@ -6,16 +6,20 @@ import serveStatic from "serve-static";
 import GDPRWebhookHandlers from "./gdpr.js";
 import shopify from "./shopify.js";
 
-import { NotificationTemplateModel, mongodb } from "@jamalsoueidan/pkg.bsb";
-import { bookingRouter, widgetRouter } from "@jamalsoueidan/pkg.bsb-routes";
-import { collectionRoutes } from "@libs/collection/collection.routes";
+import {
+  NotificationTemplateModel,
+  bookingRouter,
+  collectionRouter,
+  mongodb,
+  scheduleRouter,
+  widgetRouter,
+} from "@jamalsoueidan/pkg.bsb";
 import { customerRoutes } from "@libs/customer/customer.routes";
 import { notificationRoutes } from "@libs/notification/notification.routes";
 import { productRoutes } from "@libs/product/product.routes";
 import { settingNotificationTemplatesRoutes } from "@libs/setting-notification-templates/setting-notification-templates.routes";
 import { settingRoutes } from "@libs/setting/setting.routes";
 import { shopifyMiddleware } from "@libs/shopify/shopify.middleware";
-import { staffScheduleRoutes } from "@libs/staff-schedule/staff-schedule.routes";
 import { staffRoutes } from "@libs/staff/staff.routes";
 
 const morgan = require("morgan");
@@ -57,13 +61,13 @@ app.use(morgan("dev"));
 app.use("/api/*", shopifyMiddleware(app) as any);
 
 app.use("/api/admin", bookingRouter);
-app.use("/api/admin", collectionRoutes);
+app.use("/api/admin", collectionRouter);
 app.use("/api/admin", customerRoutes);
 app.use("/api/admin", notificationRoutes);
 app.use("/api/admin", productRoutes);
 app.use("/api/admin", settingRoutes);
 app.use("/api/admin", settingNotificationTemplatesRoutes);
-app.use("/api/admin", staffScheduleRoutes);
+app.use("/api/admin", scheduleRouter);
 app.use("/api/admin", staffRoutes);
 app.use("/api/admin", widgetRouter);
 

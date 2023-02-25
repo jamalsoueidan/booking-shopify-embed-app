@@ -1,6 +1,6 @@
 import { checkSchema } from "express-validator";
 
-import { handleRoute } from "@jamalsoueidan/pkg.bsb";
+import { handleController } from "@jamalsoueidan/pkg.bsb";
 import { Router } from "express";
 import * as controller from "./widget.controller";
 
@@ -15,7 +15,7 @@ router.get(
       toInt: true,
     },
   }),
-  handleRoute(controller.staff),
+  handleController(controller.staff),
 );
 
 router.get(
@@ -25,9 +25,9 @@ router.get(
     end: { notEmpty: true, toDate: true },
     productId: { notEmpty: true, isInt: true, toInt: true },
   }),
-  handleRoute(controller.availability),
+  handleController(controller.availability),
 );
 
-router.get("/widget/settings", handleRoute(controller.settings));
+router.get("/widget/settings", handleController(controller.settings));
 
 export { router as widgetRoutes };

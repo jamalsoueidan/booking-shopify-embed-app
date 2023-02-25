@@ -1,16 +1,16 @@
-import { useFetch } from "@hooks/use-fetch";
 import {
   ApiResponse,
   Setting,
   SettingBodyUpdate,
 } from "@jamalsoueidan/pkg.bsb-types";
+import { useFetch } from "@jamalsoueidan/pkg.bsf";
 import { useCallback } from "react";
 import { useQuery } from "react-query";
 
 export const useSetting = () => {
   const { get } = useFetch();
   const { data, ...rest } = useQuery<ApiResponse<Setting>>({
-    queryFn: () => get(`/api/admin/setting`),
+    queryFn: () => get({ url: "/setting" }),
     queryKey: ["setting"],
     refetchOnWindowFocus: false,
   });
@@ -30,10 +30,10 @@ export const useSettingUpdate = () => {
 
   const update: UseSettingUpdateFetch = useCallback(
     async (body) => {
-      const response: ApiResponse<Setting> = await put(
-        `/api/admin/setting`,
+      const response: ApiResponse<Setting> = await put({
         body,
-      );
+        url: `/setting`,
+      });
       await mutate(["setting"]);
       return response;
     },

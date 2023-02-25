@@ -1,24 +1,22 @@
 import { Schedule } from "@jamalsoueidan/pkg.bsb-types";
 import {
-  EditManyShiftsBody,
-  EditManyShiftsRefMethod,
-  EditManyShiftsSubmitResult,
   LoadingSpinner,
+  ScheduleFormManyShiftsBody,
+  ScheduleFormManyShiftsRefMethod,
+  ScheduleFormManyShiftsSubmitResult,
+  useStaffScheduleDestroy,
+  useStaffScheduleDestroyGroup,
+  useStaffScheduleGetGroup,
+  useStaffScheduleUpdateGroup,
   useToast,
   useTranslation,
 } from "@jamalsoueidan/pkg.bsf";
-import {
-  useStaffScheduleDestroy,
-  useStaffScheduleDestroyGroup,
-  useStaffScheduleUpdateGroup,
-} from "@services/staff/schedule";
 import { Modal } from "@shopify/polaris";
 import { Suspense, lazy, useCallback, useRef } from "react";
-import { useParams } from "react-router-dom";
 
 const EditManyShifts = lazy(() =>
   import("@jamalsoueidan/pkg.bsf").then((module) => ({
-    default: module.EditManyShifts,
+    default: module.ScheduleFormManyShifts,
   })),
 );
 
@@ -31,38 +29,44 @@ export const EditManyShiftsModal = ({
   schedule,
   close,
 }: EditManyScheduleProps) => {
-  const params = useParams();
-  const ref = useRef<EditManyShiftsRefMethod>();
+  const ref = useRef<ScheduleFormManyShiftsRefMethod>();
   const { show } = useToast();
-  const { t } = useTranslation({ id: "edit-one-shifts-modal", locales });
+  const { t } = useTranslation({ id: "edit-many-shifts-modal", locales });
+
+  const { data: group } = useStaffScheduleGetGroup({
+    groupId: schedule.groupId,
+    staff: schedule.staff,
+  });
 
   const { updateGroup } = useStaffScheduleUpdateGroup({
     groupId: schedule.groupId,
-    staff: params.id,
+    staff: schedule.staff,
   });
 
   const { destroyGroup } = useStaffScheduleDestroyGroup({
     groupId: schedule.groupId,
-    staff: params.id,
+    staff: schedule.staff,
   });
 
   const { destroy } = useStaffScheduleDestroy({
     schedule: schedule._id,
-    staff: params.id,
+    staff: schedule.staff,
   });
 
   const onDestroy = useCallback(() => {
     destroyGroup();
     close();
-  }, [destroyGroup]);
+  }, [close, destroyGroup]);
 
   const onDestroyOne = useCallback(() => {
     destroy();
     close();
-  }, [destroy]);
+  }, [close, destroy]);
 
   const onSubmit = useCallback(
-    (fieldValues: EditManyShiftsBody): EditManyShiftsSubmitResult => {
+    (
+      fieldValues: ScheduleFormManyShiftsBody,
+    ): ScheduleFormManyShiftsSubmitResult => {
       updateGroup(fieldValues);
       show({ content: t("success") });
       return { status: "success" };
@@ -76,6 +80,8 @@ export const EditManyShiftsModal = ({
       close();
     }
   }, [close]);
+
+  console.log(group);
 
   return (
     <Modal
@@ -100,7 +106,9 @@ export const EditManyShiftsModal = ({
       ]}>
       <Modal.Section>
         <Suspense fallback={<LoadingSpinner />}>
-          <EditManyShifts schedule={schedule} onSubmit={onSubmit} ref={ref} />
+          {group && (
+            <EditManyShifts data={group} onSubmit={onSubmit} ref={ref} />
+          )}
         </Suspense>
       </Modal.Section>
     </Modal>
@@ -109,17 +117,17 @@ export const EditManyShiftsModal = ({
 
 const locales = {
   da: {
-    title: "Redigere vagtplaner",
-    success: "Vagtplaner redigeret",
-    save_changes: "Gem ændringer",
     destroy: "Slet alle",
     destroy_one: "Slet pågældende",
+    save_changes: "Gem ændringer",
+    success: "Vagtplaner redigeret",
+    title: "Redigere vagtplaner",
   },
   en: {
-    title: "Edit shifts",
-    success: "Shifts edited",
-    save_changes: "Save changes",
     destroy: "Delete all",
     destroy_one: "Delete one",
+    save_changes: "Save changes",
+    success: "Shifts edited",
+    title: "Edit shifts",
   },
 };

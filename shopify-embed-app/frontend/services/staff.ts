@@ -1,10 +1,10 @@
-import { useFetch } from "@hooks/use-fetch";
 import {
   ApiResponse,
   Staff,
   StaffBodyCreate,
   StaffBodyUpdate,
 } from "@jamalsoueidan/pkg.bsb-types";
+import { useFetch } from "@jamalsoueidan/pkg.bsf";
 import { useCallback } from "react";
 import { useQuery } from "react-query";
 
@@ -13,7 +13,7 @@ export const useStaff = () => {
 
   const { data } = useQuery<ApiResponse<Array<Staff>>>(
     ["staff"],
-    () => get("/api/admin/staff"),
+    () => get({ url: "/staff" }),
     { suspense: true },
   );
 
@@ -27,8 +27,8 @@ interface UseStaffGetProps {
 export const useStaffGet = ({ userId }: UseStaffGetProps) => {
   const { get } = useFetch();
 
-  const { data } = useQuery<ApiResponse<Staff>>(["staff", userId], () =>
-    get(`/api/admin/staff/${userId}`),
+  const { data } = useQuery(["staff", userId], () =>
+    get<ApiResponse<Staff>>({ url: `/staff/${userId}` }),
   );
 
   return {
@@ -45,7 +45,10 @@ export const useStaffCreate = () => {
 
   const create: UseStaffCreateFetch = useCallback(
     async (body) => {
-      const response: ApiResponse<Staff> = await post("/api/admin/staff", body);
+      const response: ApiResponse<Staff> = await post({
+        body,
+        url: "/staff",
+      });
       await mutate(["staff"]);
       return response;
     },
@@ -70,10 +73,10 @@ export const useStaffUpdate = ({ userId }: UseStaffUpdateProps) => {
 
   const update: UseStaffUpdateFetch = useCallback(
     async (body) => {
-      const response: ApiResponse<Staff> = await put(
-        "/api/admin/staff/" + userId,
+      const response: ApiResponse<Staff> = await put({
         body,
-      );
+        url: `/staff/${userId}`,
+      });
       await mutate(["staff"]);
       return response;
     },

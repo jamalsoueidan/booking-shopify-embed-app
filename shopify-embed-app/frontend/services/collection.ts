@@ -1,18 +1,18 @@
-import { useFetch } from "@hooks/use-fetch";
 import {
   ApiResponse,
   CollectionServiceCreateBodyProps,
   CollectionServiceGetAllReturn,
 } from "@jamalsoueidan/pkg.bsb-types";
+import { useFetch } from "@jamalsoueidan/pkg.bsf";
 import { useCallback, useState } from "react";
 import { useQuery } from "react-query";
 
 export const useCollection = () => {
   const { get } = useFetch();
-  const { data } = useQuery<ApiResponse<Array<CollectionServiceGetAllReturn>>>(
-    ["collections"],
-    () => get("/api/admin/collections"),
-    { suspense: true },
+  const { data } = useQuery(["collections"], () =>
+    get<ApiResponse<Array<CollectionServiceGetAllReturn>>>({
+      url: "/collections",
+    }),
   );
 
   return {
@@ -26,9 +26,9 @@ export const useCollectionCreate = () => {
   const [isFetched, setIsFetched] = useState<boolean>(false);
 
   const create = useCallback(
-    async ({ selections }: CollectionServiceCreateBodyProps) => {
+    async (body: CollectionServiceCreateBodyProps) => {
       setIsFetching(true);
-      await post("/api/admin/collections", { selections });
+      await post({ body, url: "/collections" });
       mutate(["collections"]);
       setIsFetching(false);
       setIsFetched(true);
@@ -53,7 +53,7 @@ export const useCollectionDestroy = ({
   const fetch = useFetch();
 
   const destroy = useCallback(async () => {
-    await fetch.destroy(`/api/admin/collections/${collectionId}`);
+    await fetch.destroy({ url: `/collections/${collectionId}` });
     fetch.mutate(["collections"]);
   }, [collectionId, fetch]);
 

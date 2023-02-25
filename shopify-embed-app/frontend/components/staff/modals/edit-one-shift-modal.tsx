@@ -1,23 +1,21 @@
 import { Schedule } from "@jamalsoueidan/pkg.bsb-types";
 import {
-  EditOneShiftBody,
-  EditOneShiftRefMethod,
-  EditOneShiftSubmitResult,
   LoadingSpinner,
+  ScheduleFormOneShiftBody,
+  ScheduleFormOneShiftRefMethod,
+  ScheduleFormOneShiftSubmitResult,
+  useStaffScheduleDestroy,
+  useStaffScheduleUpdate,
   useToast,
   useTranslation,
 } from "@jamalsoueidan/pkg.bsf";
-import {
-  useStaffScheduleDestroy,
-  useStaffScheduleUpdate,
-} from "@services/staff/schedule";
+
 import { Modal } from "@shopify/polaris";
 import { Suspense, lazy, useCallback, useRef } from "react";
-import { useParams } from "react-router-dom";
 
 const EditOneShift = lazy(() =>
   import("@jamalsoueidan/pkg.bsf").then((module) => ({
-    default: module.EditOneShift,
+    default: module.ScheduleFormOneShift,
   })),
 );
 
@@ -30,28 +28,29 @@ export const EditOneShiftModal = ({
   schedule,
   close,
 }: EditOneScheduleProps) => {
-  const params = useParams();
-  const ref = useRef<EditOneShiftRefMethod>();
+  const ref = useRef<ScheduleFormOneShiftRefMethod>();
   const { show } = useToast();
   const { t } = useTranslation({ id: "edit-one-shifts-modal", locales });
 
   const { update } = useStaffScheduleUpdate({
     schedule: schedule._id,
-    staff: params.id,
+    staff: schedule.staff,
   });
 
   const { destroy } = useStaffScheduleDestroy({
     schedule: schedule._id,
-    staff: params.id,
+    staff: schedule.staff,
   });
 
   const onDestroy = useCallback(() => {
     destroy();
     close();
-  }, [destroy]);
+  }, [close, destroy]);
 
   const onSubmit = useCallback(
-    (fieldValues: EditOneShiftBody): EditOneShiftSubmitResult => {
+    (
+      fieldValues: ScheduleFormOneShiftBody,
+    ): ScheduleFormOneShiftSubmitResult => {
       update(fieldValues);
       show({ content: t("success") });
       return { status: "success" };
@@ -84,7 +83,7 @@ export const EditOneShiftModal = ({
       ]}>
       <Modal.Section>
         <Suspense fallback={<LoadingSpinner />}>
-          <EditOneShift schedule={schedule} onSubmit={onSubmit} ref={ref} />
+          <EditOneShift data={schedule} onSubmit={onSubmit} ref={ref} />
         </Suspense>
       </Modal.Section>
     </Modal>
@@ -93,15 +92,15 @@ export const EditOneShiftModal = ({
 
 const locales = {
   da: {
-    title: "Redigere vagtplan",
-    success: "Vagtplan redigeret",
-    save_changes: "Gem ændringer",
     destroy: "Slet vagtplan",
+    save_changes: "Gem ændringer",
+    success: "Vagtplan redigeret",
+    title: "Redigere vagtplan",
   },
   en: {
-    title: "Edit shift",
-    success: "Shift edit",
-    save_changes: "Save changes",
     destroy: "Delete shift",
+    save_changes: "Save changes",
+    success: "Shift edit",
+    title: "Edit shift",
   },
 };

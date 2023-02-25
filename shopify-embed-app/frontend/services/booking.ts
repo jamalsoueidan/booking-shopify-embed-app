@@ -1,4 +1,3 @@
-import { useFetch } from "@hooks/use-fetch";
 import {
   ApiResponse,
   Booking,
@@ -6,24 +5,22 @@ import {
   BookingServiceGetAllProps,
   BookingServiceUpdateProps,
 } from "@jamalsoueidan/pkg.bsb-types";
+import { useFetch } from "@jamalsoueidan/pkg.bsf";
 import { useCallback } from "react";
 import { useQuery } from "react-query";
 
-export const useBookings = ({
-  start,
-  end,
-  staff,
-}: BookingServiceGetAllProps) => {
+export const useBookings = (
+  params: Omit<BookingServiceGetAllProps, "staff"> & { staff?: string },
+) => {
   const { get } = useFetch();
   const { data, isLoading } = useQuery<ApiResponse<Array<Booking>>>({
-    enabled: !!start && !!end,
+    enabled: !!params.start && !!params.end,
     queryFn: () =>
-      get(
-        `/api/admin/bookings?start=${start.toJSON()}&end=${end.toJSON()}${
-          staff ? "&staff=" + staff : ""
-        }`,
-      ),
-    queryKey: ["bookings", { end, staff, start }],
+      get({
+        params,
+        url: "/bookings",
+      }),
+    queryKey: ["bookings", params],
   });
 
   return {
@@ -41,7 +38,7 @@ export const useBookingUpdate = ({
 
   const update = useCallback(
     async (body: BookingServiceUpdateProps["body"]) => {
-      await put("/api/admin/bookings/" + id, body);
+      await put({ body, url: `/bookings/${id}` });
       await mutate(["booking", id]);
     },
     [put, id, mutate],
@@ -57,7 +54,7 @@ export const useBookingCreate = () => {
 
   const create = useCallback(
     async (body: BookingServiceCreateProps): Promise<ApiResponse<Booking>> => {
-      const response = await post("/api/admin/bookings", body);
+      const response = await post<never>({ body, url: "/bookings" });
       await mutate(["bookings"]);
       await mutate(["widget", "availability"]);
       return response;
@@ -79,7 +76,7 @@ export const useBookingGet = ({ id }: UseBookingGetProps) => {
 
   const { data } = useQuery<ApiResponse<Booking>>(
     ["booking", id],
-    () => get(`/api/admin/bookings/${id}`),
+    () => get({ url: `/bookings/${id}` }),
     { enabled: !!id },
   );
 

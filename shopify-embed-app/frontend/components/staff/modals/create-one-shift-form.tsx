@@ -1,38 +1,39 @@
+import { Tag } from "@jamalsoueidan/pkg.bsb-types";
 import {
-  CreateOneShiftBody,
-  CreateOneShiftRefMethod,
-  CreateOneShiftSubmitResult,
+  HelperDate,
   LoadingSpinner,
+  ScheduleFormOneShiftBody,
+  ScheduleFormOneShiftRefMethod,
+  ScheduleFormOneShiftSubmitResult,
+  useStaffScheduleCreate,
   useToast,
   useTranslation,
 } from "@jamalsoueidan/pkg.bsf";
-import { useStaffScheduleCreate } from "@services/staff/schedule";
-import { Suspense, forwardRef, lazy, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { Suspense, forwardRef, lazy, useCallback, useMemo } from "react";
 
 interface CreateDayScheduleProps {
-  selectedDate: Date;
+  date: Date;
+  staff: string;
 }
 
 const CreateOneShift = lazy(() =>
   import("@jamalsoueidan/pkg.bsf").then((module) => ({
-    default: module.CreateOneShift,
+    default: module.ScheduleFormOneShift,
   })),
 );
 
 export const CreateOneShiftModal = forwardRef<
-  CreateOneShiftRefMethod,
+  ScheduleFormOneShiftRefMethod,
   CreateDayScheduleProps
->(({ selectedDate }, ref) => {
+>(({ date, staff }, ref) => {
   const { show } = useToast();
-  const { t } = useTranslation({ id: "create-many-shifts-modal", locales });
-  const params = useParams();
-  const { create } = useStaffScheduleCreate({
-    staff: params.id,
-  });
+  const { t } = useTranslation({ id: "create-one-shifts-modal", locales });
+  const { create } = useStaffScheduleCreate({ staff });
 
   const onSubmit = useCallback(
-    (fieldValues: CreateOneShiftBody): CreateOneShiftSubmitResult => {
+    (
+      fieldValues: ScheduleFormOneShiftBody,
+    ): ScheduleFormOneShiftSubmitResult => {
       create(fieldValues);
       show({ content: t("success") });
       return { status: "success" };
@@ -40,12 +41,22 @@ export const CreateOneShiftModal = forwardRef<
     [create, show, t],
   );
 
+  const initData = useMemo(
+    () => ({
+      end: HelperDate.resetDateTime(date, 16),
+      start: HelperDate.resetDateTime(date, 10),
+      tag: Tag.all_day,
+    }),
+    [date],
+  );
+
   return (
     <Suspense fallback={<LoadingSpinner />}>
       <CreateOneShift
-        selectedDate={selectedDate}
+        data={initData}
         onSubmit={onSubmit}
         ref={ref}
+        allowEditing={{ tag: true }}
       />
     </Suspense>
   );
