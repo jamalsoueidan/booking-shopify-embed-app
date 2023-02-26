@@ -1,5 +1,4 @@
-import { StaffForm } from "@jamalsoueidan/pkg.bsf";
-import { useStaffCreate } from "@services";
+import { StaffForm, useStaffCreate } from "@jamalsoueidan/pkg.bsf";
 import { useNavigate } from "@shopify/app-bridge-react";
 import { useCallback } from "react";
 
@@ -19,7 +18,7 @@ export default () => {
     <StaffForm
       action={submit}
       breadcrumbs={[{ content: "Staff", onAction: () => navigate("/staff") }]}
-      allowEditing={{ group: true, active: true, role: true }}
+      allowEditing={{ active: true, group: true, role: true }}
     />
   );
 };

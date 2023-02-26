@@ -21,9 +21,10 @@ import {
   useModal,
   useToast,
   useTranslation,
+  useWidgetAvailability,
+  useWidgetStaff,
 } from "@jamalsoueidan/pkg.bsf";
 import { useBookingUpdate } from "@services/booking";
-import { useWidgetAvailability, useWidgetStaff } from "@services/widget";
 import { endOfMonth, isSameDay, startOfMonth } from "date-fns";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";

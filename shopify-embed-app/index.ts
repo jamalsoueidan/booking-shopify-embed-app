@@ -12,6 +12,7 @@ import {
   collectionRouter,
   mongodb,
   scheduleRouter,
+  staffRouter,
   widgetRouter,
 } from "@jamalsoueidan/pkg.bsb";
 import { customerRoutes } from "@libs/customer/customer.routes";
@@ -20,7 +21,6 @@ import { productRoutes } from "@libs/product/product.routes";
 import { settingNotificationTemplatesRoutes } from "@libs/setting-notification-templates/setting-notification-templates.routes";
 import { settingRoutes } from "@libs/setting/setting.routes";
 import { shopifyMiddleware } from "@libs/shopify/shopify.middleware";
-import { staffRoutes } from "@libs/staff/staff.routes";
 
 const morgan = require("morgan");
 
@@ -68,7 +68,7 @@ app.use("/api/admin", productRoutes);
 app.use("/api/admin", settingRoutes);
 app.use("/api/admin", settingNotificationTemplatesRoutes);
 app.use("/api/admin", scheduleRouter);
-app.use("/api/admin", staffRoutes);
+app.use("/api/admin", staffRouter);
 app.use("/api/admin", widgetRouter);
 
 app.use(serveStatic(STATIC_PATH, { index: false }));

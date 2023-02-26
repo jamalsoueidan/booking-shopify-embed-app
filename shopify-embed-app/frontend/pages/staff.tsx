@@ -1,8 +1,7 @@
 import { EmptyStaff } from "@components/staff/empty-staff";
 import { MetaData } from "@components/staff/meta-data";
 import { Staff } from "@jamalsoueidan/pkg.bsb-types";
-import { usePosition, useTranslation } from "@jamalsoueidan/pkg.bsf";
-import { useStaff } from "@services";
+import { usePosition, useStaff, useTranslation } from "@jamalsoueidan/pkg.bsf";
 import { useNavigate } from "@shopify/app-bridge-react";
 import {
   Avatar,
@@ -71,19 +70,19 @@ export default () => {
 
 const locales = {
   da: {
-    title: "Medarbejder ",
     add: "Tilføj ny medarbejder",
     resource: {
       plural: "medarbejder",
       singular: "medarbejder",
     },
+    title: "Medarbejder ",
   },
   en: {
-    title: "Staff",
     add: "Add staff member",
     resource: {
       plural: "customers",
       singular: "customer",
     },
+    title: "Staff",
   },
 };

@@ -7,12 +7,13 @@ import {
   Validators,
   WidgetInputStaff,
   WidgetInputStaffField,
+  useBookingCreate,
   useForm,
   useToast,
   useTranslation,
+  useWidgetAvailability,
+  useWidgetStaff,
 } from "@jamalsoueidan/pkg.bsf";
-import { useBookingCreate } from "@services/booking";
-import { useWidgetAvailability, useWidgetStaff } from "@services/widget";
 import { useNavigate } from "@shopify/app-bridge-react";
 import {
   Card,
@@ -93,7 +94,7 @@ export default () => {
       return;
     }
 
-    return schedules?.find((s) =>
+    return schedules?.find((s: any) =>
       isSameDay(new Date(s.date), new Date(fields.date.value)),
     );
   }, [schedules, fields.date.value]);

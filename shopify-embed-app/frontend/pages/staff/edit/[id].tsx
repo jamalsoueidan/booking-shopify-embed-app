@@ -1,6 +1,5 @@
 import { MetaData } from "@components/staff/meta-data";
-import { StaffForm } from "@jamalsoueidan/pkg.bsf";
-import { useStaffGet, useStaffUpdate } from "@services";
+import { StaffForm, useStaffGet, useStaffUpdate } from "@jamalsoueidan/pkg.bsf";
 import { useNavigate } from "@shopify/app-bridge-react";
 import { useCallback } from "react";
 import { useParams } from "react-router-dom";
@@ -32,7 +31,7 @@ export default () => {
         { content: "Staff", onAction: () => navigate("/staff/" + staff._id) },
       ]}
       titleMetadata={<MetaData active={staff.active} />}
-      allowEditing={{ group: true, active: true, role: true }}
+      allowEditing={{ active: true, group: true, role: true }}
     />
   );
 };

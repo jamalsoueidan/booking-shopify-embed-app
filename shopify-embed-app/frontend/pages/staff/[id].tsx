@@ -4,10 +4,10 @@ import {
   LoadingModal,
   LoadingPage,
   LoadingSpinner,
+  useStaffGet,
   useStaffSchedule,
   useTranslation,
 } from "@jamalsoueidan/pkg.bsf";
-import { useStaffGet } from "@services";
 import { useNavigate } from "@shopify/app-bridge-react";
 import { Card, Page } from "@shopify/polaris";
 import { Suspense, lazy, useCallback, useState } from "react";
