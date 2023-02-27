@@ -1,5 +1,8 @@
-import { LoadingSpinner, ModalProvider } from "@jamalsoueidan/pkg.bsf";
-import { useBookingGet } from "@services/booking";
+import {
+  LoadingSpinner,
+  ModalProvider,
+  useBookingGet,
+} from "@jamalsoueidan/pkg.bsf";
 import { Card, Tabs } from "@shopify/polaris";
 import { isAfter } from "date-fns";
 import { lazy, useCallback, useMemo } from "react";

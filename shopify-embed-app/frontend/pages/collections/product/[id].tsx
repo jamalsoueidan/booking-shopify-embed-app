@@ -7,9 +7,10 @@ import {
   FormErrors,
   LoadingPage,
   useForm,
+  useProductGet,
+  useProductUpdate,
   useTranslation,
 } from "@jamalsoueidan/pkg.bsf";
-import { useProductGet, useProductUpdate } from "@services";
 import { Badge, Form, Grid, Page, PageActions } from "@shopify/polaris";
 import { useDynamicList, useField } from "@shopify/react-form";
 import { useParams } from "react-router-dom";

@@ -17,6 +17,7 @@ import {
   LoadingSpinner,
   WidgetInputStaff,
   WidgetInputStaffField,
+  useBookingUpdate,
   useForm,
   useModal,
   useToast,
@@ -24,7 +25,6 @@ import {
   useWidgetAvailability,
   useWidgetStaff,
 } from "@jamalsoueidan/pkg.bsf";
-import { useBookingUpdate } from "@services/booking";
 import { endOfMonth, isSameDay, startOfMonth } from "date-fns";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";

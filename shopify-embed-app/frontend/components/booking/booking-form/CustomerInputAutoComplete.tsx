@@ -3,8 +3,8 @@ import {
   InputAutoComplete,
   InputAutoCompleteInput,
   InputAutoCompleteOption,
+  useCustomer,
 } from "@jamalsoueidan/pkg.bsf";
-import { useCustomer } from "@services/customer";
 import { Icon } from "@shopify/polaris";
 import { CustomersMajor } from "@shopify/polaris-icons";
 import { Field } from "@shopify/react-form";

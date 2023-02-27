@@ -34,10 +34,3 @@ router.put(
 
   handleController(controller.update),
 );
-
-router.get(
-  "/products/staff/get-available",
-  handleController(controller.getAvailableStaff),
-);
-
-export { router as productRoutes };

@@ -4,8 +4,7 @@ import {
   Product,
   ProductServiceGetAvailableStaffReturn,
 } from "@jamalsoueidan/pkg.bsb-types";
-import { HelperArray, useTranslation } from "@jamalsoueidan/pkg.bsf";
-import { useCollectionDestroy } from "@services";
+import { HelperArray, useCollectionDestroy, useTranslation } from "@jamalsoueidan/pkg.bsf";
 import {
   Avatar,
   Badge,

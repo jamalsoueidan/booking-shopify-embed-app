@@ -1,13 +1,12 @@
 import {
   ControllerProps,
   ProductModel,
-  ProductServiceGetAvailableStaff,
   ProductServiceGetById,
   ProductServiceUpdate,
   ProductServiceUpdateBodyProps,
   ProductServiceUpdateQueryProps,
   ShopQuery,
-  ShopifyControllerProps,
+  ShopifyControllerProps
 } from "@jamalsoueidan/pkg.bsb";
 import shopify from "../../shopify.js";
 
@@ -59,6 +58,3 @@ export const update = ({
   ProductServiceUpdateQueryProps,
   ProductServiceUpdateBodyProps
 >) => ProductServiceUpdate(query, body);
-
-export const getAvailableStaff = ({ query }: ControllerProps<ShopQuery>) =>
-  ProductServiceGetAvailableStaff(query.shop);

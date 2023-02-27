@@ -10,14 +10,14 @@ import {
   NotificationTemplateModel,
   bookingRouter,
   collectionRouter,
+  customerRouter,
   mongodb,
+  productRouter,
   scheduleRouter,
   staffRouter,
   widgetRouter,
 } from "@jamalsoueidan/pkg.bsb";
-import { customerRoutes } from "@libs/customer/customer.routes";
 import { notificationRoutes } from "@libs/notification/notification.routes";
-import { productRoutes } from "@libs/product/product.routes";
 import { settingNotificationTemplatesRoutes } from "@libs/setting-notification-templates/setting-notification-templates.routes";
 import { settingRoutes } from "@libs/setting/setting.routes";
 import { shopifyMiddleware } from "@libs/shopify/shopify.middleware";
@@ -62,9 +62,9 @@ app.use("/api/*", shopifyMiddleware(app) as any);
 
 app.use("/api/admin", bookingRouter);
 app.use("/api/admin", collectionRouter);
-app.use("/api/admin", customerRoutes);
+app.use("/api/admin", customerRouter);
 app.use("/api/admin", notificationRoutes);
-app.use("/api/admin", productRoutes);
+app.use("/api/admin", productRouter);
 app.use("/api/admin", settingRoutes);
 app.use("/api/admin", settingNotificationTemplatesRoutes);
 app.use("/api/admin", scheduleRouter);

@@ -10,23 +10,6 @@ import { Card, FooterHelp, Page } from "@shopify/polaris";
 import { Suspense, lazy, useCallback, useState } from "react";
 import { Outlet } from "react-router-dom";
 
-const locales = {
-  da: {
-    create: "Opret en ny behandlingstid",
-    footer_help:
-      "Kan ikke ændre i bookinger der er refunderet eller oprettet tidligere end dagens dato.",
-    in_progress: "I process",
-    title: "Behandlinger",
-  },
-  en: {
-    create: "Create new booking",
-    footer_help:
-      "You can't edit bookings that are refunded or created before today.",
-    in_progress: "In progress",
-    title: "Bookings",
-  },
-};
-
 const BookingCalendar = lazy(() =>
   import("@jamalsoueidan/pkg.bsf").then((module) => ({
     default: module.BookingCalendar,
@@ -76,4 +59,21 @@ export default () => {
       <FooterHelp>{t("footer_help")}</FooterHelp>
     </Page>
   );
+};
+
+const locales = {
+  da: {
+    create: "Opret en ny behandlingstid",
+    footer_help:
+      "Kan ikke ændre i bookinger der er refunderet eller oprettet tidligere end dagens dato.",
+    in_progress: "I process",
+    title: "Behandlinger",
+  },
+  en: {
+    create: "Create new booking",
+    footer_help:
+      "You can't edit bookings that are refunded or created before today.",
+    in_progress: "In progress",
+    title: "Bookings",
+  },
 };

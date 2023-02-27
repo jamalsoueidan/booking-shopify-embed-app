@@ -1,5 +1,5 @@
 import { Product } from "@jamalsoueidan/pkg.bsb-types";
-import { useProducts } from "@services/product";
+import { useProducts } from "@jamalsoueidan/pkg.bsf";
 import { Select } from "@shopify/polaris";
 import { Field } from "@shopify/react-form";
 import { useCallback, useMemo } from "react";
