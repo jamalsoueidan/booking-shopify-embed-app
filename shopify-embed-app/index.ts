@@ -7,16 +7,16 @@ import GDPRWebhookHandlers from "./gdpr.js";
 import shopify from "./shopify.js";
 
 import {
-  NotificationTemplateModel,
-  bookingRouter,
-  collectionRouter,
-  customerRouter,
-  mongodb,
-  productRouter,
-  scheduleRouter,
-  staffRouter,
-  widgetRouter,
-} from "@jamalsoueidan/pkg.bsb";
+    NotificationTemplateModel,
+    bookingRouter,
+    collectionRouter,
+    customerRouter,
+    mongodb,
+    productRouter,
+    scheduleRouter,
+    staffRouter,
+    widgetRouter,
+} from "@jamalsoueidan/pkg.backend";
 import { notificationRoutes } from "@libs/notification/notification.routes";
 import { settingNotificationTemplatesRoutes } from "@libs/setting-notification-templates/setting-notification-templates.routes";
 import { settingRoutes } from "@libs/setting/setting.routes";

@@ -1,10 +1,10 @@
-import { ProductServiceUpdateBodyStaffProperty } from "@jamalsoueidan/pkg.bsb-types";
+import { ProductServiceUpdateBodyStaffProperty } from "@jamalsoueidan/pkg.backend-types";
 import {
   HelperArray,
   usePosition,
   useTag,
   useTranslation,
-} from "@jamalsoueidan/pkg.bsf";
+} from "@jamalsoueidan/pkg.frontend";
 import {
   Avatar,
   Button,
@@ -57,7 +57,7 @@ export const StaffList = ({ action }: StaffListProps) => {
   );
 
   const items = useMemo(
-    () => [...value].sort(HelperArray.soryTextBy("fullname") as any),
+    () => [...value].sort(HelperArray.sortByText(d => d.fullname)),
     [value],
   );
 

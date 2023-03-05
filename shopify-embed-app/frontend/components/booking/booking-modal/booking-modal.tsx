@@ -1,30 +1,30 @@
 import {
-  LoadingSpinner,
-  ModalProvider,
-  useBookingGet,
-} from "@jamalsoueidan/pkg.bsf";
+    LoadingSpinner,
+    ModalProvider,
+    useBookingGet,
+} from "@jamalsoueidan/pkg.frontend";
 import { Card, Tabs } from "@shopify/polaris";
 import { isAfter } from "date-fns";
 import { lazy, useCallback, useMemo } from "react";
 import {
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-  useParams,
+    Route,
+    Routes,
+    useLocation,
+    useNavigate,
+    useParams,
 } from "react-router-dom";
 import { BookingDetailsEdit } from "../booking-details/booking-details-edit";
 import { BookingNotifications } from "../booking-details/booking-notifications";
 import { BookingSendNotification } from "../booking-details/booking-send-notification";
 
 const BookingCustomer = lazy(() =>
-  import("@jamalsoueidan/pkg.bsf").then((module) => ({
+  import("@jamalsoueidan/pkg.frontend").then((module) => ({
     default: module.BookingCustomer,
   })),
 );
 
 const BookingDetailsView = lazy(() =>
-  import("@jamalsoueidan/pkg.bsf").then((module) => ({
+  import("@jamalsoueidan/pkg.frontend").then((module) => ({
     default: module.BookingView,
   })),
 );

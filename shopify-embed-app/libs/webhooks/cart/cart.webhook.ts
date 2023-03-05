@@ -1,4 +1,4 @@
-import { CartModel } from "@jamalsoueidan/pkg.bsb";
+import { CartModel } from "@jamalsoueidan/pkg.backend";
 import mongoose from "mongoose";
 
 interface Staff {

@@ -1,4 +1,4 @@
-import { ShopifySessionModel } from "@jamalsoueidan/pkg.bsb";
+import { ShopifySessionModel } from "@jamalsoueidan/pkg.backend";
 import * as CustomerWebhook from "@libs/webhooks/customer/customer.webhook";
 import mongoose from "mongoose";
 import body from "./customer.mock";

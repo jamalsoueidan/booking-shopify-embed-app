@@ -3,7 +3,7 @@ import {
   FetchContextType,
   UseURLOptions,
   useUrl,
-} from "@jamalsoueidan/pkg.bsf";
+} from "@jamalsoueidan/pkg.frontend";
 import { useCallback } from "react";
 import { useQueryClient } from "react-query";
 

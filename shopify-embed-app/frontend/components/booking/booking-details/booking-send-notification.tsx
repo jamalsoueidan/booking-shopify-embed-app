@@ -1,10 +1,10 @@
-import { Booking } from "@jamalsoueidan/pkg.bsb-types";
+import { Booking } from "@jamalsoueidan/pkg.backend-types";
 import {
   FormErrors,
   useForm,
   useModal,
   useToast,
-} from "@jamalsoueidan/pkg.bsf";
+} from "@jamalsoueidan/pkg.frontend";
 import { useSendCustomNotification } from "@services";
 import { Form, Modal, Select, Stack, TextField } from "@shopify/polaris";
 import { lengthMoreThan, notEmpty, useField } from "@shopify/react-form";

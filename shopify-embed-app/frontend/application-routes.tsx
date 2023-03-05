@@ -1,4 +1,4 @@
-import { LoadingModal, LoadingPage } from "@jamalsoueidan/pkg.bsf";
+import { LoadingModal, LoadingPage } from "@jamalsoueidan/pkg.frontend";
 import { Suspense, lazy } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 

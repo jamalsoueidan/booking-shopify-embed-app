@@ -1,5 +1,5 @@
 import { MetaData } from "@components/staff/meta-data";
-import { StaffForm, useStaffGet, useStaffUpdate } from "@jamalsoueidan/pkg.bsf";
+import { StaffForm, useStaffGet, useStaffUpdate } from "@jamalsoueidan/pkg.frontend";
 import { useNavigate } from "@shopify/app-bridge-react";
 import { useCallback } from "react";
 import { useParams } from "react-router-dom";

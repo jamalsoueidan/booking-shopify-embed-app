@@ -1,6 +1,6 @@
 import CollectionList from "@components/collections/collection-list";
 import ResourcePicker from "@components/collections/resource-picker";
-import { LoadingSpinner, useCollection, useTranslation } from "@jamalsoueidan/pkg.bsf";
+import { LoadingSpinner, useCollection, useTranslation } from "@jamalsoueidan/pkg.frontend";
 import { useNavigate } from "@shopify/app-bridge-react";
 import { Page } from "@shopify/polaris";
 import { Suspense, useState } from "react";

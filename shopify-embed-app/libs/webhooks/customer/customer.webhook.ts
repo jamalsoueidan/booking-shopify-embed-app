@@ -1,4 +1,4 @@
-import { CustomerModel } from "@jamalsoueidan/pkg.bsb";
+import { CustomerModel } from "@jamalsoueidan/pkg.backend";
 
 interface CreateReturn {
   acknowledged: boolean;

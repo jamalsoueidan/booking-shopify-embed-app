@@ -1,4 +1,4 @@
-import { LoadingPage, useCollection, useCollectionCreate, useTranslation } from "@jamalsoueidan/pkg.bsf";
+import { LoadingPage, useCollection, useCollectionCreate, useTranslation } from "@jamalsoueidan/pkg.frontend";
 import { ResourcePicker, useNavigate } from "@shopify/app-bridge-react";
 import { SelectPayload } from "@shopify/app-bridge/actions/ResourcePicker";
 import { Card, EmptyState, Page } from "@shopify/polaris";

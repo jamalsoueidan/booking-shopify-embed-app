@@ -13,7 +13,7 @@ import {
   useTranslation,
   useWidgetAvailability,
   useWidgetStaff,
-} from "@jamalsoueidan/pkg.bsf";
+} from "@jamalsoueidan/pkg.frontend";
 import { useNavigate } from "@shopify/app-bridge-react";
 import {
   Card,

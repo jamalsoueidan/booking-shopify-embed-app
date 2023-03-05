@@ -1,8 +1,8 @@
 import {
-  SaveBarProvider,
-  ToastProvider,
-  useTranslation,
-} from "@jamalsoueidan/pkg.bsf";
+    SaveBarProvider,
+    ToastProvider,
+    useTranslation,
+} from "@jamalsoueidan/pkg.frontend";
 import { NavigationMenu } from "@shopify/app-bridge-react";
 import { NavigationLink } from "@shopify/app-bridge-react/components/NavigationMenu/NavigationMenu";
 import { Frame, Loading } from "@shopify/polaris";

@@ -1,4 +1,10 @@
-import { FetchProvider, SettingsProvider } from "@jamalsoueidan/pkg.bsf";
+import {
+  AbilityProvider,
+  FetchProvider,
+  SettingsProvider,
+  defineAbilityFor,
+} from "@jamalsoueidan/pkg.frontend";
+import { useNavigate } from "@shopify/app-bridge-react";
 import { setDefaultOptions } from "date-fns";
 import da from "date-fns/locale/da";
 import { useMemo } from "react";
@@ -12,14 +18,19 @@ import { useSetting } from "./services/setting";
 
 export const FetchProviderWrapper = () => {
   const fetch = useFetch();
+  const ability = defineAbilityFor({
+    user: { isAdmin: false, isOwner: true, isUser: false },
+  });
 
   return (
     <FetchProvider fetch={fetch}>
-      <Provider>
-        <ApplicationNavigation>
-          <ApplicationRoutes />
-        </ApplicationNavigation>
-      </Provider>
+      <AbilityProvider ability={ability}>
+        <Provider>
+          <ApplicationNavigation>
+            <ApplicationRoutes />
+          </ApplicationNavigation>
+        </Provider>
+      </AbilityProvider>
     </FetchProvider>
   );
 };
@@ -42,15 +53,13 @@ const Provider = ({ children }) => {
   const value = useMemo(
     () => ({
       language: data?.language || "da",
+      linkComponent: AppBridgeLink,
       timeZone: data?.timeZone || "Europe/Copenhagen",
+      useNavigate,
     }),
     [data],
   );
 
   setDefaultOptions({ locale: value.language === "da" ? da : undefined });
-  return (
-    <SettingsProvider value={value} linkComponent={AppBridgeLink}>
-      {children}
-    </SettingsProvider>
-  );
+  return <SettingsProvider value={value}>{children}</SettingsProvider>;
 };

@@ -1,5 +1,5 @@
 import { MetaData } from "@components/staff/meta-data";
-import { Schedule } from "@jamalsoueidan/pkg.bsb-types";
+import { Schedule } from "@jamalsoueidan/pkg.backend-types";
 import {
   LoadingModal,
   LoadingPage,
@@ -7,14 +7,14 @@ import {
   useStaffGet,
   useStaffSchedule,
   useTranslation,
-} from "@jamalsoueidan/pkg.bsf";
+} from "@jamalsoueidan/pkg.frontend";
 import { useNavigate } from "@shopify/app-bridge-react";
 import { Card, Page } from "@shopify/polaris";
 import { Suspense, lazy, useCallback, useState } from "react";
 import { useParams } from "react-router-dom";
 
 const ScheduleCalendar = lazy(() =>
-  import("@jamalsoueidan/pkg.bsf").then((module) => ({
+  import("@jamalsoueidan/pkg.frontend").then((module) => ({
     default: module.ScheduleCalendar,
   })),
 );

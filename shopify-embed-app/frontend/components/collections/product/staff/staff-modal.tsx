@@ -2,8 +2,13 @@ import {
   ProductServiceGetAvailableStaffReturn,
   ProductServiceUpdateBodyStaffProperty,
   Tag,
-} from "@jamalsoueidan/pkg.bsb-types";
-import { usePosition, useProductStaff, useTag, useTranslation } from "@jamalsoueidan/pkg.bsf";
+} from "@jamalsoueidan/pkg.backend-types";
+import {
+  usePosition,
+  useProductStaff,
+  useTag,
+  useTranslation,
+} from "@jamalsoueidan/pkg.frontend";
 import { Modal, OptionList, Spinner, Text } from "@shopify/polaris";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import FormContext from "./form-context";

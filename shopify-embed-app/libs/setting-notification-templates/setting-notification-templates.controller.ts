@@ -1,9 +1,9 @@
 import {
-  ControllerProps,
-  NotificationTemplate,
-  NotificationTemplateModel,
-  ShopQuery,
-} from "@jamalsoueidan/pkg.bsb";
+    ControllerProps,
+    NotificationTemplate,
+    NotificationTemplateModel,
+    ShopQuery,
+} from "@jamalsoueidan/pkg.backend";
 
 interface GetQuery extends Pick<NotificationTemplate, "shop" | "language"> {}
 

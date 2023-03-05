@@ -3,8 +3,12 @@ import {
   CollectionServiceGetAllReturn,
   Product,
   ProductServiceGetAvailableStaffReturn,
-} from "@jamalsoueidan/pkg.bsb-types";
-import { HelperArray, useCollectionDestroy, useTranslation } from "@jamalsoueidan/pkg.bsf";
+} from "@jamalsoueidan/pkg.backend-types";
+import {
+  HelperArray,
+  useCollectionDestroy,
+  useTranslation,
+} from "@jamalsoueidan/pkg.frontend";
 import {
   Avatar,
   Badge,
@@ -77,7 +81,7 @@ export default memo(({ collection }: CollectionProps) => {
               <Box paddingBlockStart="2">
                 <Stack spacing="extraTight">
                   {[...item.staff]
-                    .sort(HelperArray.soryTextBy("fullname") as any)
+                    .sort(HelperArray.sortByText((d) => d.fullname))
                     .map((staff) => (
                       <Avatar
                         key={staff._id}
@@ -98,7 +102,7 @@ export default memo(({ collection }: CollectionProps) => {
   );
 
   const products = useMemo(
-    () => [...collection.products].sort(HelperArray.soryTextBy("title")),
+    () => [...collection.products].sort(HelperArray.sortByText((d) => d.title)),
     [collection.products],
   );
 

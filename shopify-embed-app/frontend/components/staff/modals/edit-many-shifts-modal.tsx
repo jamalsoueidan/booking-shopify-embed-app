@@ -1,4 +1,4 @@
-import { Schedule } from "@jamalsoueidan/pkg.bsb-types";
+import { Schedule } from "@jamalsoueidan/pkg.backend-types";
 import {
   LoadingSpinner,
   ScheduleFormManyShiftsBody,
@@ -10,12 +10,12 @@ import {
   useStaffScheduleUpdateGroup,
   useToast,
   useTranslation,
-} from "@jamalsoueidan/pkg.bsf";
+} from "@jamalsoueidan/pkg.frontend";
 import { Modal } from "@shopify/polaris";
 import { Suspense, lazy, useCallback, useRef } from "react";
 
 const EditManyShifts = lazy(() =>
-  import("@jamalsoueidan/pkg.bsf").then((module) => ({
+  import("@jamalsoueidan/pkg.frontend").then((module) => ({
     default: module.ScheduleFormManyShifts,
   })),
 );

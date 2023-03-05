@@ -1,4 +1,4 @@
-import { ShopifySession } from "@jamalsoueidan/pkg.bsb";
+import { ShopifySession } from "@jamalsoueidan/pkg.backend";
 import { Express, NextFunction, Request, Response } from "express";
 import shopify from "../../shopify";
 interface SessionRequest extends Request {

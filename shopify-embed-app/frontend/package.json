@@ -13,9 +13,9 @@
     "node": ">= 12.16"
   },
   "dependencies": {
-    "@jamalsoueidan/pkg.bsf": "^0.0.83",
-    "@jamalsoueidan/pkg.bsb-types": "^0.0.14",
-    "@jamalsoueidan/bsf.polyfills.json": "^0.0.2",
+    "@jamalsoueidan/pkg.frontend": "^0.0.2",
+    "@jamalsoueidan/pkg.backend-types": "^0.0.1",
+    "@jamalsoueidan/frontend.polyfills.json": "^0.0.1",
     "@shopify/app-bridge": "^3.1.0",
     "@shopify/app-bridge-react": "^3.1.0",
     "@shopify/app-bridge-utils": "^3.1.0",

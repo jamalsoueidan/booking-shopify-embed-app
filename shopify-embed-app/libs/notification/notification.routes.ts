@@ -1,4 +1,4 @@
-import { handleController } from "@jamalsoueidan/pkg.bsb";
+import { handleController } from "@jamalsoueidan/pkg.backend";
 import { Router } from "express";
 import { body, check, query } from "express-validator";
 import * as controller from "./notification.controller";

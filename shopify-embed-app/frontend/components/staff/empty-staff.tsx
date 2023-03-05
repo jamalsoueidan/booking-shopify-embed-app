@@ -1,4 +1,4 @@
-import { useTranslation } from "@jamalsoueidan/pkg.bsf";
+import { useTranslation } from "@jamalsoueidan/pkg.frontend";
 import { useNavigate } from "@shopify/app-bridge-react";
 import { Card, EmptyState } from "@shopify/polaris";
 

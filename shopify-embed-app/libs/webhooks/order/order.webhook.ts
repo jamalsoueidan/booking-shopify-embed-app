@@ -1,10 +1,10 @@
 import {
-  BookingModel,
-  IBooking,
-  NotificationServiceSendBookingConfirmationCustomer,
-  NotificationServiceSendBookingReminderCustomer,
-  NotificationServiceSendBookingReminderStaff,
-} from "@jamalsoueidan/pkg.bsb";
+    BookingModel,
+    IBooking,
+    NotificationServiceSendBookingConfirmationCustomer,
+    NotificationServiceSendBookingReminderCustomer,
+    NotificationServiceSendBookingReminderStaff,
+} from "@jamalsoueidan/pkg.backend";
 import * as customerController from "@libs/customer/customer.controller";
 import mongoose from "mongoose";
 import { Data, LineItem, Order } from "./order.types";

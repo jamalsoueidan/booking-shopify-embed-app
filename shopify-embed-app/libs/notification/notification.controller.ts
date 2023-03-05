@@ -1,9 +1,9 @@
 import {
-  NotificationServiceCancel,
-  NotificationServiceGet,
-  NotificationServiceResend,
-  NotificationServiceSendCustom,
-} from "@jamalsoueidan/pkg.bsb";
+    NotificationServiceCancel,
+    NotificationServiceGet,
+    NotificationServiceResend,
+    NotificationServiceSendCustom,
+} from "@jamalsoueidan/pkg.backend";
 
 interface GetQuery {
   shop: string;

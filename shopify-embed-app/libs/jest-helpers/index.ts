@@ -1,12 +1,12 @@
 import { faker } from "@faker-js/faker";
 import {
-  CustomerModel,
-  ProductModel,
-  ProductServiceUpdate,
-  ScheduleServiceCreate,
-  StaffServiceCreate,
-  Tag,
-} from "@jamalsoueidan/pkg.bsb";
+    CustomerModel,
+    ProductModel,
+    ProductServiceUpdate,
+    ScheduleServiceCreate,
+    StaffServiceCreate,
+    Tag,
+} from "@jamalsoueidan/pkg.backend";
 import { addHours } from "date-fns";
 
 declare var global: Record<string, string>;

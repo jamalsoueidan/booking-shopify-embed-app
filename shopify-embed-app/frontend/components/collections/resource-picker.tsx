@@ -1,4 +1,4 @@
-import { useCollectionCreate } from '@jamalsoueidan/pkg.bsf';
+import { useCollectionCreate } from '@jamalsoueidan/pkg.frontend';
 import { ResourcePicker } from '@shopify/app-bridge-react';
 import { SelectPayload } from '@shopify/app-bridge/actions/ResourcePicker';
 import { useCallback } from 'react';

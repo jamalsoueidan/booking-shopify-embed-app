@@ -1,10 +1,10 @@
 import {
-  ControllerProps,
-  Setting,
-  SettingBodyUpdate,
-  SettingModel,
-  ShopQuery,
-} from "@jamalsoueidan/pkg.bsb";
+    ControllerProps,
+    Setting,
+    SettingBodyUpdate,
+    SettingModel,
+    ShopQuery,
+} from "@jamalsoueidan/pkg.backend";
 
 export const get = ({ query }: ControllerProps<ShopQuery>) => {
   const shop = query.shop;

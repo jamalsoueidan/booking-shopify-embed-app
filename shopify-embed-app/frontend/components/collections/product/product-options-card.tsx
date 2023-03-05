@@ -1,5 +1,5 @@
-import { Product } from "@jamalsoueidan/pkg.bsb-types";
-import { useTranslation } from "@jamalsoueidan/pkg.bsf";
+import { Product } from "@jamalsoueidan/pkg.backend-types";
+import { useTranslation } from "@jamalsoueidan/pkg.frontend";
 import {
   Button,
   ButtonGroup,

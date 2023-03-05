@@ -1,7 +1,11 @@
 import { EmptyStaff } from "@components/staff/empty-staff";
 import { MetaData } from "@components/staff/meta-data";
-import { Staff } from "@jamalsoueidan/pkg.bsb-types";
-import { usePosition, useStaff, useTranslation } from "@jamalsoueidan/pkg.bsf";
+import { Staff } from "@jamalsoueidan/pkg.backend-types";
+import {
+  usePosition,
+  useStaff,
+  useTranslation,
+} from "@jamalsoueidan/pkg.frontend";
 import { useNavigate } from "@shopify/app-bridge-react";
 import {
   Avatar,

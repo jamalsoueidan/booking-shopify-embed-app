@@ -1,4 +1,4 @@
-import { Tag } from "@jamalsoueidan/pkg.bsb-types";
+import { Tag } from "@jamalsoueidan/pkg.backend-types";
 import {
   HelperDate,
   LoadingSpinner,
@@ -8,7 +8,7 @@ import {
   useStaffScheduleCreate,
   useToast,
   useTranslation,
-} from "@jamalsoueidan/pkg.bsf";
+} from "@jamalsoueidan/pkg.frontend";
 import { Suspense, forwardRef, lazy, useCallback, useMemo } from "react";
 
 interface CreateDayScheduleProps {
@@ -17,7 +17,7 @@ interface CreateDayScheduleProps {
 }
 
 const CreateOneShift = lazy(() =>
-  import("@jamalsoueidan/pkg.bsf").then((module) => ({
+  import("@jamalsoueidan/pkg.frontend").then((module) => ({
     default: module.ScheduleFormOneShift,
   })),
 );

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { body, param } from "express-validator";
 
-import { handleController } from "@jamalsoueidan/pkg.bsb";
+import { handleController } from "@jamalsoueidan/pkg.backend";
 import { isValidObjectId } from "mongoose";
 import * as controller from "./product.controller";
 

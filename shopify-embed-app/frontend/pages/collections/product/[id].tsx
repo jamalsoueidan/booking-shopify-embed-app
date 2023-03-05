@@ -2,7 +2,7 @@ import ProductActivate from "@components/collections/product/product-activate";
 import ProductBanner from "@components/collections/product/product-banner";
 import ProductOptionsCard from "@components/collections/product/product-options-card";
 import ProductStaff from "@components/collections/product/product-staff";
-import { ProductServiceUpdateBodyStaffProperty } from "@jamalsoueidan/pkg.bsb-types";
+import { ProductServiceUpdateBodyStaffProperty } from "@jamalsoueidan/pkg.backend-types";
 import {
   FormErrors,
   LoadingPage,
@@ -10,7 +10,7 @@ import {
   useProductGet,
   useProductUpdate,
   useTranslation,
-} from "@jamalsoueidan/pkg.bsf";
+} from "@jamalsoueidan/pkg.frontend";
 import { Badge, Form, Grid, Page, PageActions } from "@shopify/polaris";
 import { useDynamicList, useField } from "@shopify/react-form";
 import { useParams } from "react-router-dom";

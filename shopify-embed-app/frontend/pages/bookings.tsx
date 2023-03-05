@@ -1,17 +1,17 @@
-import { Booking } from "@jamalsoueidan/pkg.bsb-types";
+import { Booking } from "@jamalsoueidan/pkg.backend-types";
 import {
   LoadingSpinner,
   useBookings,
   useStaff,
   useTranslation,
-} from "@jamalsoueidan/pkg.bsf";
+} from "@jamalsoueidan/pkg.frontend";
 import { useNavigate } from "@shopify/app-bridge-react";
 import { Card, FooterHelp, Page } from "@shopify/polaris";
 import { Suspense, lazy, useCallback, useState } from "react";
 import { Outlet } from "react-router-dom";
 
 const BookingCalendar = lazy(() =>
-  import("@jamalsoueidan/pkg.bsf").then((module) => ({
+  import("@jamalsoueidan/pkg.frontend").then((module) => ({
     default: module.BookingCalendar,
   })),
 );

@@ -1,4 +1,4 @@
-import { StaffForm, useStaffCreate } from "@jamalsoueidan/pkg.bsf";
+import { StaffForm, useStaffCreate } from "@jamalsoueidan/pkg.frontend";
 import { useNavigate } from "@shopify/app-bridge-react";
 import { useCallback } from "react";
 

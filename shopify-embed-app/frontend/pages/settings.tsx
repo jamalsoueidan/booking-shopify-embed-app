@@ -1,6 +1,6 @@
 import { SettingsApplication } from "@components/settings/settings-application";
 import { SettingsNotifications } from "@components/settings/settings-notifications";
-import { useTranslation } from "@jamalsoueidan/pkg.bsf";
+import { useTranslation } from "@jamalsoueidan/pkg.frontend";
 import { ActionList, Card, Grid, Page } from "@shopify/polaris";
 import { NotificationMajor, SettingsMajor } from "@shopify/polaris-icons";
 import { useState } from "react";

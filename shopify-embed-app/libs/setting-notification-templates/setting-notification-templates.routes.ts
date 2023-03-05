@@ -1,4 +1,4 @@
-import { handleController } from "@jamalsoueidan/pkg.bsb";
+import { handleController } from "@jamalsoueidan/pkg.backend";
 import { Router } from "express";
 import * as controller from "./setting-notification-templates.controller";
 

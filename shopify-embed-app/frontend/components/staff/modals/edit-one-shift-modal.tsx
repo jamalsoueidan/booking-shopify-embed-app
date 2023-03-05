@@ -1,4 +1,4 @@
-import { Schedule } from "@jamalsoueidan/pkg.bsb-types";
+import { Schedule } from "@jamalsoueidan/pkg.backend-types";
 import {
   LoadingSpinner,
   ScheduleFormOneShiftBody,
@@ -8,13 +8,13 @@ import {
   useStaffScheduleUpdate,
   useToast,
   useTranslation,
-} from "@jamalsoueidan/pkg.bsf";
+} from "@jamalsoueidan/pkg.frontend";
 
 import { Modal } from "@shopify/polaris";
 import { Suspense, lazy, useCallback, useRef } from "react";
 
 const EditOneShift = lazy(() =>
-  import("@jamalsoueidan/pkg.bsf").then((module) => ({
+  import("@jamalsoueidan/pkg.frontend").then((module) => ({
     default: module.ScheduleFormOneShift,
   })),
 );

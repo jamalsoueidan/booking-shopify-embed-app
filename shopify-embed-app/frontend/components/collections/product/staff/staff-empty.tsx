@@ -1,4 +1,4 @@
-import { useTranslation } from "@jamalsoueidan/pkg.bsf";
+import { useTranslation } from "@jamalsoueidan/pkg.frontend";
 import { EmptyState } from "@shopify/polaris";
 
 interface StaffEmptyStateProps {

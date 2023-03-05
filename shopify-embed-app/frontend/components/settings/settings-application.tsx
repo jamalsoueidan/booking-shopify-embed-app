@@ -1,22 +1,22 @@
 import {
-  FormErrors,
-  InputLanguage,
-  InputTimeZone,
-  LoadingPage,
-  useForm,
-  useToast,
-  useTranslation,
-} from "@jamalsoueidan/pkg.bsf";
+    FormErrors,
+    InputLanguage,
+    InputTimeZone,
+    LoadingPage,
+    useForm,
+    useToast,
+    useTranslation,
+} from "@jamalsoueidan/pkg.frontend";
 import { useSetting, useSettingUpdate } from "@services";
 import {
-  Card,
-  Form,
-  FormLayout,
-  Layout,
-  Page,
-  PageActions,
-  SettingToggle,
-  Text,
+    Card,
+    Form,
+    FormLayout,
+    Layout,
+    Page,
+    PageActions,
+    SettingToggle,
+    Text,
 } from "@shopify/polaris";
 import { useField } from "@shopify/react-form";
 

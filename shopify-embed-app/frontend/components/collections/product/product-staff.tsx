@@ -1,8 +1,8 @@
 import {
   Product,
   ProductServiceUpdateBodyStaffProperty,
-} from "@jamalsoueidan/pkg.bsb-types";
-import { useTranslation } from "@jamalsoueidan/pkg.bsf";
+} from "@jamalsoueidan/pkg.backend-types";
+import { useTranslation } from "@jamalsoueidan/pkg.frontend";
 import { Card } from "@shopify/polaris";
 import { DynamicList } from "@shopify/react-form/build/ts/hooks/list/dynamiclist";
 import { Suspense, lazy, memo, useCallback, useState } from "react";

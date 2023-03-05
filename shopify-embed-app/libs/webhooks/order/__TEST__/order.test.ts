@@ -1,9 +1,9 @@
 import { faker } from "@faker-js/faker";
 import {
-  BookingServiceGetAll,
-  IProductDocument,
-  ShopifySessionModel,
-} from "@jamalsoueidan/pkg.bsb";
+    BookingServiceGetAll,
+    IProductDocument,
+    ShopifySessionModel,
+} from "@jamalsoueidan/pkg.backend";
 import { createProduct } from "@libs/jest-helpers";
 import * as OrderWebhook from "@libs/webhooks/order/order.webhook";
 import { differenceInMinutes, isAfter, isBefore } from "date-fns";

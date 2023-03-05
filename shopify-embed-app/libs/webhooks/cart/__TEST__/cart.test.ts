@@ -1,4 +1,4 @@
-import { IProductDocument, ShopifySessionModel, Tag } from "@jamalsoueidan/pkg.bsb";
+import { IProductDocument, ShopifySessionModel, Tag } from "@jamalsoueidan/pkg.backend";
 import { createProduct, createSchedule, createStaff } from "@libs/jest-helpers";
 import * as adminProductController from "@libs/product/product.controller";
 import * as CartWebhook from "@libs/webhooks/cart/cart.webhook";

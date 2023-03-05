@@ -1,4 +1,4 @@
-import { NotificationTemplate } from "@jamalsoueidan/pkg.bsb-types";
+import { NotificationTemplate } from "@jamalsoueidan/pkg.backend-types";
 import {
   FormErrors,
   LoadingSpinner,
@@ -6,7 +6,7 @@ import {
   useSettings,
   useToast,
   useTranslation,
-} from "@jamalsoueidan/pkg.bsf";
+} from "@jamalsoueidan/pkg.frontend";
 import {
   useNotificationTemplates,
   useNotificationTemplatesUpdate,
