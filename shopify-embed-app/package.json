@@ -14,8 +14,8 @@
   },
   "dependencies": {
     "@jamalsoueidan/pkg.backend": "^0.0.2",
-    "@shopify/shopify-app-express": "^1.1.0",
-    "@shopify/shopify-app-session-storage-mongodb": "^1.0.2",
+    "@shopify/shopify-app-express": "^1.2.2",
+    "@shopify/shopify-app-session-storage-mongodb": "^1.0.5",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
     "cross-env": "^7.0.3",

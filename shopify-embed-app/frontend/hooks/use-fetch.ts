@@ -1,4 +1,3 @@
-import { useAuthenticatedFetch } from "@hooks/useAuthenticatedFetch";
 import {
   FetchContextType,
   UseURLOptions,
@@ -6,11 +5,14 @@ import {
 } from "@jamalsoueidan/pkg.frontend";
 import { useCallback } from "react";
 import { useQueryClient } from "react-query";
+import { useAuthenticatedFetch } from "./useAuthenticatedFetch";
 
 export const useFetch = (): FetchContextType => {
   const fetch = useAuthenticatedFetch();
   const queryClient = useQueryClient();
-  const { createURL } = useUrl("/api/admin");
+  const { createURL } = useUrl("/api/admin", {
+    shop: "testeriphone.myshopify.com",
+  });
 
   const put = useCallback(
     (options: UseURLOptions) =>

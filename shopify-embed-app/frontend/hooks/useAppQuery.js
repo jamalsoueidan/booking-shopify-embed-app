@@ -21,7 +21,8 @@ export const useAppQuery = ({ url, fetchInit = {}, reactQueryOptions }) => {
       const response = await authenticatedFetch(url, fetchInit);
       return response.json();
     },
-    [authenticatedFetch, fetchInit, url],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [url, JSON.stringify(fetchInit)],
   );
 
   return useQuery(url, fetch, {
