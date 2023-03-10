@@ -6,7 +6,6 @@ import {
   useStaff,
   useTranslation,
 } from "@jamalsoueidan/pkg.frontend";
-import { useNavigate } from "@shopify/app-bridge-react";
 import {
   Avatar,
   Card,
@@ -19,7 +18,6 @@ import { useCallback } from "react";
 
 export default () => {
   const { t } = useTranslation({ id: "staff", locales });
-  const navigate = useNavigate();
   const { data } = useStaff();
   const { selectPosition } = usePosition();
 
@@ -33,7 +31,7 @@ export default () => {
       return (
         <ResourceItem
           id={_id}
-          onClick={() => navigate("/staff/" + _id)}
+          url={"/staff/" + _id}
           media={media}
           accessibilityLabel={`View details for ${fullname}`}>
           <Text variant="headingSm" as="h6">
@@ -46,7 +44,7 @@ export default () => {
         </ResourceItem>
       );
     },
-    [navigate, selectPosition],
+    [selectPosition],
   );
 
   return (
