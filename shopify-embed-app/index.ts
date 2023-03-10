@@ -3,8 +3,8 @@ import { readFileSync } from "fs";
 import { join } from "path";
 import serveStatic from "serve-static";
 
-import GDPRWebhookHandlers from "./gdpr.js";
-import shopify from "./shopify.js";
+import GDPRWebhookHandlers from "./gdpr";
+import shopify from "./shopify";
 
 import {
   NotificationTemplateModel,
@@ -21,7 +21,7 @@ import {
 import { notificationRoutes } from "@libs/notification/notification.routes";
 import { settingNotificationTemplatesRoutes } from "@libs/setting-notification-templates/setting-notification-templates.routes";
 import { settingRoutes } from "@libs/setting/setting.routes";
-import { webhooksMiddleware } from "@libs/shopify/webhooks.middleware.js";
+import { shopifyMiddleware } from "@libs/shopify/shopify.middleware";
 
 const morgan = require("morgan");
 
@@ -79,7 +79,7 @@ app.use("/api", widgetRouter);
 app.use("/api/*", shopify.validateAuthenticatedSession());
 
 app.use(morgan("dev"));
-app.use("/api/*", webhooksMiddleware(app));
+app.use("/api/*", shopifyMiddleware(app) as any);
 
 app.use("/api/admin", bookingRouter);
 app.use("/api/admin", collectionRouter);
