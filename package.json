@@ -6,14 +6,14 @@
   "scripts": {
     "shopify": "shopify",
     "build": "shopify app build --path shopify-embed-app",
-    "dev": "shopify app dev -t Sense --path shopify-embed-app",
+    "dev": "shopify app dev --path shopify-embed-app",
     "info": "shopify app info --path shopify-embed-app",
     "generate": "shopify app generate",
     "deploy": "shopify app deploy"
   },
   "dependencies": {
-    "@shopify/app": "3.40.2",
-    "@shopify/cli": "3.40.2"
+    "@shopify/app": "^3.44.1",
+    "@shopify/cli": "^3.44.1"
   },
   "author": "jamalsoueidan"
 }

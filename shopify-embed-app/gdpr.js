@@ -1,38 +1,40 @@
 import { CartWebhook, CustomerWebhook, OrderWebhook } from "@libs/webhooks";
 import { DeliveryMethod } from "@shopify/shopify-api";
 
-const customerHandler = {
-  callbackUrl: "/api/webhooks",
-  callback: async (topic, shop, body) => {
-    CustomerWebhook.modify({ body: JSON.parse(body), shop });
-    console.log(topic);
-  },
-};
-
-const cartHandler = {
-  callbackUrl: "/api/webhooks",
-  callback: async (topic, shop, body) => {
-    CartWebhook.modify({ body: JSON.parse(body), shop });
-    console.log(topic);
-  },
-};
-
 const webhooks = {
   CUSTOMERS_UPDATE: {
     deliveryMethod: DeliveryMethod.Http,
-    ...customerHandler,
+    callbackUrl: "/api/webhooks",
+    callback: async (topic, shop, body) => {
+      console.log(body);
+      CustomerWebhook.modify({ body: JSON.parse(body), shop });
+      console.log(topic);
+    },
   },
   CUSTOMERS_CREATE: {
     deliveryMethod: DeliveryMethod.Http,
-    ...customerHandler,
+    callbackUrl: "/api/webhooks",
+    callback: async (topic, shop, body) => {
+      console.log(body);
+      CustomerWebhook.modify({ body: JSON.parse(body), shop });
+      console.log(topic);
+    },
   },
   CARTS_CREATE: {
     deliveryMethod: DeliveryMethod.Http,
-    ...cartHandler,
+    callbackUrl: "/api/webhooks",
+    callback: async (topic, shop, body) => {
+      CartWebhook.modify({ body: JSON.parse(body), shop });
+      console.log(topic);
+    },
   },
   CARTS_UPDATE: {
     deliveryMethod: DeliveryMethod.Http,
-    ...cartHandler,
+    callbackUrl: "/api/webhooks",
+    callback: async (topic, shop, body) => {
+      CartWebhook.modify({ body: JSON.parse(body), shop });
+      console.log(topic);
+    },
   },
   ORDERS_PAID: {
     deliveryMethod: DeliveryMethod.Http,

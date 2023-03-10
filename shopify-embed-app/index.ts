@@ -68,7 +68,6 @@ const register = async () => {
     }
   });
 };
-
 register();
 /* ------------------- */
 
