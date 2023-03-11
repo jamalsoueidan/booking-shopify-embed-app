@@ -53,7 +53,7 @@ const Provider = ({ children }) => {
   const value = useMemo(
     () => ({
       language: data?.language || "da",
-      linkComponent: AppBridgeLink,
+      LinkComponent: AppBridgeLink,
       timeZone: data?.timeZone || "Europe/Copenhagen",
       useNavigate,
     }),

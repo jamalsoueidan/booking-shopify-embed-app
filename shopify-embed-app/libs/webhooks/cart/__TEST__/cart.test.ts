@@ -1,6 +1,5 @@
-import { IProductDocument, ShopifySessionModel, Tag } from "@jamalsoueidan/pkg.backend";
+import { IProductDocument, ProductServiceUpdate, ShopifySessionModel, Tag } from "@jamalsoueidan/pkg.backend";
 import { createProduct, createSchedule, createStaff } from "@libs/jest-helpers";
-import * as adminProductController from "@libs/product/product.controller";
 import * as CartWebhook from "@libs/webhooks/cart/cart.webhook";
 import { addHours, setMilliseconds, setSeconds, startOfDay } from "date-fns";
 import mongoose from "mongoose";
@@ -40,14 +39,11 @@ describe("webhooks order", () => {
       staff: staff1._id.toString(),
     });
 
-    await adminProductController.update({
-      query: {
+    await ProductServiceUpdate({
         id: product._id,
         shop: global.shop,
-      },
-      body: {
+      },{
         staff: [{ tag, _id: staff1._id }],
-      },
     });
 
     const lineItems = body.line_items[0];

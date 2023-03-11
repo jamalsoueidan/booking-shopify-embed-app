@@ -1,12 +1,13 @@
 import {
-    BookingModel,
-    IBooking,
-    NotificationServiceSendBookingConfirmationCustomer,
-    NotificationServiceSendBookingReminderCustomer,
-    NotificationServiceSendBookingReminderStaff,
+  BookingModel,
+  CustomerServiceFindAndUpdate,
+  IBooking,
+  NotificationServiceSendBookingConfirmationCustomer,
+  NotificationServiceSendBookingReminderCustomer,
+  NotificationServiceSendBookingReminderStaff,
 } from "@jamalsoueidan/pkg.backend";
-import * as customerController from "@libs/customer/customer.controller";
 import mongoose from "mongoose";
+import shopify from '../../../shopify';
 import { Data, LineItem, Order } from "./order.types";
 
 interface ModifyProps {
@@ -57,19 +58,11 @@ export const modify = async ({
     }
   });
 
-  await customerController.findCustomerAndUpdate({
-    query: {
+  await CustomerServiceFindAndUpdate({
       shop,
       customerId: body.customer.id,
       customerGraphqlApiId: body.customer.admin_graphql_api_id,
-    },
-    session: {
-      id: "a",
-      shop: "a",
-      state: "a",
-      isOnline: true,
-      shopify: null,
-    },
+      shopify,
   });
 
   if (sendBooking) {

@@ -31,7 +31,7 @@ export default () => {
       return (
         <ResourceItem
           id={_id}
-          url={"/staff/" + _id}
+          url={`/staff/${_id}`}
           media={media}
           accessibilityLabel={`View details for ${fullname}`}>
           <Text variant="headingSm" as="h6">
